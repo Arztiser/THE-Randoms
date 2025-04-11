@@ -4,7 +4,9 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
             const wordContainer = document.getElementById('word-container');
             const word = document.createElement('p');
-            word.textContent = data[0]; // Use the first word from the array
+            const rawWord = data[0];
+            const capitalizedWord = rawWord.charAt(0).toUpperCase() + rawWord.slice(1);
+            word.textContent = capitalizedWord;
             wordContainer.appendChild(word);
         })
         .catch(error => {
