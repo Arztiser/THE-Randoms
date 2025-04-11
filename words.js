@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
             const wordContainer = document.getElementById('word-container');
             const word = document.createElement('p');
-            word.textContent = data.text;
+            word.textContent = data[0]; // Use the first word from the array
             wordContainer.appendChild(word);
         })
         .catch(error => {
