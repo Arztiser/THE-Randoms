@@ -159,27 +159,34 @@
 </head>
 <body>
     <header>
-        <div class="topnav">
-            <h1><a class="logo">THE Randoms</a></h1>
-            <span class="menu-icon" onclick="toggleMenu()">&#9776;</span>
-            <div class="topnav-right">
-                <input type="text" id="searchBar" placeholder="Search..." oninput="searchFunction()">
-                <a href="index.html" class="active">Home</a>
-                <a href="advice.html">Advice</a>
-                <a href="facts.html">Facts</a>
-                <a href="jokes.html">Jokes</a>
-                <a href="letters.html">Letters</a>
-                <a href="memes.html">Memes</a>
-                <a href="nfl.html">NFL</a>
-                <a href="numbers.html">Numbers</a>
-                <a href="people.html">People</a>
-                <a href="quizzes.html">Quizzes</a>
-                <a href="songs.html">Songs</a>
-                <a href="videos.html">Videos</a>
-                <a href="words.html">Words</a>
-            </div>
-        </div>
+  <div class="topnav">
+    <h1><a class="logo">THE Randoms</a></h1>
+
+    <!-- Search bar is now OUTSIDE the collapsible menu -->
+    <div style="position: relative;">
+      <input type="text" id="searchBar" placeholder="Search..." oninput="searchFunction()" autocomplete="off">
+      <div id="searchResultsDropdown"></div>
+    </div>
+
+    <span class="menu-icon" onclick="toggleMenu()">&#9776;</span>
+    <div class="topnav-right" id="navLinks">
+      <a href="index.html" class="active">Home</a>
+      <a href="advice.html">Advice</a>
+      <a href="facts.html">Facts</a>
+      <a href="jokes.html">Jokes</a>
+      <a href="letters.html">Letters</a>
+      <a href="memes.html">Memes</a>
+      <a href="nfl.html">NFL</a>
+      <a href="numbers.html">Numbers</a>
+      <a href="people.html">People</a>
+      <a href="quizzes.html">Quizzes</a>
+      <a href="songs.html">Songs</a>
+      <a href="videos.html">Videos</a>
+      <a href="words.html">Words</a>
+    </div>
+  </div>
     </header>
+        
 
     <div class="content">
         <h1>Home</h1>
