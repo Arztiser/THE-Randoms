@@ -70,8 +70,42 @@
             color: white;
         }
 
+        /* Search bar */
+        #searchBar {
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            width: 250px;
+            margin-left: 20px;
+        }
+
+        /* Dropdown container */
+        #searchResultsDropdown {
+            position: absolute;
+            background-color: #fff;
+            width: 250px;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            border-top: none;
+            display: none;
+            z-index: 999;
+        }
+
+        /* Individual result items in dropdown */
+        #searchResultsDropdown a {
+            display: block;
+            padding: 8px;
+            color: #333;
+            text-decoration: none;
+        }
+
+        #searchResultsDropdown a:hover {
+            background-color: #ddd;
+        }
+
         /* Hide the menu items and display the hamburger icon on mobile */
-        @media screen and (max-width: 1024px) { /* Increased to 1024px for iPads */
+        @media screen and (max-width: 1024px) {
             .topnav-right {
                 display: none; /* Hide menu items by default */
                 position: fixed;
@@ -129,6 +163,7 @@
             <h1><a class="logo">THE Randoms</a></h1>
             <span class="menu-icon" onclick="toggleMenu()">&#9776;</span>
             <div class="topnav-right">
+                <input type="text" id="searchBar" placeholder="Search..." oninput="searchFunction()">
                 <a href="index.html" class="active">Home</a>
                 <a href="advice.html">Advice</a>
                 <a href="facts.html">Facts</a>
@@ -166,6 +201,63 @@
                 body.classList.remove('menu-open');
             }
         }
+
+        function searchFunction() {
+            const query = document.getElementById('searchBar').value.trim().toLowerCase();
+            const dropdown = document.getElementById('searchResultsDropdown');
+            dropdown.innerHTML = ''; // Clear previous results
+
+            if (query === "") {
+                dropdown.style.display = 'none'; // Hide dropdown if no search query
+                return;
+            }
+
+            const links = document.querySelectorAll('.topnav-right a');
+            let resultsFound = false;
+
+            links.forEach(link => {
+                const title = link.textContent.toLowerCase();
+                if (levenshtein(query, title) <= 3) {
+                    const result = document.createElement('a');
+                    result.href = link.href;
+                    result.textContent = link.textContent;
+                    dropdown.appendChild(result);
+                    resultsFound = true;
+                }
+            });
+
+            // Show or hide the dropdown based on results
+            if (resultsFound) {
+                dropdown.style.display = 'block';
+            } else {
+                dropdown.style.display = 'none';
+            }
+        }
+
+        function levenshtein(a, b) {
+            let tmp;
+            let i, j;
+            const alen = a.length;
+            const blen = b.length;
+            const arr = [];
+
+            if (alen === 0) return blen;
+            if (blen === 0) return alen;
+
+            for (i = 0; i <= alen; i++) arr[i] = [i];
+            for (j = 0; j <= blen; j++) arr[0][j] = j;
+
+            for (i = 1; i <= alen; i++) {
+                for (j = 1; j <= blen; j++) {
+                    tmp = a.charAt(i - 1) === b.charAt(j - 1) ? 0 : 1;
+                    arr[i][j] = Math.min(arr[i - 1][j] + 1, arr[i][j - 1] + 1, arr[i - 1][j - 1] + tmp);
+                }
+            }
+            return arr[alen][blen];
+        }
     </script>
+
+    <!-- Dropdown for search results -->
+    <div id="searchResultsDropdown"></div>
 </body>
 </html>
