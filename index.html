@@ -1,270 +1,169 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#E82B38">
-    <meta name="description" content="THE Randoms Is A Website That Lets You View And Do Random Things Such As Random Quizzes, Facts, Quotes, Numbers, And Letters.">
-    <title>THE Randoms</title>
-    <link rel="icon" type="image/png" href="./img/pfp.png">
-    <link rel="stylesheet" type="text/css" href="https://therandoms.pages.dev/css/styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
-    <link rel="manifest" href="/manifest.json">
-    <link rel="apple-touch-icon" sizes="192x192" href="/img/prfp.png">
-    <style>
-        /* Font styling for the whole page */
-        body {
-            font-family: 'Jersey 10', sans-serif;
-            font-size: 30px;
-            margin: 0;
-            padding: 0;
-        }
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <meta name="theme-color" content="#E82B38">  
+    <meta name="description" content="THE Randoms Is A Website That Lets You View And Do Random Things Such As Random Quizzes, Facts, Quotes, Numbers, And Letters.">  
+    <title>THE Randoms</title>  
+    <link rel="icon" type="image/png" href="./img/pfp.png">  
+    <link rel="stylesheet" type="text/css" href="https://therandoms.pages.dev/css/styles.css">  
+    <link rel="preconnect" href="https://fonts.googleapis.com">  
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>  
+    <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">  
+    <link rel="manifest" href="/manifest.json">  
+    <link rel="apple-touch-icon" sizes="192x192" href="/img/prfp.png">  
+    <style>  
+        /* Font styling for the whole page */  
+        body {  
+            font-family: 'Jersey 10', sans-serif;  
+            font-size: 30px;  
+            margin: 0;  
+            padding: 0;  
+        }  /* Navigation bar styling */  
+    .topnav {  
+        overflow: hidden;  
+        background-color: #333;  
+        display: flex;  
+        align-items: center;  
+        justify-content: space-between;  
+        padding: 0 16px;  
+        height: 60px;  
+    }  
 
-        /* Navigation bar styling */
-        .topnav {
-            overflow: hidden;
-            background-color: #333;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 16px;
-            height: 60px;
-        }
+    .topnav h1 {  
+        margin: 0;  
+        font-size: 24px;  
+        color: #f2f2f2;  
+    }  
 
-        .topnav h1 {
-            margin: 0;
-            font-size: 24px;
-            color: #f2f2f2;
-        }
+    .topnav .menu-icon {  
+        display: none; /* Hidden by default, shown on small screens */  
+        font-size: 30px;  
+        color: #f2f2f2;  
+        cursor: pointer;  
+    }  
 
-        .topnav .menu-icon {
-            display: none; /* Hidden by default, shown on small screens */
-            font-size: 30px;
-            color: #f2f2f2;
-            cursor: pointer;
-        }
+    /* Menu links */  
+    .topnav-right {  
+        display: flex;  
+    }  
 
-        /* Menu links */
-        .topnav-right {
-            display: flex;
-        }
+    .topnav a {  
+        color: #f2f2f2;  
+        text-align: center;  
+        padding: 14px 16px;  
+        text-decoration: none;  
+        font-size: 18px;  
+        white-space: nowrap;  
+    }  
 
-        .topnav a {
-            color: #f2f2f2;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-            font-size: 18px;
-            white-space: nowrap;
-        }
+    .topnav a:hover {  
+        background-color: #ddd;  
+        color: black;  
+    }  
 
-        .topnav a:hover {
-            background-color: #ddd;
-            color: black;
-        }
+    .topnav a.active {  
+        background-color: #E82B38;  
+        color: white;  
+    }  
 
-        .topnav a.active {
-            background-color: #E82B38;
-            color: white;
-        }
+    /* Hide the menu items and display the hamburger icon on mobile */  
+    @media screen and (max-width: 1024px) { /* Increased to 1024px for iPads */  
+        .topnav-right {  
+            display: none; /* Hide menu items by default */  
+            position: fixed;  
+            top: 60px;  
+            right: 0;  
+            background-color: #333;  
+            width: 100%;  
+            height: 100vh;  
+            flex-direction: column;  
+            justify-content: flex-start;  
+            z-index: 999;  
+            overflow-y: auto;  
+        }  
 
-        /* Search bar */
-        #searchBar {
-            padding: 8px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-            width: 250px;
-            margin-left: 20px;
-        }
+        .topnav-right a {  
+            text-align: left;  
+            padding: 14px;  
+            font-size: 24px; /* Larger font size for mobile menu */  
+        }  
 
-        /* Dropdown container */
-        #searchResultsDropdown {
-            position: absolute;
-            background-color: #fff;
-            width: 250px;
-            max-height: 300px;
-            overflow-y: auto;
-            border: 1px solid #ccc;
-            border-top: none;
-            display: none;
-            z-index: 999;
-        }
+        .topnav .menu-icon {  
+            display: block; /* Show the hamburger icon */  
+        }  
 
-        /* Individual result items in dropdown */
-        #searchResultsDropdown a {
-            display: block;
-            padding: 8px;
-            color: #333;
-            text-decoration: none;
-        }
+        .topnav.active .topnav-right {  
+            display: flex; /* Show menu items when the icon is clicked */  
+        }  
 
-        #searchResultsDropdown a:hover {
-            background-color: #ddd;
-        }
+        /* Prevent body from scrolling when the menu is open */  
+        body.menu-open {  
+            overflow: hidden;  
+        }  
+    }  
 
-        /* Hide the menu items and display the hamburger icon on mobile */
-        @media screen and (max-width: 1024px) {
-            .topnav-right {
-                display: none; /* Hide menu items by default */
-                position: fixed;
-                top: 60px;
-                right: 0;
-                background-color: #333;
-                width: 100%;
-                height: 100vh;
-                flex-direction: column;
-                justify-content: flex-start;
-                z-index: 999;
-                overflow-y: auto;
-            }
+    .container {  
+        margin: 20px;  
+    }  
 
-            .topnav-right a {
-                text-align: left;
-                padding: 14px;
-                font-size: 24px; /* Larger font size for mobile menu */
-            }
+    .content {  
+        text-align: center;  
+    }  
 
-            .topnav .menu-icon {
-                display: block; /* Show the hamburger icon */
-            }
+    .content h1 {  
+        margin-bottom: 20px;  
+    }  
 
-            .topnav.active .topnav-right {
-                display: flex; /* Show menu items when the icon is clicked */
-            }
+    .content p {  
+        line-height: 1.5;  
+    }  
+</style>
 
-            /* Prevent body from scrolling when the menu is open */
-            body.menu-open {
-                overflow: hidden;
-            }
-        }
+</head>  
+<body>  
+    <header>  
+        <div class="topnav">  
+            <h1><a class="logo">THE Randoms</a></h1>  
+            <span class="menu-icon" onclick="toggleMenu()">&#9776;</span>  
+            <div class="topnav-right">  
+                <a href="index.html" class="active">Home</a>  
+                <a href="advice.html">Advice</a>  
+                <a href="facts.html">Facts</a>  
+                <a href="jokes.html">Jokes</a>  
+                <a href="letters.html">Letters</a>  
+                <a href="memes.html">Memes</a>  
+                <a href="nfl.html">NFL</a>  
+                <a href="numbers.html">Numbers</a>  
+                <a href="people.html">People</a>  
+                <a href="quizzes.html">Quizzes</a>  
+                <a href="songs.html">Songs</a>  
+                <a href="videos.html">Videos</a>  
+                <a href="words.html">Words</a>  
+            </div>  
+        </div>  
+    </header>  <div class="content">  
+    <h1>Home</h1>  
+    <p>Welcome to THE Randoms, A Website Full Of Random Things To Explore And Enjoy. If You Found This Website Randomly, Welcome! Now Come Along On This Wacky, Fun, And Random Ride To Explore All Of THE Randoms Of The World And The Internet.</p>  
+</div>  
 
-        .container {
-            margin: 20px;
-        }
+<script>  
+    function toggleMenu() {  
+        const topnav = document.querySelector('.topnav');  
+        const body = document.body;  
 
-        .content {
-            text-align: center;
-        }
+        // Toggle the 'active' class for showing the menu  
+        topnav.classList.toggle('active');  
 
-        .content h1 {
-            margin-bottom: 20px;
-        }
+        // If the menu is open, prevent body scrolling  
+        if (topnav.classList.contains('active')) {  
+            body.classList.add('menu-open');  
+        } else {  
+            body.classList.remove('menu-open');  
+        }  
+    }  
+</script>
 
-        .content p {
-            line-height: 1.5;
-        }
-    </style>
-</head>
-<body>
-    <header>
-  <div class="topnav">
-    <h1><a class="logo">THE Randoms</a></h1>
-
-    <!-- Search bar is now OUTSIDE the collapsible menu -->
-    <div style="position: relative;">
-      <input type="text" id="searchBar" placeholder="Search..." oninput="searchFunction()" autocomplete="off">
-      <div id="searchResultsDropdown"></div>
-    </div>
-
-    <span class="menu-icon" onclick="toggleMenu()">&#9776;</span>
-    <div class="topnav-right" id="navLinks">
-      <a href="index.html" class="active">Home</a>
-      <a href="advice.html">Advice</a>
-      <a href="facts.html">Facts</a>
-      <a href="jokes.html">Jokes</a>
-      <a href="letters.html">Letters</a>
-      <a href="memes.html">Memes</a>
-      <a href="nfl.html">NFL</a>
-      <a href="numbers.html">Numbers</a>
-      <a href="people.html">People</a>
-      <a href="quizzes.html">Quizzes</a>
-      <a href="songs.html">Songs</a>
-      <a href="videos.html">Videos</a>
-      <a href="words.html">Words</a>
-    </div>
-  </div>
-    </header>
-        
-
-    <div class="content">
-        <h1>Home</h1>
-        <p>Welcome to THE Randoms, A Website Full Of Random Things To Explore And Enjoy. If You Found This Website Randomly, Welcome! Now Come Along On This Wacky, Fun, And Random Ride To Explore All Of THE Randoms Of The World And The Internet.</p>
-    </div>
-
-    <script>
-        function toggleMenu() {
-            const topnav = document.querySelector('.topnav');
-            const body = document.body;
-
-            // Toggle the 'active' class for showing the menu
-            topnav.classList.toggle('active');
-
-            // If the menu is open, prevent body scrolling
-            if (topnav.classList.contains('active')) {
-                body.classList.add('menu-open');
-            } else {
-                body.classList.remove('menu-open');
-            }
-        }
-
-        function searchFunction() {
-            const query = document.getElementById('searchBar').value.trim().toLowerCase();
-            const dropdown = document.getElementById('searchResultsDropdown');
-            dropdown.innerHTML = ''; // Clear previous results
-
-            if (query === "") {
-                dropdown.style.display = 'none'; // Hide dropdown if no search query
-                return;
-            }
-
-            const links = document.querySelectorAll('.topnav-right a');
-            let resultsFound = false;
-
-            links.forEach(link => {
-                const title = link.textContent.toLowerCase();
-                if (levenshtein(query, title) <= 3) {
-                    const result = document.createElement('a');
-                    result.href = link.href;
-                    result.textContent = link.textContent;
-                    dropdown.appendChild(result);
-                    resultsFound = true;
-                }
-            });
-
-            // Show or hide the dropdown based on results
-            if (resultsFound) {
-                dropdown.style.display = 'block';
-            } else {
-                dropdown.style.display = 'none';
-            }
-        }
-
-        function levenshtein(a, b) {
-            let tmp;
-            let i, j;
-            const alen = a.length;
-            const blen = b.length;
-            const arr = [];
-
-            if (alen === 0) return blen;
-            if (blen === 0) return alen;
-
-            for (i = 0; i <= alen; i++) arr[i] = [i];
-            for (j = 0; j <= blen; j++) arr[0][j] = j;
-
-            for (i = 1; i <= alen; i++) {
-                for (j = 1; j <= blen; j++) {
-                    tmp = a.charAt(i - 1) === b.charAt(j - 1) ? 0 : 1;
-                    arr[i][j] = Math.min(arr[i - 1][j] + 1, arr[i][j - 1] + 1, arr[i - 1][j - 1] + tmp);
-                }
-            }
-            return arr[alen][blen];
-        }
-    </script>
-
-    <!-- Dropdown for search results -->
-    <div id="searchResultsDropdown"></div>
-</body>
+</body>  
 </html>
