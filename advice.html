@@ -179,5 +179,26 @@
         }
     </script>
     <script src="advice.js"></script>
+
+    <script>
+    function toggleMenu() {
+      const topnav = document.querySelector('.topnav');
+      const body = document.body;
+      topnav.classList.toggle('active');
+      body.classList.toggle('menu-open');
+    }
+
+    document.querySelectorAll('.accordion-toggle').forEach(toggle => {
+      toggle.addEventListener('click', () => {
+        const parent = toggle.parentElement;
+        document.querySelectorAll('.accordion-section').forEach(section => {
+          if (section !== parent) {
+            section.classList.remove('open');
+          }
+        });
+        parent.classList.toggle('open');
+      });
+    });
+    </script>
 </body>
 </html>
