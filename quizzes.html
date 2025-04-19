@@ -14,7 +14,7 @@
     <style>
         body {
             font-family: 'Jersey 10', sans-serif;
-            font-size: 30px; /* Set font size to thirty */
+            font-size: 30px;
             margin: 0;
             padding: 0;
         }
@@ -23,37 +23,84 @@
             overflow: hidden;
             background-color: #333;
             display: flex;
-            align-items: center; /* Vertically centers items */
+            align-items: center;
             justify-content: space-between;
             padding: 0 16px;
-            height: 60px; /* Set a fixed height for the nav bar */
+            height: 60px;
         }
 
         .topnav h1 {
             margin: 0;
-            font-size: 24px; /* Adjust logo font size */
-            color: #f2f2f2; /* Ensure logo text is visible */
+            font-size: 24px;
+            color: #f2f2f2;
         }
 
         .topnav .menu-icon {
-            display: none;
-            font-size: 30px; /* Increased for better visibility */
+            display: block;
+            font-size: 30px;
             color: #f2f2f2;
             cursor: pointer;
+            margin-left: auto;
         }
 
         .topnav-right {
+            display: none;
+            position: fixed;
+            top: 60px;
+            right: 0;
+            background-color: #333;
+            width: 100%;
+            height: 100vh;
+            flex-direction: column;
+            justify-content: flex-start;
+            z-index: 999;
+            overflow-y: auto;
+        }
+
+        .topnav.active .topnav-right {
             display: flex;
         }
 
-        .topnav a {
-            display: inline-block; /* Make sure links are inline */
+        body.menu-open {
+            overflow: hidden;
+        }
+
+        .accordion-toggle {
+            background: none;
             color: #f2f2f2;
-            text-align: center;
-            padding: 14px 16px;
+            padding: 14px;
+            text-align: left;
+            font-size: 24px;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .accordion-content {
+            display: none;
+            flex-direction: column;
+            background-color: #444;
+        }
+
+        .accordion-content a {
+            padding-left: 28px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            border-top: 1px solid #555;
+            font-size: 20px;
+            color: #f2f2f2;
             text-decoration: none;
-            font-size: 18px; /* Adjust link font size */
-            white-space: nowrap;
+        }
+
+        .accordion-section {
+            display: flex;
+            flex-direction: column;
+            border-top: 1px solid #444;
+        }
+
+        .accordion-section.open .accordion-content {
+            display: flex;
         }
 
         .topnav a:hover {
@@ -66,78 +113,20 @@
             color: white;
         }
 
-        .logo {
-            color: inherit; /* Keep the color as it was */
-            text-decoration: none;
-        }
-
-        .logo:hover {
-            background-color: transparent; /* Set the background color to transparent on hover */
-        }
-
         .container {
             margin: 20px;
-            /* No text-align center to avoid centering content */
         }
 
-        #quiz-container {
+        .content {
+            text-align: center;
+        }
+
+        .content h1 {
             margin-bottom: 20px;
-            /* Ensure quiz content is left-aligned */
         }
 
-        #submit-btn {
-            margin-top: 15px;
-            padding: 8px 16px;
-            font-size: 16px;
-            background-color: #E82B38;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        #submit-btn:hover {
-            background-color: #d12530;
-        }
-
-        #result {
-            margin-top: 20px;
-            font-size: 24px;
-        }
-
-        @media screen and (max-width: 1024px) {
-            .topnav-right {
-                display: none;
-                position: fixed;
-                top: 60px;
-                right: 0;
-                background-color: #333;
-                width: 100%;
-                height: 100vh;
-                flex-direction: column;
-                justify-content: flex-start;
-                z-index: 999;
-                overflow-y: auto;
-            }
-
-            .topnav-right a {
-                text-align: left;
-                padding: 14px;
-                font-size: 24px;
-            }
-
-            .topnav .menu-icon {
-                display: block;
-            }
-
-            .topnav.active .topnav-right {
-                display: flex;
-            }
-
-            body.menu-open {
-                overflow: hidden;
-            }
+        .content p {
+            line-height: 1.5;
         }
     </style>
 </head>
@@ -147,19 +136,41 @@
             <h1><a href="index.html" class="logo">THE Randoms</a></h1>
             <span class="menu-icon" onclick="toggleMenu()">&#9776;</span>
             <div class="topnav-right">
-                <a href="index.html">Home</a>
-                <a href="advice.html">Advice</a>
-                <a href="facts.html">Facts</a>
-                <a href="jokes.html">Jokes</a>
-                <a href="letters.html">Letters</a>
-                <a href="memes.html">Memes</a>
-                <a href="nfl.html">NFL</a>
-                <a href="numbers.html">Numbers</a>
-                <a href="people.html">People</a>
-                <a href="quizzes.html" class="active">Quizzes</a>
-                <a href="songs.html">Songs</a>
-                <a href="videos.html">Videos</a>
-                <a href="words.html">Words</a>
+                <div class="accordion-section">
+                    <button class="accordion-toggle">Jokes & Fun</button>
+                    <div class="accordion-content">
+                        <a href="jokes.html">Jokes</a>
+                        <a href="memes.html">Memes</a>
+                        <a href="nfl.html">NFL</a>
+                        <a href="quizzes.html">Quizzes</a>
+                    </div>
+                </div>
+
+                <div class="accordion-section">
+                    <button class="accordion-toggle">Knowledge & Facts</button>
+                    <div class="accordion-content">
+                        <a href="advice.html">Advice</a>
+                        <a href="facts.html">Facts</a>
+                        <a href="people.html">People</a>
+                    </div>
+                </div>
+
+                <div class="accordion-section">
+                    <button class="accordion-toggle">Music & Videos</button>
+                    <div class="accordion-content">
+                        <a href="songs.html">Songs</a>
+                        <a href="videos.html">Videos</a>
+                    </div>
+                </div>
+
+                <div class="accordion-section">
+                    <button class="accordion-toggle">Words, Letters & Numbers</button>
+                    <div class="accordion-content">
+                        <a href="letters.html">Letters</a>
+                        <a href="numbers.html">Numbers</a>
+                        <a href="words.html">Words</a>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
@@ -177,18 +188,23 @@
         function toggleMenu() {
             const topnav = document.querySelector('.topnav');
             const body = document.body;
-
-            // Toggle the 'active' class for showing the menu
             topnav.classList.toggle('active');
-
-            // If the menu is open, prevent body scrolling
-            if (topnav.classList.contains('active')) {
-                body.classList.add('menu-open');
-            } else {
-                body.classList.remove('menu-open');
-            }
+            body.classList.toggle('menu-open');
         }
+
+        document.querySelectorAll('.accordion-toggle').forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                const parent = toggle.parentElement;
+                document.querySelectorAll('.accordion-section').forEach(section => {
+                    if (section !== parent) {
+                        section.classList.remove('open');
+                    }
+                });
+                parent.classList.toggle('open');
+            });
+        });
     </script>
+
     <script src="script.js"></script>
 </body>
 </html>
