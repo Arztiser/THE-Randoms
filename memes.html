@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#E82B38">
-  <meta name="description" content="THE Randoms Is A Website That Lets You View And Do Random Things Such As Random Quizzes, Facts, Quotes, Numbers, And Letters.">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="theme-color" content="#E82B38" />
   <title>Memes - THE Randoms</title>
-  <link rel="icon" type="image/png" href="./img/pfp.png">
-  <link rel="stylesheet" href="https://therandoms.pages.dev/css/styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="icon" href="./img/pfp.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap" rel="stylesheet" />
   <style>
     body {
       font-family: 'Jersey 10', sans-serif;
@@ -16,6 +14,7 @@
       margin: 0;
       padding: 0;
     }
+
     .topnav {
       overflow: hidden;
       background-color: #333;
@@ -25,91 +24,119 @@
       padding: 0 16px;
       height: 60px;
     }
+
     .topnav h1 {
       margin: 0;
       font-size: 24px;
+      color: #f2f2f2;
     }
+
     .topnav .menu-icon {
-      display: none;
+      display: block;
       font-size: 30px;
       color: #f2f2f2;
       cursor: pointer;
+      margin-left: auto;
     }
+
     .topnav-right {
+      display: none;
+      position: fixed;
+      top: 60px;
+      right: 0;
+      background-color: #333;
+      width: 100%;
+      height: 100vh;
+      flex-direction: column;
+      justify-content: flex-start;
+      z-index: 999;
+      overflow-y: auto;
+    }
+
+    .topnav.active .topnav-right {
       display: flex;
     }
-    .topnav a {
-      color: #f2f2f2;
-      padding: 14px 16px;
-      text-decoration: none;
-      font-size: 18px;
+
+    body.menu-open {
+      overflow: hidden;
     }
+
+    .accordion-toggle {
+      background: none;
+      color: #f2f2f2;
+      padding: 14px;
+      text-align: left;
+      font-size: 24px;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      width: 100%;
+      font-family: 'Jersey 10', sans-serif;
+    }
+
+    .accordion-content {
+      display: none;
+      flex-direction: column;
+      background-color: #444;
+    }
+
+    .accordion-content a {
+      padding-left: 28px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      border-top: 1px solid #555;
+      font-size: 20px;
+      color: #f2f2f2;
+      text-decoration: none;
+    }
+
+    .accordion-section {
+      display: flex;
+      flex-direction: column;
+      border-top: 1px solid #444;
+    }
+
+    .accordion-section.open .accordion-content {
+      display: flex;
+    }
+
     .topnav a:hover {
       background-color: #ddd;
       color: black;
     }
+
     .topnav a.active {
       background-color: #E82B38;
       color: white;
     }
-    .logo {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    @media screen and (max-width: 1024px) {
-      .topnav-right {
-        display: none;
-        position: fixed;
-        top: 60px;
-        right: 0;
-        background-color: #333;
-        width: 100%;
-        height: 100vh;
-        flex-direction: column;
-        justify-content: flex-start;
-        z-index: 999;
-        overflow-y: auto;
-      }
-      .topnav-right a {
-        text-align: left;
-        padding: 20px;
-        font-size: 24px;
-        border-bottom: 1px solid #444;
-      }
-      .topnav .menu-icon {
-        display: block;
-      }
-      .topnav.active .topnav-right {
-        display: flex;
-      }
-      body.menu-open {
-        overflow: hidden;
-      }
-    }
 
     .container {
       margin: 20px;
+    }
+
+    .content {
       text-align: center;
     }
-    #meme-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      margin-top: 10px;
+
+    .content h1 {
+      margin-bottom: 20px;
     }
+
+    .content p {
+      line-height: 1.5;
+    }
+
     #meme {
-      max-width: 80%;
-      max-height: 300px;
+      max-width: 90%;
+      max-height: 400px;
+      margin: 20px 0;
       border: 2px solid #E82B38;
       border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
+
     #generate-button {
-      margin-top: 15px;
-      padding: 8px 16px;
-      font-size: 16px;
+      padding: 10px 20px;
+      font-size: 20px;
       background-color: #E82B38;
       color: white;
       border: none;
@@ -117,37 +144,42 @@
       cursor: pointer;
     }
     #generate-button:hover {
-      background-color: #d12530;
+      background-color: #c0202b;
     }
   </style>
 </head>
 <body>
   <header>
     <div class="topnav">
-      <h1><a href="index.html" class="logo">THE Randoms</a></h1>
+      <h1><a href="index.html" class="logo" style="color: inherit; text-decoration: none;">THE Randoms</a></h1>
       <span class="menu-icon" onclick="toggleMenu()">&#9776;</span>
       <div class="topnav-right">
-        <a href="index.html">Home</a>
-        <a href="advice.html">Advice</a>
-        <a href="facts.html">Facts</a>
-        <a href="jokes.html">Jokes</a>
-        <a href="letters.html">Letters</a>
-        <a href="memes.html" class="active">Memes</a>
-        <a href="nfl.html">NFL</a>
-        <a href="numbers.html">Numbers</a>
-        <a href="people.html">People</a>
-        <a href="quizzes.html">Quizzes</a>
-        <a href="songs.html">Songs</a>
-        <a href="videos.html">Videos</a>
-        <a href="words.html">Words</a>
+        <div class="accordion-section">
+          <button class="accordion-toggle">Sections</button>
+          <div class="accordion-content">
+            <a href="index.html">Home</a>
+            <a href="advice.html">Advice</a>
+            <a href="facts.html">Facts</a>
+            <a href="jokes.html">Jokes</a>
+            <a href="letters.html">Letters</a>
+            <a href="memes.html" class="active">Memes</a>
+            <a href="nfl.html">NFL</a>
+            <a href="numbers.html">Numbers</a>
+            <a href="people.html">People</a>
+            <a href="quizzes.html">Quizzes</a>
+            <a href="songs.html">Songs</a>
+            <a href="videos.html">Videos</a>
+            <a href="words.html">Words</a>
+          </div>
+        </div>
       </div>
     </div>
   </header>
 
-  <div class="container">
+  <div class="container content">
     <h1>Random Meme</h1>
     <button id="generate-button">Generate Meme</button>
-    <div id="meme-container">
+    <div>
       <img id="meme" src="" alt="Random Meme">
     </div>
   </div>
@@ -155,47 +187,33 @@
   <script>
     function toggleMenu() {
       const topnav = document.querySelector('.topnav');
-      const body = document.body;
+      document.body.classList.toggle('menu-open');
       topnav.classList.toggle('active');
-      body.classList.toggle('menu-open');
     }
 
-    document.querySelectorAll('.accordion-toggle').forEach(toggle => {
+    const accordionToggles = document.querySelectorAll('.accordion-toggle');
+    accordionToggles.forEach(toggle => {
       toggle.addEventListener('click', () => {
-        const parent = toggle.parentElement;
-        document.querySelectorAll('.accordion-section').forEach(section => {
-          if (section !== parent) {
-            section.classList.remove('open');
-          }
-        });
-        parent.classList.toggle('open');
+        toggle.parentElement.classList.toggle('open');
       });
     });
-  </script>
 
     async function getRandomMeme() {
       try {
-        const subreddits = ["memes", "dankmemes", "funny"];
-        const randomSub = subreddits[Math.floor(Math.random() * subreddits.length)];
-        const response = await fetch(`https://www.reddit.com/r/${randomSub}/hot.json?limit=100`);
+        const subs = ["memes", "dankmemes", "funny"];
+        const subreddit = subs[Math.floor(Math.random() * subs.length)];
+        const response = await fetch(`https://www.reddit.com/r/${subreddit}/hot.json?limit=50`);
         const data = await response.json();
-        const memes = data.data.children.filter(post =>
-          post.data.url && /\.(jpg|jpeg|png)$/i.test(post.data.url)
-        );
-
-        if (!memes.length) throw new Error("No memes found.");
-
-        const meme = memes[Math.floor(Math.random() * memes.length)].data;
+        const posts = data.data.children.filter(p => /\.(jpg|png|jpeg)$/i.test(p.data.url));
+        const meme = posts[Math.floor(Math.random() * posts.length)].data;
         document.getElementById('meme').src = meme.url;
-        document.getElementById('meme').alt = meme.title;
-      } catch (error) {
-        console.error(error);
-        document.getElementById('meme').alt = "Failed to load meme. Try again!";
+      } catch (err) {
+        document.getElementById('meme').alt = 'Could not load meme.';
       }
     }
 
-    window.onload = getRandomMeme;
     document.getElementById('generate-button').addEventListener('click', getRandomMeme);
+    window.onload = getRandomMeme;
   </script>
 </body>
 </html>
