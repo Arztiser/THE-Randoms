@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
     <style>  
-    body {
+      body {
       font-family: 'Jersey 10', sans-serif;
       font-size: 30px;
       margin: 0;
@@ -36,23 +36,72 @@
     }
 
     .topnav .menu-icon {
-      display: none;
+      display: block; /* Show hamburger on all screen sizes */
       font-size: 30px;
       color: #f2f2f2;
       cursor: pointer;
+      margin-left: auto;
     }
 
     .topnav-right {
+      display: none;
+      position: fixed;
+      top: 60px;
+      right: 0;
+      background-color: #333;
+      width: 100%;
+      height: 100vh;
+      flex-direction: column;
+      justify-content: flex-start;
+      z-index: 999;
+      overflow-y: auto;
+    }
+
+    .topnav.active .topnav-right {
       display: flex;
     }
 
-    .topnav a {
+    body.menu-open {
+      overflow: hidden;
+    }
+
+    .accordion-toggle {
+      background: none;
       color: #f2f2f2;
-      text-align: center;
-      padding: 14px 16px;
+      padding: 14px;
+      text-align: left;
+      font-size: 24px;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      width: 100%;
+      font-family: 'Jersey 10', sans-serif;
+    }
+
+    .accordion-content {
+      display: none;
+      flex-direction: column;
+      background-color: #444;
+    }
+
+    .accordion-content a {
+      padding-left: 28px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      border-top: 1px solid #555;
+      font-size: 20px;
+      color: #f2f2f2;
       text-decoration: none;
-      font-size: 18px;
-      white-space: nowrap;
+    }
+
+    .accordion-section {
+      display: flex;
+      flex-direction: column;
+      border-top: 1px solid #444;
+    }
+
+    .accordion-section.open .accordion-content {
+      display: flex;
     }
 
     .topnav a:hover {
@@ -63,71 +112,6 @@
     .topnav a.active {
       background-color: #E82B38;
       color: white;
-    }
-
-    @media screen and (max-width: 1024px) {
-      .topnav-right {
-        display: none;
-        position: fixed;
-        top: 60px;
-        right: 0;
-        background-color: #333;
-        width: 100%;
-        height: 100vh;
-        flex-direction: column;
-        justify-content: flex-start;
-        z-index: 999;
-        overflow-y: auto;
-      }
-
-      .topnav .menu-icon {
-        display: block;
-      }
-
-      .topnav.active .topnav-right {
-        display: flex;
-      }
-
-      body.menu-open {
-        overflow: hidden;
-      }
-
-      .accordion-toggle {
-        background: none;
-        color: #f2f2f2;
-        padding: 14px;
-        text-align: left;
-        font-size: 24px;
-        border: none;
-        outline: none;
-        cursor: pointer;
-        width: 100%;
-        font-family: 'Jersey 10', sans-serif; /* ADDED FONT FIX */
-      }
-
-      .accordion-content {
-        display: none;
-        flex-direction: column;
-        background-color: #444;
-      }
-
-      .accordion-content a {
-        padding-left: 28px;
-        padding-top: 10px;
-        padding-bottom: 10px;
-        border-top: 1px solid #555;
-        font-size: 20px;
-      }
-
-      .accordion-section {
-        display: flex;
-        flex-direction: column;
-        border-top: 1px solid #444;
-      }
-
-      .accordion-section.open .accordion-content {
-        display: flex;
-      }
     }
 
     .container {
@@ -145,7 +129,7 @@
     .content p {
       line-height: 1.5;
     }
-    </style>
+  </style>
 </head>
 <body>
     <header>
