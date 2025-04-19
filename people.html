@@ -9,7 +9,6 @@
   <link rel="icon" type="image/png" href="./img/pfp.png" />
   <link rel="stylesheet" href="https://therandoms.pages.dev/css/styles.css" />
   <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet" />
-  
   <style>
     body {
       font-family: 'Jersey 10', sans-serif;
@@ -35,7 +34,7 @@
     }
 
     .topnav .menu-icon {
-      display: block;
+      display: block; /* Show hamburger on all screen sizes */
       font-size: 30px;
       color: #f2f2f2;
       cursor: pointer;
@@ -74,6 +73,7 @@
       outline: none;
       cursor: pointer;
       width: 100%;
+      font-family: 'Jersey 10', sans-serif;
     }
 
     .accordion-content {
@@ -114,17 +114,15 @@
 
     .container {
       margin: 20px;
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
+      text-align: center;
     }
 
-    #person-container, #favorites-container {
-      width: 48%;
+    .content h1 {
+      margin-bottom: 20px;
     }
 
-    #favorites-container {
-      text-align: right;
+    #person-container {
+      text-align: center;
     }
 
     .details-grid p {
@@ -136,21 +134,22 @@
       margin-left: 10px;
     }
 
+    /* Responsive styles for the person page */
     @media screen and (max-width: 1024px) {
-      #person-container, #favorites-container {
-        width: 100%;
-        text-align: center;
+      #person-container {
+        text-align: left;
       }
+
       #favorites-container {
         text-align: left;
       }
     }
 
-    /* Additional styling for the page */
     .container h1, .container h2 {
       font-size: 28px;
       color: #E82B38;
     }
+
   </style>
 </head>
 <body>
@@ -158,43 +157,63 @@
     <div class="topnav">
       <h1><a href="index.html" class="logo">THE Randoms</a></h1>
       <span class="menu-icon" onclick="toggleMenu()">&#9776;</span>
+
       <div class="topnav-right">
-        <a href="index.html">Home</a>
-        <a href="advice.html">Advice</a>
-        <a href="facts.html">Facts</a>
-        <a href="jokes.html">Jokes</a>
-        <a href="letters.html">Letters</a>
-        <a href="memes.html">Memes</a>
-        <a href="nfl.html">NFL</a>
-        <a href="numbers.html">Numbers</a>
-        <a href="people.html" class="active">People</a>
-        <a href="quizzes.html">Quizzes</a>
-        <a href="songs.html">Songs</a>
-        <a href="videos.html">Videos</a>
-        <a href="words.html">Words</a>
+        <div class="accordion-section">
+          <button class="accordion-toggle">Jokes & Fun</button>
+          <div class="accordion-content">
+            <a href="jokes.html">Jokes</a>
+            <a href="memes.html">Memes</a>
+            <a href="nfl.html">NFL</a>
+            <a href="quizzes.html">Quizzes</a>
+          </div>
+        </div>
+
+        <div class="accordion-section">
+          <button class="accordion-toggle">Knowledge & Facts</button>
+          <div class="accordion-content">
+            <a href="advice.html">Advice</a>
+            <a href="facts.html">Facts</a>
+            <a href="people.html" class="active">People</a>
+          </div>
+        </div>
+
+        <div class="accordion-section">
+          <button class="accordion-toggle">Music & Videos</button>
+          <div class="accordion-content">
+            <a href="songs.html">Songs</a>
+            <a href="videos.html">Videos</a>
+          </div>
+        </div>
+
+        <div class="accordion-section">
+          <button class="accordion-toggle">Words, Letters & Numbers</button>
+          <div class="accordion-content">
+            <a href="letters.html">Letters</a>
+            <a href="numbers.html">Numbers</a>
+            <a href="words.html">Words</a>
+          </div>
+        </div>
       </div>
     </div>
   </header>
 
   <div class="container">
+    <h1>Random People</h1>
     <div id="person-container">
-      <h1>Random People</h1>
-      <div class="details-grid"></div>
-    </div>
-    <div id="favorites-container">
-      <h2>Favorites</h2>
+      <h2>Details of Random Person</h2>
       <div class="details-grid"></div>
     </div>
   </div>
 
   <script>
+    // Toggle the mobile menu
     function toggleMenu() {
-      const topnav = document.querySelector('.topnav');
-      const body = document.body;
-      topnav.classList.toggle('active');
-      body.classList.toggle('menu-open');
+      document.querySelector('.topnav').classList.toggle('active');
+      document.body.classList.toggle('menu-open');
     }
 
+    // Accordion functionality for the menu
     document.querySelectorAll('.accordion-toggle').forEach(toggle => {
       toggle.addEventListener('click', () => {
         const parent = toggle.parentElement;
@@ -207,6 +226,7 @@
       });
     });
   </script>
+
   <script src="person.js"></script>
 </body>
 </html>
