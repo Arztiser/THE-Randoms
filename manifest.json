@@ -33,5 +33,13 @@
     "name": "Arztiser",
     "role": "Owner",
     "email": "therandomsheadquarters@gmail.com"
-  }
+  },
+  "splash_pages": [
+    {
+      "src": "/img/splash-screen.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
 }
