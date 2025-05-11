@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const container = document.getElementById('fact-container');
+    const container = document.getElementById('quote-container');
     if (!container) {
         console.error('No #fact-container found');
         return;
