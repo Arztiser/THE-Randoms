@@ -1,5 +1,5 @@
 {
-  "background_color": "#E82B38",  // The background color of the splash screen
+  "background_color": "#ffffff",
   "description": "THE Randoms is a website that lets you view and do random things such as random quizzes, facts, quotes, numbers, and letters.",
   "dir": "ltr",
   "display": "standalone",
@@ -8,20 +8,20 @@
   "scope": "/",
   "short_name": "THE Randoms",
   "start_url": "/?source=pwa",
-  "theme_color": "#E82B38",  // Color of the status bar
+  "theme_color": "#E82B38",
   "icons": [
     {
-      "src": "/img/prfp.png",  // Icon for the PWA, it should be 192x192 for Android
+      "src": "/img/prfp.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/img/pofp.png",  // Larger icon for splash screen, should be 512x512
+      "src": "/img/pofp.png",
       "sizes": "512x512",
       "type": "image/png"
     },
     {
-      "src": "/img/pofp-maskable.png",  // Maskable icon (used if device supports it)
+      "src": "/img/pofp-maskable.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
@@ -33,5 +33,13 @@
     "name": "Arztiser",
     "role": "Owner",
     "email": "therandomsheadquarters@gmail.com"
-  }
+  },
+  "splash_pages": [
+    {
+      "src": "/img/splash-screen.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
 }
