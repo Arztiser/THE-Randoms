@@ -1,13 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
-    fetch('https://uselessfacts.jsph.pl/random.json?language=en')
+    fetch('https://zenquotes.io/api/random')
         .then(response => response.json())
         .then(data => {
-            const factContainer = document.getElementById('fact-container');
-            const fact = document.createElement('p');
-            fact.textContent = data.text;
-            factContainer.appendChild(fact);
+            const quoteContainer = document.getElementById('quote-container');
+            const quote = document.createElement('p');
+            quote.textContent = `"${data[0].q}" — ${data[0].a}`;
+            quoteContainer.appendChild(quote);
         })
         .catch(error => {
-            console.error('Error fetching fact:', error);
+            console.error('Error fetching quote:', error);
         });
 });
