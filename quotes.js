@@ -1,19 +1,27 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const container = document.getElementById('quote-container');
+    const container = document.getElementById('fact-container');
     if (!container) {
-        console.error('No #quote-container found');
+        console.error('No #fact-container found');
         return;
     }
 
-    // Fetch a random quote from ZenQuotes API
-    fetch('https://zenquotes.io/api/random')
-        .then(response => response.json())
-        .then(data => {
-            const quote = document.createElement('q');
-            quote.textContent = `"${data[0].q}" — ${data[0].a}`;
+    fetch('https://api.api-ninjas.com/v1/quotes', {
+        method: 'GET',
+        headers: {
+            'X-Api-Key': 'FR8mmO+e7SROk9kwWAV0pQ==oNvn980zs2urHjdC'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data && data.length > 0) {
+            const quote = document.createElement('p');
+            quote.textContent = `"${data[0].quote}" — ${data[0].author}`;
             container.appendChild(quote);
-        })
-        .catch(error => {
-            console.error('Failed to fetch quote:', error);
-        });
+        } else {
+            console.error('No quote data received');
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching quote:', error);
+    });
 });
