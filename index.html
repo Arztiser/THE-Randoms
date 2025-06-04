@@ -225,5 +225,73 @@
         .catch(err => console.error('Service Worker registration failed:', err));
     }
   </script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Only show icons on the homepage
+    const isHomePage = window.location.pathname === '/' || window.location.pathname.endsWith('/index.html');
+    if (!isHomePage) return;
+
+    // Restore dark mode on page load if previously enabled
+    if (localStorage.getItem('theme') === 'dark') {
+      enableDarkMode();
+    }
+
+    const topnav = document.querySelector('.topnav');
+    const menuIcon = document.querySelector('.menu-icon');
+
+    if (topnav && menuIcon) {
+      const modeBtn = document.createElement('span');
+      modeBtn.classList.add('mode-toggle');
+      modeBtn.innerHTML = localStorage.getItem('theme') === 'dark' ? '🌙' : '☀️';
+
+      modeBtn.style.fontSize = '26px';
+      modeBtn.style.cursor = 'pointer';
+      modeBtn.style.marginRight = '12px';
+      modeBtn.style.userSelect = 'none';
+
+      topnav.insertBefore(modeBtn, menuIcon);
+
+      modeBtn.addEventListener('click', () => {
+        const isDark = document.body.classList.toggle('dark-mode');
+        if (isDark) {
+          enableDarkMode();
+          localStorage.setItem('theme', 'dark');
+          modeBtn.innerHTML = '🌙';
+        } else {
+          disableDarkMode();
+          localStorage.setItem('theme', 'light');
+          modeBtn.innerHTML = '☀️';
+        }
+      });
+    }
+
+    function enableDarkMode() {
+      document.body.style.backgroundColor = '#121212';
+      document.body.style.color = '#ffffff';
+
+      const topnav = document.querySelector('.topnav');
+      const menu = document.querySelector('.topnav-right');
+
+      if (topnav) topnav.style.backgroundColor = '#222';
+      if (menu) menu.style.backgroundColor = '#222';
+
+      document.body.classList.add('dark-mode');
+    }
+
+    function disableDarkMode() {
+      document.body.style.backgroundColor = '';
+      document.body.style.color = '';
+
+      const topnav = document.querySelector('.topnav');
+      const menu = document.querySelector('.topnav-right');
+
+      if (topnav) topnav.style.backgroundColor = '';
+      if (menu) menu.style.backgroundColor = '';
+
+      document.body.classList.remove('dark-mode');
+    }
+  });
+</script>
 </body>  
 </html>
