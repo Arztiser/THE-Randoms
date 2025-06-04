@@ -149,31 +149,35 @@
       transform: scale(1.05);
     }
 
-.topnav a.active {
-    background-color: transparent;
-    color: #f2f2f2;
-}
+    #song-title {
+      margin-top: 15px;
+      font-size: 22px;
+      color: #E82B38;
+    }
 
-.logo {
-  color: #f2f2f2;
-  text-decoration: none;
-}
+    .topnav a.active {
+      background-color: transparent;
+      color: #f2f2f2;
+    }
 
-.logo:visited,
-.logo:active,
-.logo:hover {
-  text-decoration: none;
-}
+    .logo {
+      color: #f2f2f2;
+      text-decoration: none;
+    }
 
+    .logo:visited,
+    .logo:active,
+    .logo:hover {
+      text-decoration: none;
+    }
   </style>
 </head>
 
 <body>
   <header>
     <div class="topnav">
-            <h1><a class="logo" href="/">THE Randoms</a></h1>  
+      <h1><a class="logo" href="/">THE Randoms</a></h1>  
       <span class="menu-icon" onclick="toggleMenu()">&#9776;</span>
-
       <div class="topnav-right">
         <div class="accordion-section">
           <button class="accordion-toggle">Jokes & Fun</button>
@@ -184,17 +188,15 @@
             <a href="quizzes.html">Quizzes</a>
           </div>
         </div>
-
         <div class="accordion-section">
           <button class="accordion-toggle">Knowledge & Facts</button>
           <div class="accordion-content">
             <a href="advice.html">Advice</a>
             <a href="facts.html">Facts</a>
             <a href="people.html">People</a>
-          <a href="quotes.html">Quotes</a>
+            <a href="quotes.html">Quotes</a>
           </div>
         </div>
-
         <div class="accordion-section">
           <button class="accordion-toggle">Music & Videos</button>
           <div class="accordion-content">
@@ -202,7 +204,6 @@
             <a href="videos.html">Videos</a>
           </div>
         </div>
-
         <div class="accordion-section">
           <button class="accordion-toggle">Words, Letters & Numbers</button>
           <div class="accordion-content">
@@ -219,6 +220,7 @@
     <h1>Random Song</h1>
     <button id="generate-button">Generate Song</button>
     <div id="song-container">
+      <div id="song-title"></div>
       <audio id="audio-player" controls></audio>
     </div>
   </div>
@@ -243,37 +245,75 @@
       });
     });
 
-    let previousSongs = [];
+    const songs = [
+      'audio/Crazy_Hazy_Dream.mp3',
+      'audio/Name_Song.mp3',
+      'audio/Arbitrary_Awareness.mp3',
+      'audio/Eternal_Enthusiasm.mp3',
+      'audio/Amusing_Adventure.mp3',
+      'audio/Definite_Delight.mp3',
+      'audio/Fabulous_Fun.mp3',
+      'audio/Magical_Memory.mp3'
+    ];
 
-    function getRandomSong() {
-      const songs = [
-        'audio/Crazy_Hazy_Dream.mp3',
-        'audio/Name_Song.mp3',
-        'audio/Arbitrary_Awareness.mp3',
-        'audio/Eternal_Enthusiasm.mp3',
-        'audio/Amusing_Adventure.mp3',
-        'audio/Definite_Delight.mp3',
-        'audio/Fabulous_Fun.mp3',
-        'audio/Magical_Memory.mp3'
-      ];
+    let previousSongs = [];
+    let failedSongs = new Set();
+
+    function formatSongName(filename) {
+      return filename
+        .replace('audio/', '')
+        .replace('.mp3', '')
+        .replace(/_/g, ' ');
+    }
+
+    function getRandomSong(retries = 5) {
+      const audioPlayer = document.getElementById('audio-player');
+      const songTitle = document.getElementById('song-title');
 
       if (previousSongs.length >= songs.length) {
         previousSongs = [];
       }
 
-      const availableSongs = songs.filter(song => !previousSongs.includes(song));
+      const availableSongs = songs.filter(
+        song => !previousSongs.includes(song) && !failedSongs.has(song)
+      );
+
+      if (availableSongs.length === 0) {
+        alert("All songs have been played or failed to load.");
+        return;
+      }
+
       const randomIndex = Math.floor(Math.random() * availableSongs.length);
       const randomSong = availableSongs[randomIndex];
-      previousSongs.push(randomSong);
 
-      const audioPlayer = document.getElementById('audio-player');
-      audioPlayer.src = `${randomSong}?v=${Math.random()}`;
-      audioPlayer.onerror = function () {
-        console.error(`Failed to load audio: ${randomSong}. Retrying...`);
-        getRandomSong();
+      const onErrorHandler = () => {
+        console.warn(`Failed to load: ${randomSong}`);
+        failedSongs.add(randomSong);
+        audioPlayer.onerror = null;
+        audioPlayer.oncanplaythrough = null;
+        if (retries > 0) {
+          getRandomSong(retries - 1);
+        } else {
+          alert("Too many failed attempts. Please try again later.");
+        }
       };
+
+      const onCanPlayHandler = () => {
+        console.log(`Now playing: ${randomSong}`);
+        previousSongs.push(randomSong);
+        songTitle.textContent = `Now Playing: ${formatSongName(randomSong)}`;
+        audioPlayer.play().catch(e => {
+          console.error("Playback failed:", e);
+        });
+        audioPlayer.onerror = null;
+        audioPlayer.oncanplaythrough = null;
+      };
+
+      audioPlayer.onerror = onErrorHandler;
+      audioPlayer.oncanplaythrough = onCanPlayHandler;
+
+      audioPlayer.src = `${randomSong}?nocache=${Math.random()}`;
       audioPlayer.load();
-      audioPlayer.play();
     }
 
     window.onload = getRandomSong;
