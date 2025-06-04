@@ -110,8 +110,8 @@
     }
 
     .topnav a.active {
-      background-color: #E82B38;
-      color: white;
+      background-color: transparent;
+      color: #f2f2f2;
     }
 
     .container {
@@ -149,17 +149,6 @@
       transform: scale(1.05);
     }
 
-    #song-title {
-      margin-top: 15px;
-      font-size: 22px;
-      color: #E82B38;
-    }
-
-    .topnav a.active {
-      background-color: transparent;
-      color: #f2f2f2;
-    }
-
     .logo {
       color: #f2f2f2;
       text-decoration: none;
@@ -172,7 +161,6 @@
     }
   </style>
 </head>
-
 <body>
   <header>
     <div class="topnav">
@@ -220,7 +208,6 @@
     <h1>Random Song</h1>
     <button id="generate-button">Generate Song</button>
     <div id="song-container">
-      <div id="song-title"></div>
       <audio id="audio-player" controls></audio>
     </div>
   </div>
@@ -245,75 +232,37 @@
       });
     });
 
-    const songs = [
-      'audio/Crazy_Hazy_Dream.mp3',
-      'audio/Name_Song.mp3',
-      'audio/Arbitrary_Awareness.mp3',
-      'audio/Eternal_Enthusiasm.mp3',
-      'audio/Amusing_Adventure.mp3',
-      'audio/Definite_Delight.mp3',
-      'audio/Fabulous_Fun.mp3',
-      'audio/Magical_Memory.mp3'
-    ];
-
     let previousSongs = [];
-    let failedSongs = new Set();
 
-    function formatSongName(filename) {
-      return filename
-        .replace('audio/', '')
-        .replace('.mp3', '')
-        .replace(/_/g, ' ');
-    }
+    const songs = [
+      'audio/Crazy Hazy Dream.mp3',
+      'audio/Name Song.mp3',
+      'audio/Arbitrary Awareness.mp3',
+      'audio/Eternal Enthusiasm.mp3',
+      'audio/Amusing Adventure.mp3',
+      'audio/Definite Delight.mp3',
+      'audio/Fabulous Fun.mp3',
+      'audio/Magical Memory.mp3'
+    ].map(name => name.replace(/ /g, '%20'));
 
-    function getRandomSong(retries = 5) {
-      const audioPlayer = document.getElementById('audio-player');
-      const songTitle = document.getElementById('song-title');
-
+    function getRandomSong() {
       if (previousSongs.length >= songs.length) {
         previousSongs = [];
       }
 
-      const availableSongs = songs.filter(
-        song => !previousSongs.includes(song) && !failedSongs.has(song)
-      );
-
-      if (availableSongs.length === 0) {
-        alert("All songs have been played or failed to load.");
-        return;
-      }
-
+      const availableSongs = songs.filter(song => !previousSongs.includes(song));
       const randomIndex = Math.floor(Math.random() * availableSongs.length);
       const randomSong = availableSongs[randomIndex];
+      previousSongs.push(randomSong);
 
-      const onErrorHandler = () => {
-        console.warn(`Failed to load: ${randomSong}`);
-        failedSongs.add(randomSong);
-        audioPlayer.onerror = null;
-        audioPlayer.oncanplaythrough = null;
-        if (retries > 0) {
-          getRandomSong(retries - 1);
-        } else {
-          alert("Too many failed attempts. Please try again later.");
-        }
+      const audioPlayer = document.getElementById('audio-player');
+      audioPlayer.src = `${randomSong}`;
+      audioPlayer.onerror = function () {
+        console.error(`Failed to load audio: ${randomSong}. Retrying...`);
+        getRandomSong();
       };
-
-      const onCanPlayHandler = () => {
-        console.log(`Now playing: ${randomSong}`);
-        previousSongs.push(randomSong);
-        songTitle.textContent = `Now Playing: ${formatSongName(randomSong)}`;
-        audioPlayer.play().catch(e => {
-          console.error("Playback failed:", e);
-        });
-        audioPlayer.onerror = null;
-        audioPlayer.oncanplaythrough = null;
-      };
-
-      audioPlayer.onerror = onErrorHandler;
-      audioPlayer.oncanplaythrough = onCanPlayHandler;
-
-      audioPlayer.src = `${randomSong}?nocache=${Math.random()}`;
       audioPlayer.load();
+      audioPlayer.play();
     }
 
     window.onload = getRandomSong;
