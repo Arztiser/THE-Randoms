@@ -128,7 +128,7 @@
       max-width: 300px;
       border: 2px solid #E82B38;
       border-radius: 8px;
-      margin-top: 20px;
+      margin-top: 10px;
     }
 
     #generate-button {
@@ -159,12 +159,24 @@
     .logo:hover {
       text-decoration: none;
     }
+
+    canvas {
+      display: block;
+      margin: 10px auto;
+      background: #000;
+      border-radius: 10px;
+    }
+
+    #song-title {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
   </style>
 </head>
 <body>
   <header>
     <div class="topnav">
-      <h1><a class="logo" href="/">THE Randoms</a></h1>  
+      <h1><a class="logo" href="/">THE Randoms</a></h1>
       <span class="menu-icon" onclick="toggleMenu()">&#9776;</span>
       <div class="topnav-right">
         <div class="accordion-section">
@@ -208,6 +220,8 @@
     <h1>Random Song</h1>
     <button id="generate-button">Generate Song</button>
     <div id="song-container">
+      <p id="song-title"></p>
+      <canvas id="visualizer" width="600" height="100"></canvas>
       <audio id="audio-player" controls></audio>
     </div>
   </div>
@@ -224,9 +238,7 @@
       toggle.addEventListener('click', () => {
         const parent = toggle.parentElement;
         document.querySelectorAll('.accordion-section').forEach(section => {
-          if (section !== parent) {
-            section.classList.remove('open');
-          }
+          if (section !== parent) section.classList.remove('open');
         });
         parent.classList.toggle('open');
       });
@@ -251,28 +263,73 @@
       'audio/Velocious Vibe.mp3'
     ].map(name => name.replace(/ /g, '%20'));
 
+    const audioPlayer = document.getElementById('audio-player');
+    const songTitleElement = document.getElementById('song-title');
+
+    function getCleanName(path) {
+      const file = decodeURIComponent(path.split('/').pop()).replace('.mp3', '');
+      return file === 'Name Song' ? 'Unknown Track' : file;
+    }
+
     function getRandomSong() {
-      if (previousSongs.length >= songs.length) {
-        previousSongs = [];
-      }
+      if (previousSongs.length >= songs.length) previousSongs = [];
 
       const availableSongs = songs.filter(song => !previousSongs.includes(song));
       const randomIndex = Math.floor(Math.random() * availableSongs.length);
       const randomSong = availableSongs[randomIndex];
       previousSongs.push(randomSong);
 
-      const audioPlayer = document.getElementById('audio-player');
-      audioPlayer.src = `${randomSong}`;
+      audioPlayer.src = `${randomSong}?v=${Math.random()}`;
       audioPlayer.onerror = function () {
         console.error(`Failed to load audio: ${randomSong}. Retrying...`);
         getRandomSong();
       };
       audioPlayer.load();
       audioPlayer.play();
+
+      songTitleElement.textContent = `Now Playing: ${getCleanName(randomSong)}`;
     }
 
-    window.onload = getRandomSong;
+    window.onload = () => {
+      getRandomSong();
+      initVisualizer();
+    };
+
     document.getElementById('generate-button').addEventListener('click', getRandomSong);
+
+    // AUDIO VISUALIZER
+    function initVisualizer() {
+      const canvas = document.getElementById('visualizer');
+      const ctx = canvas.getContext('2d');
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const analyser = audioCtx.createAnalyser();
+      const source = audioCtx.createMediaElementSource(audioPlayer);
+      source.connect(analyser);
+      analyser.connect(audioCtx.destination);
+      analyser.fftSize = 256;
+
+      const bufferLength = analyser.frequencyBinCount;
+      const dataArray = new Uint8Array(bufferLength);
+
+      function draw() {
+        requestAnimationFrame(draw);
+        analyser.getByteFrequencyData(dataArray);
+
+        ctx.fillStyle = '#000';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        const barWidth = (canvas.width / bufferLength) * 2.5;
+        let x = 0;
+        for (let i = 0; i < bufferLength; i++) {
+          const barHeight = dataArray[i];
+          ctx.fillStyle = `rgb(${barHeight + 100},20,40)`;
+          ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+          x += barWidth + 1;
+        }
+      }
+
+      draw();
+    }
   </script>
 </body>
 </html>
