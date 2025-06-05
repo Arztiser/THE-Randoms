@@ -1,210 +1,138 @@
 <!DOCTYPE html>
-<html lang="en">  
-<head>  
-  <meta charset="UTF-8" />  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />  
-  <meta name="theme-color" content="#E82B38" />  
-  <meta name="description" content="THE Randoms Is A Website That Lets You View And Do Random Things Such As Random Quizzes, Facts, Quotes, Numbers, And Letters." />  
-  <title>THE Randoms</title>  
-  <link rel="icon" type="image/png" href="./img/pfp.png" />  
-  <link rel="stylesheet" type="text/css" href="https://therandoms.pages.dev/css/styles.css" />  
-  <link rel="preconnect" href="https://fonts.googleapis.com" />  
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />  
-  <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet" />  
-  <link rel="manifest" href="/manifest.json" />  
-  <link rel="apple-touch-icon" sizes="192x192" href="/img/prfp.png" />  
-
-  <style>  
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#E82B38" />
+  <meta name="description" content="THE Randoms is a website that lets you view and do random things." />
+  <title>THE Randoms</title>
+  <link rel="icon" type="image/png" href="./img/pfp.png" />
+  <link rel="stylesheet" href="https://therandoms.pages.dev/css/styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap" rel="stylesheet" />
+  <style>
     body {
       font-family: 'Jersey 10', sans-serif;
       font-size: 30px;
       margin: 0;
       padding: 0;
+      background-color: white;
+      color: black;
       transition: background-color 0.5s ease, color 0.5s ease;
     }
-
+    body.dark-mode {
+      background-color: #121212;
+      color: white;
+    }
     .topnav {
-      overflow: hidden;
       background-color: #333;
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
       padding: 0 16px;
       height: 60px;
     }
-
     .topnav h1 {
       margin: 0;
       font-size: 24px;
-      color: #f2f2f2;
     }
-
-    .topnav .menu-icon {
-      display: block;
+    .logo {
+      color: #f2f2f2;
+      text-decoration: none;
+    }
+    .right-icons {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .menu-icon {
       font-size: 30px;
       color: #f2f2f2;
       cursor: pointer;
-      margin-left: 0;
-      user-select: none;
     }
-
     #dark-mode-toggle {
       cursor: pointer;
-      margin-right: 10px;
       width: 24px;
       height: 24px;
       display: flex;
       align-items: center;
       justify-content: center;
-      user-select: none;
-      color: orange;
     }
-
-    #dark-mode-toggle svg {
-      display: inline;
+    #icon-sun, #icon-moon {
+      width: 24px;
+      height: 24px;
     }
-
-    #dark-mode-toggle svg#icon-moon {
-      display: none;
-      fill: yellow;
-    }
-
     .topnav-right {
       display: none;
+      flex-direction: column;
       position: fixed;
       top: 60px;
       left: 0;
       right: 0;
       background-color: #333;
-      height: calc(100vh - 60px);
-      flex-direction: column;
-      justify-content: flex-start;
       z-index: 999;
-      overflow-y: auto;
+      height: calc(100vh - 60px);
     }
-
     .topnav.active + .topnav-right {
       display: flex;
     }
-
-    body.menu-open {
-      overflow: hidden;
-    }
-
     .accordion-toggle {
       background: none;
       color: #f2f2f2;
-      padding: 14px;
-      text-align: left;
       font-size: 24px;
+      padding: 14px;
       border: none;
-      outline: none;
-      cursor: pointer;
       width: 100%;
-      font-family: 'Jersey 10', sans-serif;
-      z-index: 1000;
+      text-align: left;
+      cursor: pointer;
     }
-
     .accordion-content {
       display: none;
       flex-direction: column;
       background-color: #444;
-      z-index: 1000;
     }
-
+    .accordion-section.open .accordion-content {
+      display: flex;
+    }
     .accordion-content a {
-      padding-left: 28px;
-      padding-top: 10px;
-      padding-bottom: 10px;
+      padding: 10px 28px;
       border-top: 1px solid #555;
       font-size: 20px;
       color: #f2f2f2;
       text-decoration: none;
     }
-
-    .accordion-section {
-      display: flex;
-      flex-direction: column;
-      border-top: 1px solid #444;
-    }
-
-    .accordion-section.open .accordion-content {
-      display: flex;
-    }
-
-    .topnav a:hover {
-      background-color: #ddd;
-      color: black;
-    }
-
-    .topnav a.active {
-      background-color: #E82B38;
-      color: white;
-    }
-
-    .container {
-      margin: 20px;
-    }
-
     .content {
+      padding: 20px;
       text-align: center;
     }
-
-    .content h1 {
-      margin-bottom: 20px;
-    }
-
-    .content p {
-      line-height: 1.5;
-    }
-
-    .logo {
-      color: #f2f2f2;
-      text-decoration: none;
-    }
-
-    .logo:visited,
-    .logo:active,
-    .logo:hover {
-      text-decoration: none;
-    }
-
-    /* Dark mode styles */
-    .dark-mode {
-      background-color: #121212;
-      color: #e0e0e0;
-    }
   </style>
-</head>  
-<body>  
-  <header>  
-    <div class="topnav">  
-      <h1><a class="logo" href="/">THE Randoms</a></h1>    
-
-      <!-- Dark mode toggle next to hamburger -->
-      <span id="dark-mode-toggle" role="button" tabindex="0" aria-label="Toggle dark mode" title="Toggle dark mode">
-        <!-- Sun icon -->
-        <svg id="icon-sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="orange" viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="5"/>
-          <g stroke="orange" stroke-width="2">
-            <line x1="12" y1="1" x2="12" y2="4"/>
-            <line x1="12" y1="20" x2="12" y2="23"/>
-            <line x1="4.22" y1="4.22" x2="6.34" y2="6.34"/>
-            <line x1="17.66" y1="17.66" x2="19.78" y2="19.78"/>
-            <line x1="1" y1="12" x2="4" y2="12"/>
-            <line x1="20" y1="12" x2="23" y2="12"/>
-            <line x1="4.22" y1="19.78" x2="6.34" y2="17.66"/>
-            <line x1="17.66" y1="6.34" x2="19.78" y2="4.22"/>
-          </g>
-        </svg>
-
-        <!-- Moon icon -->
-        <svg id="icon-moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="yellow" viewBox="0 0 24 24">
-          <path d="M21 12.79A9 9 0 0111.21 3 7 7 0 1012 21a9 9 0 009-8.21z"/>
-        </svg>
-      </span>
-
-      <span class="menu-icon" onclick="toggleMenu()" aria-label="Open menu" role="button" tabindex="0">&#9776;</span>
+</head>
+<body>
+  <header>
+    <div class="topnav">
+      <h1><a class="logo" href="/">THE Randoms</a></h1>
+      <div class="right-icons">
+        <span id="dark-mode-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+          <!-- Sun -->
+          <svg id="icon-sun" xmlns="http://www.w3.org/2000/svg" fill="orange" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="5" />
+            <g stroke="orange" stroke-width="2">
+              <line x1="12" y1="1" x2="12" y2="4" />
+              <line x1="12" y1="20" x2="12" y2="23" />
+              <line x1="4.22" y1="4.22" x2="6.34" y2="6.34" />
+              <line x1="17.66" y1="17.66" x2="19.78" y2="19.78" />
+              <line x1="1" y1="12" x2="4" y2="12" />
+              <line x1="20" y1="12" x2="23" y2="12" />
+              <line x1="4.22" y1="19.78" x2="6.34" y2="17.66" />
+              <line x1="17.66" y1="6.34" x2="19.78" y2="4.22" />
+            </g>
+          </svg>
+          <!-- Moon -->
+          <svg id="icon-moon" xmlns="http://www.w3.org/2000/svg" fill="yellow" viewBox="0 0 24 24" style="display: none;">
+            <path d="M21 12.79A9 9 0 0111.21 3 7 7 0 1012 21a9 9 0 009-8.21z" />
+          </svg>
+        </span>
+        <span class="menu-icon" onclick="toggleMenu()">&#9776;</span>
+      </div>
     </div>
 
     <div class="topnav-right">
@@ -245,80 +173,46 @@
         </div>
       </div>
     </div>
-  </header>  
+  </header>
 
-  <div class="content">  
-    <h1>Home</h1>  
-    <p>Welcome to THE Randoms, A Website Full Of Random Things To Explore And Enjoy. If You Found This Website Randomly, Welcome! Now Come Along On This Wacky, Fun, And Random Ride To Explore All Of THE Randoms Of The World And The Internet.</p>  
-  </div>  
+  <div class="content">
+    <h1>Home</h1>
+    <p>Welcome to THE Randoms, a website full of random things to explore and enjoy. If you found this site randomly, welcome! Enjoy this wacky, fun, and random ride through all the randoms of the world and internet.</p>
+  </div>
 
   <script>
-    // Toggle the menu
     function toggleMenu() {
-      const topnav = document.querySelector('.topnav');
-      const body = document.body;
-      topnav.classList.toggle('active');
-      body.classList.toggle('menu-open');
+      document.querySelector('.topnav').classList.toggle('active');
     }
 
-    // Accordion toggles for menu sections
     document.querySelectorAll('.accordion-toggle').forEach(toggle => {
       toggle.addEventListener('click', () => {
-        const parent = toggle.parentElement;
-        document.querySelectorAll('.accordion-section').forEach(section => {
-          if (section !== parent) {
-            section.classList.remove('open');
-          }
-        });
-        parent.classList.toggle('open');
+        const section = toggle.parentElement;
+        section.classList.toggle('open');
       });
     });
 
-    // Dark mode toggle logic
-    const toggleBtn = document.getElementById('dark-mode-toggle');
-    const iconSun = document.getElementById('icon-sun');
-    const iconMoon = document.getElementById('icon-moon');
+    // Dark mode logic
+    const toggle = document.getElementById('dark-mode-toggle');
+    const sun = document.getElementById('icon-sun');
+    const moon = document.getElementById('icon-moon');
 
-    function applyMode(mode) {
-      if (mode === 'dark') {
-        document.documentElement.classList.add('dark-mode');
-        iconSun.style.display = 'none';
-        iconMoon.style.display = 'inline';
-      } else {
-        document.documentElement.classList.remove('dark-mode');
-        iconSun.style.display = 'inline';
-        iconMoon.style.display = 'none';
-      }
+    function setMode(mode) {
+      document.body.classList.toggle('dark-mode', mode === 'dark');
+      sun.style.display = mode === 'dark' ? 'none' : 'block';
+      moon.style.display = mode === 'dark' ? 'block' : 'none';
     }
 
-    // Load saved mode or default to light
-    const savedMode = localStorage.getItem('mode') || 'light';
-    applyMode(savedMode);
+    // On load
+    const currentMode = localStorage.getItem('mode') || 'light';
+    setMode(currentMode);
 
-    // Toggle dark mode on click
-    toggleBtn.addEventListener('click', () => {
-      const currentMode = localStorage.getItem('mode') || 'light';
-      const newMode = currentMode === 'light' ? 'dark' : 'light';
+    // Toggle mode
+    toggle.addEventListener('click', () => {
+      const newMode = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
       localStorage.setItem('mode', newMode);
-      applyMode(newMode);
-    });
-
-    // Keyboard accessibility for toggle button
-    toggleBtn.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        toggleBtn.click();
-      }
+      setMode(newMode);
     });
   </script>
-
-  <script>
-    // Service Worker registration
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/service-worker.js')
-        .then(reg => console.log('Service Worker registered:', reg.scope))
-        .catch(err => console.error('Service Worker registration failed:', err));
-    }
-  </script>
-</body>  
+</body>
 </html>
