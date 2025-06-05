@@ -1,175 +1,205 @@
-<!DOCTYPE html><html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#E82B38" />
-  <meta name="description" content="THE Randoms is a website that lets you view and do random things like quizzes, facts, quotes, numbers, and letters." />
-  <title>THE Randoms</title>
-  <link rel="icon" type="image/png" href="./img/pfp.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap" rel="stylesheet" />
-  <style>
+<!DOCTYPE html>
+<html lang="en">  
+<head>  
+  <meta charset="UTF-8" />  
+  <meta name="viewport" content="width=device-width, initial-scale=1" />  
+  <meta name="theme-color" content="#E82B38" />  
+  <meta name="description" content="THE Randoms Is A Website That Lets You View And Do Random Things Such As Random Quizzes, Facts, Quotes, Numbers, And Letters." />  
+  <title>THE Randoms</title>  
+  <link rel="icon" type="image/png" href="./img/pfp.png" />  
+  <link rel="stylesheet" href="https://therandoms.pages.dev/css/styles.css" />  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />  
+  <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet" />  
+  <link rel="manifest" href="/manifest.json" />  
+  <link rel="apple-touch-icon" sizes="192x192" href="/img/prfp.png" />  
+
+  <style>  
     body {
       font-family: 'Jersey 10', sans-serif;
+      font-size: 30px;
       margin: 0;
       padding: 0;
+    }
+
+    .topnav {
+      overflow: hidden;
+      background-color: #333;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      height: 60px;
+    }
+
+    .topnav h1 {
+      margin: 0;
+      font-size: 24px;
+      color: #f2f2f2;
+    }
+
+    .topnav .menu-icon {
+      display: block;
       font-size: 30px;
-      background-color: white;
+      color: #f2f2f2;
+      cursor: pointer;
+      margin-left: auto;
+    }
+
+    .topnav-right {
+      display: none;
+      position: fixed;
+      top: 60px;
+      left: 0;
+      right: 0;
+      background-color: #333;
+      height: calc(100vh - 60px);
+      flex-direction: column;
+      justify-content: flex-start;
+      z-index: 999;
+      overflow-y: auto;
+    }
+
+    .topnav.active + .topnav-right {
+      display: flex;
+    }
+
+    body.menu-open {
+      overflow: hidden;
+    }
+
+    .accordion-toggle {
+      background: none;
+      color: #f2f2f2;
+      padding: 14px;
+      text-align: left;
+      font-size: 24px;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      width: 100%;
+      font-family: 'Jersey 10', sans-serif;
+      z-index: 1000;
+    }
+
+    .accordion-content {
+      display: none;
+      flex-direction: column;
+      background-color: #444;
+      z-index: 1000;
+    }
+
+    .accordion-content a {
+      padding-left: 28px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      border-top: 1px solid #555;
+      font-size: 20px;
+      color: #f2f2f2;
+      text-decoration: none;
+    }
+
+    .accordion-section {
+      display: flex;
+      flex-direction: column;
+      border-top: 1px solid #444;
+    }
+
+    .accordion-section.open .accordion-content {
+      display: flex;
+    }
+
+    .topnav a:hover {
+      background-color: #ddd;
       color: black;
-      transition: background-color 0.5s, color 0.5s;
-    }.dark-mode {
-  background-color: #121212;
-  color: white;
-}
+    }
 
-.topnav {
-  background-color: #333;
-  color: #f2f2f2;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 16px;
-  height: 60px;
-}
+    .topnav a.active {
+      background-color: #E82B38;
+      color: white;
+    }
 
-.logo {
-  color: #f2f2f2;
-  text-decoration: none;
-  font-size: 24px;
-}
+    .container {
+      margin: 20px;
+    }
 
-.icon-buttons {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
+    .content {
+      text-align: center;
+    }
 
-.icon-button svg {
-  width: 30px;
-  height: 30px;
-  cursor: pointer;
-}
+    .content h1 {
+      margin-bottom: 20px;
+    }
 
-.menu-icon {
-  font-size: 30px;
-  color: #f2f2f2;
-  cursor: pointer;
-}
+    .content p {
+      line-height: 1.5;
+    }
 
-.topnav-right {
-  display: none;
-  position: fixed;
-  top: 60px;
-  left: 0;
-  right: 0;
-  background-color: #333;
-  flex-direction: column;
-  height: calc(100vh - 60px);
-  z-index: 999;
-  overflow-y: auto;
-}
+    .logo {
+      color: #f2f2f2;
+      text-decoration: none;
+    }
 
-.topnav.active + .topnav-right {
-  display: flex;
-}
-
-.accordion-toggle {
-  background: none;
-  color: #f2f2f2;
-  padding: 14px;
-  text-align: left;
-  font-size: 24px;
-  border: none;
-  width: 100%;
-  font-family: 'Jersey 10', sans-serif;
-}
-
-.accordion-content {
-  display: none;
-  flex-direction: column;
-  background-color: #444;
-}
-
-.accordion-content a {
-  padding-left: 28px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  border-top: 1px solid #555;
-  font-size: 20px;
-  color: #f2f2f2;
-  text-decoration: none;
-}
-
-.accordion-section.open .accordion-content {
-  display: flex;
-}
-
-.content {
-  margin: 20px;
-  text-align: center;
-}
-
+    .logo:visited,
+    .logo:active,
+    .logo:hover {
+      text-decoration: none;
+    }
   </style>
-</head>
-<body>
-  <header>
-    <div class="topnav">
-      <a class="logo" href="/">THE Randoms</a>
-      <div class="icon-buttons">
-        <div class="icon-button" id="darkModeToggle">
-          <!-- Sun Icon (Orange) -->
-          <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" fill="orange" viewBox="0 0 24 24">
-            <path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.8 1.42-1.42zm10.45-1.79l-1.8 1.79 1.42 1.42 1.79-1.8-1.41-1.41zM12 4a1 1 0 0 0 0 2 6 6 0 0 1 0 12 1 1 0 0 0 0 2c4.41 0 8-3.59 8-8s-3.59-8-8-8zM4 13H2v-2h2v2zm16 0v-2h2v2h-2zm-9 7v-2h2v2h-2zm0-16V2h2v2h-2zM6.76 19.16l1.8 1.79 1.41-1.41-1.79-1.8-1.42 1.42zm10.45 1.79l1.8-1.79-1.42-1.42-1.79 1.8 1.41 1.41z"/>
-          </svg>
-          <!-- Moon Icon (Yellow, hidden by default) -->
-          <svg id="moonIcon" xmlns="http://www.w3.org/2000/svg" fill="yellow" viewBox="0 0 24 24" style="display: none;">
-            <path d="M12.74 2a9 9 0 1 0 9.26 11.55 1 1 0 0 0-1.47-1.14A7 7 0 1 1 13.85 4.2 1 1 0 0 0 12.74 2z"/>
-          </svg>
+</head>  
+<body>  
+  <header>  
+    <div class="topnav">  
+      <h1><a class="logo" href="/">THE Randoms</a></h1>    
+      <span class="menu-icon" onclick="toggleMenu()">&#9776;</span>
+    </div>
+
+    <div class="topnav-right">
+      <div class="accordion-section">
+        <button class="accordion-toggle">Jokes & Fun</button>
+        <div class="accordion-content">
+          <a href="jokes.html">Jokes</a>
+          <a href="memes.html">Memes</a>
+          <a href="nfl.html">NFL</a>
+          <a href="quizzes.html">Quizzes</a>
         </div>
-        <span class="menu-icon" onclick="toggleMenu()">&#9776;</span>
       </div>
-    </div><div class="topnav-right">
-  <div class="accordion-section">
-    <button class="accordion-toggle">Jokes & Fun</button>
-    <div class="accordion-content">
-      <a href="jokes.html">Jokes</a>
-      <a href="memes.html">Memes</a>
-      <a href="nfl.html">NFL</a>
-      <a href="quizzes.html">Quizzes</a>
-    </div>
-  </div>
 
-  <div class="accordion-section">
-    <button class="accordion-toggle">Knowledge & Facts</button>
-    <div class="accordion-content">
-      <a href="advice.html">Advice</a>
-      <a href="facts.html">Facts</a>
-      <a href="people.html">People</a>
-      <a href="quotes.html">Quotes</a>
-    </div>
-  </div>
+      <div class="accordion-section">
+        <button class="accordion-toggle">Knowledge & Facts</button>
+        <div class="accordion-content">
+          <a href="advice.html">Advice</a>
+          <a href="facts.html">Facts</a>
+          <a href="people.html">People</a>
+          <a href="quotes.html">Quotes</a>
+        </div>
+      </div>
 
-  <div class="accordion-section">
-    <button class="accordion-toggle">Music & Videos</button>
-    <div class="accordion-content">
-      <a href="songs.html">Songs</a>
-      <a href="videos.html">Videos</a>
-    </div>
-  </div>
+      <div class="accordion-section">
+        <button class="accordion-toggle">Music & Videos</button>
+        <div class="accordion-content">
+          <a href="songs.html">Songs</a>
+          <a href="videos.html">Videos</a>
+        </div>
+      </div>
 
-  <div class="accordion-section">
-    <button class="accordion-toggle">Words, Letters & Numbers</button>
-    <div class="accordion-content">
-      <a href="letters.html">Letters</a>
-      <a href="numbers.html">Numbers</a>
-      <a href="words.html">Words</a>
+      <div class="accordion-section">
+        <button class="accordion-toggle">Words, Letters & Numbers</button>
+        <div class="accordion-content">
+          <a href="letters.html">Letters</a>
+          <a href="numbers.html">Numbers</a>
+          <a href="words.html">Words</a>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
+  </header>  
 
-  </header>  <div class="content">
-    <h1>Home</h1>
-    <p>Welcome to THE Randoms, a website full of random things to explore and enjoy. Come along on this fun and wacky ride!</p>
-  </div>  <script>
+  <div class="content">  
+    <h1>Home</h1>  
+    <p>Welcome to THE Randoms, A Website Full Of Random Things To Explore And Enjoy. If You Found This Website Randomly, Welcome! Now Come Along On This Wacky, Fun, And Random Ride To Explore All Of THE Randoms Of The World And The Internet.</p>  
+  </div>  
+
+  <script>
     function toggleMenu() {
       const topnav = document.querySelector('.topnav');
       const body = document.body;
@@ -181,30 +211,21 @@
       toggle.addEventListener('click', () => {
         const parent = toggle.parentElement;
         document.querySelectorAll('.accordion-section').forEach(section => {
-          if (section !== parent) section.classList.remove('open');
+          if (section !== parent) {
+            section.classList.remove('open');
+          }
         });
         parent.classList.toggle('open');
       });
     });
+  </script>
 
-    const toggleBtn = document.getElementById('darkModeToggle');
-    const sunIcon = document.getElementById('sunIcon');
-    const moonIcon = document.getElementById('moonIcon');
-
-    function setDarkMode(enabled) {
-      document.body.classList.toggle('dark-mode', enabled);
-      sunIcon.style.display = enabled ? 'none' : 'block';
-      moonIcon.style.display = enabled ? 'block' : 'none';
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then(reg => console.log('Service Worker registered:', reg.scope))
+        .catch(err => console.error('Service Worker registration failed:', err));
     }
-
-    // Apply on load
-    const savedMode = localStorage.getItem('darkMode') === 'true';
-    setDarkMode(savedMode);
-
-    toggleBtn.addEventListener('click', () => {
-      const isDark = document.body.classList.contains('dark-mode');
-      localStorage.setItem('darkMode', !isDark);
-      setDarkMode(!isDark);
-    });
-  </script></body>
+  </script>
+</body>  
 </html>
