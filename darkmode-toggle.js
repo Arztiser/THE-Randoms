@@ -1,70 +1,75 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const topnav = document.querySelector(".topnav");
-
-  if (!topnav || document.getElementById("themeToggle")) return;
-
-  // Create icon container
-  const iconGroup = document.createElement("div");
-  iconGroup.className = "icon-group";
-  iconGroup.style.display = "flex";
-  iconGroup.style.alignItems = "center";
-  iconGroup.style.gap = "10px";
-  iconGroup.style.marginLeft = "auto";
-
-  // Theme toggle button
-  const toggleBtn = document.createElement("button");
-  toggleBtn.id = "themeToggle";
-  toggleBtn.setAttribute("aria-label", "Toggle dark mode");
-  toggleBtn.style.background = "none";
-  toggleBtn.style.border = "none";
-  toggleBtn.style.cursor = "pointer";
-  toggleBtn.style.padding = "0";
-  toggleBtn.style.display = "flex";
-  toggleBtn.style.alignItems = "center";
-
-  // SVG: Sun icon
-  const sun = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  sun.setAttribute("viewBox", "0 0 24 24");
-  sun.setAttribute("width", "24");
-  sun.setAttribute("height", "24");
-  sun.setAttribute("fill", "orange");
-  sun.innerHTML = `
-    <circle cx="12" cy="12" r="5"/>
-    <path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/>
+(function () {
+  const style = document.createElement('style');
+  style.textContent = `
+    :root {
+      --bg-color: #fff;
+      --text-color: #000;
+    }
+    [data-theme="dark"] {
+      --bg-color: #111;
+      --text-color: #fff;
+    }
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-color 0.4s ease, color 0.4s ease;
+    }
+    .dark-toggle {
+      cursor: pointer;
+      background: none;
+      border: none;
+      margin-right: 10px;
+      padding: 0;
+    }
+    .dark-toggle svg {
+      width: 28px;
+      height: 28px;
+      transition: transform 0.3s ease;
+    }
   `;
+  document.head.appendChild(style);
 
-  // SVG: Moon icon
-  const moon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  moon.setAttribute("viewBox", "0 0 24 24");
-  moon.setAttribute("width", "24");
-  moon.setAttribute("height", "24");
-  moon.setAttribute("fill", "yellow");
-  moon.style.display = "none";
-  moon.innerHTML = `
-    <path d="M21 12.79A9 9 0 0111.21 3a7 7 0 100 14A9 9 0 0121 12.79z"/>
-  `;
+  const button = document.createElement('button');
+  button.className = 'dark-toggle';
+  button.title = 'Toggle dark mode';
 
-  toggleBtn.appendChild(sun);
-  toggleBtn.appendChild(moon);
-  iconGroup.appendChild(toggleBtn);
+  const sunIcon = `
+    <svg viewBox="0 0 24 24" fill="orange" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="12" cy="12" r="5"/>
+      <g stroke="orange" stroke-width="2">
+        <line x1="12" y1="1" x2="12" y2="4"/>
+        <line x1="12" y1="20" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="6.34" y2="6.34"/>
+        <line x1="17.66" y1="17.66" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="4" y2="12"/>
+        <line x1="20" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="6.34" y2="17.66"/>
+        <line x1="17.66" y1="6.34" x2="19.78" y2="4.22"/>
+      </g>
+    </svg>`;
 
-  // Insert right before the hamburger menu
-  const menuIcon = document.querySelector(".menu-icon");
-  topnav.insertBefore(iconGroup, menuIcon);
+  const moonIcon = `
+    <svg viewBox="0 0 24 24" fill="yellow" xmlns="http://www.w3.org/2000/svg">
+      <path d="M21 12.79A9 9 0 0111.21 3a7 7 0 1010 9.79z"/>
+    </svg>`;
 
-  // Load theme from localStorage
-  const dark = localStorage.getItem("theme") === "dark";
-  if (dark) {
-    document.body.classList.add("dark-mode");
-    sun.style.display = "none";
-    moon.style.display = "block";
-  }
+  const setIcon = (isDark) => {
+    button.innerHTML = isDark ? moonIcon : sunIcon;
+  };
 
-  // Toggle click
-  toggleBtn.addEventListener("click", () => {
-    const isDark = document.body.classList.toggle("dark-mode");
-    localStorage.setItem("theme", isDark ? "dark" : "light");
-    sun.style.display = isDark ? "none" : "block";
-    moon.style.display = isDark ? "block" : "none";
+  const toggleTheme = () => {
+    const isDark = document.documentElement.dataset.theme === 'dark';
+    document.documentElement.dataset.theme = isDark ? 'light' : 'dark';
+    localStorage.setItem('theme', isDark ? 'light' : 'dark');
+    setIcon(!isDark);
+  };
+
+  button.addEventListener('click', toggleTheme);
+  document.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.dataset.theme = savedTheme;
+    setIcon(savedTheme === 'dark');
+    const nav = document.querySelector('.topnav');
+    if (nav) nav.appendChild(button);
   });
-});
+})();
