@@ -1,40 +1,41 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#E82B38">
-  <meta name="description" content="THE Randoms Is A Website That Lets You View And Do Random Things Such As Random Quizzes, Facts, Quotes, Numbers, And Letters.">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>THE Randoms</title>
-  <link rel="icon" type="image/png" href="./img/pfp.png">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap">  <!-- Apply saved theme early -->  <script>
-    const savedMode = localStorage.getItem('mode') || 'light';
-    if (savedMode === 'dark') {
-      document.documentElement.classList.add('dark-mode');
+  <link rel="icon" type="image/png" href="./img/pfp.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-light: #ffffff;
+      --text-light: #000000;
+      --bg-dark: #121212;
+      --text-dark: #ffffff;
+      --sun-color: #FFA500;
+      --moon-color: #FFFF00;
     }
-  </script>  <style>
-    html, body, h1, h2, h3, h4, h5, h6, button, a, .accordion-toggle {
-      font-family: 'Jersey 10', sans-serif;
-    }
+
     body {
       margin: 0;
-      padding: 0;
+      font-family: 'Jersey 10', sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-light);
+      transition: background-color 0.3s ease, color 0.3s ease;
       font-size: 30px;
-      background-color: white;
-      color: black;
-      transition: background-color 0.4s, color 0.4s;
     }
-    .dark-mode body {
-      background-color: black;
-      color: white;
+
+    body.dark {
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
     }
 
     .topnav {
-      overflow: hidden;
-      background-color: #333;
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
       padding: 0 16px;
+      background-color: #333;
       height: 60px;
     }
 
@@ -43,52 +44,62 @@
       font-size: 24px;
     }
 
-    .logo {
-      color: #f2f2f2;
-      text-decoration: none;
-    }
-    .logo:hover {
+    .topnav a.logo {
+      color: white;
       text-decoration: none;
     }
 
-    .icon-bar {
+    .menu-group {
       display: flex;
-      gap: 8px;
       align-items: center;
+      gap: 8px;
     }
 
-    .menu-icon,
-    .mode-toggle {
-      font-size: 28px;
-      color: #f2f2f2;
-      cursor: pointer;
+    .icon-button {
       background: none;
       border: none;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    #themeIcon.sun {
+      color: var(--sun-color);
+    }
+
+    #themeIcon.moon {
+      color: var(--moon-color);
+    }
+
+    .menu-icon {
+      font-size: 30px;
+      color: white;
+      cursor: pointer;
     }
 
     .topnav-right {
       display: none;
+      flex-direction: column;
+      background-color: #222;
       position: fixed;
       top: 60px;
       left: 0;
       right: 0;
-      background-color: #333;
       height: calc(100vh - 60px);
-      flex-direction: column;
-      z-index: 999;
       overflow-y: auto;
+      z-index: 999;
     }
+
     .topnav.active + .topnav-right {
       display: flex;
     }
 
-    body.menu-open {
-      overflow: hidden;
+    .accordion-section {
+      border-top: 1px solid #444;
     }
 
     .accordion-toggle {
       background: none;
-      color: #f2f2f2;
+      color: white;
       padding: 14px;
       text-align: left;
       font-size: 24px;
@@ -108,14 +119,8 @@
       padding: 10px 28px;
       border-top: 1px solid #555;
       font-size: 20px;
-      color: #f2f2f2;
+      color: white;
       text-decoration: none;
-    }
-
-    .accordion-section {
-      display: flex;
-      flex-direction: column;
-      border-top: 1px solid #444;
     }
 
     .accordion-section.open .accordion-content {
@@ -123,98 +128,106 @@
     }
 
     .content {
-      text-align: center;
       padding: 20px;
+      text-align: center;
     }
-  </style></head>
+  </style>
+</head>
 <body>
-  <header>
-    <div class="topnav">
-      <h1><a class="logo" href="/">THE Randoms</a></h1>
-      <div class="icon-bar">
-        <button class="mode-toggle" id="modeToggle" title="Toggle theme">
-          <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" fill="currentColor">
-            <path d="M6.76 4.84l-1.8-1.79-1.42 1.41 1.79 1.8 1.43-1.42zm10.45-1.79l-1.8 1.79 1.43 1.42 1.79-1.8-1.42-1.41zM12 4V1h-1v3h1zm0 19v-3h-1v3h1zm8.66-9h-3v1h3v-1zM4 12H1v1h3v-1zm15.24 7.16l1.8 1.79 1.42-1.41-1.79-1.8-1.43 1.42zM6.76 19.16l-1.8 1.79 1.42 1.41 1.79-1.8-1.41-1.4zM12 6a6 6 0 100 12 6 6 0 000-12z"/>
-          </svg>
-          <svg id="moonIcon" style="display:none" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" fill="currentColor">
-            <path d="M9.37 5.51A7.49 7.49 0 0012 20c4.14 0 7.5-3.36 7.5-7.5 0-2.63-1.36-4.94-3.43-6.31-.59-.4-.63-1.25-.09-1.7A9 9 0 1110.48 3.1c.45.54.3 1.4-.39 1.81l-.72.43z"/>
-          </svg>
-        </button>
-        <span class="menu-icon" onclick="toggleMenu()">&#9776;</span>
-      </div>
-    </div><div class="topnav-right">
-  <div class="accordion-section">
-    <button class="accordion-toggle">Jokes & Fun</button>
-    <div class="accordion-content">
-      <a href="jokes.html">Jokes</a>
-      <a href="memes.html">Memes</a>
-      <a href="nfl.html">NFL</a>
-      <a href="quizzes.html">Quizzes</a>
+  <div class="topnav">
+    <h1><a class="logo" href="/">THE Randoms</a></h1>
+    <div class="menu-group">
+      <button class="icon-button" id="toggleTheme">
+        <span id="themeIcon" class="sun">☀️</span>
+      </button>
+      <span class="menu-icon" onclick="toggleMenu()">☰</span>
     </div>
   </div>
-  <div class="accordion-section">
-    <button class="accordion-toggle">Knowledge & Facts</button>
-    <div class="accordion-content">
-      <a href="advice.html">Advice</a>
-      <a href="facts.html">Facts</a>
-      <a href="people.html">People</a>
-      <a href="quotes.html">Quotes</a>
-    </div>
-  </div>
-  <div class="accordion-section">
-    <button class="accordion-toggle">Music & Videos</button>
-    <div class="accordion-content">
-      <a href="songs.html">Songs</a>
-      <a href="videos.html">Videos</a>
-    </div>
-  </div>
-  <div class="accordion-section">
-    <button class="accordion-toggle">Words, Letters & Numbers</button>
-    <div class="accordion-content">
-      <a href="letters.html">Letters</a>
-      <a href="numbers.html">Numbers</a>
-      <a href="words.html">Words</a>
-    </div>
-  </div>
-</div>
 
-  </header>  <main class="content">
+  <div class="topnav-right">
+    <div class="accordion-section">
+      <button class="accordion-toggle">Jokes & Fun</button>
+      <div class="accordion-content">
+        <a href="jokes.html">Jokes</a>
+        <a href="memes.html">Memes</a>
+        <a href="nfl.html">NFL</a>
+        <a href="quizzes.html">Quizzes</a>
+      </div>
+    </div>
+    <div class="accordion-section">
+      <button class="accordion-toggle">Knowledge & Facts</button>
+      <div class="accordion-content">
+        <a href="advice.html">Advice</a>
+        <a href="facts.html">Facts</a>
+        <a href="people.html">People</a>
+        <a href="quotes.html">Quotes</a>
+      </div>
+    </div>
+    <div class="accordion-section">
+      <button class="accordion-toggle">Music & Videos</button>
+      <div class="accordion-content">
+        <a href="songs.html">Songs</a>
+        <a href="videos.html">Videos</a>
+      </div>
+    </div>
+    <div class="accordion-section">
+      <button class="accordion-toggle">Words, Letters & Numbers</button>
+      <div class="accordion-content">
+        <a href="letters.html">Letters</a>
+        <a href="numbers.html">Numbers</a>
+        <a href="words.html">Words</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
     <h1>Home</h1>
-    <p>Welcome to THE Randoms, A Website Full Of Random Things To Explore And Enjoy. If You Found This Website Randomly, Welcome! Now Come Along On This Wacky, Fun, And Random Ride To Explore All Of THE Randoms Of The World And The Internet.</p>
-  </main>  <script>
+    <p>Welcome to THE Randoms, a website full of random things to explore and enjoy!</p>
+  </div>
+
+  <script>
+    // Toggle nav menu
     function toggleMenu() {
-      const topnav = document.querySelector('.topnav');
-      const body = document.body;
-      topnav.classList.toggle('active');
-      body.classList.toggle('menu-open');
+      document.querySelector('.topnav').classList.toggle('active');
     }
 
-    document.querySelectorAll('.accordion-toggle').forEach(toggle => {
-      toggle.addEventListener('click', () => {
-        const parent = toggle.parentElement;
-        document.querySelectorAll('.accordion-section').forEach(section => {
-          if (section !== parent) section.classList.remove('open');
+    // Accordion toggles
+    document.querySelectorAll('.accordion-toggle').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const section = btn.parentElement;
+        document.querySelectorAll('.accordion-section').forEach(sec => {
+          if (sec !== section) sec.classList.remove('open');
         });
-        parent.classList.toggle('open');
+        section.classList.toggle('open');
       });
     });
 
-    const modeToggle = document.getElementById('modeToggle');
-    const sunIcon = document.getElementById('sunIcon');
-    const moonIcon = document.getElementById('moonIcon');
+    // Theme toggle logic
+    const toggleBtn = document.getElementById('toggleTheme');
+    const icon = document.getElementById('themeIcon');
 
-    modeToggle.addEventListener('click', () => {
-      document.documentElement.classList.toggle('dark-mode');
-      const isDark = document.documentElement.classList.contains('dark-mode');
-      localStorage.setItem('mode', isDark ? 'dark' : 'light');
-      sunIcon.style.display = isDark ? 'none' : 'inline';
-      moonIcon.style.display = isDark ? 'inline' : 'none';
+    function setTheme(mode) {
+      if (mode === 'dark') {
+        document.body.classList.add('dark');
+        icon.textContent = '🌙';
+        icon.className = 'moon';
+      } else {
+        document.body.classList.remove('dark');
+        icon.textContent = '☀️';
+        icon.className = 'sun';
+      }
+    }
+
+    toggleBtn.addEventListener('click', () => {
+      const currentMode = document.body.classList.contains('dark') ? 'dark' : 'light';
+      const newMode = currentMode === 'light' ? 'dark' : 'light';
+      localStorage.setItem('theme', newMode);
+      setTheme(newMode);
     });
 
-    // Set initial icon
-    if (document.documentElement.classList.contains('dark-mode')) {
-      sunIcon.style.display = 'none';
-      moonIcon.style.display = 'inline';
-    }
-  </script></body>
+    // On load
+    const saved = localStorage.getItem('theme') || 'light';
+    setTheme(saved);
+  </script>
+</body>
 </html>
