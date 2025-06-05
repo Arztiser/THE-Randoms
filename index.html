@@ -7,25 +7,26 @@
   <meta name="description" content="THE Randoms Is A Website That Lets You View And Do Random Things Such As Random Quizzes, Facts, Quotes, Numbers, And Letters." />
   <title>THE Randoms</title>
   <link rel="icon" type="image/png" href="./img/pfp.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet" />
   <link rel="manifest" href="/manifest.json" />
   <link rel="apple-touch-icon" sizes="192x192" href="/img/prfp.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet" />
+
   <style>
     body {
       font-family: 'Jersey 10', sans-serif;
       font-size: 30px;
       margin: 0;
       padding: 0;
-      background-color: white;
-      color: black;
+      background-color: #fff;
+      color: #000;
       transition: background-color 0.3s, color 0.3s;
     }
+
     body.dark {
       background-color: #121212;
-      color: #f2f2f2;
+      color: white;
     }
+
     .topnav {
       overflow: hidden;
       background-color: #333;
@@ -35,29 +36,32 @@
       padding: 0 16px;
       height: 60px;
     }
+
     .topnav h1 {
       margin: 0;
       font-size: 24px;
       color: #f2f2f2;
     }
-    .topnav .menu-group {
+
+    .menu-wrap {
       display: flex;
       align-items: center;
+      gap: 10px;
     }
-    .menu-icon, .dark-mode-toggle {
+
+    .menu-icon {
       font-size: 30px;
       color: #f2f2f2;
       cursor: pointer;
-      margin-left: 12px;
-      background: none;
-      border: none;
-      outline: none;
     }
-    .menu-icon svg, .dark-mode-toggle svg {
-      width: 30px;
-      height: 30px;
-      fill: #f2f2f2;
+
+    #theme-toggle {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
+
     .topnav-right {
       display: none;
       position: fixed;
@@ -71,12 +75,15 @@
       z-index: 999;
       overflow-y: auto;
     }
+
     .topnav.active + .topnav-right {
       display: flex;
     }
+
     body.menu-open {
       overflow: hidden;
     }
+
     .accordion-toggle {
       background: none;
       color: #f2f2f2;
@@ -88,14 +95,14 @@
       cursor: pointer;
       width: 100%;
       font-family: 'Jersey 10', sans-serif;
-      z-index: 1000;
     }
+
     .accordion-content {
       display: none;
       flex-direction: column;
       background-color: #444;
-      z-index: 1000;
     }
+
     .accordion-content a {
       padding-left: 28px;
       padding-top: 10px;
@@ -105,22 +112,41 @@
       color: #f2f2f2;
       text-decoration: none;
     }
+
     .accordion-section {
       display: flex;
       flex-direction: column;
       border-top: 1px solid #444;
     }
+
     .accordion-section.open .accordion-content {
       display: flex;
     }
+
+    .topnav a:hover {
+      background-color: #ddd;
+      color: black;
+    }
+
+    .topnav a.active {
+      background-color: #E82B38;
+      color: white;
+    }
+
     .container {
       margin: 20px;
     }
+
     .content {
       text-align: center;
     }
+
     .logo {
       color: #f2f2f2;
+      text-decoration: none;
+    }
+
+    .logo:hover {
       text-decoration: none;
     }
   </style>
@@ -129,13 +155,8 @@
   <header>
     <div class="topnav">
       <h1><a class="logo" href="/">THE Randoms</a></h1>
-      <div class="menu-group">
-        <button class="dark-mode-toggle" onclick="toggleDarkMode()" aria-label="Toggle Dark Mode">
-          <span id="icon-container">
-            <!-- Sun Icon Default -->
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6.76 4.84l-1.8-1.79L3.5 4.5l1.79 1.8 1.47-1.46zM1 11h4v2H1v-2zm10-9h2v4h-2V2zm9.5 2.5l-1.46-1.47-1.79 1.8 1.47 1.46 1.78-1.79zM17.24 19.16l1.8 1.79 1.46-1.47-1.79-1.8-1.47 1.48zM13 22h-2v-4h2v4zM23 13h-4v-2h4v2zM4.5 19.5l1.46 1.47 1.79-1.8-1.47-1.46-1.78 1.79zM12 6a6 6 0 100 12 6 6 0 000-12z"/></svg>
-          </span>
-        </button>
+      <div class="menu-wrap">
+        <div id="theme-toggle" onclick="toggleDarkMode()" aria-label="Toggle Dark Mode"></div>
         <span class="menu-icon" onclick="toggleMenu()">&#9776;</span>
       </div>
     </div>
@@ -150,6 +171,7 @@
           <a href="quizzes.html">Quizzes</a>
         </div>
       </div>
+
       <div class="accordion-section">
         <button class="accordion-toggle">Knowledge & Facts</button>
         <div class="accordion-content">
@@ -159,6 +181,7 @@
           <a href="quotes.html">Quotes</a>
         </div>
       </div>
+
       <div class="accordion-section">
         <button class="accordion-toggle">Music & Videos</button>
         <div class="accordion-content">
@@ -166,6 +189,7 @@
           <a href="videos.html">Videos</a>
         </div>
       </div>
+
       <div class="accordion-section">
         <button class="accordion-toggle">Words, Letters & Numbers</button>
         <div class="accordion-content">
@@ -179,7 +203,7 @@
 
   <div class="content">
     <h1>Home</h1>
-    <p>Welcome to THE Randoms, a website full of random things to explore and enjoy. Come along on this wacky, fun, and random ride!</p>
+    <p>Welcome to THE Randoms, A Website Full Of Random Things To Explore And Enjoy. If You Found This Website Randomly, Welcome! Now Come Along On This Wacky, Fun, And Random Ride To Explore All Of THE Randoms Of The World And The Internet.</p>
   </div>
 
   <script>
@@ -194,32 +218,54 @@
       toggle.addEventListener('click', () => {
         const parent = toggle.parentElement;
         document.querySelectorAll('.accordion-section').forEach(section => {
-          if (section !== parent) {
-            section.classList.remove('open');
-          }
+          if (section !== parent) section.classList.remove('open');
         });
         parent.classList.toggle('open');
       });
     });
+  </script>
 
-    function toggleDarkMode() {
-      document.body.classList.toggle('dark');
-      const isDark = document.body.classList.contains('dark');
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
-      document.getElementById('icon-container').innerHTML = isDark ? 
-        `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.37 5.51C10.04 5.19 10.82 5 11.66 5c3.31 0 6 2.69 6 6s-2.69 6-6 6c-1.92 0-3.62-.89-4.74-2.29-.19-.24-.12-.6.16-.75 1.25-.68 2.09-2 2.09-3.48 0-1.82-1.18-3.37-2.8-3.85-.32-.1-.43-.48-.22-.74.37-.46.79-.86 1.22-1.21z"/></svg>` 
-        : 
-        `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6.76 4.84l-1.8-1.79L3.5 4.5l1.79 1.8 1.47-1.46zM1 11h4v2H1v-2zm10-9h2v4h-2V2zm9.5 2.5l-1.46-1.47-1.79 1.8 1.47 1.46 1.78-1.79zM17.24 19.16l1.8 1.79 1.46-1.47-1.79-1.8-1.47 1.48zM13 22h-2v-4h2v4zM23 13h-4v-2h4v2zM4.5 19.5l1.46 1.47 1.79-1.8-1.47-1.46-1.78 1.79zM12 6a6 6 0 100 12 6 6 0 000-12z"/></svg>`;
+  <script>
+    const sunIcon = `
+      <svg xmlns="http://www.w3.org/2000/svg" fill="#FF9800" viewBox="0 0 24 24" width="30" height="30">
+        <path d="M6.76 4.84l-1.8-1.79-1.42 1.41 1.79 1.8L6.76 4.84zM1 13h4v-2H1v2zm10 
+        10h2v-4h-2v4zm9-10v-2h-4v2h4zm-3.54 7.46l1.79 
+        1.8 1.42-1.42-1.8-1.79-1.41 
+        1.41zM17.24 4.84l1.79-1.8-1.42-1.41-1.79 
+        1.8 1.42 1.41zM12 6a6 6 0 100 
+        12A6 6 0 0012 6zM4.22 
+        19.78l1.42 1.42 1.8-1.79-1.41-1.41-1.81 
+        1.78z"/>
+      </svg>`;
+
+    const moonIcon = `
+      <svg xmlns="http://www.w3.org/2000/svg" fill="#FFC107" viewBox="0 0 24 24" width="30" height="30">
+        <path d="M9.37 5.51A7.49 7.49 0 0012 21a7.5 7.5 0 006.49-11.51A9 9 0 019.37 5.51z"/>
+      </svg>`;
+
+    function setThemeIcon(isDark) {
+      document.getElementById('theme-toggle').innerHTML = isDark ? moonIcon : sunIcon;
     }
 
-    // Load theme on page load
-    window.addEventListener('DOMContentLoaded', () => {
-      const theme = localStorage.getItem('theme');
-      if (theme === 'dark') {
-        document.body.classList.add('dark');
-        toggleDarkMode(); // Ensures icon updates
-      }
-    });
+    function toggleDarkMode() {
+      const isDark = document.body.classList.toggle('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      setThemeIcon(isDark);
+    }
+
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const isDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
+    if (isDark) document.body.classList.add('dark');
+    setThemeIcon(isDark);
+  </script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then(reg => console.log('Service Worker registered:', reg.scope))
+        .catch(err => console.error('Service Worker registration failed:', err));
+    }
   </script>
 </body>
 </html>
