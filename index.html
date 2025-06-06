@@ -7,23 +7,16 @@
   <meta name="description" content="THE Randoms Is A Website That Lets You View And Do Random Things Such As Random Quizzes, Facts, Quotes, Numbers, And Letters." />
   <title>THE Randoms</title>
   <link rel="icon" type="image/png" href="./img/pfp.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap" rel="stylesheet" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="apple-touch-icon" sizes="192x192" href="/img/prfp.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet" />
+
   <style>
     body {
       font-family: 'Jersey 10', sans-serif;
       font-size: 30px;
       margin: 0;
       padding: 0;
-      background-color: white;
-      color: black;
-      transition: background-color 0.3s, color 0.3s;
-    }
-
-    body.dark-mode {
-      background-color: #121212;
-      color: #f2f2f2;
     }
 
     .topnav {
@@ -42,29 +35,10 @@
       color: #f2f2f2;
     }
 
-    .menu-wrap {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
     .menu-icon {
       font-size: 30px;
       color: #f2f2f2;
       cursor: pointer;
-    }
-
-    #theme-toggle {
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 4px;
-    }
-
-    #theme-toggle svg {
-      width: 30px;
-      height: 30px;
     }
 
     .topnav-right {
@@ -76,9 +50,8 @@
       background-color: #333;
       height: calc(100vh - 60px);
       flex-direction: column;
-      justify-content: flex-start;
-      z-index: 999;
       overflow-y: auto;
+      z-index: 999;
     }
 
     .topnav.active + .topnav-right {
@@ -128,13 +101,20 @@
       display: flex;
     }
 
+    .container {
+      margin: 20px;
+    }
+
     .content {
       text-align: center;
-      margin: 20px;
     }
 
     .content h1 {
       margin-bottom: 20px;
+    }
+
+    .content p {
+      line-height: 1.5;
     }
 
     .logo {
@@ -151,10 +131,7 @@
   <header>
     <div class="topnav">
       <h1><a class="logo" href="/">THE Randoms</a></h1>
-      <div class="menu-wrap">
-        <span id="theme-toggle"></span>
-        <span class="menu-icon" onclick="toggleMenu()">&#9776;</span>
-      </div>
+      <span class="menu-icon" onclick="toggleMenu()">&#9776;</span>
     </div>
 
     <div class="topnav-right">
@@ -199,7 +176,7 @@
 
   <div class="content">
     <h1>Home</h1>
-    <p>Welcome to THE Randoms, A Website Full Of Random Things To Explore And Enjoy. If You Found This Website Randomly, Welcome! Now Come Along On This Wacky, Fun, And Random Ride To Explore All Of THE Randoms Of The World And The Internet.</p>
+    <p>Welcome to THE Randoms, a website full of random things to explore and enjoy. If you found this site randomly, welcome! Now come along on this wacky, fun, and random ride through THE Randoms of the world and the internet.</p>
   </div>
 
   <script>
@@ -214,32 +191,19 @@
       toggle.addEventListener('click', () => {
         const parent = toggle.parentElement;
         document.querySelectorAll('.accordion-section').forEach(section => {
-          if (section !== parent) section.classList.remove('open');
+          if (section !== parent) {
+            section.classList.remove('open');
+          }
         });
         parent.classList.toggle('open');
       });
     });
-  </script>
 
-  <script>
-    const toggle = document.getElementById('theme-toggle');
-
-    function setTheme(theme) {
-      document.body.classList.toggle('dark-mode', theme === 'dark');
-      localStorage.setItem('theme', theme);
-      toggle.innerHTML = theme === 'dark'
-        ? `<svg xmlns="http://www.w3.org/2000/svg" fill="yellow" viewBox="0 0 24 24"><path d="M9.37 5.51A7 7 0 0016.49 18 9 9 0 119.37 5.51z"/></svg>`
-        : `<svg xmlns="http://www.w3.org/2000/svg" fill="orange" viewBox="0 0 24 24"><path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.8 1.42-1.42zm10.45 14.11l1.79 1.79 1.41-1.41-1.79-1.79-1.41 1.41zM1 13h3v-2H1v2zm10-9h2V1h-2v3zm9 9h3v-2h-3v2zm-9 9h2v-3h-2v3zm7.24-17.16l1.8-1.79-1.41-1.41-1.8 1.79 1.41 1.41zM4.22 19.78l-1.8 1.79 1.41 1.41 1.8-1.79-1.41-1.41zM12 6a6 6 0 100 12 6 6 0 000-12z"/></svg>`;
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then(reg => console.log('Service Worker registered:', reg.scope))
+        .catch(err => console.error('Service Worker registration failed:', err));
     }
-
-    toggle.addEventListener('click', () => {
-      const newTheme = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
-      setTheme(newTheme);
-    });
-
-    // Load saved theme
-    const saved = localStorage.getItem('theme') || 'light';
-    setTheme(saved);
   </script>
 </body>
 </html>
