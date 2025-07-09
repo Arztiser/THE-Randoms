@@ -3,3 +3,5 @@ Disallow: /therandoms.html
 Disallow: /secretsearching.html
 Disallow: /404.html
 Disallow: /arztiser.html
+Disallow: /code
+Disallow: /passcode
