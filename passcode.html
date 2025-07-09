@@ -250,25 +250,27 @@ const normalizedInput = input.replace(/\s+/g, ''); // removes all spaces
       const codes = {
         "HTE-RNA-ODSM": "If You Haven't Figured Out What This Code Means, It's The Site's Name.",
         "ARZTISER": "You Have Found The Creator Of This Randomness.",
-        "IDON'TKNOWANYCODES": "Well, You Must Be Lying Because You Apparently Know At Least One Of Them."
+        "IDON'TKNOWANYCODES": "Well, You Must Be Lying Because You Apparently Know At Least One Of Them.",
+        "IDONTKNOWANYCODES": "Well, You Must Be Lying Because You Apparently Know At Least One Of Them."
       };
 
-      if (codes[input]) {
-        response.textContent = codes[input];
-        response.classList.remove("hidden");
-        response.style.color = "green";
-        failureAudio.pause();
-        failureAudio.currentTime = 0;
-        successAudio.currentTime = 0;
-        successAudio.play();
-      } else {
-        response.textContent = "That’s Not The Right Code. Try Again.";
-        response.classList.remove("hidden");
-        response.style.color = "red";
-        successAudio.pause();
-        successAudio.currentTime = 0;
-        failureAudio.currentTime = 0;
-        failureAudio.play();
+      if (codes[input] || codes[normalizedInput]) {
+  const message = codes[input] || codes[normalizedInput];
+  response.textContent = message;
+  response.classList.remove("hidden");
+  response.style.color = "green";
+  failureAudio.pause();
+  failureAudio.currentTime = 0;
+  successAudio.currentTime = 0;
+  successAudio.play();
+} else {
+  response.textContent = "That’s Not The Right Code. Try Again.";
+  response.classList.remove("hidden");
+  response.style.color = "red";
+  successAudio.pause();
+  successAudio.currentTime = 0;
+  failureAudio.currentTime = 0;
+  failureAudio.play();
       }
     }
 
