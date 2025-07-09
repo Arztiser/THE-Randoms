@@ -205,6 +205,7 @@
     <button id="submit-button" onclick="checkCode()">Submit</button>
     <p id="response" class="hidden"></p>
     <audio id="success-sound" src="audio/Correct.mp3" preload="auto"></audio>
+    <audio id="failure-sound" src="audio/Incorrect.mp3" preload="auto"></audio>
   </div>
 
   <script>
@@ -228,28 +229,35 @@
     });
 
     function checkCode() {
-    const input = document.getElementById("codeInput").value.trim().toUpperCase();
-    const response = document.getElementById("response");
-    const audio = document.getElementById("success-sound");
+  const input = document.getElementById("codeInput").value.trim().toUpperCase();
+  const response = document.getElementById("response");
+  const successAudio = document.getElementById("success-sound");
+  const failureAudio = document.getElementById("failure-sound");
 
-    // Mapping of valid codes to messages
-    const codes = {
-      "HTE-RNA-ODSM": "Access Granted. The chaos within THE Randoms grows deeper.",
-      "ARZTISER": "Self-recognition protocol activated. Welcome, Creator."
-    };
+  const codes = {
+    "HTE-RNA-ODSM": "Access Granted. The chaos within THE Randoms grows deeper.",
+    "ARZTISER": "Self-recognition protocol activated. Welcome, Creator."
+  };
 
-    if (codes[input]) {
-      response.textContent = codes[input];
-      response.classList.remove("hidden");
-      response.style.color = "green";
-      audio.currentTime = 0;
-      audio.play();
-    } else {
-      response.textContent = "That’s not the right code. Try again...";
-      response.classList.remove("hidden");
-      response.style.color = "red";
+  if (codes[input]) {
+    response.textContent = codes[input];
+    response.classList.remove("hidden");
+    response.style.color = "green";
+    failureAudio.pause(); // Just in case
+    failureAudio.currentTime = 0;
+    successAudio.currentTime = 0;
+    successAudio.play();
+  } else {
+    response.textContent = "That’s not the right code. Try again...";
+    response.classList.remove("hidden");
+    response.style.color = "red";
+    successAudio.pause(); // Just in case
+    successAudio.currentTime = 0;
+    failureAudio.currentTime = 0;
+    failureAudio.play();
+  }
     }
-    }
+    
 
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/service-worker.js')
