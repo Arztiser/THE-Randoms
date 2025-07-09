@@ -148,6 +148,13 @@
 
     .logo:hover {
       text-decoration: none;
+
+.code-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
     }
   </style>
 </head>
@@ -199,13 +206,14 @@
   </header>
 
   <div class="content">
-    <h1>Enter The Secret Code</h1>
-    <input type="text" id="codeInput" placeholder="Enter code here" />
-    <br />
+  <h1 style="text-align:center;">Passcode</h1>
+  <div class="code-container">
+    <input type="text" id="codeInput" placeholder="Enter Code" />
     <button id="submit-button" onclick="checkCode()">Submit</button>
     <p id="response" class="hidden"></p>
     <audio id="success-sound" src="audio/Correct.mp3" preload="auto"></audio>
     <audio id="failure-sound" src="audio/Incorrect.mp3" preload="auto"></audio>
+  </div>
   </div>
 
   <script>
