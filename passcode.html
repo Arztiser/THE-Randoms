@@ -247,8 +247,10 @@
       const failureAudio = document.getElementById("failure-sound");
 
       const codes = {
-        "HTE-RNA-ODSM": "Access Granted. The chaos within THE Randoms grows deeper.",
-        "ARZTISER": "Self-recognition protocol activated. Welcome, Creator."
+        "HTE-RNA-ODSM": "If You Haven't Figured Out What This Code Means, It's The Site's Name.",
+        "ARZTISER": "You Have Found The Creator Of This Randomness.",
+        "IDON'TKNOWANYCODES": "Well, You Must Be Lying Because You Apparently Know At Least One Of Them.",
+        "I DON'T KNOW ANY CODES": "Well, You Must Be Lying Because You Apparently Know At Least One Of Them."
       };
 
       if (codes[input]) {
@@ -260,7 +262,7 @@
         successAudio.currentTime = 0;
         successAudio.play();
       } else {
-        response.textContent = "That’s not the right code. Try again...";
+        response.textContent = "That’s Not The Right Code. Try Again.";
         response.classList.remove("hidden");
         response.style.color = "red";
         successAudio.pause();
