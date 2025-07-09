@@ -102,32 +102,39 @@
       display: flex;
     }
 
-    .container {
-      margin: 20px;
-    }
-
     .content {
       text-align: center;
       padding: 50px;
     }
 
-    input {
+    input[type="text"] {
+      font-family: 'Jersey 10', sans-serif;
       font-size: 20px;
       padding: 8px;
       margin-top: 10px;
       border-radius: 5px;
-      border: 1px solid #ccc;
+      border: 2px solid #E82B38;
+      outline: none;
+      width: 300px;
+      text-align: center;
     }
 
-    button {
-      font-size: 20px;
-      padding: 10px 20px;
-      margin-top: 10px;
-      background: #E82B38;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
+    #submit-button {
+      margin-top: 15px;
+      padding: 10px 24px;
+      font-size: 22px;
+      border: 2px solid #E82B38;
+      background-color: #E82B38;
+      color: white;
+      font-family: 'Jersey 10', sans-serif;
+      border-radius: 8px;
       cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    #submit-button:hover {
+      background-color: #c91f2c;
+      transform: scale(1.05);
     }
 
     .hidden {
@@ -195,7 +202,7 @@
     <h1>Enter The Secret Code</h1>
     <input type="text" id="codeInput" placeholder="Enter code here" />
     <br />
-    <button onclick="checkCode()">Submit</button>
+    <button id="submit-button" onclick="checkCode()">Submit</button>
     <p id="response" class="hidden"></p>
   </div>
 
