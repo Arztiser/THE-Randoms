@@ -242,6 +242,7 @@
 
     function checkCode() {
       const input = document.getElementById("codeInput").value.trim().toUpperCase();
+const normalizedInput = input.replace(/\s+/g, ''); // removes all spaces
       const response = document.getElementById("response");
       const successAudio = document.getElementById("success-sound");
       const failureAudio = document.getElementById("failure-sound");
@@ -249,8 +250,7 @@
       const codes = {
         "HTE-RNA-ODSM": "If You Haven't Figured Out What This Code Means, It's The Site's Name.",
         "ARZTISER": "You Have Found The Creator Of This Randomness.",
-        "IDON'TKNOWANYCODES": "Well, You Must Be Lying Because You Apparently Know At Least One Of Them.",
-        "I DON'T KNOW ANY CODES": "Well, You Must Be Lying Because You Apparently Know At Least One Of Them."
+        "IDON'TKNOWANYCODES": "Well, You Must Be Lying Because You Apparently Know At Least One Of Them."
       };
 
       if (codes[input]) {
