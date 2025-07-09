@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Enter The Code</title>
+  <style>
+    body {
+      font-family: 'Jersey 10', sans-serif;
+      background: #fff;
+      text-align: center;
+      padding: 50px;
+      font-size: 24px;
+    }
+    input {
+      font-size: 20px;
+      padding: 8px;
+      margin-top: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      font-size: 20px;
+      padding: 10px 20px;
+      margin-top: 10px;
+      background: #E82B38;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Enter The Secret Code</h1>
+  <input type="text" id="codeInput" placeholder="Enter code here" />
+  <br />
+  <button onclick="checkCode()">Submit</button>
+  <p id="response" class="hidden"></p>
+
+  <script>
+    function checkCode() {
+      const input = document.getElementById("codeInput").value.trim().toUpperCase();
+      const response = document.getElementById("response");
+
+      if (input === "HTE-RNA-ODSM") {
+        response.textContent = "Access Granted. The chaos within THE Randoms grows deeper.";
+        response.classList.remove("hidden");
+        response.style.color = "green";
+      } else {
+        response.textContent = "That’s not the right code. Try again...";
+        response.classList.remove("hidden");
+        response.style.color = "red";
+      }
+    }
+  </script>
+</body>
+</html>
