@@ -204,6 +204,7 @@
     <br />
     <button id="submit-button" onclick="checkCode()">Submit</button>
     <p id="response" class="hidden"></p>
+    <audio id="success-sound" src="audio/Correct.mp3" preload="auto"></audio>
   </div>
 
   <script>
@@ -227,18 +228,27 @@
     });
 
     function checkCode() {
-      const input = document.getElementById("codeInput").value.trim().toUpperCase();
-      const response = document.getElementById("response");
+    const input = document.getElementById("codeInput").value.trim().toUpperCase();
+    const response = document.getElementById("response");
+    const audio = document.getElementById("successAudio");
 
-      if (input === "HTE-RNA-ODSM") {
-        response.textContent = "Access Granted. The chaos within THE Randoms grows deeper.";
-        response.classList.remove("hidden");
-        response.style.color = "green";
-      } else {
-        response.textContent = "That’s not the right code. Try again...";
-        response.classList.remove("hidden");
-        response.style.color = "red";
-      }
+    // Mapping of valid codes to messages
+    const codes = {
+      "HTE-RNA-ODSM": "Access Granted. The chaos within THE Randoms grows deeper.",
+      "ARZTISER": "Self-recognition protocol activated. Welcome, Creator."
+    };
+
+    if (codes[input]) {
+      response.textContent = codes[input];
+      response.classList.remove("hidden");
+      response.style.color = "green";
+      audio.currentTime = 0;
+      audio.play();
+    } else {
+      response.textContent = "That’s not the right code. Try again...";
+      response.classList.remove("hidden");
+      response.style.color = "red";
+    }
     }
 
     if ('serviceWorker' in navigator) {
