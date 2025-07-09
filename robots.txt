@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /therandoms.html
+Disallow: /secretsearching.html
