@@ -108,14 +108,30 @@
 
     .content {
       text-align: center;
+      padding: 50px;
     }
 
-    .content h1 {
-      margin-bottom: 20px;
+    input {
+      font-size: 20px;
+      padding: 8px;
+      margin-top: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
     }
 
-    .content p {
-      line-height: 1.5;
+    button {
+      font-size: 20px;
+      padding: 10px 20px;
+      margin-top: 10px;
+      background: #E82B38;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none;
     }
 
     .logo {
@@ -176,14 +192,33 @@
   </header>
 
   <div class="content">
-  <body>
-  <h1>Enter The Secret Code</h1>
-  <input type="text" id="codeInput" placeholder="Enter code here" />
-  <br />
-  <button onclick="checkCode()">Submit</button>
-  <p id="response" class="hidden"></p>
+    <h1>Enter The Secret Code</h1>
+    <input type="text" id="codeInput" placeholder="Enter code here" />
+    <br />
+    <button onclick="checkCode()">Submit</button>
+    <p id="response" class="hidden"></p>
+  </div>
 
   <script>
+    function toggleMenu() {
+      const topnav = document.querySelector('.topnav');
+      const body = document.body;
+      topnav.classList.toggle('active');
+      body.classList.toggle('menu-open');
+    }
+
+    document.querySelectorAll('.accordion-toggle').forEach(toggle => {
+      toggle.addEventListener('click', () => {
+        const parent = toggle.parentElement;
+        document.querySelectorAll('.accordion-section').forEach(section => {
+          if (section !== parent) {
+            section.classList.remove('open');
+          }
+        });
+        parent.classList.toggle('open');
+      });
+    });
+
     function checkCode() {
       const input = document.getElementById("codeInput").value.trim().toUpperCase();
       const response = document.getElementById("response");
@@ -198,5 +233,12 @@
         response.style.color = "red";
       }
     }
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then(reg => console.log('Service Worker registered:', reg.scope))
+        .catch(err => console.error('Service Worker registration failed:', err));
+    }
   </script>
 </body>
+</html>
