@@ -119,12 +119,15 @@
 }
 
 @keyframes bounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
+  0%, 100% { transform: translateY(0); }
+  25% { transform: translateY(-12px); }
+  50% { transform: translateY(4px); }
+  75% { transform: translateY(-8px); }
+}
+
+.bounce {
+  animation: bounce 0.9s ease-in-out infinite;
+}
 }
 
 #play-button {
@@ -205,8 +208,7 @@
   <div class="content">
   <h1 id="groove-title">Groove</h1>
   <p id="groove-text">Here's A Quick Groove For You.</p>
-  <button id="play-button">Play Groove</button>
-  <audio id="groove-audio" src="audio/Groove.mp3" preload="auto"></audio>
+  <audio id="groove-audio" src="audio/groove.mp3" preload="auto"></audio>
   </div>
 
   <script>
@@ -237,45 +239,46 @@
 
     // Try to autoplay, fallback to user click if blocked
     window.addEventListener("load", () => {
-      const audio = document.getElementById("groove-audio");
-      const playPromise = audio.play();
-
-      if (playPromise instanceof Promise) {
-        playPromise.catch(() => {
-          const message = document.createElement("p");
-          message.textContent = "Tap Anywhere To Start The Groove.";
-          message.style.fontSize = "20px";
-          message.style.marginTop = "20px";
-          document.querySelector(".content").appendChild(message);
-
-          const playOnClick = () => {
-            audio.play();
-            message.remove();
-            document.body.removeEventListener("click", playOnClick);
-          };
-
-          document.body.addEventListener("click", playOnClick);
-        });
-      }
-    });
-
-document.getElementById("play-button").addEventListener("click", () => {
   const audio = document.getElementById("groove-audio");
   const title = document.getElementById("groove-title");
   const text = document.getElementById("groove-text");
 
-  title.classList.add("bounce");
-  text.classList.add("bounce");
+  let isPlaying = false;
 
-  audio.currentTime = 0;
-  audio.play();
+  const startGroove = () => {
+    if (isPlaying) return; // Prevent spam taps
 
-  setTimeout(() => {
-    title.classList.remove("bounce");
-    text.classList.remove("bounce");
-  }, 9000);
-});
-    
+    isPlaying = true;
+    audio.currentTime = 0;
+    audio.play();
+
+    title.classList.add("bounce");
+    text.classList.add("bounce");
+
+    setTimeout(() => {
+      title.classList.remove("bounce");
+      text.classList.remove("bounce");
+      isPlaying = false; // Allow replay after 9 seconds
+    }, 9000);
+  };
+
+  // Try autoplay
+  const playAttempt = audio.play();
+  if (playAttempt instanceof Promise) {
+    playAttempt
+      .then(() => {
+        isPlaying = true;
+        setTimeout(() => (isPlaying = false), 9000);
+      })
+      .catch(() => {
+        // Autoplay blocked – wait for tap
+        document.body.addEventListener("click", startGroove);
+      });
+  }
+
+  // Always allow replay on tap, with cooldown logic
+  document.body.addEventListener("click", startGroove);
+});    
   </script>
 </body>
 </html>
