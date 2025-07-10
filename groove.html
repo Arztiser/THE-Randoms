@@ -103,24 +103,47 @@
   }
 
   .content {
-    text-align: center;
-    padding: 80px 20px;
-  }
+  text-align: center;
+  padding: 40px 20px 0;
+  margin-top: 40px;
+}
 
-  .content h1, .content p {
-    animation: bounce 1s infinite ease-in-out;
-    display: inline-block;
-    margin-bottom: 20px;
-  }
+.content h1,
+.content p {
+  margin: 0;
+  padding: 0;
+}
 
-  @keyframes bounce {
-    0%, 100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-10px);
-    }
+.bounce {
+  animation: bounce 1s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
   }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+#play-button {
+  margin-top: 40px;
+  padding: 12px 24px;
+  font-size: 24px;
+  font-family: 'Jersey 10', sans-serif;
+  border: 2px solid #E82B38;
+  background-color: #E82B38;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+#play-button:hover {
+  background-color: #c91f2c;
+  transform: scale(1.05);
+}
 
   .logo {
     color: #f2f2f2;
@@ -180,8 +203,9 @@
   </header>
 
   <div class="content">
-  <h1>Groove</h1>
-  <p>Here's A Quick Groove For You.</p>
+  <h1 id="groove-title">Groove</h1>
+  <p id="groove-text">Here's A Quick Groove For You.</p>
+  <button id="play-button">Play Groove</button>
   <audio id="groove-audio" src="audio/Groove.mp3" preload="auto"></audio>
   </div>
 
@@ -234,6 +258,24 @@
         });
       }
     });
+
+document.getElementById("play-button").addEventListener("click", () => {
+  const audio = document.getElementById("groove-audio");
+  const title = document.getElementById("groove-title");
+  const text = document.getElementById("groove-text");
+
+  title.classList.add("bounce");
+  text.classList.add("bounce");
+
+  audio.currentTime = 0;
+  audio.play();
+
+  setTimeout(() => {
+    title.classList.remove("bounce");
+    text.classList.remove("bounce");
+  }, 9000);
+});
+    
   </script>
 </body>
 </html>
