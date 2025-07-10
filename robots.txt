@@ -1,7 +1,8 @@
 User-agent: *
 Disallow: /therandoms.html
-Disallow: /secretsearching.html
+Disallow: /secret.html
 Disallow: /404.html
 Disallow: /arztiser.html
-Disallow: /code
-Disallow: /passcode
+Disallow: /code.html
+Disallow: /passcode.html
+Disallow: /groove.html
