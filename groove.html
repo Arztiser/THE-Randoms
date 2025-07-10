@@ -10,7 +10,7 @@
   <link rel="icon" type="image/png" href="./img/pfp.png" />
   <link rel="manifest" href="/manifest.json" />
   <link rel="apple-touch-icon" sizes="192x192" href="/img/prfp.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap" rel="stylesheet" />
 
   <style>
     body {
@@ -107,17 +107,6 @@
       padding: 80px 20px;
     }
 
-    .content h1 {
-      margin-bottom: 20px;
-      animation: pulse 1.2s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.05); opacity: 0.85; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-
     .logo {
       color: #f2f2f2;
       text-decoration: none;
@@ -125,6 +114,16 @@
 
     .logo:hover {
       text-decoration: none;
+    }
+
+    .groove-title {
+      font-size: 40px;
+      margin-bottom: 10px;
+    }
+
+    .groove-text {
+      font-size: 24px;
+      color: #ccc;
     }
   </style>
 </head>
@@ -176,8 +175,9 @@
   </header>
 
   <div class="content">
-    <h1>Here's A Quick Groove For You.</h1>
-    <audio id="groove-audio" src="audio/groove.mp3"></audio>
+    <div class="groove-title">Groove</div>
+    <div class="groove-text">Here's A Quick Groove For You.</div>
+    <audio id="groove-audio" src="audio/groove.mp3" autoplay></audio>
   </div>
 
   <script>
@@ -206,25 +206,13 @@
         .catch(err => console.error('Service Worker registration failed:', err));
     }
 
-window.addEventListener("load", () => {
-  const audio = document.getElementById("groove-audio");
-  const playAudio = () => {
-    audio.play().catch(() => {
-      // Show optional "Tap to hear groove" if autoplay fails
-      const message = document.createElement("p");
-      message.textContent = "🔊 Tap anywhere to play the groove!";
-      message.style.fontSize = "20px";
-      message.style.marginTop = "20px";
-      document.querySelector(".content").appendChild(message);
-
-      document.body.addEventListener("click", () => {
-        audio.play();
-        message.remove();
-      }, { once: true });
+    // Try to force playback (desktop only likely)
+    window.addEventListener("load", () => {
+      const audio = document.getElementById("groove-audio");
+      audio.play().catch(err => {
+        console.warn("Autoplay failed:", err);
+      });
     });
-  };
-  playAudio();
-});  
   </script>
 </body>
 </html>
