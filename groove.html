@@ -10,7 +10,7 @@
   <link rel="icon" type="image/png" href="./img/pfp.png" />
   <link rel="manifest" href="/manifest.json" />
   <link rel="apple-touch-icon" sizes="192x192" href="/img/prfp.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet" />
 
   <style>
     body {
@@ -107,6 +107,14 @@
       padding: 80px 20px;
     }
 
+    .content h1 {
+      margin-bottom: 20px;
+    }
+
+    .content p {
+      line-height: 1.5;
+    }
+
     .logo {
       color: #f2f2f2;
       text-decoration: none;
@@ -114,16 +122,6 @@
 
     .logo:hover {
       text-decoration: none;
-    }
-
-    .groove-title {
-      font-size: 40px;
-      margin-bottom: 10px;
-    }
-
-    .groove-text {
-      font-size: 24px;
-      color: #ccc;
     }
   </style>
 </head>
@@ -175,9 +173,9 @@
   </header>
 
   <div class="content">
-    <div class="groove-title">Groove</div>
-    <div class="groove-text">Here's A Quick Groove For You.</div>
-    <audio id="groove-audio" src="audio/Groove.mp3" autoplay></audio>
+    <h1>Groove</h1>
+    <p>Here's A Quick Groove For You.</p>
+    <audio id="groove-audio" src="audio/Groove.mp3" preload="auto"></audio>
   </div>
 
   <script>
@@ -206,12 +204,28 @@
         .catch(err => console.error('Service Worker registration failed:', err));
     }
 
-    // Try to force playback (desktop only likely)
+    // Try to autoplay, fallback to user click if blocked
     window.addEventListener("load", () => {
       const audio = document.getElementById("groove-audio");
-      audio.play().catch(err => {
-        console.warn("Autoplay failed:", err);
-      });
+      const playPromise = audio.play();
+
+      if (playPromise instanceof Promise) {
+        playPromise.catch(() => {
+          const message = document.createElement("p");
+          message.textContent = "Tap Anywhere To Start The Groove.";
+          message.style.fontSize = "20px";
+          message.style.marginTop = "20px";
+          document.querySelector(".content").appendChild(message);
+
+          const playOnClick = () => {
+            audio.play();
+            message.remove();
+            document.body.removeEventListener("click", playOnClick);
+          };
+
+          document.body.addEventListener("click", playOnClick);
+        });
+      }
     });
   </script>
 </body>
