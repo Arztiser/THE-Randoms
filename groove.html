@@ -12,151 +12,143 @@
   <link rel="apple-touch-icon" sizes="192x192" href="/img/prfp.png" />
   <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet" />
 
-   <style>
-  body {
-    font-family: 'Jersey 10', sans-serif;
-    font-size: 30px;
-    margin: 0;
-    padding: 0;
-  }
+  <style>
+    body {
+      font-family: 'Jersey 10', sans-serif;
+      font-size: 30px;
+      margin: 0;
+      padding: 0;
+    }
 
-  .topnav {
-    overflow: hidden;
-    background-color: #333;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 16px;
-    height: 60px;
-  }
+    .topnav {
+      overflow: hidden;
+      background-color: #333;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      height: 60px;
+    }
 
-  .topnav h1 {
-    margin: 0;
-    font-size: 24px;
-    color: #f2f2f2;
-  }
+    .topnav h1 {
+      margin: 0;
+      font-size: 24px;
+      color: #f2f2f2;
+    }
 
-  .menu-icon {
-    font-size: 30px;
-    color: #f2f2f2;
-    cursor: pointer;
-  }
+    .menu-icon {
+      font-size: 30px;
+      color: #f2f2f2;
+      cursor: pointer;
+    }
 
-  .topnav-right {
-    display: none;
-    position: fixed;
-    top: 60px;
-    left: 0;
-    right: 0;
-    background-color: #333;
-    height: calc(100vh - 60px);
-    flex-direction: column;
-    overflow-y: auto;
-    z-index: 999;
-  }
+    .topnav-right {
+      display: none;
+      position: fixed;
+      top: 60px;
+      left: 0;
+      right: 0;
+      background-color: #333;
+      height: calc(100vh - 60px);
+      flex-direction: column;
+      overflow-y: auto;
+      z-index: 999;
+    }
 
-  .topnav.active + .topnav-right {
-    display: flex;
-  }
+    .topnav.active + .topnav-right {
+      display: flex;
+    }
 
-  body.menu-open {
-    overflow: hidden;
-  }
+    body.menu-open {
+      overflow: hidden;
+    }
 
-  .accordion-toggle {
-    background: none;
-    color: #f2f2f2;
-    padding: 14px;
-    text-align: left;
-    font-size: 24px;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    width: 100%;
-    font-family: 'Jersey 10', sans-serif;
-  }
+    .accordion-toggle {
+      background: none;
+      color: #f2f2f2;
+      padding: 14px;
+      text-align: left;
+      font-size: 24px;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      width: 100%;
+      font-family: 'Jersey 10', sans-serif;
+    }
 
-  .accordion-content {
-    display: none;
-    flex-direction: column;
-    background-color: #444;
-  }
+    .accordion-content {
+      display: none;
+      flex-direction: column;
+      background-color: #444;
+    }
 
-  .accordion-content a {
-    padding-left: 28px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    border-top: 1px solid #555;
-    font-size: 20px;
-    color: #f2f2f2;
-    text-decoration: none;
-  }
+    .accordion-content a {
+      padding-left: 28px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      border-top: 1px solid #555;
+      font-size: 20px;
+      color: #f2f2f2;
+      text-decoration: none;
+    }
 
-  .accordion-section {
-    display: flex;
-    flex-direction: column;
-    border-top: 1px solid #444;
-  }
+    .accordion-section {
+      display: flex;
+      flex-direction: column;
+      border-top: 1px solid #444;
+    }
 
-  .accordion-section.open .accordion-content {
-    display: flex;
-  }
+    .accordion-section.open .accordion-content {
+      display: flex;
+    }
 
-  .content {
-  text-align: center;
-  padding: 40px 20px 0;
-  margin-top: 40px;
-}
+    .content {
+      text-align: center;
+      padding: 40px 20px 0;
+      margin-top: 40px;
+    }
 
-.content h1,
-.content p {
-  margin: 0;
-  padding: 0;
-}
+    .content h1,
+    .content p {
+      margin: 0;
+      padding: 0;
+    }
 
-.bounce {
-  animation: bounce 1s ease-in-out infinite;
-}
+    .bounce {
+      animation: bounce 0.8s ease-in-out infinite;
+    }
 
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  25% { transform: translateY(-12px); }
-  50% { transform: translateY(4px); }
-  75% { transform: translateY(-8px); }
-}
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      25% { transform: translateY(-12px); }
+      50% { transform: translateY(4px); }
+      75% { transform: translateY(-8px); }
+    }
 
-.bounce {
-  animation: bounce 0.8s ease-in-out infinite;
-}
-}
+    @keyframes rainbowPulse {
+      0% { color: red; background-color: #E82B38; }
+      14% { color: orange; background-color: #1E90FF; }
+      28% { color: yellow; background-color: #32CD32; }
+      42% { color: green; background-color: #FFD700; }
+      57% { color: blue; background-color: #FF69B4; }
+      71% { color: indigo; background-color: #8A2BE2; }
+      85% { color: violet; background-color: #00CED1; }
+      100% { color: red; background-color: #E82B38; }
+    }
 
-#play-button {
-  margin-top: 40px;
-  padding: 12px 24px;
-  font-size: 24px;
-  font-family: 'Jersey 10', sans-serif;
-  border: 2px solid #E82B38;
-  background-color: #E82B38;
-  color: white;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
-}
+    .rainbow-lightshow {
+      animation: rainbowPulse 1s linear infinite;
+    }
 
-#play-button:hover {
-  background-color: #c91f2c;
-  transform: scale(1.05);
-}
+    .logo {
+      color: #f2f2f2;
+      text-decoration: none;
+    }
 
-  .logo {
-    color: #f2f2f2;
-    text-decoration: none;
-  }
-
-  .logo:hover {
-    text-decoration: none;
-  }
-</style>
+    .logo:hover {
+      text-decoration: none;
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -206,9 +198,9 @@
   </header>
 
   <div class="content">
-  <h1 id="groove-title">Groove</h1>
-  <p id="groove-text">Here's A Quick Groove For You.</p>
-  <audio id="groove-audio" src="audio/Groove.mp3" preload="auto"></audio>
+    <h1 id="groove-title">Groove</h1>
+    <p id="groove-text">Here's A Quick Groove For You.</p>
+    <audio id="groove-audio" src="audio/Groove.mp3" preload="auto"></audio>
   </div>
 
   <script>
@@ -237,48 +229,44 @@
         .catch(err => console.error('Service Worker registration failed:', err));
     }
 
-    // Try to autoplay, fallback to user click if blocked
     window.addEventListener("load", () => {
-  const audio = document.getElementById("groove-audio");
-  const title = document.getElementById("groove-title");
-  const text = document.getElementById("groove-text");
+      const audio = document.getElementById("groove-audio");
+      const title = document.getElementById("groove-title");
+      const text = document.getElementById("groove-text");
 
-  let isPlaying = false;
+      let isPlaying = false;
 
-  const startGroove = () => {
-    if (isPlaying) return; // Prevent spam taps
+      const startGroove = () => {
+        if (isPlaying) return;
 
-    isPlaying = true;
-    audio.currentTime = 0;
-    audio.play();
-
-    title.classList.add("bounce");
-    text.classList.add("bounce");
-
-    setTimeout(() => {
-      title.classList.remove("bounce");
-      text.classList.remove("bounce");
-      isPlaying = false; // Allow replay after 9 seconds
-    }, 8000);
-  };
-
-  // Try autoplay
-  const playAttempt = audio.play();
-  if (playAttempt instanceof Promise) {
-    playAttempt
-      .then(() => {
         isPlaying = true;
-        setTimeout(() => (isPlaying = false), 9000);
-      })
-      .catch(() => {
-        // Autoplay blocked – wait for tap
-        document.body.addEventListener("click", startGroove);
-      });
-  }
+        audio.currentTime = 0;
+        audio.play();
 
-  // Always allow replay on tap, with cooldown logic
-  document.body.addEventListener("click", startGroove);
-});    
+        title.classList.add("bounce", "rainbow-lightshow");
+        text.classList.add("bounce", "rainbow-lightshow");
+
+        setTimeout(() => {
+          title.classList.remove("bounce", "rainbow-lightshow");
+          text.classList.remove("bounce", "rainbow-lightshow");
+          isPlaying = false;
+        }, 8000); // synced with shortened groove
+      };
+
+      const playAttempt = audio.play();
+      if (playAttempt instanceof Promise) {
+        playAttempt
+          .then(() => {
+            isPlaying = true;
+            setTimeout(() => (isPlaying = false), 8000);
+          })
+          .catch(() => {
+            document.body.addEventListener("click", startGroove);
+          });
+      }
+
+      document.body.addEventListener("click", startGroove);
+    });
   </script>
 </body>
 </html>
