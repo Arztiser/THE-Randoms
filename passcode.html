@@ -216,7 +216,8 @@
       <button id="submit-button" onclick="checkCode()">Submit</button>
       <p id="response" class="hidden"></p>
       <audio id="success-sound" src="audio/Correct.mp3" preload="auto"></audio>
-      <audio id="failure-sound" src="audio/Incorrect.mp3" preload="auto"></audio>
+<audio id="failure-sound" src="audio/Incorrect.mp3" preload="auto"></audio>
+<audio id="groove-sound" src="audio/Groove.mp3" preload="auto"></audio>
     </div>
   </div>
 
@@ -246,12 +247,14 @@ const normalizedInput = input.replace(/\s+/g, ''); // removes all spaces
       const response = document.getElementById("response");
       const successAudio = document.getElementById("success-sound");
       const failureAudio = document.getElementById("failure-sound");
+      const grooveAudio =  document.getElementById("groove-sound");
 
       const codes = {
         "HTE-RNA-ODSM": "If You Haven't Figured Out What This Code Means, It's The Site's Name.",
         "ARZTISER": "You Have Found The Creator Of This Randomness.",
         "IDON'TKNOWANYCODES": "Well, You Must Be Lying Because You Apparently Know At Least One Of Them.",
-        "IDONTKNOWANYCODES": "Well, You Must Be Lying Because You Apparently Know At Least One Of Them."
+        "IDONTKNOWANYCODES": "Well, You Must Be Lying Because You Apparently Know At Least One Of Them.",
+        "GROOVE": "Here's A Quick Groove For You."
       };
 
       if (codes[input] || codes[normalizedInput]) {
