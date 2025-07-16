@@ -19,7 +19,7 @@
   const easter = getEaster(year);
 
   const holidays = {
-    "christmas":  month === 12 && day === 25,
+    "christmas":  true,
     "halloween":  month === 10 && day === 31,
     "st-patricks": month === 3 && day === 17,
     "fourth-of-july": month === 7 && day === 4,
