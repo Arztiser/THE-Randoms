@@ -119,8 +119,7 @@
       margin: 10px 0;
     }
 
-    .dark-overlay {
-    .dark-overlay {
+.dark-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -131,9 +130,6 @@
   pointer-events: none;
   z-index: 9999;
   transition: opacity 1s ease-in-out;
-}
-.dark-overlay.visible {
-  opacity: 1;
 }
     }
   </style>
@@ -193,7 +189,7 @@
 
   <div class="dark-overlay" id="dark-overlay"></div>
 
-  <script>
+ <script>
   function toggleMenu() {
     const topnav = document.querySelector('.topnav');
     const body = document.body;
@@ -217,26 +213,29 @@
   const overlay = document.getElementById("dark-overlay");
 
   const startSpooky = () => {
-    let intervalCount = 0;
-    const maxIntervals = 9; // 18s / 2s
+    let isDark = false;
+    let cycles = 0;
+    const maxCycles = 9; // 18 seconds / 2s per fade in/out cycle
 
     audio.currentTime = 0;
     audio.play();
 
-    const flickerInterval = setInterval(() => {
-      overlay.classList.add("visible");
-
-      setTimeout(() => {
-        overlay.classList.remove("visible");
-      }, 1000); // stays visible for 1s
-
-      intervalCount++;
-      if (intervalCount >= maxIntervals) {
-        clearInterval(flickerInterval);
-        overlay.classList.remove("visible");
+    const interval = setInterval(() => {
+      if (isDark) {
+        overlay.style.opacity = '0'; // fade to white
+      } else {
+        overlay.style.opacity = '1'; // fade to black
       }
-    }, 2000);
+
+      isDark = !isDark;
+      cycles++;
+
+      if (cycles >= maxCycles * 2) { // 9 fades in, 9 fades out (18s)
+        clearInterval(interval);
+        overlay.style.opacity = '0'; // Ensure back to white
+      }
+    }, 1000); // Switch every second, creating full fade every 2s
   };
 
   window.addEventListener("click", startSpooky, { once: true });
-  </script>
+ </script>
