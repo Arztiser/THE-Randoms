@@ -110,27 +110,26 @@
     }
 
     #spooky-title {
-      font-size: 48px;
+      font-size: 64px;
       margin: 0;
     }
 
     #spooky-text {
-      font-size: 24px;
+      font-size: 28px;
       margin: 10px 0;
     }
 
-.dark-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: black;
-  opacity: 0;
-  pointer-events: none;
-  z-index: 9999;
-  transition: opacity 1s ease-in-out;
-}
+    .dark-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: black;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 9999;
+      transition: opacity 1s ease-in-out;
     }
   </style>
 </head>
@@ -189,53 +188,52 @@
 
   <div class="dark-overlay" id="dark-overlay"></div>
 
- <script>
-  function toggleMenu() {
-    const topnav = document.querySelector('.topnav');
-    const body = document.body;
-    topnav.classList.toggle('active');
-    body.classList.toggle('menu-open');
-  }
+  <script>
+    function toggleMenu() {
+      const topnav = document.querySelector('.topnav');
+      const body = document.body;
+      topnav.classList.toggle('active');
+      body.classList.toggle('menu-open');
+    }
 
-  document.querySelectorAll('.accordion-toggle').forEach(toggle => {
-    toggle.addEventListener('click', () => {
-      const parent = toggle.parentElement;
-      document.querySelectorAll('.accordion-section').forEach(section => {
-        if (section !== parent) {
-          section.classList.remove('open');
-        }
+    document.querySelectorAll('.accordion-toggle').forEach(toggle => {
+      toggle.addEventListener('click', () => {
+        const parent = toggle.parentElement;
+        document.querySelectorAll('.accordion-section').forEach(section => {
+          if (section !== parent) {
+            section.classList.remove('open');
+          }
+        });
+        parent.classList.toggle('open');
       });
-      parent.classList.toggle('open');
     });
-  });
 
-  const audio = document.getElementById("spooky-audio");
-  const overlay = document.getElementById("dark-overlay");
+    const audio = document.getElementById("spooky-audio");
+    const overlay = document.getElementById("dark-overlay");
 
-  const startSpooky = () => {
-    let isDark = false;
-    let cycles = 0;
-    const maxCycles = 9; // 18 seconds / 2s per fade in/out cycle
+    function spookyLoop() {
+      let isDark = false;
+      let cycles = 0;
+      const maxCycles = 9; // 18 seconds / 2s per cycle
 
-    audio.currentTime = 0;
-    audio.play();
+      const interval = setInterval(() => {
+        overlay.style.opacity = isDark ? '0' : '1';
+        isDark = !isDark;
+        cycles++;
 
-    const interval = setInterval(() => {
-      if (isDark) {
-        overlay.style.opacity = '0'; // fade to white
-      } else {
-        overlay.style.opacity = '1'; // fade to black
-      }
+        if (cycles >= maxCycles * 2) {
+          clearInterval(interval);
+          overlay.style.opacity = '0';
+          setTimeout(spookyLoop, 100); // Restart after short delay
+        }
+      }, 1000);
+    }
 
-      isDark = !isDark;
-      cycles++;
-
-      if (cycles >= maxCycles * 2) { // 9 fades in, 9 fades out (18s)
-        clearInterval(interval);
-        overlay.style.opacity = '0'; // Ensure back to white
-      }
-    }, 1000); // Switch every second, creating full fade every 2s
-  };
-
-  window.addEventListener("click", startSpooky, { once: true });
- </script>
+    window.addEventListener("click", () => {
+      audio.currentTime = 0;
+      audio.play().catch(() => {});
+      spookyLoop();
+    }, { once: true });
+  </script>
+</body>
+</html>
