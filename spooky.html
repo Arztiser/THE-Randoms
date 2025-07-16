@@ -189,51 +189,57 @@
   <div class="dark-overlay" id="dark-overlay"></div>
 
   <script>
-    function toggleMenu() {
-      const topnav = document.querySelector('.topnav');
-      const body = document.body;
-      topnav.classList.toggle('active');
-      body.classList.toggle('menu-open');
-    }
+  function toggleMenu() {
+    const topnav = document.querySelector('.topnav');
+    const body = document.body;
+    topnav.classList.toggle('active');
+    body.classList.toggle('menu-open');
+  }
 
-    document.querySelectorAll('.accordion-toggle').forEach(toggle => {
-      toggle.addEventListener('click', () => {
-        const parent = toggle.parentElement;
-        document.querySelectorAll('.accordion-section').forEach(section => {
-          if (section !== parent) {
-            section.classList.remove('open');
-          }
-        });
-        parent.classList.toggle('open');
-      });
-    });
-
-    const audio = document.getElementById("spooky-audio");
-    const overlay = document.getElementById("dark-overlay");
-
-    function spookyLoop() {
-      let isDark = false;
-      let cycles = 0;
-      const maxCycles = 9; // 18 seconds / 2s per cycle
-
-      const interval = setInterval(() => {
-        overlay.style.opacity = isDark ? '0' : '1';
-        isDark = !isDark;
-        cycles++;
-
-        if (cycles >= maxCycles * 2) {
-          clearInterval(interval);
-          overlay.style.opacity = '0';
-          setTimeout(spookyLoop, 100); // Restart after short delay
+  document.querySelectorAll('.accordion-toggle').forEach(toggle => {
+    toggle.addEventListener('click', () => {
+      const parent = toggle.parentElement;
+      document.querySelectorAll('.accordion-section').forEach(section => {
+        if (section !== parent) {
+          section.classList.remove('open');
         }
-      }, 1000);
-    }
+      });
+      parent.classList.toggle('open');
+    });
+  });
 
-    window.addEventListener("click", () => {
+  const audio = document.getElementById("spooky-audio");
+  const overlay = document.getElementById("dark-overlay");
+
+  function runSpookyEffectOnce() {
+    let isDark = false;
+    let cycles = 0;
+    const maxCycles = 9;
+
+    const interval = setInterval(() => {
+      overlay.style.opacity = isDark ? '0' : '1';
+      isDark = !isDark;
+      cycles++;
+
+      if (cycles >= maxCycles * 2) {
+        clearInterval(interval);
+        overlay.style.opacity = '0';
+      }
+    }, 1000);
+  }
+
+  window.addEventListener("click", () => {
+    // Start spooky effect
+    runSpookyEffectOnce();
+
+    // Play audio and loop it every 18 seconds
+    audio.currentTime = 0;
+    audio.play().catch(() => {});
+    setInterval(() => {
       audio.currentTime = 0;
       audio.play().catch(() => {});
-      spookyLoop();
-    }, { once: true });
+    }, 18000);
+  }, { once: true });
   </script>
 </body>
 </html>
