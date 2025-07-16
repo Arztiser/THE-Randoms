@@ -120,15 +120,21 @@
     }
 
     .dark-overlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: black;
-      z-index: 9999;
-      opacity: 1;
-      display: none;
-      pointer-events: none;
+    .dark-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: black;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transition: opacity 1s ease-in-out;
+}
+.dark-overlay.visible {
+  opacity: 1;
+}
     }
   </style>
 </head>
@@ -188,39 +194,49 @@
   <div class="dark-overlay" id="dark-overlay"></div>
 
   <script>
-    function toggleMenu() {
-      const topnav = document.querySelector('.topnav');
-      const body = document.body;
-      topnav.classList.toggle('active');
-      body.classList.toggle('menu-open');
-    }
+  function toggleMenu() {
+    const topnav = document.querySelector('.topnav');
+    const body = document.body;
+    topnav.classList.toggle('active');
+    body.classList.toggle('menu-open');
+  }
 
-    document.querySelectorAll('.accordion-toggle').forEach(toggle => {
-      toggle.addEventListener('click', () => {
-        const parent = toggle.parentElement;
-        document.querySelectorAll('.accordion-section').forEach(section => {
-          if (section !== parent) {
-            section.classList.remove('open');
-          }
-        });
-        parent.classList.toggle('open');
+  document.querySelectorAll('.accordion-toggle').forEach(toggle => {
+    toggle.addEventListener('click', () => {
+      const parent = toggle.parentElement;
+      document.querySelectorAll('.accordion-section').forEach(section => {
+        if (section !== parent) {
+          section.classList.remove('open');
+        }
       });
+      parent.classList.toggle('open');
     });
+  });
 
-    const audio = document.getElementById("spooky-audio");
-    const overlay = document.getElementById("dark-overlay");
+  const audio = document.getElementById("spooky-audio");
+  const overlay = document.getElementById("dark-overlay");
 
-    const startSpooky = () => {
-      overlay.style.display = "block";
-      audio.currentTime = 0;
-      audio.play();
+  const startSpooky = () => {
+    let intervalCount = 0;
+    const maxIntervals = 9; // 18s / 2s
+
+    audio.currentTime = 0;
+    audio.play();
+
+    const flickerInterval = setInterval(() => {
+      overlay.classList.add("visible");
 
       setTimeout(() => {
-        overlay.style.display = "none";
-      }, 18000); // 18 seconds
-    };
+        overlay.classList.remove("visible");
+      }, 1000); // stays visible for 1s
 
-    window.addEventListener("click", startSpooky);
+      intervalCount++;
+      if (intervalCount >= maxIntervals) {
+        clearInterval(flickerInterval);
+        overlay.classList.remove("visible");
+      }
+    }, 2000);
+  };
+
+  window.addEventListener("click", startSpooky, { once: true });
   </script>
-</body>
-</html>
