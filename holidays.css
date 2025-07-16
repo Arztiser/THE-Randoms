@@ -1,0 +1,30 @@
+/* 4th of July */
+.fourth-july body {
+  background-color: #b22234; /* American flag red */
+  color: white;
+  /* add fireworks or stars if you want */
+}
+
+/* Easter */
+.easter body {
+  background-color: #f9f9c5; /* pastel yellow */
+  color: #6a4e42; /* soft brown */
+}
+
+/* St. Patrick's Day */
+.st-patricks body {
+  background-color: #008000; /* green */
+  color: white;
+}
+
+/* Christmas */
+.christmas body {
+  background-color: #006400; /* dark green */
+  color: #ff0000; /* bright red */
+}
+
+/* Halloween */
+.halloween body {
+  background-color: #000000; /* black */
+  color: #ff6600; /* pumpkin orange */
+}
