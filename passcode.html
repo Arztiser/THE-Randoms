@@ -218,6 +218,7 @@
       <audio id="success-sound" src="audio/Correct.mp3" preload="auto"></audio>
 <audio id="failure-sound" src="audio/Incorrect.mp3" preload="auto"></audio>
 <audio id="groove-sound" src="audio/Groove.mp3" preload="auto"></audio>
+<audio id="sppoky-sound" src="audio/Spooky.mp3" preload="auto"></audio>
     </div>
   </div>
 
@@ -248,6 +249,7 @@
   const successAudio = document.getElementById("success-sound");
   const failureAudio = document.getElementById("failure-sound");
   const grooveAudio = document.getElementById("groove-sound");
+  const spookyAudio = document.getElementById("spooky-sound");
 
   const codes = {
     "HTE-RNA-ODSM": "If You Haven't Figured Out What This Code Means, It's The Site's Name.",
@@ -255,9 +257,10 @@
     "IDON'TKNOWANYCODES": "Well, You Must Be Lying Because You Apparently Know At Least One Of Them.",
     "IDONTKNOWANYCODES": "Well, You Must Be Lying Because You Apparently Know At Least One Of Them.",
     "GROOVE": "Here's A Quick Groove For You.",
+    "SPOOKY": "You Have Been Warned.",
     "AGAIN": "I Guess That's One Way To Get A Code.",
     "PASSCODE": "Real Nice Work Finding That One.",
-    "EHT SMODNAR": "htiW yrevE noitcA erehT sI nA lauqE dnA etisoppO noitcaeR",
+    "EHT SMODNAR": "htiW yrevE noitcA erehT sI nA lauqE dnA etisoppO noitcaeR.",
     "RAVEN": "The Goodest Boy.",
     "COCO": "The Goodest Girl."
   };
@@ -281,6 +284,12 @@
     // Play groove if applicable
     if (input === "GROOVE" || normalizedInput === "GROOVE") {
       grooveAudio.play();
+    } else {
+      successAudio.play();
+    }
+
+    if (input === "SPOOKY" || normalizedInput === "SPOOKY") {
+      spookyAudio.play();
     } else {
       successAudio.play();
     }
