@@ -46,6 +46,7 @@
       z-index: 10000;
       background: transparent;
       cursor: pointer;
+      display: none; /* hide initially */
     }
   </style>
 </head>
@@ -56,28 +57,58 @@
   <!-- Invisible big button -->
   <div id="overlay" aria-label="Start audio" role="button" tabindex="0"></div>
 
-  <audio id="errorAudio" src="audio/404.mp3" preload="auto"></audio>
+  <audio id="errorAudio" src="audio/404.mp3" preload="auto" ></audio>
 
   <script>
     const overlay = document.getElementById('overlay');
     const audio = document.getElementById('errorAudio');
 
+    // Fade in volume from 0 to 1 over duration (ms)
+    function fadeInAudio(audio, duration = 2000) {
+      audio.volume = 0;
+      audio.play().catch(() => {});
+      const step = 0.05;
+      const interval = duration / (1 / step);
+      let volume = 0;
+      const fadeInterval = setInterval(() => {
+        volume += step;
+        if(volume >= 1) {
+          volume = 1;
+          clearInterval(fadeInterval);
+        }
+        audio.volume = volume;
+      }, interval);
+    }
+
     function playAudioAndRedirect() {
-      audio.play().catch(() => {
-        // ignore if play fails
-      });
+      fadeInAudio(audio);
       overlay.removeEventListener('click', playAudioAndRedirect);
       overlay.style.display = 'none';
 
-      // Redirect after 5 seconds (adjust as needed)
       setTimeout(() => {
         window.location.href = '/';
       }, 8000);
     }
 
+    // Try muted autoplay on load
+    window.addEventListener('load', () => {
+      audio.muted = true;
+      audio.play()
+        .then(() => {
+          audio.pause();
+          audio.muted = false;
+          // If muted autoplay worked, play audio with fade
+          playAudioAndRedirect();
+        })
+        .catch(() => {
+          // Muted autoplay blocked, show overlay to require user click
+          overlay.style.display = 'block';
+        });
+    });
+
     overlay.addEventListener('click', playAudioAndRedirect);
 
-    // Optional: Also allow keyboard "Enter" key to trigger for accessibility
+    // Accessibility support: enter or space triggers play
     overlay.addEventListener('keydown', (e) => {
       if(e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
