@@ -211,10 +211,19 @@
   const audio = document.getElementById("spooky-audio");
   const overlay = document.getElementById("dark-overlay");
 
-  function runSpookyEffectOnce() {
+  let isRunning = false;
+
+  function startSpookyEffect() {
+    if (isRunning) return; // Prevent overlapping effects
+    isRunning = true;
+
     let isDark = false;
     let cycles = 0;
     const maxCycles = 9;
+
+    // Play the audio once
+    audio.currentTime = 0;
+    audio.play().catch(() => {});
 
     const interval = setInterval(() => {
       overlay.style.opacity = isDark ? '0' : '1';
@@ -224,15 +233,12 @@
       if (cycles >= maxCycles * 2) {
         clearInterval(interval);
         overlay.style.opacity = '0';
+        isRunning = false; // Allow it to be triggered again
       }
     }, 1000);
   }
 
-  window.addEventListener("click", () => {
-    runSpookyEffectOnce();
-    audio.currentTime = 0;
-    audio.play().catch(() => {});
-  }, { once: true });
+  window.addEventListener("click", startSpookyEffect);
   </script>
 </body>
 </html>
