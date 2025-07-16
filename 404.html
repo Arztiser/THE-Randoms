@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#E82B38" />
   <meta name="description" content="404 - Page not found" />
   <title>404 - THE Randoms</title>
@@ -22,6 +22,7 @@
       align-items: center;
       height: 100vh;
       text-align: center;
+      user-select: none; /* prevent accidental selection */
     }
 
     h1 {
@@ -40,40 +41,35 @@
   <h1>404</h1>
   <p>I Understand This Website Is Called <strong>THE Randoms</strong>, But We Don’t Just Have Random Links Or Codes For You To Find.</p>
 
-  <audio id="song404" src="audio/404.mp3" preload="auto"></audio>
+  <audio id="errorAudio" src="audio/404.mp3" preload="auto" muted></audio>
 
   <script>
-    const audio = document.getElementById('song404');
+    const audio = document.getElementById('errorAudio');
+    let played = false;
 
-    function playAudio() {
+    // Redirect after 5 seconds
+    setTimeout(() => {
+      window.location.href = '/';
+    }, 5000);
+
+    // Play audio on first interaction (click or touch)
+    function playAudioOnInteraction() {
+      if (played) return;
+      played = true;
       audio.muted = false;
-      audio.volume = 1;
       audio.play().catch(() => {
-        // Still blocked? Nothing else we can do silently.
+        // Audio play failed, likely because of restrictions, silently fail
       });
+      // Remove event listeners after first play
+      window.removeEventListener('click', playAudioOnInteraction);
+      window.removeEventListener('touchstart', playAudioOnInteraction);
     }
 
-    function onUserInteraction() {
-      playAudio();
-      window.removeEventListener('click', onUserInteraction);
-      window.removeEventListener('touchstart', onUserInteraction);
-    }
+    window.addEventListener('click', playAudioOnInteraction);
+    window.addEventListener('touchstart', playAudioOnInteraction);
 
-    window.onload = () => {
-      // Try autoplay first
-      playAudio();
-
-      // If still paused, listen for user interaction
-      if (audio.paused) {
-        window.addEventListener('click', onUserInteraction, { once: true });
-        window.addEventListener('touchstart', onUserInteraction, { once: true });
-      }
-
-      // Redirect after 5 seconds or when audio ends, whichever comes first
-      const redirect = () => { window.location.href = '/'; };
-      audio.addEventListener('ended', redirect);
-      setTimeout(redirect, 5000);
-    };
+    // Optional: try to play muted on load (most browsers block)
+    audio.play().catch(() => {});
   </script>
 </body>
 </html>
