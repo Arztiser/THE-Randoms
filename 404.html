@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="theme-color" content="#E82B38" />
   <meta name="description" content="404 - Page not found" />
   <title>404 - THE Randoms</title>
@@ -22,19 +22,30 @@
       align-items: center;
       height: 100vh;
       text-align: center;
-      user-select: none;
-      cursor: pointer; /* Make it obvious user can tap */
+      position: relative;
     }
 
     h1 {
       font-size: 160px;
       margin: 0;
+      user-select: none;
     }
 
     p {
       font-size: 24px;
       max-width: 600px;
       padding: 0 20px;
+      user-select: none;
+    }
+
+    #overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 10000;
+      background: transparent;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -42,35 +53,37 @@
   <h1>404</h1>
   <p>I Understand This Website Is Called <strong>THE Randoms</strong>, But We Don’t Just Have Random Links Or Codes For You To Find.</p>
 
+  <!-- Invisible big button -->
+  <div id="overlay" aria-label="Start audio" role="button" tabindex="0"></div>
+
   <audio id="errorAudio" src="audio/404.mp3" preload="auto"></audio>
 
   <script>
+    const overlay = document.getElementById('overlay');
     const audio = document.getElementById('errorAudio');
-    let played = false;
 
-    // Redirect after 5 seconds
-    setTimeout(() => {
-      window.location.href = '/';
-    }, 5000);
-
-    // Play audio on first tap/click on body
-    document.body.addEventListener('click', function handler() {
-      if (played) return;
-      played = true;
-
-      // Play audio on user interaction
+    function playAudioAndRedirect() {
       audio.play().catch(() => {
-        // Fail silently if still blocked
+        // ignore if play fails
       });
+      overlay.removeEventListener('click', playAudioAndRedirect);
+      overlay.style.display = 'none';
 
-      // Remove event listener after first use
-      document.body.removeEventListener('click', handler);
+      // Redirect after 5 seconds (adjust as needed)
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 5000);
+    }
+
+    overlay.addEventListener('click', playAudioAndRedirect);
+
+    // Optional: Also allow keyboard "Enter" key to trigger for accessibility
+    overlay.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        playAudioAndRedirect();
+      }
     });
-
-    // Optional: try play muted on load (some browsers allow muted autoplay)
-    audio.muted = true;
-    audio.play().catch(() => {});
-
   </script>
 </body>
 </html>
