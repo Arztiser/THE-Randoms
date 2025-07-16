@@ -1,0 +1,35 @@
+/* Default (fallback) */
+body {
+  background: white;
+  color: black;
+}
+
+/* Fourth of July */
+[data-holiday="fourth-of-july"] body {
+  background: linear-gradient(to bottom, #b22234, white, #3c3b6e);
+  color: white;
+}
+
+/* Christmas */
+[data-holiday="christmas"] body {
+  background-color: #0f5132;
+  color: #fff;
+}
+
+/* Halloween */
+[data-holiday="halloween"] body {
+  background-color: #000;
+  color: orange;
+}
+
+/* Easter */
+[data-holiday="easter"] body {
+  background-color: #ffebf2;
+  color: #6f42c1;
+}
+
+/* St. Patrick's Day */
+[data-holiday="st-patricks"] body {
+  background-color: #28a745;
+  color: #fff;
+}
