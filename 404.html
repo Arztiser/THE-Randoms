@@ -22,7 +22,8 @@
       align-items: center;
       height: 100vh;
       text-align: center;
-      user-select: none; /* prevent accidental selection */
+      user-select: none;
+      cursor: pointer; /* Make it obvious user can tap */
     }
 
     h1 {
@@ -41,7 +42,7 @@
   <h1>404</h1>
   <p>I Understand This Website Is Called <strong>THE Randoms</strong>, But We Don’t Just Have Random Links Or Codes For You To Find.</p>
 
-  <audio id="errorAudio" src="audio/404.mp3" preload="auto" muted></audio>
+  <audio id="errorAudio" src="audio/404.mp3" preload="auto"></audio>
 
   <script>
     const audio = document.getElementById('errorAudio');
@@ -52,24 +53,24 @@
       window.location.href = '/';
     }, 5000);
 
-    // Play audio on first interaction (click or touch)
-    function playAudioOnInteraction() {
+    // Play audio on first tap/click on body
+    document.body.addEventListener('click', function handler() {
       if (played) return;
       played = true;
-      audio.muted = false;
+
+      // Play audio on user interaction
       audio.play().catch(() => {
-        // Audio play failed, likely because of restrictions, silently fail
+        // Fail silently if still blocked
       });
-      // Remove event listeners after first play
-      window.removeEventListener('click', playAudioOnInteraction);
-      window.removeEventListener('touchstart', playAudioOnInteraction);
-    }
 
-    window.addEventListener('click', playAudioOnInteraction);
-    window.addEventListener('touchstart', playAudioOnInteraction);
+      // Remove event listener after first use
+      document.body.removeEventListener('click', handler);
+    });
 
-    // Optional: try to play muted on load (most browsers block)
+    // Optional: try play muted on load (some browsers allow muted autoplay)
+    audio.muted = true;
     audio.play().catch(() => {});
+
   </script>
 </body>
 </html>
