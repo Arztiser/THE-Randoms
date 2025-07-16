@@ -229,16 +229,9 @@
   }
 
   window.addEventListener("click", () => {
-    // Start spooky effect
     runSpookyEffectOnce();
-
-    // Play audio and loop it every 18 seconds
     audio.currentTime = 0;
     audio.play().catch(() => {});
-    setInterval(() => {
-      audio.currentTime = 0;
-      audio.play().catch(() => {});
-    }, 18000);
   }, { once: true });
   </script>
 </body>
