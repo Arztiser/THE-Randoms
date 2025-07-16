@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="robots" content="noindex, nofollow">
+  <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="theme-color" content="#E82B38" />
   <meta name="description" content="404 - Page not found" />
@@ -36,8 +36,36 @@
     }
   </style>
 </head>
-<body onload="setTimeout(() => window.location.href='/', 5000)">
+<body>
   <h1>404</h1>
   <p>I Understand This Website Is Called <strong>THE Randoms</strong>, But We Don’t Just Have Random Links Or Codes For You To Find.</p>
+
+  <audio id="song404" src="audio/404.mp3" preload="auto"></audio>
+
+  <script>
+    const audio = document.getElementById('song404');
+
+    function playAudioSilent() {
+      audio.play().catch(() => {
+        // Autoplay blocked; wait silently for user interaction to play
+        function onUserInteract() {
+          audio.play();
+          window.removeEventListener('click', onUserInteract);
+          window.removeEventListener('touchstart', onUserInteract);
+        }
+        window.addEventListener('click', onUserInteract);
+        window.addEventListener('touchstart', onUserInteract);
+      });
+    }
+
+    window.onload = () => {
+      playAudioSilent();
+
+      // Redirect home after 5 seconds or when audio ends
+      const redirectHome = () => window.location.href = '/';
+      audio.onended = redirectHome;
+      setTimeout(redirectHome, 9000);
+    };
+  </script>
 </body>
 </html>
