@@ -281,11 +281,14 @@
     failureAudio.currentTime = 0;
     grooveAudio.currentTime = 0;
 
-    // Play groove if applicable
-    if (input === "GROOVE" || normalizedInput === "GROOVE") {
-      grooveAudio.play();
-    } else {
-      successAudio.play();
+    if (input === "SPOOKY" || normalizedInput === "SPOOKY") {
+  spookyAudio.currentTime = 0;
+  spookyAudio.play();
+} else if (input === "GROOVE" || normalizedInput === "GROOVE") {
+  grooveAudio.currentTime = 0;
+  grooveAudio.play();
+} else {
+  successAudio.play();
     }
 
   } else {
