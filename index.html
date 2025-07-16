@@ -7,6 +7,7 @@
   <meta name="description" content="THE Randoms Is A Website That Lets You View And Do Random Things Such As Random Quizzes, Facts, Quotes, Numbers, And Letters." />
   <title>THE Randoms</title>
   <link rel="icon" type="image/png" href="./img/pfp.png" />
+  <link rel="stylesheet" href="holidays.css" />
   <link rel="manifest" href="/manifest.json" />
   <link rel="apple-touch-icon" sizes="192x192" href="/img/prfp.png" />
   <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet" />
@@ -236,6 +237,55 @@
   ]
 }
 </script>
-<script src="holiday-theme.js" defer></script>
+<script src="holidays.js" defer></script>
+<script>
+  (function() {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth(); // Jan=0
+    const date = today.getDate();
+
+    // Easter calculation for current year
+    function calculateEaster(y) {
+      let f = Math.floor,
+          G = y % 19,
+          C = f(y / 100),
+          H = (C - f(C / 4) - f((8 * C + 13) / 25) + 19 * G + 15) % 30,
+          I = H - f(H / 28) * (1 - f(29 / (H + 1)) * f((21 - G) / 11)),
+          J = (y + f(y / 4) + I + 2 - C + f(C / 4)) % 7,
+          L = I - J,
+          m = 3 + f((L + 40) / 44),
+          d = L + 28 - 31 * f(m / 4);
+      return new Date(y, m - 1, d);
+    }
+
+    const easter = calculateEaster(year);
+
+    // Clear any previous holiday classes
+    const holidays = ['fourth-july', 'easter', 'st-patricks', 'christmas', 'halloween'];
+    holidays.forEach(cls => document.documentElement.classList.remove(cls));
+
+    // Apply holiday classes based on today's date
+    if (month === 6 && date === 4) {
+      // July 4th
+      document.documentElement.classList.add('fourth-july');
+    } else if (
+      month === easter.getMonth() &&
+      date === easter.getDate()
+    ) {
+      // Easter Sunday
+      document.documentElement.classList.add('easter');
+    } else if (month === 2 && date === 17) {
+      // St. Patrick's Day - March 17
+      document.documentElement.classList.add('st-patricks');
+    } else if (month === 11 && date === 25) {
+      // Christmas - December 25
+      document.documentElement.classList.add('christmas');
+    } else if (month === 9 && date === 31) {
+      // Halloween - October 31
+      document.documentElement.classList.add('halloween');
+    }
+  })();
+</script>
 </body>
 </html>
