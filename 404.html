@@ -11,8 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     body {
-      margin: 0;
-      padding: 0;
+      margin: 0; padding: 0;
       font-family: 'Jersey 10', sans-serif;
       background-color: #fff;
       color: #000;
@@ -23,30 +22,19 @@
       height: 100vh;
       text-align: center;
       position: relative;
-    }
-
-    h1 {
-      font-size: 160px;
-      margin: 0;
       user-select: none;
     }
-
-    p {
-      font-size: 24px;
-      max-width: 600px;
-      padding: 0 20px;
-      user-select: none;
-    }
+    h1 { font-size: 160px; margin: 0; }
+    p { font-size: 24px; max-width: 600px; padding: 0 20px; }
 
     #overlay {
       position: fixed;
       top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
+      width: 100vw; height: 100vh;
       z-index: 10000;
       background: transparent;
       cursor: pointer;
-      display: none; /* hide initially */
+      display: none; /* hide by default */
     }
   </style>
 </head>
@@ -54,66 +42,68 @@
   <h1>404</h1>
   <p>I Understand This Website Is Called <strong>THE Randoms</strong>, But We Don’t Just Have Random Links Or Codes For You To Find.</p>
 
-  <!-- Invisible big button -->
-  <div id="overlay" aria-label="Start audio" role="button" tabindex="0"></div>
+  <div id="overlay" role="button" aria-label="Play audio" tabindex="0"></div>
 
-  <audio id="errorAudio" src="audio/404.mp3" preload="auto" ></audio>
+  <audio id="errorAudio" src="audio/404.mp3" preload="auto" volume="0"></audio>
 
   <script>
     const overlay = document.getElementById('overlay');
     const audio = document.getElementById('errorAudio');
 
-    // Fade in volume from 0 to 1 over duration (ms)
+    // Fade audio volume from 0 to 1 over duration (ms)
     function fadeInAudio(audio, duration = 2000) {
       audio.volume = 0;
       audio.play().catch(() => {});
       const step = 0.05;
-      const interval = duration / (1 / step);
+      const interval = duration * step;
       let volume = 0;
-      const fadeInterval = setInterval(() => {
+      const fade = setInterval(() => {
         volume += step;
-        if(volume >= 1) {
+        if (volume >= 1) {
           volume = 1;
-          clearInterval(fadeInterval);
+          clearInterval(fade);
         }
         audio.volume = volume;
       }, interval);
     }
 
+    // Play audio, fade in, then redirect after 8 seconds
     function playAudioAndRedirect() {
       fadeInAudio(audio);
-      overlay.removeEventListener('click', playAudioAndRedirect);
       overlay.style.display = 'none';
+      overlay.removeEventListener('click', playAudioAndRedirect);
+      overlay.removeEventListener('keydown', onKeyDown);
 
       setTimeout(() => {
         window.location.href = '/';
       }, 8000);
     }
 
-    // Try muted autoplay on load
-    window.addEventListener('load', () => {
-      audio.muted = true;
-      audio.play()
-        .then(() => {
-          audio.pause();
-          audio.muted = false;
-          // If muted autoplay worked, play audio with fade
-          playAudioAndRedirect();
-        })
-        .catch(() => {
-          // Muted autoplay blocked, show overlay to require user click
-          overlay.style.display = 'block';
-        });
-    });
-
-    overlay.addEventListener('click', playAudioAndRedirect);
-
-    // Accessibility support: enter or space triggers play
-    overlay.addEventListener('keydown', (e) => {
-      if(e.key === 'Enter' || e.key === ' ') {
+    // Handle keyboard enter/space for accessibility
+    function onKeyDown(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         playAudioAndRedirect();
       }
+    }
+
+    window.addEventListener('load', () => {
+      // Try to play muted on load
+      audio.muted = true;
+      audio.play()
+        .then(() => {
+          // Muted autoplay worked - pause and unmute to play with fade
+          audio.pause();
+          audio.currentTime = 0;
+          audio.muted = false;
+          playAudioAndRedirect();
+        })
+        .catch(() => {
+          // Autoplay failed - show overlay for user interaction
+          overlay.style.display = 'block';
+          overlay.addEventListener('click', playAudioAndRedirect);
+          overlay.addEventListener('keydown', onKeyDown);
+        });
     });
   </script>
 </body>
