@@ -57,17 +57,36 @@
     const overlay = document.getElementById('overlay');
     const audio = document.getElementById('errorAudio');
 
-    overlay.addEventListener('click', () => {
+    let redirected = false;
+
+    // Redirect function
+    function redirect() {
+      if (!redirected) {
+        redirected = true;
+        window.location.href = '/';
+      }
+    }
+
+    // Redirect after 5 seconds if no click
+    const autoRedirectTimeout = setTimeout(redirect, 5000);
+
+    function playAndRedirect() {
+      clearTimeout(autoRedirectTimeout);  // Cancel auto redirect
       audio.play().catch(() => {});
+
       overlay.style.display = 'none';
-    });
+
+      // Redirect after audio finishes (approx 8 seconds)
+      setTimeout(redirect, 8000);
+    }
+
+    overlay.addEventListener('click', playAndRedirect);
 
     // Accessibility: allow keyboard activation with Enter or Space
     overlay.addEventListener('keydown', (e) => {
-      if(e.key === 'Enter' || e.key === ' ') {
+      if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
-        audio.play().catch(() => {});
-        overlay.style.display = 'none';
+        playAndRedirect();
       }
     });
   </script>
