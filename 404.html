@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="theme-color" content="#E82B38" />
   <meta name="description" content="404 - Page not found" />
-  <title>404 | THE Randoms</title>
+  <title>404 - THE Randoms</title>
   <link rel="icon" href="/img/pfp.png" />
   <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@400;700&display=swap" rel="stylesheet" />
   <style>
@@ -45,26 +45,34 @@
   <script>
     const audio = document.getElementById('song404');
 
-    function playAudioSilent() {
+    function playAudio() {
+      audio.muted = false;
+      audio.volume = 1;
       audio.play().catch(() => {
-        // Autoplay blocked; wait silently for user interaction to play
-        function onUserInteract() {
-          audio.play();
-          window.removeEventListener('click', onUserInteract);
-          window.removeEventListener('touchstart', onUserInteract);
-        }
-        window.addEventListener('click', onUserInteract);
-        window.addEventListener('touchstart', onUserInteract);
+        // Still blocked? Nothing else we can do silently.
       });
     }
 
-    window.onload = () => {
-      playAudioSilent();
+    function onUserInteraction() {
+      playAudio();
+      window.removeEventListener('click', onUserInteraction);
+      window.removeEventListener('touchstart', onUserInteraction);
+    }
 
-      // Redirect home after 5 seconds or when audio ends
-      const redirectHome = () => window.location.href = '/';
-      audio.onended = redirectHome;
-      setTimeout(redirectHome, 9000);
+    window.onload = () => {
+      // Try autoplay first
+      playAudio();
+
+      // If still paused, listen for user interaction
+      if (audio.paused) {
+        window.addEventListener('click', onUserInteraction, { once: true });
+        window.addEventListener('touchstart', onUserInteraction, { once: true });
+      }
+
+      // Redirect after 5 seconds or when audio ends, whichever comes first
+      const redirect = () => { window.location.href = '/'; };
+      audio.addEventListener('ended', redirect);
+      setTimeout(redirect, 5000);
     };
   </script>
 </body>
