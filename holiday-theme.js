@@ -19,7 +19,7 @@ function getThemeClass() {
   const year = now.getFullYear();
 
   // Fourth of July: July 3-5 inclusive
-  if (now.getMonth() === 6 && now.getDate() >= 10 && now.getDate() <= 15) {
+  if (now.getMonth() === 6 && now.getDate() >= 3 && now.getDate() <= 5) {
     return "fourth-of-july";
   }
 
