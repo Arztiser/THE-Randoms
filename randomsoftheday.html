@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Randoms Of The Day</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#E82B38" />
+  <title>Randoms Of The Day</title>
   <link rel="icon" href="/img/pfp.png" />
   <link href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap" rel="stylesheet" />
   <style>
@@ -13,261 +12,132 @@
       margin: 0;
       background: #fff;
       color: #000;
-      text-align: center;
-    }
-
-    nav {
-      background-color: #E82B38;
-      padding: 10px 0;
-    }
-
-    nav a {
-      color: #fff;
-      margin: 0 15px;
-      text-decoration: none;
-      font-size: 20px;
-    }
-
-    .topnav {
-      overflow: hidden;
-      background-color: #333;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: space-between;
-      padding: 0 16px;
-      height: 60px;
-    }
+      padding: 2rem;
+    }header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #E82B38;
+  color: white;
+}
 
-    .topnav h1 {
-      margin: 0;
-      font-size: 24px;
-      color: #f2f2f2;
-    }
+.accordion-menu {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
 
-    .menu-icon {
-      font-size: 30px;
-      color: #f2f2f2;
-      cursor: pointer;
-    }
+.card {
+  border: 2px solid #000;
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+  max-width: 600px;
+  width: 100%;
+  background: #f9f9f9;
+  box-shadow: 4px 4px 0 #000;
+}
 
-    .topnav-right {
-      display: none;
-      position: fixed;
-      top: 60px;
-      left: 0;
-      right: 0;
-      background-color: #333;
-      height: calc(100vh - 60px);
-      flex-direction: column;
-      overflow-y: auto;
-      z-index: 999;
-    }
+.card h2 {
+  margin-top: 0;
+}
 
-    .topnav.active + .topnav-right {
-      display: flex;
-    }
+.card p {
+  margin: 0.5rem 0;
+}
 
-    body.menu-open {
-      overflow: hidden;
-    }
+.button-row {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  justify-content: center;
+}
 
-    .accordion-toggle {
-      background: none;
-      color: #f2f2f2;
-      padding: 14px;
-      text-align: left;
-      font-size: 24px;
-      border: none;
-      outline: none;
-      cursor: pointer;
-      width: 100%;
-      font-family: 'Jersey 10', sans-serif;
-    }
+button {
+  font-family: 'Jersey 10', sans-serif;
+  padding: 0.5rem 1rem;
+  font-size: 1.2rem;
+  border: 2px solid #000;
+  background: #fff;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 #000;
+}
 
-    .accordion-content {
-      display: none;
-      flex-direction: column;
-      background-color: #444;
-    }
-
-    .accordion-content a {
-      padding-left: 28px;
-      padding-top: 10px;
-      padding-bottom: 10px;
-      border-top: 1px solid #555;
-      font-size: 20px;
-      color: #f2f2f2;
-      text-decoration: none;
-    }
-
-    .accordion-section {
-      display: flex;
-      flex-direction: column;
-      border-top: 1px solid #444;
-    }
-
-    .accordion-section.open .accordion-content {
-      display: flex;
-    }
-
-    #card {
-      margin: 20px auto;
-      padding: 20px;
-      border: 4px dashed #E82B38;
-      border-radius: 16px;
-      max-width: 800px;
-      font-size: 22px;
-      line-height: 1.6;
-      background-color: #fafafa;
-    }
-
-    .button-group {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      margin-top: 20px;
-      margin-bottom: 40px;
-    }
-
-    button {
-      font-family: 'Jersey 10', sans-serif;
-      font-size: 20px;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 12px;
-      background-color: #E82B38;
-      color: white;
-      cursor: pointer;
-      transition: background 0.2s ease;
-    }
-
-    button:hover {
-      background-color: #c91d2a;
-    }
   </style>
 </head>
 <body>
   <header>
-    <div class="topnav">
-      <h1><a class="logo" href="/">THE Randoms</a></h1>
-      <span class="menu-icon" onclick="toggleMenu()">&#9776;</span>
+    <h1 style="margin: 0">Randoms Of The Day</h1>
+    <div class="accordion-menu">
+      <!-- Add your existing accordion menu component here -->
     </div>
-
-    <div class="topnav-right">
-      <div class="accordion-section">
-        <button class="accordion-toggle">Jokes & Fun</button>
-        <div class="accordion-content">
-          <a href="jokes.html">Jokes</a>
-          <a href="memes.html">Memes</a>
-          <a href="nfl.html">NFL</a>
-          <a href="quizzes.html">Quizzes</a>
-        </div>
-      </div>
-
-      <div class="accordion-section">
-        <button class="accordion-toggle">Knowledge & Facts</button>
-        <div class="accordion-content">
-          <a href="advice.html">Advice</a>
-          <a href="facts.html">Facts</a>
-          <a href="people.html">People</a>
-          <a href="quotes.html">Quotes</a>
-        </div>
-      </div>
-
-      <div class="accordion-section">
-        <button class="accordion-toggle">Music & Videos</button>
-        <div class="accordion-content">
-          <a href="songs.html">Songs</a>
-          <a href="videos.html">Videos</a>
-        </div>
-      </div>
-
-      <div class="accordion-section">
-        <button class="accordion-toggle">Words, Letters & Numbers</button>
-        <div class="accordion-content">
-          <a href="letters.html">Letters</a>
-          <a href="numbers.html">Numbers</a>
-          <a href="words.html">Words</a>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <h1>Randoms Of The Day</h1>
-
-  <div id="card">
-    Loading your daily randoms...
-  </div>
-
-  <div class="button-group">
-    <button onclick="downloadCard()">Download Card as Image</button>
-    <button onclick="copyCardText()">Copy Card Text</button>
-  </div>
-
-  <script>
-    function toggleMenu() {
-      const topnav = document.querySelector('.topnav');
-      const body = document.body;
-      topnav.classList.toggle('active');
-      body.classList.toggle('menu-open');
+  </header>  <div class="card" id="randomsCard">
+    <h2>Today's Picks:</h2>
+    <p id="meme"></p>
+    <p id="quote"></p>
+    <p id="word"></p>
+    <p id="video"></p>
+    <p id="fact"></p>
+    <p id="joke"></p>
+    <p id="advice"></p>
+    <p id="number"></p>
+    <p id="letter"></p>
+  </div>  <div class="button-row">
+    <button onclick="downloadCard()">📥 Download Card as Image</button>
+    <button onclick="copyCardText()">📋 Copy Card Text</button>
+  </div>  <script>
+    async function fetchJSON(url) {
+      const res = await fetch(url);
+      return res.json();
     }
 
-    document.querySelectorAll('.accordion-toggle').forEach(toggle => {
-      toggle.addEventListener('click', () => {
-        const parent = toggle.parentElement;
-        document.querySelectorAll('.accordion-section').forEach(section => {
-          if (section !== parent) {
-            section.classList.remove('open');
-          }
-        });
-        parent.classList.toggle('open');
+    async function generateRandoms() {
+      const memeSubreddits = ["memes", "dankmemes", "funny"];
+      const randomSub = memeSubreddits[Math.floor(Math.random() * memeSubreddits.length)];
+      const memeRes = await fetchJSON(`https://www.reddit.com/r/${randomSub}/hot.json?limit=100`);
+      const memePost = memeRes.data.children.find(post => post.data.post_hint === "image");
+
+      const quote = await fetchJSON("https://api.quotable.io/random");
+      const word = await fetchJSON("https://random-word-api.vercel.app/api?words=1");
+      const joke = await fetchJSON("https://official-joke-api.appspot.com/random_joke");
+      const advice = await fetchJSON("https://api.adviceslip.com/advice");
+      const fact = await fetchJSON("https://uselessfacts.jsph.pl/random.json?language=en");
+      const number = Math.floor(Math.random() * 100);
+      const letter = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+
+      const videoRes = await fetchJSON(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=random&key=AIzaSyA7B_YMNe5T-rrVRuEbcZKcY9w50EWCeVk&type=video&maxResults=10`);
+      const video = videoRes.items[0];
+
+      document.getElementById("meme").innerHTML = `🖼️ Meme: <a href="https://reddit.com${memePost.data.permalink}" target="_blank">${memePost.data.title}</a>`;
+      document.getElementById("quote").textContent = `💬 Quote: "${quote.content}" - ${quote.author}`;
+      document.getElementById("word").textContent = `📝 Word: ${word[0]}`;
+      document.getElementById("joke").textContent = `😂 Joke: ${joke.setup} — ${joke.punchline}`;
+      document.getElementById("advice").textContent = `🧠 Advice: ${advice.slip.advice}`;
+      document.getElementById("fact").textContent = `📚 Fact: ${fact.text}`;
+      document.getElementById("number").textContent = `🔢 Number: ${number}`;
+      document.getElementById("letter").textContent = `🔠 Letter: ${letter}`;
+      document.getElementById("video").innerHTML = `🎥 Video: <a href="https://www.youtube.com/watch?v=${video.id.videoId}" target="_blank">${video.snippet.title}</a>`;
+    }
+
+    function copyCardText() {
+      const text = document.getElementById("randomsCard").innerText;
+      navigator.clipboard.writeText(text);
+    }
+
+    function downloadCard() {
+      html2canvas(document.getElementById("randomsCard")).then(canvas => {
+        const link = document.createElement("a");
+        link.download = "randoms_card.png";
+        link.href = canvas.toDataURL();
+        link.click();
       });
-    });
-
-    async function fetchRandoms() {
-      const [word, joke, quote, advice, fact, letter, number, meme, video] = await Promise.all([
-        fetch('https://random-word-api.vercel.app/api?words=1').then(r => r.json()).then(d => d[0]),
-        fetch('https://v2.jokeapi.dev/joke/Any?type=single').then(r => r.json()).then(d => d.joke),
-        fetch('https://api.quotable.io/random').then(r => r.json()).then(d => `"${d.content}" – ${d.author}`),
-        fetch('https://api.adviceslip.com/advice').then(r => r.json()).then(d => d.slip.advice),
-        fetch('https://uselessfacts.jsph.pl/random.json?language=en').then(r => r.json()).then(d => d.text),
-        Promise.resolve(String.fromCharCode(65 + Math.floor(Math.random() * 26))),
-        Promise.resolve(Math.floor(Math.random() * 1000)),
-        fetchMeme(),
-        fetchYouTube()
-      ]);
-
-      const card = document.getElementById('card');
-      card.innerHTML = `
-        <strong>Word:</strong> ${word}<br>
-        <strong>Letter:</strong> ${letter}<br>
-        <strong>Number:</strong> ${number}<br>
-        <strong>Joke:</strong> ${joke}<br>
-        <strong>Quote:</strong> ${quote}<br>
-        <strong>Advice:</strong> ${advice}<br>
-        <strong>Fact:</strong> ${fact}<br>
-        <strong>Meme:</strong><br><img src="${meme}" alt="Meme" style="max-width:100%; border-radius: 10px;" /><br>
-        <strong>Video:</strong> <a href="${video}" target="_blank">${video}</a>
-      `;
     }
 
-    async function fetchMeme() {
-      const subreddits = ["memes", "dankmemes", "funny"];
-      const randomSub = subreddits[Math.floor(Math.random() * subreddits.length)];
-      const response = await fetch(`https://www.reddit.com/r/${randomSub}/hot.json?limit=1`);
-      const data = await response.json();
-      return data.data.children[0].data.url;
-    }
-
-    async function fetchYouTube() {
-      const query = 'random';
-      const apiKey = 'AIzaSyA7B_YMNe5T-rrVRuEbcZKcY9w50EWCeVk';
-      const response = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${query}&key=${apiKey}`);
-      const data = await response.json();
-      return `https://www.youtube.com/watch?v=${data.items[0].id.videoId}`;
-    }
-
-    fetchRandoms();
-  </script>
-</body>
+    window.onload = () => generateRandoms();
+  </script>  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script></body>
 </html>
