@@ -221,12 +221,22 @@
       const response = await fetch("https://api.truthordarebot.xyz/api/wyr");
       const data = await response.json();
 
-      // Capitalize first letter of each word in both options
-      document.getElementById("option1").textContent = toTitleCase(data.option1);
-      document.getElementById("option2").textContent = toTitleCase(data.option2);
+      // Remove "Would you rather " from start, split by " or "
+      let questionText = data.question.replace(/^Would you rather\s*/i, '');
+      let options = questionText.split(/\s+or\s+/i);
+
+      // If API response format unexpected, fallback:
+      if (options.length < 2) {
+        options = [questionText, "Can't decide"];
+      }
+
+      document.getElementById("option1").textContent = toTitleCase(options[0].trim());
+      document.getElementById("option2").textContent = toTitleCase(options[1].trim().replace(/\?$/, ''));
+
     } catch (error) {
       document.getElementById("option1").textContent = "Error Loading Option 1";
       document.getElementById("option2").textContent = "Error Loading Option 2";
+      console.error("API load error:", error);
     }
   }
 
