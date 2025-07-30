@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Would You Rather - THE Randoms</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Jersey 10', sans-serif;
+      background-color: #111;
+      color: white;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    h1 {
+      margin-top: 20px;
+      font-size: 48px;
+    }
+
+    #wyr-container {
+      margin: 40px auto;
+      padding: 20px;
+      max-width: 500px;
+      background-color: #1a1a1a;
+      border-radius: 20px;
+      box-shadow: 0 0 10px #e82b38;
+    }
+
+    .wyr-button {
+      display: block;
+      width: 80%;
+      margin: 15px auto;
+      padding: 15px;
+      font-size: 24px;
+      background-color: #e82b38;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      text-transform: capitalize;
+      transition: background-color 0.3s ease;
+    }
+
+    .wyr-button:hover {
+      background-color: #c61d2a;
+    }
+
+    #new-wyr {
+      margin-top: 30px;
+      padding: 12px 25px;
+      font-size: 20px;
+      background-color: transparent;
+      border: 2px solid #e82b38;
+      color: #e82b38;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    #new-wyr:hover {
+      background-color: #e82b38;
+      color: white;
+    }
+
+    /* Accordion Styles */
+    .accordion {
+      background-color: #222;
+      color: white;
+      cursor: pointer;
+      padding: 18px;
+      width: 100%;
+      border: none;
+      text-align: left;
+      outline: none;
+      font-size: 20px;
+      transition: 0.3s;
+    }
+
+    .accordion:hover {
+      background-color: #333;
+    }
+
+    .panel {
+      padding: 0 18px;
+      display: none;
+      background-color: #333;
+      overflow: hidden;
+    }
+
+    .menu {
+      margin: 20px;
+    }
+
+    a {
+      color: #e82b38;
+      text-decoration: none;
+      font-size: 18px;
+      display: block;
+      margin: 10px 0;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Would You Rather</h1>
+
+  <!-- Accordion Menu -->
+  <button class="accordion">☰ Menu</button>
+  <div class="panel menu">
+    <a href="/">Home</a>
+    <a href="/facts">Facts</a>
+    <a href="/easter-eggs">Easter Eggs</a>
+    <a href="/wyr">Would You Rather</a>
+    <!-- Add more links as needed -->
+  </div>
+
+  <!-- Question Container -->
+  <div id="wyr-container">
+    <p>Loading question...</p>
+  </div>
+
+  <button id="new-wyr">New Question</button>
+
+  <script>
+    // Capitalize each word
+    function capitalizeWords(str) {
+      return str.replace(/\w\S*/g, w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
+    }
+
+    // Fetch and display question
+    async function fetchWYR() {
+      const container = document.getElementById('wyr-container');
+      try {
+        const res = await fetch('https://api.truthordarebot.xyz/v1/wyr');
+        const data = await res.json();
+        const optionA = capitalizeWords(data.questions[0]);
+        const optionB = capitalizeWords(data.questions[1]);
+
+        container.innerHTML = `
+  <p>Would You Rather...</p>
+  <button class="wyr-button" onclick="fetchWYR()">A: ${optionA}</button>
+  <button class="wyr-button" onclick="fetchWYR()">B: ${optionB}</button>
+`;
+      } catch (err) {
+        container.innerHTML = '<p>Could not load question. Try again later.</p>';
+        console.error(err);
+      }
+    }
+
+    // Load first question
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchWYR();
+      document.getElementById('new-wyr').addEventListener('click', fetchWYR);
+
+      // Accordion logic
+      const acc = document.querySelector('.accordion');
+      const panel = document.querySelector('.panel');
+      acc.addEventListener('click', () => {
+        panel.style.display = panel.style.display === "block" ? "none" : "block";
+      });
+    });
+  </script>
+</body>
+</html>
