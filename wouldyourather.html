@@ -203,16 +203,16 @@
 
   <div class="container">
     <h1>Would You Rather</h1>
-    <p id="question">Loading question...</p>
+    <p id="question">Loading Question...</p>
     <div class="button-container">
-      <button class="option-button" id="option1">Loading option 1...</button>
-      <button class="option-button" id="option2">Loading option 2...</button>
+      <button class="option-button" id="option1">Loading Option...</button>
+      <button class="option-button" id="option2">Loading Option...</button>
     </div>
   </div>
 
   <script>
     async function loadQuestion() {
-      const response = await fetch("https://truthordarebot.xyz/api/wyr")
+      const response = await fetch ("https://api.truthordarebot.xyz/api/wyr")
       const data = await response.json();
       
       document.getElementById("question").textContent = data.question;
