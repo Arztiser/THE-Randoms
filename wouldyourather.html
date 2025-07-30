@@ -212,7 +212,7 @@
 
   <script>
     async function loadQuestion() {
-      const response = await fetch("https://api.some-random-api.com/would-you-rather");
+      const response = await fetch("https://truthordarebot.xyz/api/wyr")
       const data = await response.json();
       
       document.getElementById("question").textContent = data.question;
