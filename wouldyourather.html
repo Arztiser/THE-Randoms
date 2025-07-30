@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#E82B38" />
   <meta name="description" content="THE Randoms Is A Website That Lets You View And Do Random Things Such As Random Quizzes, Facts, Quotes, Numbers, And Letters." />
+  <meta property="og:image" content="https://therandoms.pages.dev/img/pofp.png" />
   <title>Would You Rather - THE Randoms</title>
   <link rel="icon" type="image/png" href="./img/pfp.png" />
   <link rel="manifest" href="/manifest.json" />
@@ -17,11 +18,10 @@
       font-size: 30px;
       margin: 0;
       padding: 0;
-      background-color: #222;
-      color: #f2f2f2;
+      background-color: #fff; /* White background */
+      color: #333; /* Dark text for contrast */
     }
 
-    /* Topnav & Accordion Styles */
     .topnav {
       overflow: hidden;
       background-color: #333;
@@ -104,63 +104,17 @@
       display: flex;
     }
 
-    .topnav a:hover {
-      background-color: #ddd;
-      color: black;
-    }
-
-    .topnav a.active {
-      background-color: #E82B38;
-      color: white;
-    }
-
-    /* Page content styling */
-    .content {
+    .container {
       margin: 20px;
       text-align: center;
     }
 
     .content h1 {
-      margin-bottom: 30px;
-      font-weight: 700;
-      letter-spacing: 1.2px;
+      margin-bottom: 20px;
     }
 
-    #question {
-      margin-bottom: 40px;
-      font-weight: 500;
-      font-size: 28px;
-      min-height: 70px; /* prevent jump when loading */
-    }
-
-    /* Buttons container for spacing */
-    #buttons {
-      display: flex;
-      justify-content: center;
-      gap: 30px; /* spacing between buttons */
-      flex-wrap: wrap;
-    }
-
-    button {
-      font-family: 'Jersey 10', sans-serif;
-      text-transform: uppercase;
-      font-size: 22px;
-      padding: 14px 30px;
-      cursor: pointer;
-      border: none;
-      border-radius: 8px;
-      background-color: #E82B38;
-      color: white;
-      font-weight: 700;
-      min-width: 180px;
-      transition: background-color 0.25s ease, transform 0.15s ease;
-      box-shadow: 0 4px 12px rgba(232, 43, 56, 0.5);
-    }
-
-    button:hover {
-      background-color: #c7232c;
-      transform: translateY(-3px);
-      box-shadow: 0 6px 16px rgba(199, 35, 44, 0.7);
+    .content p {
+      line-height: 1.5;
     }
 
     .logo {
@@ -171,7 +125,34 @@
     .logo:hover {
       text-decoration: none;
     }
+
+    .button-container {
+      margin-top: 20px;
+    }
+
+    .option-button {
+      font-family: 'Jersey 10', sans-serif;
+      margin: 10px;
+      padding: 12px 24px;
+      font-size: 20px;
+      font-weight: 600;
+      background-color: #E82B38;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: all 0.2s ease-in-out;
+    }
+
+    .option-button:hover {
+      background-color: #c7232c;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    }
+
   </style>
+
 </head>
 <body>
   <header>
@@ -220,16 +201,30 @@
     </div>
   </header>
 
-  <main class="content">
+  <div class="container">
     <h1>Would You Rather</h1>
-    <div id="question">Loading question...</div>
-    <div id="buttons">
-      <button id="option1">Loading...</button>
-      <button id="option2">Loading...</button>
+    <p id="question">Loading question...</p>
+    <div class="button-container">
+      <button class="option-button" id="option1">Loading option 1...</button>
+      <button class="option-button" id="option2">Loading option 2...</button>
     </div>
-  </main>
+  </div>
 
   <script>
+    async function loadQuestion() {
+      const response = await fetch("https://api.some-random-api.com/would-you-rather");
+      const data = await response.json();
+      
+      document.getElementById("question").textContent = data.question;
+      document.getElementById("option1").textContent = data.option1;
+      document.getElementById("option2").textContent = data.option2;
+    }
+
+    document.getElementById("option1").addEventListener("click", loadQuestion);
+    document.getElementById("option2").addEventListener("click", loadQuestion);
+
+    window.onload = loadQuestion;
+
     function toggleMenu() {
       const topnav = document.querySelector('.topnav');
       const body = document.body;
@@ -248,50 +243,7 @@
         parent.classList.toggle('open');
       });
     });
-
-    const questionEl = document.getElementById('question');
-    const option1Btn = document.getElementById('option1');
-    const option2Btn = document.getElementById('option2');
-
-    async function fetchQuestion() {
-      questionEl.textContent = "Loading question...";
-      option1Btn.textContent = "Loading...";
-      option2Btn.textContent = "Loading...";
-      try {
-        const res = await fetch('https://api.truthordarebot.xyz/api/wyr');
-        const data = await res.json();
-
-        // Show question text once only
-        questionEl.textContent = toTitleCase(data.question);
-
-        // Split question on "or" to get the two options
-        const choices = data.question.split(/\bor\b/i).map(c => c.trim());
-
-        if (choices.length === 2) {
-          option1Btn.textContent = toTitleCase(choices[0]);
-          option2Btn.textContent = toTitleCase(choices[1]);
-        } else {
-          // fallback if no "or" found
-          option1Btn.textContent = "Option 1";
-          option2Btn.textContent = "Option 2";
-        }
-      } catch {
-        questionEl.textContent = "Failed to load question. Try again.";
-        option1Btn.textContent = "Option 1";
-        option2Btn.textContent = "Option 2";
-      }
-    }
-
-    function toTitleCase(str) {
-      return str.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase());
-    }
-
-    // Clicking either button fetches new question
-    option1Btn.addEventListener('click', fetchQuestion);
-    option2Btn.addEventListener('click', fetchQuestion);
-
-    // Initial load
-    fetchQuestion();
   </script>
+
 </body>
 </html>
