@@ -1,249 +1,308 @@
 <!DOCTYPE html>
-<html lang="en">  
-<head>  
-    <meta charset="UTF-8">  
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-    <meta name="theme-color" content="#E82B38">  
-    <meta name="description" content="Would You Rather - THE Randoms">  
-    <title>Would You Rather - THE Randoms</title>  
-    <link rel="icon" type="image/png" href="./img/pfp.png">  
-    <link rel="stylesheet" type="text/css" href="https://therandoms.pages.dev/css/styles.css">  
-    <link rel="preconnect" href="https://fonts.googleapis.com">  
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>  
-    <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">  
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#E82B38" />
+  <meta name="description" content="THE Randoms Is A Website That Lets You View And Do Random Things Such As Random Quizzes, Facts, Quotes, Numbers, And Letters." />
+  <title>Would You Rather - THE Randoms</title>
+  <link rel="icon" type="image/png" href="./img/pfp.png" />
+  <link rel="stylesheet" type="text/css" href="https://therandoms.pages.dev/css/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet" />
 
-    <style>
-        body {
-            font-family: 'Jersey 10', sans-serif;
-            font-size: 30px;
-            margin: 0;
-            padding: 0;
-            background-color: #111;
-            color: white;
-            text-align: center;
-        }
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Jersey 10', sans-serif;
+      font-size: 30px;
+      background-color: #222;
+      color: #f2f2f2;
+    }
 
-        .topnav {
-            overflow: hidden;
-            background-color: #333;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 16px;
-            height: 60px;
-        }
+    /* Topnav & Accordion Styles */
+    .topnav {
+      overflow: hidden;
+      background-color: #333;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      height: 60px;
+    }
 
-        .topnav h1 {
-            margin: 0;
-            font-size: 24px;
-            color: #f2f2f2;
-        }
+    .topnav h1 {
+      margin: 0;
+      font-size: 24px;
+      color: #f2f2f2;
+    }
 
-        .topnav .menu-icon {
-            display: block;
-            font-size: 30px;
-            color: #f2f2f2;
-            cursor: pointer;
-            margin-left: auto;
-        }
+    .topnav .menu-icon {
+      display: block; /* Show hamburger on all screen sizes */
+      font-size: 30px;
+      color: #f2f2f2;
+      cursor: pointer;
+      margin-left: auto;
+    }
 
-        .topnav-right {
-            display: none;
-            position: fixed;
-            top: 60px;
-            right: 0;
-            background-color: #333;
-            width: 100%;
-            height: 100vh;
-            flex-direction: column;
-            justify-content: flex-start;
-            z-index: 999;
-            overflow-y: auto;
-        }
+    .topnav-right {
+      display: none;
+      position: fixed;
+      top: 60px;
+      right: 0;
+      background-color: #333;
+      width: 100%;
+      height: 100vh;
+      flex-direction: column;
+      justify-content: flex-start;
+      z-index: 999;
+      overflow-y: auto;
+    }
 
-        .topnav.active .topnav-right {
-            display: flex;
-        }
+    .topnav.active .topnav-right {
+      display: flex;
+    }
 
-        body.menu-open {
-            overflow: hidden;
-        }
+    body.menu-open {
+      overflow: hidden;
+    }
 
-        .accordion-toggle {
-            background: none;
-            color: #f2f2f2;
-            padding: 14px;
-            text-align: left;
-            font-size: 24px;
-            border: none;
-            outline: none;
-            cursor: pointer;
-            width: 100%;
-            font-family: 'Jersey 10', sans-serif;
-        }
+    .accordion-toggle {
+      background: none;
+      color: #f2f2f2;
+      padding: 14px;
+      text-align: left;
+      font-size: 24px;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      width: 100%;
+      font-family: 'Jersey 10', sans-serif;
+    }
 
-        .accordion-content {
-            display: none;
-            flex-direction: column;
-            background-color: #444;
-        }
+    .accordion-content {
+      display: none;
+      flex-direction: column;
+      background-color: #444;
+    }
 
-        .accordion-content a {
-            padding-left: 28px;
-            padding-top: 10px;
-            padding-bottom: 10px;
-            border-top: 1px solid #555;
-            font-size: 20px;
-            color: #f2f2f2;
-            text-decoration: none;
-        }
+    .accordion-content a {
+      padding-left: 28px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      border-top: 1px solid #555;
+      font-size: 20px;
+      color: #f2f2f2;
+      text-decoration: none;
+    }
 
-        .accordion-section {
-            display: flex;
-            flex-direction: column;
-            border-top: 1px solid #444;
-        }
+    .accordion-section {
+      display: flex;
+      flex-direction: column;
+      border-top: 1px solid #444;
+    }
 
-        .accordion-section.open .accordion-content {
-            display: flex;
-        }
+    .accordion-section.open .accordion-content {
+      display: flex;
+    }
 
-        .container {
-            margin: 40px 20px;
-        }
+    .topnav a:hover {
+      background-color: #ddd;
+      color: black;
+    }
 
-        .question {
-            margin-bottom: 30px;
-            font-size: 32px;
-        }
+    .topnav a.active {
+      background-color: #E82B38;
+      color: white;
+    }
 
-        .btn {
-            padding: 14px 28px;
-            margin: 12px;
-            font-size: 24px;
-            background-color: #E82B38;
-            color: white;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-        }
+    /* Container and content styling */
+    .container {
+      margin: 20px;
+      text-align: center;
+    }
 
-        .btn:hover {
-            background-color: #b91f2c;
-        }
+    .content {
+      background-color: #fff;
+      color: #000;
+      padding: 30px 20px;
+      border-radius: 12px;
+      max-width: 700px;
+      margin: 0 auto;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    }
 
-        .logo {
-            color: #f2f2f2;
-            text-decoration: none;
-        }
+    h1 {
+      margin-bottom: 30px;
+      font-size: 42px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+    }
 
-        .logo:hover {
-            text-decoration: none;
-        }
-    </style>
+    #question {
+      font-size: 28px;
+      margin-bottom: 40px;
+      font-weight: 500;
+    }
+
+    button {
+      font-family: 'Jersey 10', sans-serif;
+      text-transform: uppercase;
+      font-size: 22px;
+      padding: 14px 30px;
+      margin: 0 15px;
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+      background-color: #E82B38;
+      color: white;
+      font-weight: 700;
+      transition: background-color 0.25s ease, transform 0.15s ease;
+      min-width: 140px;
+      box-shadow: 0 4px 12px rgba(232, 43, 56, 0.5);
+    }
+
+    button:hover {
+      background-color: #c7232c;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(199, 35, 44, 0.7);
+    }
+
+    /* Logo styling */
+    .logo {
+      color: #f2f2f2;
+      text-decoration: none;
+    }
+
+    .logo:visited,
+    .logo:active,
+    .logo:hover {
+      text-decoration: none;
+    }
+  </style>
 </head>
-
 <body>
-    <header>
-        <div class="topnav">
-            <h1><a class="logo" href="/">THE Randoms</a></h1>
-            <span class="menu-icon" onclick="toggleMenu()">&#9776;</span>
-            <div class="topnav-right">
-                <div class="accordion-section">
-                    <button class="accordion-toggle">Jokes & Fun</button>
-                    <div class="accordion-content">
-                        <a href="jokes.html">Jokes</a>
-                        <a href="memes.html">Memes</a>
-                        <a href="nfl.html">NFL</a>
-                        <a href="quizzes.html">Quizzes</a>
-                    </div>
-                </div>
+  <header>
+    <div class="topnav">
+      <h1><a href="/" class="logo">THE Randoms</a></h1>
+      <span class="menu-icon" onclick="toggleMenu()">&#9776;</span>
 
-                <div class="accordion-section">
-                    <button class="accordion-toggle">Knowledge & Facts</button>
-                    <div class="accordion-content">
-                        <a href="advice.html">Advice</a>
-                        <a href="facts.html">Facts</a>
-                        <a href="people.html">People</a>
-                        <a href="quotes.html">Quotes</a>
-                    </div>
-                </div>
-
-                <div class="accordion-section">
-                    <button class="accordion-toggle">Music & Videos</button>
-                    <div class="accordion-content">
-                        <a href="songs.html">Songs</a>
-                        <a href="videos.html">Videos</a>
-                    </div>
-                </div>
-
-                <div class="accordion-section">
-                    <button class="accordion-toggle">Words, Letters & Numbers</button>
-                    <div class="accordion-content">
-                        <a href="letters.html">Letters</a>
-                        <a href="numbers.html">Numbers</a>
-                        <a href="words.html">Words</a>
-                    </div>
-                </div>
-            </div>
+      <div class="topnav-right">
+        <div class="accordion-section">
+          <button class="accordion-toggle">Jokes & Fun</button>
+          <div class="accordion-content">
+            <a href="jokes.html">Jokes</a>
+            <a href="memes.html">Memes</a>
+            <a href="nfl.html">NFL</a>
+            <a href="quizzes.html">Quizzes</a>
+          </div>
         </div>
-    </header>
 
-    <div class="container">
-        <h1>Would You Rather?</h1>
-        <div class="question" id="question">Loading...</div>
-        <button class="btn" id="optionA">Option A</button>
-        <button class="btn" id="optionB">Option B</button>
+        <div class="accordion-section">
+          <button class="accordion-toggle">Knowledge & Facts</button>
+          <div class="accordion-content">
+            <a href="advice.html">Advice</a>
+            <a href="facts.html">Facts</a>
+            <a href="people.html">People</a>
+            <a href="quotes.html">Quotes</a>
+          </div>
+        </div>
+
+        <div class="accordion-section">
+          <button class="accordion-toggle">Music & Videos</button>
+          <div class="accordion-content">
+            <a href="songs.html">Songs</a>
+            <a href="videos.html">Videos</a>
+          </div>
+        </div>
+
+        <div class="accordion-section">
+          <button class="accordion-toggle">Words, Letters & Numbers</button>
+          <div class="accordion-content">
+            <a href="letters.html">Letters</a>
+            <a href="numbers.html">Numbers</a>
+            <a href="words.html">Words</a>
+          </div>
+        </div>
+      </div>
     </div>
+  </header>
 
-    <script>
-        function toggleMenu() {
-            const topnav = document.querySelector('.topnav');
-            const body = document.body;
-            topnav.classList.toggle('active');
-            body.classList.toggle('menu-open');
-        }
+  <div class="container">
+    <div class="content">
+      <h1>Would You Rather</h1>
+      <div id="question">Loading question...</div>
+      <button id="option1">Option 1</button>
+      <button id="option2">Option 2</button>
+    </div>
+  </div>
 
-        document.querySelectorAll('.accordion-toggle').forEach(toggle => {
-            toggle.addEventListener('click', () => {
-                const parent = toggle.parentElement;
-                document.querySelectorAll('.accordion-section').forEach(section => {
-                    if (section !== parent) {
-                        section.classList.remove('open');
-                    }
-                });
-                parent.classList.toggle('open');
-            });
+  <script>
+    // Menu toggle
+    function toggleMenu() {
+      const topnav = document.querySelector('.topnav');
+      const body = document.body;
+      topnav.classList.toggle('active');
+      body.classList.toggle('menu-open');
+    }
+
+    // Accordion toggle logic
+    document.querySelectorAll('.accordion-toggle').forEach(toggle => {
+      toggle.addEventListener('click', () => {
+        const parent = toggle.parentElement;
+        document.querySelectorAll('.accordion-section').forEach(section => {
+          if (section !== parent) {
+            section.classList.remove('open');
+          }
         });
+        parent.classList.toggle('open');
+      });
+    });
 
-        const questionElement = document.getElementById("question");
-        const optionAButton = document.getElementById("optionA");
-        const optionBButton = document.getElementById("optionB");
+    const questionEl = document.getElementById('question');
+    const option1Btn = document.getElementById('option1');
+    const option2Btn = document.getElementById('option2');
 
-        function capitalizeEachWord(str) {
-            return str.replace(/\b\w/g, char => char.toUpperCase());
+    async function fetchQuestion() {
+      try {
+        const response = await fetch('https://api.truthordarebot.xyz/api/wyr');
+        const data = await response.json();
+
+        // Capitalize first letter of each word in question
+        questionEl.textContent = toTitleCase(data.question);
+
+        // For fun: let's split the question into two choices separated by "or"
+        // e.g. "Would you rather A or B?"
+        // We'll parse and put choices on the buttons if possible
+
+        const choices = data.question.split(/\bor\b/i).map(choice => choice.trim());
+        if (choices.length === 2) {
+          option1Btn.textContent = toTitleCase(choices[0]);
+          option2Btn.textContent = toTitleCase(choices[1]);
+        } else {
+          // If no clear 'or', just set default button text
+          option1Btn.textContent = "Option 1";
+          option2Btn.textContent = "Option 2";
         }
+      } catch (err) {
+        questionEl.textContent = "Failed to load question. Try again.";
+        option1Btn.textContent = "Option 1";
+        option2Btn.textContent = "Option 2";
+      }
+    }
 
-        function fetchQuestion() {
-            fetch("https://api.truthordarebot.xyz/api/wyr")
-                .then(response => response.json())
-                .then(data => {
-                    const [option1, option2] = data.question.split(" or ");
-                    questionElement.textContent = "Would You Rather...";
-                    optionAButton.textContent = capitalizeEachWord(option1.trim());
-                    optionBButton.textContent = capitalizeEachWord(option2.trim());
-                })
-                .catch(err => {
-                    questionElement.textContent = "Failed to load question.";
-                    console.error(err);
-                });
-        }
+    // Convert string to Title Case (uppercase first letter each word)
+    function toTitleCase(str) {
+      return str.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase());
+    }
 
-        optionAButton.addEventListener("click", fetchQuestion);
-        optionBButton.addEventListener("click", fetchQuestion);
+    // On button click: fetch next question
+    option1Btn.addEventListener('click', fetchQuestion);
+    option2Btn.addEventListener('click', fetchQuestion);
 
-        // Initial load
-        fetchQuestion();
-    </script>
+    // Load first question on page load
+    fetchQuestion();
+  </script>
 </body>
 </html>
