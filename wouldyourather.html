@@ -1,170 +1,249 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Would You Rather - THE Randoms</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Jersey 10', sans-serif;
-      background-color: #111;
-      color: white;
-      margin: 0;
-      padding: 0;
-      text-align: center;
-    }
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <meta name="theme-color" content="#E82B38">  
+    <meta name="description" content="Would You Rather - THE Randoms">  
+    <title>Would You Rather - THE Randoms</title>  
+    <link rel="icon" type="image/png" href="./img/pfp.png">  
+    <link rel="stylesheet" type="text/css" href="https://therandoms.pages.dev/css/styles.css">  
+    <link rel="preconnect" href="https://fonts.googleapis.com">  
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>  
+    <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">  
 
-    h1 {
-      margin-top: 20px;
-      font-size: 48px;
-    }
+    <style>
+        body {
+            font-family: 'Jersey 10', sans-serif;
+            font-size: 30px;
+            margin: 0;
+            padding: 0;
+            background-color: #111;
+            color: white;
+            text-align: center;
+        }
 
-    #wyr-container {
-      margin: 40px auto;
-      padding: 20px;
-      max-width: 500px;
-      background-color: #1a1a1a;
-      border-radius: 20px;
-      box-shadow: 0 0 10px #e82b38;
-    }
+        .topnav {
+            overflow: hidden;
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            height: 60px;
+        }
 
-    .wyr-button {
-      display: block;
-      width: 80%;
-      margin: 15px auto;
-      padding: 15px;
-      font-size: 24px;
-      background-color: #e82b38;
-      color: white;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      text-transform: capitalize;
-      transition: background-color 0.3s ease;
-    }
+        .topnav h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #f2f2f2;
+        }
 
-    .wyr-button:hover {
-      background-color: #c61d2a;
-    }
+        .topnav .menu-icon {
+            display: block;
+            font-size: 30px;
+            color: #f2f2f2;
+            cursor: pointer;
+            margin-left: auto;
+        }
 
-    #new-wyr {
-      margin-top: 30px;
-      padding: 12px 25px;
-      font-size: 20px;
-      background-color: transparent;
-      border: 2px solid #e82b38;
-      color: #e82b38;
-      border-radius: 10px;
-      cursor: pointer;
-    }
+        .topnav-right {
+            display: none;
+            position: fixed;
+            top: 60px;
+            right: 0;
+            background-color: #333;
+            width: 100%;
+            height: 100vh;
+            flex-direction: column;
+            justify-content: flex-start;
+            z-index: 999;
+            overflow-y: auto;
+        }
 
-    #new-wyr:hover {
-      background-color: #e82b38;
-      color: white;
-    }
+        .topnav.active .topnav-right {
+            display: flex;
+        }
 
-    /* Accordion Styles */
-    .accordion {
-      background-color: #222;
-      color: white;
-      cursor: pointer;
-      padding: 18px;
-      width: 100%;
-      border: none;
-      text-align: left;
-      outline: none;
-      font-size: 20px;
-      transition: 0.3s;
-    }
+        body.menu-open {
+            overflow: hidden;
+        }
 
-    .accordion:hover {
-      background-color: #333;
-    }
+        .accordion-toggle {
+            background: none;
+            color: #f2f2f2;
+            padding: 14px;
+            text-align: left;
+            font-size: 24px;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            width: 100%;
+            font-family: 'Jersey 10', sans-serif;
+        }
 
-    .panel {
-      padding: 0 18px;
-      display: none;
-      background-color: #333;
-      overflow: hidden;
-    }
+        .accordion-content {
+            display: none;
+            flex-direction: column;
+            background-color: #444;
+        }
 
-    .menu {
-      margin: 20px;
-    }
+        .accordion-content a {
+            padding-left: 28px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            border-top: 1px solid #555;
+            font-size: 20px;
+            color: #f2f2f2;
+            text-decoration: none;
+        }
 
-    a {
-      color: #e82b38;
-      text-decoration: none;
-      font-size: 18px;
-      display: block;
-      margin: 10px 0;
-    }
+        .accordion-section {
+            display: flex;
+            flex-direction: column;
+            border-top: 1px solid #444;
+        }
 
-    a:hover {
-      text-decoration: underline;
-    }
-  </style>
+        .accordion-section.open .accordion-content {
+            display: flex;
+        }
+
+        .container {
+            margin: 40px 20px;
+        }
+
+        .question {
+            margin-bottom: 30px;
+            font-size: 32px;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            margin: 12px;
+            font-size: 24px;
+            background-color: #E82B38;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #b91f2c;
+        }
+
+        .logo {
+            color: #f2f2f2;
+            text-decoration: none;
+        }
+
+        .logo:hover {
+            text-decoration: none;
+        }
+    </style>
 </head>
+
 <body>
+    <header>
+        <div class="topnav">
+            <h1><a class="logo" href="/">THE Randoms</a></h1>
+            <span class="menu-icon" onclick="toggleMenu()">&#9776;</span>
+            <div class="topnav-right">
+                <div class="accordion-section">
+                    <button class="accordion-toggle">Jokes & Fun</button>
+                    <div class="accordion-content">
+                        <a href="jokes.html">Jokes</a>
+                        <a href="memes.html">Memes</a>
+                        <a href="nfl.html">NFL</a>
+                        <a href="quizzes.html">Quizzes</a>
+                    </div>
+                </div>
 
-  <h1>Would You Rather</h1>
+                <div class="accordion-section">
+                    <button class="accordion-toggle">Knowledge & Facts</button>
+                    <div class="accordion-content">
+                        <a href="advice.html">Advice</a>
+                        <a href="facts.html">Facts</a>
+                        <a href="people.html">People</a>
+                        <a href="quotes.html">Quotes</a>
+                    </div>
+                </div>
 
-  <!-- Accordion Menu -->
-  <button class="accordion">☰ Menu</button>
-  <div class="panel menu">
-    <a href="/">Home</a>
-    <a href="/facts">Facts</a>
-    <a href="/easter-eggs">Easter Eggs</a>
-    <a href="/wyr">Would You Rather</a>
-    <!-- Add more links as needed -->
-  </div>
+                <div class="accordion-section">
+                    <button class="accordion-toggle">Music & Videos</button>
+                    <div class="accordion-content">
+                        <a href="songs.html">Songs</a>
+                        <a href="videos.html">Videos</a>
+                    </div>
+                </div>
 
-  <!-- Question Container -->
-  <div id="wyr-container">
-    <p>Loading question...</p>
-  </div>
+                <div class="accordion-section">
+                    <button class="accordion-toggle">Words, Letters & Numbers</button>
+                    <div class="accordion-content">
+                        <a href="letters.html">Letters</a>
+                        <a href="numbers.html">Numbers</a>
+                        <a href="words.html">Words</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
 
-  <button id="new-wyr">New Question</button>
+    <div class="container">
+        <h1>Would You Rather?</h1>
+        <div class="question" id="question">Loading...</div>
+        <button class="btn" id="optionA">Option A</button>
+        <button class="btn" id="optionB">Option B</button>
+    </div>
 
-  <script>
-    // Capitalize each word
-    function capitalizeWords(str) {
-      return str.replace(/\w\S*/g, w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
-    }
+    <script>
+        function toggleMenu() {
+            const topnav = document.querySelector('.topnav');
+            const body = document.body;
+            topnav.classList.toggle('active');
+            body.classList.toggle('menu-open');
+        }
 
-    // Fetch and display question
-    async function fetchWYR() {
-      const container = document.getElementById('wyr-container');
-      try {
-        const res = await fetch('https://api.truthordarebot.xyz/v1/wyr');
-        const data = await res.json();
-        const optionA = capitalizeWords(data.questions[0]);
-        const optionB = capitalizeWords(data.questions[1]);
+        document.querySelectorAll('.accordion-toggle').forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                const parent = toggle.parentElement;
+                document.querySelectorAll('.accordion-section').forEach(section => {
+                    if (section !== parent) {
+                        section.classList.remove('open');
+                    }
+                });
+                parent.classList.toggle('open');
+            });
+        });
 
-        container.innerHTML = `
-  <p>Would You Rather...</p>
-  <button class="wyr-button" onclick="fetchWYR()">A: ${optionA}</button>
-  <button class="wyr-button" onclick="fetchWYR()">B: ${optionB}</button>
-`;
-      } catch (err) {
-        container.innerHTML = '<p>Could not load question. Try again later.</p>';
-        console.error(err);
-      }
-    }
+        const questionElement = document.getElementById("question");
+        const optionAButton = document.getElementById("optionA");
+        const optionBButton = document.getElementById("optionB");
 
-    // Load first question
-    document.addEventListener('DOMContentLoaded', () => {
-      fetchWYR();
-      document.getElementById('new-wyr').addEventListener('click', fetchWYR);
+        function capitalizeEachWord(str) {
+            return str.replace(/\b\w/g, char => char.toUpperCase());
+        }
 
-      // Accordion logic
-      const acc = document.querySelector('.accordion');
-      const panel = document.querySelector('.panel');
-      acc.addEventListener('click', () => {
-        panel.style.display = panel.style.display === "block" ? "none" : "block";
-      });
-    });
-  </script>
+        function fetchQuestion() {
+            fetch("https://api.truthordarebot.xyz/api/wyr")
+                .then(response => response.json())
+                .then(data => {
+                    const [option1, option2] = data.question.split(" or ");
+                    questionElement.textContent = "Would You Rather...";
+                    optionAButton.textContent = capitalizeEachWord(option1.trim());
+                    optionBButton.textContent = capitalizeEachWord(option2.trim());
+                })
+                .catch(err => {
+                    questionElement.textContent = "Failed to load question.";
+                    console.error(err);
+                });
+        }
+
+        optionAButton.addEventListener("click", fetchQuestion);
+        optionBButton.addEventListener("click", fetchQuestion);
+
+        // Initial load
+        fetchQuestion();
+    </script>
 </body>
 </html>
