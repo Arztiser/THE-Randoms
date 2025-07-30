@@ -7,16 +7,16 @@
   <meta name="description" content="THE Randoms Is A Website That Lets You View And Do Random Things Such As Random Quizzes, Facts, Quotes, Numbers, And Letters." />
   <title>Would You Rather - THE Randoms</title>
   <link rel="icon" type="image/png" href="./img/pfp.png" />
-  <link rel="stylesheet" type="text/css" href="https://therandoms.pages.dev/css/styles.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="apple-touch-icon" sizes="192x192" href="/img/prfp.png" />
   <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet" />
 
   <style>
     body {
-      margin: 0;
       font-family: 'Jersey 10', sans-serif;
       font-size: 30px;
+      margin: 0;
+      padding: 0;
       background-color: #222;
       color: #f2f2f2;
     }
@@ -38,29 +38,26 @@
       color: #f2f2f2;
     }
 
-    .topnav .menu-icon {
-      display: block; /* Show hamburger on all screen sizes */
+    .menu-icon {
       font-size: 30px;
       color: #f2f2f2;
       cursor: pointer;
-      margin-left: auto;
     }
 
     .topnav-right {
       display: none;
       position: fixed;
       top: 60px;
+      left: 0;
       right: 0;
       background-color: #333;
-      width: 100%;
-      height: 100vh;
+      height: calc(100vh - 60px);
       flex-direction: column;
-      justify-content: flex-start;
-      z-index: 999;
       overflow-y: auto;
+      z-index: 999;
     }
 
-    .topnav.active .topnav-right {
+    .topnav.active + .topnav-right {
       display: flex;
     }
 
@@ -117,33 +114,31 @@
       color: white;
     }
 
-    /* Container and content styling */
-    .container {
+    /* Page content styling */
+    .content {
       margin: 20px;
       text-align: center;
     }
 
-    .content {
-      background-color: #fff;
-      color: #000;
-      padding: 30px 20px;
-      border-radius: 12px;
-      max-width: 700px;
-      margin: 0 auto;
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    h1 {
+    .content h1 {
       margin-bottom: 30px;
-      font-size: 42px;
       font-weight: 700;
       letter-spacing: 1.2px;
     }
 
     #question {
-      font-size: 28px;
       margin-bottom: 40px;
       font-weight: 500;
+      font-size: 28px;
+      min-height: 70px; /* prevent jump when loading */
+    }
+
+    /* Buttons container for spacing */
+    #buttons {
+      display: flex;
+      justify-content: center;
+      gap: 30px; /* spacing between buttons */
+      flex-wrap: wrap;
     }
 
     button {
@@ -151,15 +146,14 @@
       text-transform: uppercase;
       font-size: 22px;
       padding: 14px 30px;
-      margin: 0 15px;
       cursor: pointer;
       border: none;
       border-radius: 8px;
       background-color: #E82B38;
       color: white;
       font-weight: 700;
+      min-width: 180px;
       transition: background-color 0.25s ease, transform 0.15s ease;
-      min-width: 140px;
       box-shadow: 0 4px 12px rgba(232, 43, 56, 0.5);
     }
 
@@ -169,14 +163,11 @@
       box-shadow: 0 6px 16px rgba(199, 35, 44, 0.7);
     }
 
-    /* Logo styling */
     .logo {
       color: #f2f2f2;
       text-decoration: none;
     }
 
-    .logo:visited,
-    .logo:active,
     .logo:hover {
       text-decoration: none;
     }
@@ -185,61 +176,60 @@
 <body>
   <header>
     <div class="topnav">
-      <h1><a href="/" class="logo">THE Randoms</a></h1>
+      <h1><a class="logo" href="/">THE Randoms</a></h1>
       <span class="menu-icon" onclick="toggleMenu()">&#9776;</span>
+    </div>
 
-      <div class="topnav-right">
-        <div class="accordion-section">
-          <button class="accordion-toggle">Jokes & Fun</button>
-          <div class="accordion-content">
-            <a href="jokes.html">Jokes</a>
-            <a href="memes.html">Memes</a>
-            <a href="nfl.html">NFL</a>
-            <a href="quizzes.html">Quizzes</a>
-          </div>
+    <div class="topnav-right">
+      <div class="accordion-section">
+        <button class="accordion-toggle">Jokes & Fun</button>
+        <div class="accordion-content">
+          <a href="jokes.html">Jokes</a>
+          <a href="memes.html">Memes</a>
+          <a href="nfl.html">NFL</a>
+          <a href="quizzes.html">Quizzes</a>
         </div>
+      </div>
 
-        <div class="accordion-section">
-          <button class="accordion-toggle">Knowledge & Facts</button>
-          <div class="accordion-content">
-            <a href="advice.html">Advice</a>
-            <a href="facts.html">Facts</a>
-            <a href="people.html">People</a>
-            <a href="quotes.html">Quotes</a>
-          </div>
+      <div class="accordion-section">
+        <button class="accordion-toggle">Knowledge & Facts</button>
+        <div class="accordion-content">
+          <a href="advice.html">Advice</a>
+          <a href="facts.html">Facts</a>
+          <a href="people.html">People</a>
+          <a href="quotes.html">Quotes</a>
         </div>
+      </div>
 
-        <div class="accordion-section">
-          <button class="accordion-toggle">Music & Videos</button>
-          <div class="accordion-content">
-            <a href="songs.html">Songs</a>
-            <a href="videos.html">Videos</a>
-          </div>
+      <div class="accordion-section">
+        <button class="accordion-toggle">Music & Videos</button>
+        <div class="accordion-content">
+          <a href="songs.html">Songs</a>
+          <a href="videos.html">Videos</a>
         </div>
+      </div>
 
-        <div class="accordion-section">
-          <button class="accordion-toggle">Words, Letters & Numbers</button>
-          <div class="accordion-content">
-            <a href="letters.html">Letters</a>
-            <a href="numbers.html">Numbers</a>
-            <a href="words.html">Words</a>
-          </div>
+      <div class="accordion-section">
+        <button class="accordion-toggle">Words, Letters & Numbers</button>
+        <div class="accordion-content">
+          <a href="letters.html">Letters</a>
+          <a href="numbers.html">Numbers</a>
+          <a href="words.html">Words</a>
         </div>
       </div>
     </div>
   </header>
 
-  <div class="container">
-    <div class="content">
-      <h1>Would You Rather</h1>
-      <div id="question">Loading question...</div>
-      <button id="option1">Option 1</button>
-      <button id="option2">Option 2</button>
+  <main class="content">
+    <h1>Would You Rather</h1>
+    <div id="question">Loading question...</div>
+    <div id="buttons">
+      <button id="option1">Loading...</button>
+      <button id="option2">Loading...</button>
     </div>
-  </div>
+  </main>
 
   <script>
-    // Menu toggle
     function toggleMenu() {
       const topnav = document.querySelector('.topnav');
       const body = document.body;
@@ -247,7 +237,6 @@
       body.classList.toggle('menu-open');
     }
 
-    // Accordion toggle logic
     document.querySelectorAll('.accordion-toggle').forEach(toggle => {
       toggle.addEventListener('click', () => {
         const parent = toggle.parentElement;
@@ -265,43 +254,43 @@
     const option2Btn = document.getElementById('option2');
 
     async function fetchQuestion() {
+      questionEl.textContent = "Loading question...";
+      option1Btn.textContent = "Loading...";
+      option2Btn.textContent = "Loading...";
       try {
-        const response = await fetch('https://api.truthordarebot.xyz/api/wyr');
-        const data = await response.json();
+        const res = await fetch('https://api.truthordarebot.xyz/api/wyr');
+        const data = await res.json();
 
-        // Capitalize first letter of each word in question
+        // Show question text once only
         questionEl.textContent = toTitleCase(data.question);
 
-        // For fun: let's split the question into two choices separated by "or"
-        // e.g. "Would you rather A or B?"
-        // We'll parse and put choices on the buttons if possible
+        // Split question on "or" to get the two options
+        const choices = data.question.split(/\bor\b/i).map(c => c.trim());
 
-        const choices = data.question.split(/\bor\b/i).map(choice => choice.trim());
         if (choices.length === 2) {
           option1Btn.textContent = toTitleCase(choices[0]);
           option2Btn.textContent = toTitleCase(choices[1]);
         } else {
-          // If no clear 'or', just set default button text
+          // fallback if no "or" found
           option1Btn.textContent = "Option 1";
           option2Btn.textContent = "Option 2";
         }
-      } catch (err) {
+      } catch {
         questionEl.textContent = "Failed to load question. Try again.";
         option1Btn.textContent = "Option 1";
         option2Btn.textContent = "Option 2";
       }
     }
 
-    // Convert string to Title Case (uppercase first letter each word)
     function toTitleCase(str) {
       return str.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase());
     }
 
-    // On button click: fetch next question
+    // Clicking either button fetches new question
     option1Btn.addEventListener('click', fetchQuestion);
     option2Btn.addEventListener('click', fetchQuestion);
 
-    // Load first question on page load
+    // Initial load
     fetchQuestion();
   </script>
 </body>
