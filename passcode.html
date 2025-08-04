@@ -103,11 +103,11 @@
     }
 
     .content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 40px 20px;
-  text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      text-align: center;
     }
 
     .code-container {
@@ -216,10 +216,10 @@
       <button id="submit-button" onclick="checkCode()">Submit</button>
       <p id="response" class="hidden"></p>
       <audio id="success-sound" src="audio/Correct.mp3" preload="auto"></audio>
-<audio id="failure-sound" src="audio/Incorrect.mp3" preload="auto"></audio>
-<audio id="groove-sound" src="audio/Groove.mp3" preload="auto"></audio>
-<audio id="spooky-sound" src="audio/Spooky.mp3" preload="auto"></audio>
-<audio id="404-sound" src="audio/404.mp3" preload="auto"></audio>
+      <audio id="failure-sound" src="audio/Incorrect.mp3" preload="auto"></audio>
+      <audio id="groove-sound" src="audio/Groove.mp3" preload="auto"></audio>
+      <audio id="spooky-sound" src="audio/Spooky.mp3" preload="auto"></audio>
+      <audio id="404-sound" src="audio/404.mp3" preload="auto"></audio>
     </div>
   </div>
 
@@ -244,76 +244,98 @@
     });
 
     function checkCode() {
-  const input = document.getElementById("codeInput").value.trim().toUpperCase();
-  const normalizedInput = input.replace(/\s+/g, '');
-  const response = document.getElementById("response");
-  const successAudio = document.getElementById("success-sound");
-  const failureAudio = document.getElementById("failure-sound");
-  const grooveAudio = document.getElementById("groove-sound");
-  const spookyAudio = document.getElementById("spooky-sound");
-  const errorAudio = document.getElementById("404-sound");
+      const inputRaw = document.getElementById("codeInput").value.trim();
+      const input = inputRaw.toUpperCase();
+      const normalizedInput = input.replace(/\s+/g, '');
+      const response = document.getElementById("response");
+      const successAudio = document.getElementById("success-sound");
+      const failureAudio = document.getElementById("failure-sound");
+      const grooveAudio = document.getElementById("groove-sound");
+      const spookyAudio = document.getElementById("spooky-sound");
+      const errorAudio = document.getElementById("404-sound");
 
-  const validCodes = {
-    "HTE-RNA-ODSM": "If You Haven't Figured Out What This Code Means, It's The Site's Name.",
-    "ARZTISER": "You Have Found The Creator Of This Randomness.",
-    "IDON'TKNOWANYCODES": "Well, You Must Be Lying Because You Apparently Know At Least One Of Them.",
-    "IDONTKNOWANYCODES": "Well, You Must Be Lying Because You Apparently Know At Least One Of Them.",
-    "GROOVE": "Here's A Quick Groove For You.",
-    "SPOOKY": "You Have Been Warned.",
-    "404": "You Thought There Would Be An Error, But Think Again.",
-    "AGAIN": "I Guess That's One Way To Get A Code.",
-    "PASSCODE": "Real Nice Work Finding That One.",
-    "EHTSMODNAR": "htiW yrevE noitcA erehT sI nA lauqe dnA etisoppO noitcaeR.",
-    "RAVEN": "The Goodest Boy.",
-    "COCO": "The Goodest Girl."
-  };
+      const validCodes = {
+        "HTE-RNA-ODSM": "If You Haven't Figured Out What This Code Means, It's The Site's Name.",
+        "ARZTISER": "You Have Found The Creator Of This Randomness.",
+        "IDON'TKNOWANYCODES": "Well, You Must Be Lying Because You Apparently Know At Least One Of Them.",
+        "IDONTKNOWANYCODES": "Well, You Must Be Lying Because You Apparently Know At Least One Of Them.",
+        "GROOVE": "Here's A Quick Groove For You.",
+        "SPOOKY": "You Have Been Warned.",
+        "404": "You Thought There Would Be An Error, But Think Again.",
+        "AGAIN": "I Guess That's One Way To Get A Code.",
+        "PASSCODE": "Real Nice Work Finding That One.",
+        "EHTSMODNAR": "htiW yrevE noitcA erehT sI nA lauqe dnA etisoppO noitcaeR.",
+        "RAVEN": "The Goodest Boy.",
+        "COCO": "The Goodest Girl."
+      };
 
-  const customInvalidCodes = {
-    "CORRECTCODE": "That's Not A Code, But Nice Try.",
-  };
+      const customInvalidCodes = {
+        "CORRECTCODE": "That's Not A Code, But Nice Try.",
+      };
 
-  if (validCodes[input] || validCodes[normalizedInput]) {
-    const message = validCodes[input] || validCodes[normalizedInput];
-    response.textContent = message;
-    response.classList.remove("hidden");
-    response.style.color = "green";
+      // Helper: play audio safely
+      function playAudio(audio) {
+        [successAudio, failureAudio, grooveAudio, spookyAudio, errorAudio].forEach(a => {
+          a.pause();
+          a.currentTime = 0;
+        });
+        audio.play();
+      }
 
-    // Reset all audio
-    [successAudio, failureAudio, grooveAudio, spookyAudio, errorAudio].forEach(audio => {
-      audio.pause();
-      audio.currentTime = 0;
-    });
+      // Handle the special "GIVEMEACODE" case
+      if (normalizedInput === "GIVEMEACODE") {
+        const hasUsed = localStorage.getItem("gaveFreeCode");
+        if (!hasUsed) {
+          // Pick a random code from validCodes keys (excluding "GIVEMEACODE" itself)
+          const keys = Object.keys(validCodes);
+          const randomKey = keys[Math.floor(Math.random() * keys.length)];
+          const randomMessage = validCodes[randomKey];
+          localStorage.setItem("gaveFreeCode", "true");
+          response.textContent = `Here's A One Time Free Code: ${randomKey}`;
+          response.classList.remove("hidden");
+          response.style.color = "green";
+          playAudio(successAudio);
+          return;
+        } else {
+          // Already used, treat as invalid code
+          response.textContent = "That’s Not A Code. Try Again.";
+          response.classList.remove("hidden");
+          response.style.color = "red";
+          playAudio(failureAudio);
+          return;
+        }
+      }
 
-    // Play special sound if applicable
-    if (input === "SPOOKY" || normalizedInput === "SPOOKY") {
-      spookyAudio.play();
-    } else if (input === "GROOVE" || normalizedInput === "GROOVE") {
-      grooveAudio.play();
-    } else if (input === "404" || normalizedInput === "404") {
-      errorAudio.play();
-    } else {
-      successAudio.play();
-    }
+      // Normal code checking
+      if (validCodes[input] || validCodes[normalizedInput]) {
+        const message = validCodes[input] || validCodes[normalizedInput];
+        response.textContent = message;
+        response.classList.remove("hidden");
+        response.style.color = "green";
 
-  } else if (customInvalidCodes[input] || customInvalidCodes[normalizedInput]) {
-    const message = customInvalidCodes[input] || customInvalidCodes[normalizedInput];
-    response.textContent = message;
-    response.classList.remove("hidden");
-    response.style.color = "red";
+        if (input === "SPOOKY" || normalizedInput === "SPOOKY") {
+          playAudio(spookyAudio);
+        } else if (input === "GROOVE" || normalizedInput === "GROOVE") {
+          playAudio(grooveAudio);
+        } else if (input === "404" || normalizedInput === "404") {
+          playAudio(errorAudio);
+        } else {
+          playAudio(successAudio);
+        }
 
-    failureAudio.pause();
-    failureAudio.currentTime = 0;
-    failureAudio.play();
+      } else if (customInvalidCodes[input] || customInvalidCodes[normalizedInput]) {
+        const message = customInvalidCodes[input] || customInvalidCodes[normalizedInput];
+        response.textContent = message;
+        response.classList.remove("hidden");
+        response.style.color = "red";
+        playAudio(failureAudio);
 
-  } else {
-    response.textContent = "That’s Not A Code. Try Again.";
-    response.classList.remove("hidden");
-    response.style.color = "red";
-
-    failureAudio.pause();
-    failureAudio.currentTime = 0;
-    failureAudio.play();
-  }
+      } else {
+        response.textContent = "That’s Not A Code. Try Again.";
+        response.classList.remove("hidden");
+        response.style.color = "red";
+        playAudio(failureAudio);
+      }
     }
 
     if ('serviceWorker' in navigator) {
