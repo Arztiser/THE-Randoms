@@ -6,3 +6,4 @@ Disallow: /arztiser.html
 Disallow: /code.html
 Disallow: /passcode.html
 Disallow: /groove.html
+Disallow: /spooky.html
