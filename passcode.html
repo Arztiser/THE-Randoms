@@ -253,7 +253,7 @@
   const spookyAudio = document.getElementById("spooky-sound");
   const errorAudio = document.getElementById("404-sound");
 
-  const codes = {
+  const validCodes = {
     "HTE-RNA-ODSM": "If You Haven't Figured Out What This Code Means, It's The Site's Name.",
     "ARZTISER": "You Have Found The Creator Of This Randomness.",
     "IDON'TKNOWANYCODES": "Well, You Must Be Lying Because You Apparently Know At Least One Of Them.",
@@ -263,47 +263,54 @@
     "404": "You Thought There Would Be An Error, But Think Again.",
     "AGAIN": "I Guess That's One Way To Get A Code.",
     "PASSCODE": "Real Nice Work Finding That One.",
-    "EHT SMODNAR": "htiW yrevE noitcA erehT sI nA lauqE dnA etisoppO noitcaeR.",
+    "EHT SMODNAR": "htiW yrevE noitcA erehT sI nA lauqe dnA etisoppO noitcaeR.",
     "RAVEN": "The Goodest Boy.",
     "COCO": "The Goodest Girl."
   };
 
-  const message = codes[input] || codes[normalizedInput];
+  const customInvalidCodes = {
+    "CORRECT CODE": "That's Not A Code, But Nice Try.",
+  };
 
-  if (message) {
+  if (validCodes[input] || validCodes[normalizedInput]) {
+    const message = validCodes[input] || validCodes[normalizedInput];
     response.textContent = message;
     response.classList.remove("hidden");
     response.style.color = "green";
 
-    // Stop all sounds first
-    successAudio.pause();
-    failureAudio.pause();
-    grooveAudio.pause();
+    // Reset all audio
+    [successAudio, failureAudio, grooveAudio, spookyAudio, errorAudio].forEach(audio => {
+      audio.pause();
+      audio.currentTime = 0;
+    });
 
-    successAudio.currentTime = 0;
-    failureAudio.currentTime = 0;
-    grooveAudio.currentTime = 0;
-
+    // Play special sound if applicable
     if (input === "SPOOKY" || normalizedInput === "SPOOKY") {
-  spookyAudio.currentTime = 0;
-  spookyAudio.play();
-} else if (input === "GROOVE" || normalizedInput === "GROOVE") {
-  grooveAudio.currentTime = 0;
-  grooveAudio.play();
+      spookyAudio.play();
+    } else if (input === "GROOVE" || normalizedInput === "GROOVE") {
+      grooveAudio.play();
     } else if (input === "404" || normalizedInput === "404") {
-  errorAudio.currentTime = 0;
-  errorAudio.play();
-} else {
-  successAudio.play();
+      errorAudio.play();
+    } else {
+      successAudio.play();
     }
+
+  } else if (customInvalidCodes[input] || customInvalidCodes[normalizedInput]) {
+    const message = customInvalidCodes[input] || customInvalidCodes[normalizedInput];
+    response.textContent = message;
+    response.classList.remove("hidden");
+    response.style.color = "red";
+
+    failureAudio.pause();
+    failureAudio.currentTime = 0;
+    failureAudio.play();
 
   } else {
     response.textContent = "That’s Not A Code. Try Again.";
     response.classList.remove("hidden");
     response.style.color = "red";
 
-    successAudio.pause();
-    successAudio.currentTime = 0;
+    failureAudio.pause();
     failureAudio.currentTime = 0;
     failureAudio.play();
   }
