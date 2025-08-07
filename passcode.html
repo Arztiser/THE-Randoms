@@ -220,6 +220,7 @@
       <audio id="groove-sound" src="audio/Groove.mp3" preload="auto"></audio>
       <audio id="spooky-sound" src="audio/Spooky.mp3" preload="auto"></audio>
       <audio id="404-sound" src="audio/404.mp3" preload="auto"></audio>
+      <audio id="morse-sound" src="audio/Morse.mp3" preload="auto"></audio>
     </div>
   </div>
 
@@ -253,6 +254,7 @@
       const grooveAudio = document.getElementById("groove-sound");
       const spookyAudio = document.getElementById("spooky-sound");
       const errorAudio = document.getElementById("404-sound");
+      const morseAudio = document.getElementById("morse-sound");
 
       const validCodes = {
         "HTE-RNA-ODSM": "If You Haven't Figured Out What This Code Means, It's The Site's Name.",
@@ -277,7 +279,7 @@
 
       // Helper: play audio safely
       function playAudio(audio) {
-        [successAudio, failureAudio, grooveAudio, spookyAudio, errorAudio].forEach(a => {
+        [successAudio, failureAudio, grooveAudio, spookyAudio, errorAudio, morseAudio].forEach(a => {
           a.pause();
           a.currentTime = 0;
         });
@@ -321,7 +323,9 @@
           playAudio(grooveAudio);
         } else if (input === "404" || normalizedInput === "404") {
           playAudio(errorAudio);
-        } else {
+        } else if (input === "- .... . / .-. .- -. -.. --- -- ..." || normalizedInput === "- .... . / .-. .- -. -.. --- -- ...") {
+          playAudio(morseAudio);
+          else {
           playAudio(successAudio);
         }
 
