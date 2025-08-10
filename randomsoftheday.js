@@ -1,15 +1,34 @@
-// --- Helper Functions ---
+// --- Helper: UTC day string ---
+function getTodayUTC() {
+  return new Date().toISOString().slice(0,10); // YYYY-MM-DD in UTC
+}
+
+// --- Helper: get day seed number (days since epoch UTC) ---
 function getDaySeed() {
   const now = new Date();
   const utcMidnight = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
   return Math.floor(utcMidnight / (1000 * 60 * 60 * 24));
 }
 
+// --- Cache helper ---
+function getCachedData(key) {
+  const cached = localStorage.getItem(key);
+  const cachedDate = localStorage.getItem(key + 'Date');
+  const today = getTodayUTC();
+  if (cached && cachedDate === today) {
+    return JSON.parse(cached);
+  }
+  return null;
+}
+function setCachedData(key, data) {
+  localStorage.setItem(key, JSON.stringify(data));
+  localStorage.setItem(key + 'Date', getTodayUTC());
+}
+
 // --- Letters: A-Z daily letter ---
 function renderLetter() {
   const container = document.querySelector('#random-letter .random-content');
   if (!container) return;
-
   const daySeed = getDaySeed();
   const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const index = daySeed % letters.length;
@@ -20,7 +39,6 @@ function renderLetter() {
 function renderNumber() {
   const container = document.querySelector('#random-number .random-content');
   if (!container) return;
-
   const daySeed = getDaySeed();
   const num = (daySeed * 9301 + 49297) % 1000000 + 1;
   container.textContent = num.toLocaleString();
@@ -30,14 +48,9 @@ function renderNumber() {
 const QUOTES_API_KEY = 'FR8mmO+e7SROk9kwWAV0pQ==oNvn980zs2urHjdC';
 const QUOTES_API_URL = 'https://api.api-ninjas.com/v1/quotes?limit=10';
 
-async function fetchAndCacheQuotes() {
-  const cached = localStorage.getItem('dailyQuotes');
-  const cachedDate = localStorage.getItem('dailyQuotesDate');
-  const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
-
-  if (cached && cachedDate === today) {
-    return JSON.parse(cached);
-  }
+async function fetchQuotes() {
+  const cached = getCachedData('dailyQuotes');
+  if (cached) return cached;
 
   try {
     const response = await fetch(QUOTES_API_URL, {
@@ -45,12 +58,9 @@ async function fetchAndCacheQuotes() {
     });
     if (!response.ok) throw new Error('Failed to fetch quotes');
     const quotes = await response.json();
-
-    localStorage.setItem('dailyQuotes', JSON.stringify(quotes));
-    localStorage.setItem('dailyQuotesDate', today);
-
+    setCachedData('dailyQuotes', quotes);
     return quotes;
-  } catch (err) {
+  } catch(err) {
     console.error('Error fetching quotes:', err);
     return [];
   }
@@ -60,7 +70,7 @@ async function renderQuote() {
   const container = document.querySelector('#random-quote .random-content');
   if (!container) return;
 
-  const quotes = await fetchAndCacheQuotes();
+  const quotes = await fetchQuotes();
   if (quotes.length === 0) {
     container.textContent = 'Could not load quote today.';
     return;
@@ -68,99 +78,138 @@ async function renderQuote() {
 
   const daySeed = getDaySeed();
   const index = daySeed % quotes.length;
-  const quoteObj = quotes[index];
-
-  container.textContent = `"${quoteObj.quote}" — ${quoteObj.author}`;
+  const q = quotes[index];
+  container.textContent = `"${q.quote}" — ${q.author}`;
 }
 
-// --- Fetch & Render Jokes ---
-async function fetchJoke() {
+// --- Fetch & Cache Jokes ---
+const JOKES_API_URL = 'https://official-joke-api.appspot.com/jokes/ten'; // fetch 10 jokes once daily
+
+async function fetchJokes() {
+  const cached = getCachedData('dailyJokes');
+  if (cached) return cached;
+
   try {
-    const response = await fetch('https://official-joke-api.appspot.com/jokes/random');
-    if (!response.ok) throw new Error('Failed to fetch joke');
-    const joke = await response.json();
-    return `${joke.setup} ${joke.punchline}`;
-  } catch (err) {
-    console.error('Jokes API error:', err);
-    return 'Could not load joke today.';
+    const response = await fetch(JOKES_API_URL);
+    if (!response.ok) throw new Error('Failed to fetch jokes');
+    const jokes = await response.json();
+    setCachedData('dailyJokes', jokes);
+    return jokes;
+  } catch(err) {
+    console.error('Error fetching jokes:', err);
+    return [];
   }
 }
 
 async function renderJoke() {
   const container = document.querySelector('#random-joke .random-content');
   if (!container) return;
-  const joke = await fetchJoke();
-  container.textContent = joke;
+
+  const jokes = await fetchJokes();
+  if (jokes.length === 0) {
+    container.textContent = 'Could not load joke today.';
+    return;
+  }
+
+  const daySeed = getDaySeed();
+  const index = daySeed % jokes.length;
+  const joke = jokes[index];
+  container.textContent = `${joke.setup} ${joke.punchline}`;
 }
 
-// --- Fetch & Render Advice ---
+// --- Fetch & Cache Advice ---
+const ADVICE_API_URL = 'https://api.adviceslip.com/advice';
+
 async function fetchAdvice() {
+  const cached = getCachedData('dailyAdvice');
+  if (cached) return cached;
+
   try {
-    const response = await fetch('https://api.adviceslip.com/advice');
+    const response = await fetch(ADVICE_API_URL);
     if (!response.ok) throw new Error('Failed to fetch advice');
     const data = await response.json();
+    setCachedData('dailyAdvice', data.slip.advice);
     return data.slip.advice;
-  } catch (err) {
-    console.error('Advice API error:', err);
-    return 'Could not load advice today.';
+  } catch(err) {
+    console.error('Error fetching advice:', err);
+    return null;
   }
 }
 
 async function renderAdvice() {
   const container = document.querySelector('#random-advice .random-content');
   if (!container) return;
+
   const advice = await fetchAdvice();
-  container.textContent = advice;
+  container.textContent = advice ?? 'Could not load advice today.';
 }
 
-// --- Fetch & Render Facts ---
-async function fetchFact() {
+// --- Fetch & Cache Facts ---
+const FACTS_API_URL = 'https://uselessfacts.jsph.pl/random.json?language=en';
+
+async function fetchFacts() {
+  const cached = getCachedData('dailyFacts');
+  if (cached) return cached;
+
   try {
-    const response = await fetch('https://uselessfacts.jsph.pl/random.json?language=en');
+    const response = await fetch(FACTS_API_URL);
     if (!response.ok) throw new Error('Failed to fetch fact');
     const data = await response.json();
+    setCachedData('dailyFacts', data.text);
     return data.text;
-  } catch (err) {
-    console.error('Facts API error:', err);
-    return 'Could not load fact today.';
+  } catch(err) {
+    console.error('Error fetching fact:', err);
+    return null;
   }
 }
 
 async function renderFact() {
   const container = document.querySelector('#random-fact .random-content');
   if (!container) return;
-  const fact = await fetchFact();
-  container.textContent = fact;
+
+  const fact = await fetchFacts();
+  container.textContent = fact ?? 'Could not load fact today.';
 }
 
-// --- Fetch & Render Words ---
-async function fetchWord() {
+// --- Fetch & Cache Words ---
+const WORDS_API_URL = 'https://random-word-api.herokuapp.com/word?number=10';
+
+async function fetchWords() {
+  const cached = getCachedData('dailyWords');
+  if (cached) return cached;
+
   try {
-    // Example API for a random word
-    const response = await fetch('https://random-word-api.herokuapp.com/word?number=1');
-    if (!response.ok) throw new Error('Failed to fetch word');
+    const response = await fetch(WORDS_API_URL);
+    if (!response.ok) throw new Error('Failed to fetch words');
     const data = await response.json();
-    return data[0];
-  } catch (err) {
-    console.error('Words API error:', err);
-    return 'Could not load word today.';
+    setCachedData('dailyWords', data);
+    return data;
+  } catch(err) {
+    console.error('Error fetching words:', err);
+    return [];
   }
 }
 
 async function renderWord() {
   const container = document.querySelector('#random-word .random-content');
   if (!container) return;
-  const word = await fetchWord();
-  container.textContent = word;
+
+  const words = await fetchWords();
+  if (words.length === 0) {
+    container.textContent = 'Could not load word today.';
+    return;
+  }
+
+  const daySeed = getDaySeed();
+  const index = daySeed % words.length;
+  container.textContent = words[index];
 }
 
-// --- Main function to render all ---
+// --- Main render function ---
 async function renderAll() {
-  // Letters and Numbers sync to day seed, no fetch
   renderLetter();
   renderNumber();
 
-  // Fetch and render APIs
   await Promise.all([
     renderJoke(),
     renderAdvice(),
