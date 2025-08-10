@@ -39,9 +39,9 @@
       font-size: 24px;
       user-select: none;
       cursor: pointer;
-      display: inline-block;
-      line-height: 60px;
-      /* vertically center text */
+      display: flex;
+      align-items: center;
+      height: 60px;
     }
     .logo-link:hover,
     .logo-link:focus {
@@ -65,7 +65,7 @@
       top: 60px;
       left: 0;
       right: 0;
-      background-color: #E82B38;
+      background-color: #333;
       height: calc(100vh - 60px);
       flex-direction: column;
       overflow-y: auto;
@@ -93,7 +93,6 @@
       cursor: pointer;
       width: 100%;
       font-family: 'Jersey 10', sans-serif;
-      border-top: 1px solid #444;
     }
 
     /* Accordion content */
@@ -119,15 +118,14 @@
       outline: none;
     }
 
-    /* Open state */
-    .accordion-section.open .accordion-content {
-      display: flex;
-    }
-
-    /* Accordion section container */
     .accordion-section {
       display: flex;
       flex-direction: column;
+      border-top: 1px solid #444;
+    }
+
+    .accordion-section.open .accordion-content {
+      display: flex;
     }
 
     /* Main content container */
@@ -223,7 +221,7 @@
 
   <main class="content" role="main" aria-live="polite">
     <h1>Randoms Of The Day</h1>
-    <p>Each day at 12:00 AM, the same Randoms of the Day will be available for everyone.</p>
+    <p>Each day at 12:00 AM UTC, the same Randoms of the Day will be available for everyone.</p>
 
     <!-- Sections for each Random type with loading placeholders -->
     <section class="random-section" id="random-joke">
@@ -275,7 +273,7 @@
       toggle.addEventListener('click', () => {
         const parent = toggle.parentElement;
         const isOpen = parent.classList.contains('open');
-        
+
         // Close all sections
         document.querySelectorAll('.accordion-section').forEach(section => {
           section.classList.remove('open');
@@ -321,60 +319,86 @@
     }
 
     // --- Fetch & Cache Quotes (API Ninjas) ---
-    async function renderQuote() {
-      const container = document.querySelector('#random-quote .random-content');
-      if (!container) {
-        console.error('No #random-quote container found');
-        return;
-      }
+    const QUOTES_API_KEY = 'FR8mmO+e7SROk9kwWAV0pQ==oNvn980zs2urHjdC';
+    const QUOTES_API_URL = 'https://api.api-ninjas.com/v1/quotes?limit=10';
 
+    async function fetchAndCacheQuotes() {
+      const cached = localStorage.getItem('dailyQuotes');
+      const cachedDate = localStorage.getItem('dailyQuotesDate');
       const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
-      const cachedQuote = localStorage.getItem('dailyQuote');
-      const cachedDate = localStorage.getItem('dailyQuoteDate');
 
-      if (cachedQuote && cachedDate === today) {
-        // Use cached quote
-        container.textContent = cachedQuote;
-        return;
+      if (cached && cachedDate === today) {
+        return JSON.parse(cached);
       }
 
-      container.textContent = 'Loading quote...';
+      // Fallback quotes if API fails
+      const fallbackQuotes = [
+        { quote: "The best way to predict the future is to create it.", author: "Peter Drucker" },
+        { quote: "Simplicity is the ultimate sophistication.", author: "Leonardo da Vinci" },
+        { quote: "Do what you can, with what you have, where you are.", author: "Theodore Roosevelt" },
+      ];
 
       try {
-        const response = await fetch('https://api.api-ninjas.com/v1/quotes', {
-          method: 'GET',
-          headers: {
-            'X-Api-Key': 'FR8mmO+e7SROk9kwWAV0pQ==oNvn980zs2urHjdC'
-          }
+        const response = await fetch(QUOTES_API_URL, {
+          headers: { 'X-Api-Key': QUOTES_API_KEY }
         });
+        console.log('Quotes API response status:', response.status);
+        if (!response.ok) throw new Error('Failed to fetch quotes');
+        const quotes = await response.json();
 
-        if (!response.ok) throw new Error('Network response was not OK');
+        localStorage.setItem('dailyQuotes', JSON.stringify(quotes));
+        localStorage.setItem('dailyQuotesDate', today);
 
-        const data = await response.json();
-
-        if (data && data.length > 0) {
-          const quoteText = `"${data[0].quote}" — ${data[0].author}`;
-          // Cache for today
-          localStorage.setItem('dailyQuote', quoteText);
-          localStorage.setItem('dailyQuoteDate', today);
-          container.textContent = quoteText;
-        } else {
-          container.textContent = 'No quote data received.';
-          console.error('No quote data received');
-        }
-      } catch (error) {
-        container.textContent = 'Error loading quote.';
-        console.error('Error fetching quote:', error);
+        return quotes;
+      } catch (err) {
+        console.error('Error fetching quotes:', err);
+        return fallbackQuotes;
       }
     }
 
+    async function renderQuote() {
+      const container = document.querySelector('#random-quote .random-content');
+      if (!container) return;
+
+      const quotes = await fetchAndCacheQuotes();
+      if (quotes.length === 0) {
+        container.textContent = 'Could not load quote today.';
+        return;
+      }
+
+      const daySeed = getDaySeed();
+      const index = daySeed % quotes.length;
+      const quoteObj = quotes[index];
+
+      if (!quoteObj || !quoteObj.quote) {
+        container.textContent = 'No quote available.';
+        return;
+      }
+
+      container.textContent = `"${quoteObj.quote}" — ${quoteObj.author || "Unknown"}`;
+    }
+
     // --- Fetch & Render Jokes ---
-    async function fetchJoke() {
+    async function fetchAndCacheJokes() {
+      const cached = localStorage.getItem('dailyJoke');
+      const cachedDate = localStorage.getItem('dailyJokeDate');
+      const today = new Date().toISOString().slice(0, 10);
+
+      if (cached && cachedDate === today) {
+        return cached;
+      }
+
       try {
         const response = await fetch('https://official-joke-api.appspot.com/jokes/random');
         if (!response.ok) throw new Error('Failed to fetch joke');
         const joke = await response.json();
-        return `${joke.setup} ${joke.punchline}`;
+
+        const jokeText = `${joke.setup} ${joke.punchline}`;
+
+        localStorage.setItem('dailyJoke', jokeText);
+        localStorage.setItem('dailyJokeDate', today);
+
+        return jokeText;
       } catch (err) {
         console.error('Jokes API error:', err);
         return 'Could not load joke today.';
@@ -384,17 +408,30 @@
     async function renderJoke() {
       const container = document.querySelector('#random-joke .random-content');
       if (!container) return;
-      const joke = await fetchJoke();
+      const joke = await fetchAndCacheJokes();
       container.textContent = joke;
     }
 
     // --- Fetch & Render Advice ---
-    async function fetchAdvice() {
+    async function fetchAndCacheAdvice() {
+      const cached = localStorage.getItem('dailyAdvice');
+      const cachedDate = localStorage.getItem('dailyAdviceDate');
+      const today = new Date().toISOString().slice(0, 10);
+
+      if (cached && cachedDate === today) {
+        return cached;
+      }
+
       try {
         const response = await fetch('https://api.adviceslip.com/advice');
         if (!response.ok) throw new Error('Failed to fetch advice');
         const data = await response.json();
-        return data.slip.advice;
+        const advice = data.slip.advice;
+
+        localStorage.setItem('dailyAdvice', advice);
+        localStorage.setItem('dailyAdviceDate', today);
+
+        return advice;
       } catch (err) {
         console.error('Advice API error:', err);
         return 'Could not load advice today.';
@@ -404,17 +441,30 @@
     async function renderAdvice() {
       const container = document.querySelector('#random-advice .random-content');
       if (!container) return;
-      const advice = await fetchAdvice();
+      const advice = await fetchAndCacheAdvice();
       container.textContent = advice;
     }
 
     // --- Fetch & Render Facts ---
-    async function fetchFact() {
+    async function fetchAndCacheFact() {
+      const cached = localStorage.getItem('dailyFact');
+      const cachedDate = localStorage.getItem('dailyFactDate');
+      const today = new Date().toISOString().slice(0, 10);
+
+      if (cached && cachedDate === today) {
+        return cached;
+      }
+
       try {
         const response = await fetch('https://uselessfacts.jsph.pl/random.json?language=en');
         if (!response.ok) throw new Error('Failed to fetch fact');
         const data = await response.json();
-        return data.text;
+        const fact = data.text;
+
+        localStorage.setItem('dailyFact', fact);
+        localStorage.setItem('dailyFactDate', today);
+
+        return fact;
       } catch (err) {
         console.error('Facts API error:', err);
         return 'Could not load fact today.';
@@ -424,17 +474,30 @@
     async function renderFact() {
       const container = document.querySelector('#random-fact .random-content');
       if (!container) return;
-      const fact = await fetchFact();
+      const fact = await fetchAndCacheFact();
       container.textContent = fact;
     }
 
     // --- Fetch & Render Words ---
-    async function fetchWord() {
+    async function fetchAndCacheWord() {
+      const cached = localStorage.getItem('dailyWord');
+      const cachedDate = localStorage.getItem('dailyWordDate');
+      const today = new Date().toISOString().slice(0, 10);
+
+      if (cached && cachedDate === today) {
+        return cached;
+      }
+
       try {
         const response = await fetch('https://random-word-api.herokuapp.com/word?number=1');
         if (!response.ok) throw new Error('Failed to fetch word');
         const data = await response.json();
-        return data[0];
+        const word = data[0];
+
+        localStorage.setItem('dailyWord', word);
+        localStorage.setItem('dailyWordDate', today);
+
+        return word;
       } catch (err) {
         console.error('Words API error:', err);
         return 'Could not load word today.';
@@ -444,7 +507,7 @@
     async function renderWord() {
       const container = document.querySelector('#random-word .random-content');
       if (!container) return;
-      const word = await fetchWord();
+      const word = await fetchAndCacheWord();
       container.textContent = word;
     }
 
