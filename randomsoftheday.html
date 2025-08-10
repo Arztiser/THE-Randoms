@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#E82B38" />
+  <meta name="description" content="Randoms Of The Day from THE Randoms. Daily Jokes, Advice, Facts, Quotes, Words, Numbers, and Letters." />
+  <title>Randoms Of The Day - THE Randoms</title>
+  <link rel="icon" type="image/png" href="./img/pfp.png" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="apple-touch-icon" sizes="192x192" href="/img/prfp.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet" />
+
+  <style>
+    /* --- Your existing styles --- */
+    body {
+      font-family: 'Jersey 10', sans-serif;
+      font-size: 30px;
+      margin: 0;
+      padding: 0;
+      background: #111;
+      color: #eee;
+    }
+
+    .topnav {
+      overflow: hidden;
+      background-color: #333;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      height: 60px;
+    }
+
+    .topnav h1 {
+      margin: 0;
+      font-size: 24px;
+      color: #f2f2f2;
+    }
+
+    .menu-icon {
+      font-size: 30px;
+      color: #f2f2f2;
+      cursor: pointer;
+    }
+
+    .topnav-right {
+      display: none;
+      position: fixed;
+      top: 60px;
+      left: 0;
+      right: 0;
+      background-color: #333;
+      height: calc(100vh - 60px);
+      flex-direction: column;
+      overflow-y: auto;
+      z-index: 999;
+    }
+
+    .topnav.active + .topnav-right {
+      display: flex;
+    }
+
+    body.menu-open {
+      overflow: hidden;
+    }
+
+    .accordion-toggle {
+      background: none;
+      color: #f2f2f2;
+      padding: 14px;
+      text-align: left;
+      font-size: 24px;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      width: 100%;
+      font-family: 'Jersey 10', sans-serif;
+    }
+
+    .accordion-content {
+      display: none;
+      flex-direction: column;
+      background-color: #444;
+    }
+
+    .accordion-content a {
+      padding-left: 28px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      border-top: 1px solid #555;
+      font-size: 20px;
+      color: #f2f2f2;
+      text-decoration: none;
+    }
+
+    .accordion-section {
+      display: flex;
+      flex-direction: column;
+      border-top: 1px solid #444;
+    }
+
+    .accordion-section.open .accordion-content {
+      display: flex;
+    }
+
+    /* --- New styles for Randoms Of The Day --- */
+    main {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      font-size: 1.2rem;
+    }
+    section.random-section {
+      background: #222;
+      border-radius: 10px;
+      margin-bottom: 1.5rem;
+      padding: 1rem 1.5rem;
+      box-shadow: 0 0 8px rgba(232,43,56,0.6);
+    }
+    section.random-section h2 {
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: #E82B38;
+      border-bottom: 2px solid #E82B38;
+      padding-bottom: 0.3rem;
+      font-size: 1.6rem;
+    }
+    .content-text {
+      line-height: 1.4;
+      color: #eee;
+    }
+  </style>
+
+  <script src="holiday.js" defer></script> 
+</head>
+<body>
+  <header>
+    <div class="topnav">
+      <h1><a class="logo" href="/">THE Randoms</a></h1>
+      <span class="menu-icon" onclick="toggleMenu()">&#9776;</span>
+    </div>
+
+    <div class="topnav-right">
+      <div class="accordion-section">
+        <button class="accordion-toggle">Jokes & Fun</button>
+        <div class="accordion-content">
+          <a href="jokes.html">Jokes</a>
+          <a href="memes.html">Memes</a>
+          <a href="nfl.html">NFL</a>
+          <a href="quizzes.html">Quizzes</a>
+        </div>
+      </div>
+
+      <div class="accordion-section">
+        <button class="accordion-toggle">Knowledge & Facts</button>
+        <div class="accordion-content">
+          <a href="advice.html">Advice</a>
+          <a href="facts.html">Facts</a>
+          <a href="people.html">People</a>
+          <a href="quotes.html">Quotes</a>
+        </div>
+      </div>
+
+      <div class="accordion-section">
+        <button class="accordion-toggle">Music & Videos</button>
+        <div class="accordion-content">
+          <a href="songs.html">Songs</a>
+          <a href="videos.html">Videos</a>
+        </div>
+      </div>
+
+      <div class="accordion-section">
+        <button class="accordion-toggle">Words, Letters & Numbers</button>
+        <div class="accordion-content">
+          <a href="letters.html">Letters</a>
+          <a href="numbers.html">Numbers</a>
+          <a href="words.html">Words</a>
+        </div>
+      </div>
+
+      <div class="accordion-section">
+        <button class="accordion-toggle">Extras</button>
+        <div class="accordion-content">
+          <a href="randomsoftheday.html">Randoms Of The Day</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="random-section" id="joke-section">
+      <h2>Joke</h2>
+      <p class="content-text" id="joke">Loading...</p>
+    </section>
+
+    <section class="random-section" id="advice-section">
+      <h2>Advice</h2>
+      <p class="content-text" id="advice">Loading...</p>
+    </section>
+
+    <section class="random-section" id="fact-section">
+      <h2>Fact</h2>
+      <p class="content-text" id="fact">Loading...</p>
+    </section>
+
+    <section class="random-section" id="quote-section">
+      <h2>Quote</h2>
+      <p class="content-text" id="quote">Loading...</p>
+    </section>
+
+    <section class="random-section" id="word-section">
+      <h2>Word</h2>
+      <p class="content-text" id="word">Loading...</p>
+    </section>
+
+    <section class="random-section" id="number-section">
+      <h2>Number</h2>
+      <p class="content-text" id="number">Loading...</p>
+    </section>
+
+    <section class="random-section" id="letter-section">
+      <h2>Letter</h2>
+      <p class="content-text" id="letter">Loading...</p>
+    </section>
+  </main>
+
+  <script>
+    // Accordion menu toggle and behavior (your existing logic)
+    function toggleMenu() {
+      const topnav = document.querySelector('.topnav');
+      const body = document.body;
+      topnav.classList.toggle('active');
+      body.classList.toggle('menu-open');
+    }
+
+    document.querySelectorAll('.accordion-toggle').forEach(toggle => {
+      toggle.addEventListener('click', () => {
+        const parent = toggle.parentElement;
+        document.querySelectorAll('.accordion-section').forEach(section => {
+          if (section !== parent) {
+            section.classList.remove('open');
+          }
+        });
+        parent.classList.toggle('open');
+      });
+    });
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then(reg => console.log('Service Worker registered:', reg.scope))
+        .catch(err => console.error('Service Worker registration failed:', err));
+    }
+  </script>
+
+  <script>
+    // Randoms Of The Day script
+
+    // Utilities
+    function getTodayKey() {
+      const today = new Date();
+      return today.toISOString().split('T')[0];
+    }
+
+    // Letters and Numbers logic
+    function getLetterOfDay() {
+      const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      const start = new Date(new Date().getFullYear(), 0, 0);
+      const diff = new Date() - start;
+      const oneDay = 1000 * 60 * 60 * 24;
+      const dayOfYear = Math.floor(diff / oneDay);
+      return alphabet[dayOfYear % alphabet.length];
+    }
+
+    function getNumberOfDay() {
+      const start = new Date(new Date().getFullYear(), 0, 0);
+      const diff = new Date() - start;
+      const oneDay = 1000 * 60 * 60 * 24;
+      const dayOfYear = Math.floor(diff / oneDay);
+      return (dayOfYear % 1000000) + 1;
+    }
+
+    // Your actual API endpoints here:
+    const API_ENDPOINTS = {
+      joke: "https://api.example.com/joke",       // Replace with your joke API
+      advice: "https://api.example.com/advice",   // Replace with your advice API
+      fact: "https://api.example.com/fact",       // Replace with your fact API
+      quote: "https://api.example.com/quote",     // Replace with your quote API
+      word: "https://api.example.com/word"        // Replace with your word API
+    };
+
+    async function fetchAPI(endpoint) {
+      try {
+        const res = await fetch(endpoint);
+        if (!res.ok) throw new Error("Network error");
+        const data = await res.json();
+        return data;
+      } catch (e) {
+        console.error(`Failed to fetch ${endpoint}`, e);
+        return null;
+      }
+    }
+
+    async function fetchAllData() {
+      const results = {};
+      for (const [key, url] of Object.entries(API_ENDPOINTS)) {
+        const data = await fetchAPI(url);
+        results[key] = data;
+      }
+      results.letter = getLetterOfDay();
+      results.number = getNumberOfDay();
+      return results;
+    }
+
+    function displayData(data) {
+      document.getElementById("joke").textContent = data.joke?.text || "No joke today.";
+      document.getElementById("advice").textContent = data.advice?.text || "No advice today.";
+      document.getElementById("fact").textContent = data.fact?.text || "No fact today.";
+      document.getElementById("quote").textContent = data.quote?.text || "No quote today.";
+      document.getElementById("word").textContent = data.word?.text || "No word today.";
+      document.getElementById("letter").textContent = data.letter;
+      document.getElementById("number").textContent = data.number;
+    }
+
+    async function init() {
+      const todayKey = getTodayKey();
+      const cached = localStorage.getItem("randomsOfTheDay");
+      if (cached) {
+        try {
+          const parsed = JSON.parse(cached);
+          if (parsed.date === todayKey) {
+            displayData(parsed.data);
+            scheduleMidnightRefresh();
+            return;
+          }
+        } catch {
+          // invalid cache, ignore
+        }
+      }
+
+      const data = await fetchAllData();
+      localStorage.setItem("randomsOfTheDay", JSON.stringify({
+        date: todayKey,
+        data
+      }));
+      displayData(data);
+      scheduleMidnightRefresh();
+    }
+
+    function scheduleMidnightRefresh() {
+      const now = new Date();
+      const nextMidnight = new Date();
+      nextMidnight.setHours(24, 0, 0, 0);
+      const msUntilMidnight = nextMidnight - now;
+      setTimeout(() => {
+        init();
+      }, msUntilMidnight + 1000);
+    }
+
+    init();
+  </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "name": "THE Randoms",
+      "url": "https://therandoms.pages.dev/",
+      "sameAs": [
+        "https://x.com/Arztiser",
+        "https://www.youtube.com/@ArztiserMusic",
+        "https://open.spotify.com/artist/5iOQLKlc3taptDhisMcPX7?si=-kvaqr4mRSqSB3NthUu2cA",
+        "https://link.deezer.com/s/30rg4dq51eMRZWcy6SzLU",
+        "https://music.amazon.com/artists/B0DF356TRC?ref=dm_sh_0vUueu3N8pJboqKVKQJlQIjsh"
+      ],
+      "description": "THE Randoms Offers Random Facts, Quizzes, And Interactive Fun — All In One Random Place.",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://therandoms.pages.dev/img/pfp.png"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "name": "THE Randoms",
+      "url": "https://therandoms.pages.dev/",
+      "description": "THE Randoms Offers Random Facts, Quizzes, And Interactive Fun — All In One Random Place."
+    }
+  ]
+}
+</script>
+
+</body>
+</html>
