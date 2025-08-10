@@ -12,11 +12,11 @@ function loadScript(src) {
 
 // List your API JS files here exactly as you have them
 const apiScripts = [
-  'jokes-api.js',     // your joke fetch + render logic
-  'advice-api.js',    // your advice fetch + render logic
-  'facts-api.js',     // your fact fetch + render logic
-  'quotes-api.js',    // your quote fetch + render logic
-  'words-api.js'      // your word fetch + render logic
+  'jokes.js',     // your joke fetch + render logic
+  'advice.js',    // your advice fetch + render logic
+  'facts.js',     // your fact fetch + render logic
+  'quotes.js',    // your quote fetch + render logic
+  'words.js'      // your word fetch + render logic
   // Letters and Numbers are handled directly in this file below
 ];
 
