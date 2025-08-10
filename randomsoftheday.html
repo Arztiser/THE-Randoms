@@ -301,30 +301,39 @@ function getDaySeed() {
   return Math.floor(utcMidnight / (1000 * 60 * 60 * 24));
 }
 
-// --- Letters: A-Z daily letter ---
-function renderLetter() {
+// --- Letters: A-Z daily letter or random if refreshing ---
+function renderLetter(useRandom = false) {
   const container = document.querySelector('#random-letter .random-content');
   if (!container) return;
 
-  const daySeed = getDaySeed();
-  const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  const index = daySeed % letters.length;
-  container.textContent = letters[index];
+  if (useRandom) {
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const index = Math.floor(Math.random() * letters.length);
+    container.textContent = letters[index];
+  } else {
+    const daySeed = getDaySeed();
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const index = daySeed % letters.length;
+    container.textContent = letters[index];
+  }
 }
 
-// --- Numbers: 1 to 1,000,000 daily number ---
-function renderNumber() {
+// --- Numbers: 1 to 1,000,000 daily or random on refresh ---
+function renderNumber(useRandom = false) {
   const container = document.querySelector('#random-number .random-content');
   if (!container) return;
 
-  const daySeed = getDaySeed();
-  const num = (daySeed * 9301 + 49297) % 1000000 + 1;
-  container.textContent = num.toLocaleString();
+  if (useRandom) {
+    const num = Math.floor(Math.random() * 1_000_000) + 1;
+    container.textContent = num.toLocaleString();
+  } else {
+    const daySeed = getDaySeed();
+    const num = (daySeed * 9301 + 49297) % 1000000 + 1;
+    container.textContent = num.toLocaleString();
+  }
 }
 
-// --- Fetch & Cache Quotes Replaced by Meme ---
-// Meme API keys, etc. are not needed, but proxy is used
-
+// --- Meme API Fetch ---
 async function fetchMeme() {
   try {
     const subreddits = ["memes", "dankmemes", "funny"];
@@ -352,11 +361,12 @@ async function fetchMeme() {
   }
 }
 
+// --- Render Meme ---
 async function renderMeme(useCache = true) {
-  const container = document.querySelector('#random-quote .random-content');
+  const container = document.querySelector('#random-meme .random-content');
   if (!container) return;
 
-  // For simplicity, don't cache memes in localStorage here (can be added if needed)
+  // For simplicity, no caching for memes (can add if needed)
   const memeData = await fetchMeme();
   if (!memeData) {
     container.innerHTML = 'Failed to load meme.';
@@ -369,7 +379,7 @@ async function renderMeme(useCache = true) {
   `;
 }
 
-// --- Fetch & Cache Jokes ---
+// --- Jokes ---
 async function fetchJoke(noCache = false) {
   if (!noCache) {
     const cached = localStorage.getItem('dailyJoke');
@@ -381,7 +391,10 @@ async function fetchJoke(noCache = false) {
     const response = await fetch('https://official-joke-api.appspot.com/jokes/random');
     if (!response.ok) throw new Error('Failed to fetch joke');
     const joke = await response.json();
-    return `${joke.setup} ${joke.punchline}`;
+    const fullJoke = `${joke.setup} ${joke.punchline}`;
+    localStorage.setItem('dailyJoke', fullJoke);
+    localStorage.setItem('dailyJokeDate', new Date().toISOString().slice(0, 10));
+    return fullJoke;
   } catch (err) {
     console.error('Jokes API error:', err);
     return 'Could not load joke today.';
@@ -395,7 +408,7 @@ async function renderJoke(useCache = true) {
   container.textContent = joke;
 }
 
-// --- Fetch & Cache Advice ---
+// --- Advice ---
 async function fetchAdvice(noCache = false) {
   if (!noCache) {
     const cached = localStorage.getItem('dailyAdvice');
@@ -408,6 +421,8 @@ async function fetchAdvice(noCache = false) {
     if (!response.ok) throw new Error('Failed to fetch advice');
     const data = await response.json();
     const advice = data.slip.advice;
+    localStorage.setItem('dailyAdvice', advice);
+    localStorage.setItem('dailyAdviceDate', new Date().toISOString().slice(0, 10));
     return advice;
   } catch (err) {
     console.error('Advice API error:', err);
@@ -422,7 +437,7 @@ async function renderAdvice(useCache = true) {
   container.textContent = advice;
 }
 
-// --- Fetch & Cache Facts ---
+// --- Facts ---
 async function fetchFact(noCache = false) {
   if (!noCache) {
     const cached = localStorage.getItem('dailyFact');
@@ -434,6 +449,8 @@ async function fetchFact(noCache = false) {
     const response = await fetch('https://uselessfacts.jsph.pl/random.json?language=en');
     if (!response.ok) throw new Error('Failed to fetch fact');
     const data = await response.json();
+    localStorage.setItem('dailyFact', data.text);
+    localStorage.setItem('dailyFactDate', new Date().toISOString().slice(0, 10));
     return data.text;
   } catch (err) {
     console.error('Facts API error:', err);
@@ -448,7 +465,7 @@ async function renderFact(useCache = true) {
   container.textContent = fact;
 }
 
-// --- Fetch & Cache Words ---
+// --- Words ---
 async function fetchWord(noCache = false) {
   if (!noCache) {
     const cached = localStorage.getItem('dailyWord');
@@ -460,6 +477,8 @@ async function fetchWord(noCache = false) {
     const response = await fetch('https://random-word-api.herokuapp.com/word?number=1');
     if (!response.ok) throw new Error('Failed to fetch word');
     const data = await response.json();
+    localStorage.setItem('dailyWord', data[0]);
+    localStorage.setItem('dailyWordDate', new Date().toISOString().slice(0, 10));
     return data[0];
   } catch (err) {
     console.error('Words API error:', err);
@@ -482,19 +501,20 @@ async function refreshAll() {
     renderFact(false),
     renderWord(false),
     renderMeme(false),
-    // letters and numbers do not fetch so just render them normally
-    (async () => renderLetter())(),
-    (async () => renderNumber())()
+    renderLetter(true),
+    renderNumber(true)
   ]);
 }
 
-// Hook refresh button
+// --- Init on DOMContentLoaded ---
 document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('refresh-btn').addEventListener('click', () => {
-    refreshAll();
-  });
+  // Hook refresh button
+  const refreshBtn = document.getElementById('refresh-btn');
+  if (refreshBtn) {
+    refreshBtn.addEventListener('click', refreshAll);
+  }
 
-  // Initial render with caching enabled
+  // Initial render with cache (daily)
   renderLetter();
   renderNumber();
 
@@ -505,7 +525,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderWord(true),
     renderMeme(true)
   ]);
-});   
+});
   </script>                   
 </body>
 </html>
