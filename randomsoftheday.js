@@ -1,75 +1,103 @@
-// Helper to dynamically load other JS files
-function loadScript(src) {
-  return new Promise((resolve, reject) => {
-    const script = document.createElement('script');
-    script.src = src;
-    script.defer = true;
-    script.onload = () => resolve(src);
-    script.onerror = () => reject(new Error(`Failed to load script ${src}`));
-    document.head.appendChild(script);
-  });
+// Utility: get seed based on current UTC day
+function getDaySeed() {
+  const now = new Date();
+  const utcMidnight = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+  return Math.floor(utcMidnight / (1000 * 60 * 60 * 24));
 }
 
-// List your API JS files here exactly as you have them
-const apiScripts = [
-  'jokes.js',     // your joke fetch + render logic
-  'advice.js',    // your advice fetch + render logic
-  'facts.js',     // your fact fetch + render logic
-  'quotes.js',    // your quote fetch + render logic
-  'words.js'      // your word fetch + render logic
-  // Letters and Numbers are handled directly in this file below
-];
-
-// Load all scripts asynchronously
-Promise.all(apiScripts.map(loadScript))
-  .then(() => {
-    console.log('All API scripts loaded successfully.');
-    // If your API scripts have init functions, call them here.
-    if (typeof initJokes === 'function') initJokes();
-    if (typeof initAdvice === 'function') initAdvice();
-    if (typeof initFacts === 'function') initFacts();
-    if (typeof initQuotes === 'function') initQuotes();
-    if (typeof initWords === 'function') initWords();
-
-    // Letters & Numbers handled here
-    renderLetter();
-    renderNumber();
-  })
-  .catch(err => console.error(err));
-
-
-// Letters: A-Z random letter of the day (same for everyone)
+// Render letter of the day
 function renderLetter() {
   const container = document.querySelector('#random-letter .random-content');
   if (!container) return;
-
-  // Calculate seed based on day (midnight UTC)
-  const daySeed = getDaySeed();
-
   const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  const index = daySeed % letters.length;
+  const index = getDaySeed() % letters.length;
   container.textContent = letters[index];
 }
 
-// Numbers: 1 to 1,000,000 (random number of the day)
+// Render number of the day (1 to 1,000,000)
 function renderNumber() {
   const container = document.querySelector('#random-number .random-content');
   if (!container) return;
-
-  const daySeed = getDaySeed();
-
-  // Simple pseudo-random number based on day seed
-  // Scale to 1 to 1,000,000 inclusive
-  const num = (daySeed * 9301 + 49297) % 1000000 + 1;
-
+  const seed = getDaySeed();
+  const num = (seed * 9301 + 49297) % 1000000 + 1;
   container.textContent = num.toLocaleString();
 }
 
-// Returns a simple "seed" based on current UTC date, same for everyone on same day
-function getDaySeed() {
-  const now = new Date();
-  // UTC midnight timestamp
-  const utcMidnight = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
-  // Just use days since epoch
-  return Math.floor(utcMidnight / (1000 * 60 * 60 * 24));
+// Fetch joke
+function fetchJoke() {
+  fetch('https://official-joke-api.appspot.com/jokes/random')
+    .then(res => res.json())
+    .then(data => {
+      const container = document.querySelector('#random-joke .random-content');
+      container.textContent = data.setup + ' — ' + data.punchline;
+    })
+    .catch(() => {
+      document.querySelector('#random-joke .random-content').textContent = 'Failed to load joke.';
+    });
 }
+
+// Fetch advice
+function fetchAdvice() {
+  fetch('https://api.adviceslip.com/advice')
+    .then(res => res.json())
+    .then(data => {
+      const container = document.querySelector('#random-advice .random-content');
+      container.textContent = data.slip.advice;
+    })
+    .catch(() => {
+      document.querySelector('#random-advice .random-content').textContent = 'Failed to load advice.';
+    });
+}
+
+// Fetch fact (example API — replace if you have your own)
+function fetchFact() {
+  fetch('https://uselessfacts.jsph.pl/random.json?language=en')
+    .then(res => res.json())
+    .then(data => {
+      const container = document.querySelector('#random-fact .random-content');
+      container.textContent = data.text;
+    })
+    .catch(() => {
+      document.querySelector('#random-fact .random-content').textContent = 'Failed to load fact.';
+    });
+}
+
+// Fetch quote (example API — replace if you have your own)
+function fetchQuote() {
+  fetch('https://api.quotable.io/random')
+    .then(res => res.json())
+    .then(data => {
+      const container = document.querySelector('#random-quote .random-content');
+      container.textContent = `"${data.content}" — ${data.author}`;
+    })
+    .catch(() => {
+      document.querySelector('#random-quote .random-content').textContent = 'Failed to load quote.';
+    });
+}
+
+// Fetch word (example API — replace if you have your own)
+function fetchWord() {
+  fetch('https://random-word-api.herokuapp.com/word?number=1')
+    .then(res => res.json())
+    .then(data => {
+      const container = document.querySelector('#random-word .random-content');
+      container.textContent = data[0];
+    })
+    .catch(() => {
+      document.querySelector('#random-word .random-content').textContent = 'Failed to load word.';
+    });
+}
+
+// Initialize all fetches + renders
+function initRandomsOfTheDay() {
+  fetchJoke();
+  fetchAdvice();
+  fetchFact();
+  fetchQuote();
+  fetchWord();
+  renderLetter();
+  renderNumber();
+}
+
+// Run init after DOM is ready (defer script already ensures DOM ready, but safe here)
+initRandomsOfTheDay();
