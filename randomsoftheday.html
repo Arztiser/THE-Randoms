@@ -18,7 +18,6 @@
       background: #f9f9f9;
       color: #222;
     }
-
     /* Topnav styles */
     .topnav {
       overflow: hidden;
@@ -30,7 +29,6 @@
       height: 60px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.15);
     }
-
     /* Site title as subtle clickable text */
     .logo-link {
       color: white;
@@ -49,7 +47,6 @@
       color: white;
       outline: none;
     }
-
     /* Hamburger menu */
     .menu-icon {
       font-size: 30px;
@@ -57,7 +54,6 @@
       cursor: pointer;
       user-select: none;
     }
-
     /* Accordion menu container */
     .topnav-right {
       display: none;
@@ -71,16 +67,13 @@
       overflow-y: auto;
       z-index: 999;
     }
-
     /* Show menu when active */
     .topnav.active + .topnav-right {
       display: flex;
     }
-
     body.menu-open {
       overflow: hidden;
     }
-
     /* Accordion toggle buttons */
     .accordion-toggle {
       background: none;
@@ -94,7 +87,6 @@
       width: 100%;
       font-family: 'Jersey 10', sans-serif;
     }
-
     /* Accordion content */
     .accordion-content {
       display: none;
@@ -123,7 +115,6 @@
     .accordion-section.open .accordion-content {
       display: flex;
     }
-
     /* Main content container */
     .content {
       max-width: 800px;
@@ -140,7 +131,6 @@
       line-height: 1.6;
       font-size: 20px;
     }
-
     /* Loading placeholders for each random type */
     .random-section {
       margin: 24px 0;
@@ -256,7 +246,7 @@
   <script>
     const testingMode = false;
 
-    // Accordion toggle functionality
+    // Toggle hamburger menu
     function toggleMenu() {
       const topnav = document.querySelector('.topnav');
       const body = document.body;
@@ -264,6 +254,7 @@
       body.classList.toggle('menu-open');
     }
 
+    // Accordion toggle functionality
     document.querySelectorAll('.accordion-toggle').forEach(toggle => {
       toggle.addEventListener('click', () => {
         const parent = toggle.parentElement;
@@ -285,24 +276,32 @@
       });
     });
 
-    // Helper: Get today's date string (YYYY-MM-DD)
-    function getToday() {
-      return new Date().toISOString().slice(0, 10);
-    }
-
-    // Helper: Get day seed (days since epoch)
+    // Return days since Unix epoch (UTC midnight)
     function getDaySeed() {
       const now = new Date();
-const utcYear = now.getUTCFullYear();
-const utcMonth = now.getUTCMonth();
-const utcDate = now.getUTCDate();
-const utcDateObj = new Date(Date.UTC(utcYear, utcMonth, utcDate));
-return utcDateObj.toLocaleDateString('en-US', options);
+      const utcMidnight = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+      return Math.floor(utcMidnight / (1000 * 60 * 60 * 24));
+    }
+
+    // Display formatted current date (UTC) in header
+    function renderCurrentDate() {
+      const container = document.getElementById('current-date');
+      if (!container) return;
+
+      const now = new Date();
+      const utcYear = now.getUTCFullYear();
+      const utcMonth = now.getUTCMonth();
+      const utcDay = now.getUTCDate();
+
+      const utcDate = new Date(Date.UTC(utcYear, utcMonth, utcDay));
+
+      const options = { month: 'long', day: 'numeric' };
+      container.textContent = utcDate.toLocaleDateString('en-US', options);
     }
 
     // Generic cached fetch helper
     async function fetchCached(key, fetchFn, useCache = true) {
-      const today = getToday();
+      const today = new Date().toISOString().slice(0, 10);
       const cacheKey = `daily_${key}`;
       const cacheDateKey = `daily_${key}_date`;
 
@@ -442,7 +441,7 @@ return utcDateObj.toLocaleDateString('en-US', options);
       }
     }
 
-    // Refresh all with option to ignore cache (testingMode forces fresh fetches)
+    // Refresh all randoms and render current date
     async function refreshAll() {
       const useCache = !testingMode;
       await Promise.all([
@@ -456,10 +455,11 @@ return utcDateObj.toLocaleDateString('en-US', options);
       renderNumber();
     }
 
-    // Initial load
+    // On page load, render current date and all randoms
     document.addEventListener('DOMContentLoaded', () => {
+      renderCurrentDate();
       refreshAll();
     });
-  </script>                   
+  </script>
 </body>
 </html>
