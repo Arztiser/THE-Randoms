@@ -36,43 +36,27 @@
       color: #f2f2f2;
     }
 
-    .menu-icon {
-      font-size: 30px;
-      color: #f2f2f2;
-      cursor: pointer;
-      user-select: none;
-    }
-
+    /* Always show menu */
     .topnav-right {
-      display: none;
-      position: fixed;
-      top: 60px;
-      left: 0;
-      right: 0;
+      display: flex !important;
+      position: relative !important;
+      top: auto !important;
+      left: auto !important;
+      right: auto !important;
       background-color: #333;
-      height: calc(100vh - 60px);
+      height: auto;
       flex-direction: column;
-      overflow-y: auto;
-      z-index: 999;
-      transition: opacity 0.3s ease;
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .topnav-right.active {
-      display: flex;
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    body.menu-open {
-      overflow: hidden;
+      overflow-y: visible;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      z-index: 9999 !important;
+      padding: 10px 0;
     }
 
     .accordion-toggle {
       background: none;
       color: #f2f2f2;
-      padding: 14px;
+      padding: 14px 16px;
       text-align: left;
       font-size: 24px;
       border: none;
@@ -93,12 +77,11 @@
       display: none;
       flex-direction: column;
       background-color: #444;
+      padding-left: 20px;
     }
 
     .accordion-content a {
-      padding-left: 28px;
-      padding-top: 10px;
-      padding-bottom: 10px;
+      padding: 10px 0;
       border-top: 1px solid #555;
       font-size: 20px;
       color: #f2f2f2;
@@ -121,27 +104,31 @@
       display: flex;
     }
 
-    /* Clickable section styled like an accordion header but is a direct link */
+    /* Clickable section */
     .clickable-section {
-      background-color: #E82B38;
-      color: white;
-      font-weight: 700;
-      font-size: 24px;
-      padding: 14px;
-      cursor: pointer;
-      user-select: none;
-      border-top: 1px solid #b22731;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background-color 0.3s ease;
-      margin-top: 4px;
+      background-color: #E82B38 !important;
+      color: white !important;
+      font-weight: 700 !important;
+      font-size: 24px !important;
+      padding: 14px !important;
+      cursor: pointer !important;
+      user-select: none !important;
+      border-top: 1px solid #b22731 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      margin-top: 4px !important;
+      transition: background-color 0.3s ease !important;
     }
 
     .clickable-section:hover,
     .clickable-section:focus {
-      background-color: #c52430;
-      outline: none;
+      background-color: #c52430 !important;
+      outline: none !important;
+    }
+
+    .container {
+      margin: 20px;
     }
 
     .content {
@@ -171,10 +158,10 @@
   <header>
     <div class="topnav">
       <h1><a class="logo" href="/">THE Randoms</a></h1>
-      <span class="menu-icon" onclick="toggleMenu()" tabindex="0" role="button">&#9776;</span>
+      <!-- Hamburger removed for now -->
     </div>
 
-    <nav class="topnav-right" role="navigation">
+    <nav class="topnav-right" role="navigation" aria-label="Main Menu">
       <div class="accordion-section">
         <button class="accordion-toggle" aria-expanded="false">Jokes & Fun</button>
         <div class="accordion-content" hidden>
@@ -212,7 +199,7 @@
         </div>
       </div>
 
-      <!-- Direct clickable accordion-style section for Randoms Of The Day -->
+      <!-- Clickable section always visible -->
       <div class="clickable-section" tabindex="0" role="link" title="Go to Randoms Of The Day">
         Randoms Of The Day
       </div>
@@ -225,16 +212,6 @@
   </main>
 
   <script>
-    function toggleMenu() {
-      const topnav = document.querySelector('.topnav');
-      const menu = document.querySelector('.topnav-right');
-      const body = document.body;
-
-      topnav.classList.toggle('active');
-      menu.classList.toggle('active');
-      body.classList.toggle('menu-open');
-    }
-
     // Accordion toggles
     document.querySelectorAll('.accordion-toggle').forEach(button => {
       button.addEventListener('click', () => {
@@ -262,24 +239,17 @@
       });
     });
 
-    // Click handler for direct clickable section
+    // Click handler for clickable section
     const clickableSection = document.querySelector('.clickable-section');
     clickableSection.addEventListener('click', () => {
       window.location.href = 'randomsoftheday.html';
     });
 
+    // Keyboard accessibility (Enter, Space)
     clickableSection.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         clickableSection.click();
-      }
-    });
-
-    // Allow menu toggle with keyboard (Enter/Space) on hamburger
-    document.querySelector('.menu-icon').addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        toggleMenu();
       }
     });
   </script>
