@@ -1,81 +1,57 @@
-<!DOCTYPE html>
+m<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Accordion Menu with Redirect</title>
+  <title>Test - THE Randoms</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-    }
-    .accordion {
-      background-color: #eee;
-      cursor: pointer;
-      padding: 14px;
-      width: 100%;
-      border: none;
-      text-align: left;
-      outline: none;
-      transition: background-color 0.2s ease;
-      font-size: 16px;
-    }
-    .accordion:hover {
-      background-color: #ccc;
-    }
-    .accordion.active {
-      background-color: #ccc;
-    }
-    .panel {
-      padding: 0 14px;
+      font-family: 'Jersey 10', sans-serif;
       background-color: white;
-      display: none;
-      overflow: hidden;
+      margin: 0;
+      padding: 0;
     }
-    /* Make the redirect section look like a button but without collapsing */
-    .redirect-btn {
-      background-color: #eee;
-      cursor: pointer;
-      padding: 14px;
-      width: 100%;
-      border: none;
-      text-align: left;
-      font-size: 16px;
+    header {
+      background-color: black;
+      color: white;
+      padding: 15px;
+      text-align: center;
     }
-    .redirect-btn:hover {
-      background-color: #ccc;
+    nav {
+      background-color: #333;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 10px 0;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    main {
+      padding: 20px;
+      text-align: center;
     }
   </style>
 </head>
 <body>
+  <header>
+    <h1>THE Randoms</h1>
+  </header>
 
-<h2>Accordion Menu</h2>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="randomsoftheday.html">Randoms Of The Day</a>
+    <a href="contact.html">Contact</a>
+  </nav>
 
-<!-- Normal Accordion Section -->
-<button class="accordion">Section 1</button>
-<div class="panel">
-  <p>Content for Section 1</p>
-</div>
-
-<!-- Another Accordion Section -->
-<button class="accordion">Section 2</button>
-<div class="panel">
-  <p>Content for Section 2</p>
-</div>
-
-<!-- Redirect Section -->
-<button class="redirect-btn" onclick="location.href='randoms.html'">Randoms of the Day</button>
-
-<script>
-  // Handle accordion toggle
-  var acc = document.getElementsByClassName("accordion");
-  for (let i = 0; i < acc.length; i++) {
-    acc[i].addEventListener("click", function () {
-      this.classList.toggle("active");
-      var panel = this.nextElementSibling;
-      panel.style.display = (panel.style.display === "block") ? "none" : "block";
-    });
-  }
-</script>
-
+  <main>
+    <h2>Welcome to the Test Page</h2>
+    <p>If the “Randoms Of The Day” link works, it will take you to <code>randomsoftheday.html</code>.</p>
+  </main>
 </body>
 </html>
