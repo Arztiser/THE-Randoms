@@ -132,27 +132,32 @@
       text-decoration: none;
     }
 
-    /* New Randoms Of The Day button style */
+    /* Force show Randoms Of The Day button below accordion */
     #randoms-button {
-      background: #E82B38;
-      color: white;
-      font-family: 'Jersey 10', sans-serif;
-      font-size: 24px;
-      border: none;
-      padding: 14px;
-      width: 100%;
-      cursor: pointer;
-      text-align: center;
-      margin-top: 8px;
-      user-select: none;
+      display: block !important;
+      background-color: #E82B38 !important;
+      color: white !important;
+      font-family: 'Jersey 10', sans-serif !important;
+      font-size: 24px !important;
+      border: none !important;
+      padding: 14px !important;
+      width: 100% !important;
+      cursor: pointer !important;
+      text-align: center !important;
+      margin-top: 12px !important;
+      user-select: none !important;
+      box-sizing: border-box !important;
+      border-radius: 4px !important;
+      z-index: 9999 !important;
+      opacity: 1 !important;
+      visibility: visible !important;
     }
-
     #randoms-button:hover {
-      background: #c1242e;
+      background-color: #c1242e !important;
     }
   </style>
 
-  <script src="holiday.js" defer></script> 
+<script src="holiday.js" defer></script> 
 </head>
 <body>
   <header>
@@ -199,8 +204,8 @@
         </div>
       </div>
 
-      <!-- Randoms Of The Day button below accordion -->
-      <button id="randoms-button">Randoms Of The Day</button>
+      <!-- Randoms Of The Day Button -->
+      <button id="randoms-button" onclick="window.location.href='randomsoftheday.html'">Randoms Of The Day</button>
     </div>
   </header>
 
@@ -210,7 +215,6 @@
   </div>
 
   <script>
-    // Toggle the menu open/close
     function toggleMenu() {
       const topnav = document.querySelector('.topnav');
       const body = document.body;
@@ -218,78 +222,23 @@
       body.classList.toggle('menu-open');
     }
 
-    // Accordion toggle behavior for sections
     document.querySelectorAll('.accordion-toggle').forEach(toggle => {
       toggle.addEventListener('click', () => {
         const parent = toggle.parentElement;
-        // Close all other accordion sections
         document.querySelectorAll('.accordion-section').forEach(section => {
           if (section !== parent) {
             section.classList.remove('open');
-            section.querySelector('.accordion-toggle').setAttribute('aria-expanded', 'false');
-            section.querySelector('.accordion-content').hidden = true;
           }
         });
-        // Toggle current section
-        const isOpen = parent.classList.contains('open');
-        if (!isOpen) {
-          parent.classList.add('open');
-          toggle.setAttribute('aria-expanded', 'true');
-          parent.querySelector('.accordion-content').hidden = false;
-        } else {
-          parent.classList.remove('open');
-          toggle.setAttribute('aria-expanded', 'false');
-          parent.querySelector('.accordion-content').hidden = true;
-        }
+        parent.classList.toggle('open');
       });
     });
 
-    // Handle click on Randoms Of The Day button
-    document.getElementById('randoms-button').addEventListener('click', () => {
-      // Close the menu
-      document.querySelector('.topnav').classList.remove('active');
-      document.body.classList.remove('menu-open');
-      // Navigate to randomsoftheday.html
-      window.location.href = 'randomsoftheday.html';
-    });
-
-    // Service worker registration for PWA (optional)
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/service-worker.js')
         .then(reg => console.log('Service Worker registered:', reg.scope))
         .catch(err => console.error('Service Worker registration failed:', err));
     }
   </script>
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "Organization",
-      "name": "THE Randoms",
-      "url": "https://therandoms.pages.dev/",
-      "sameAs": [
-        "https://x.com/Arztiser",
-        "https://www.youtube.com/@ArztiserMusic",
-        "https://open.spotify.com/artist/5iOQLKlc3taptDhisMcPX7?si=-kvaqr4mRSqSB3NthUu2cA",
-        "https://link.deezer.com/s/30rg4dq51eMRZWcy6SzLU",
-        "https://music.amazon.com/artists/B0DF356TRC?ref=dm_sh_0vUueu3N8pJboqKVKQJlQIjsh"
-      ],
-      "description": "THE Randoms Offers Random Facts, Quizzes, And Interactive Fun — All In One Random Place.",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://therandoms.pages.dev/img/pfp.png"
-      }
-    },
-    {
-      "@type": "WebSite",
-      "name": "THE Randoms",
-      "url": "https://therandoms.pages.dev/",
-      "description": "THE Randoms Offers Random Facts, Quizzes, And Interactive Fun — All In One Random Place."
-    }
-  ]
-}
-</script>
 </body>
 </html>
