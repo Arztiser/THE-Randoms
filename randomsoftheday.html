@@ -214,7 +214,7 @@
 
   <main class="content" role="main" aria-live="polite">
     <h1>Randoms Of The Day</h1>
-    <p>Each day at 12:00 AM UTC, the same Randoms of the Day will be available for everyone.</p>
+    <p>Here Are Your Randoms Of The Day For <span id="current-date"></span></p>
 
     <!-- Sections for each Random type with loading placeholders -->
     <section class="random-section" id="random-joke">
@@ -293,8 +293,11 @@
     // Helper: Get day seed (days since epoch)
     function getDaySeed() {
       const now = new Date();
-      const utcMidnight = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
-      return Math.floor(utcMidnight / (1000 * 60 * 60 * 24));
+const utcYear = now.getUTCFullYear();
+const utcMonth = now.getUTCMonth();
+const utcDate = now.getUTCDate();
+const utcDateObj = new Date(Date.UTC(utcYear, utcMonth, utcDate));
+return utcDateObj.toLocaleDateString('en-US', options);
     }
 
     // Generic cached fetch helper
