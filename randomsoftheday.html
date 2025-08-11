@@ -435,21 +435,24 @@ async function renderMeme(useCache = true) {
 }
 
 // Refresh all with option to ignore cache
-async function refreshAll(ignoreCache = false) {
+async function refreshAll(useCache) {
   await Promise.all([
-    renderJoke(!ignoreCache),
-    renderAdvice(!ignoreCache),
-    renderFact(!ignoreCache),
-    renderWord(!ignoreCache),
-    renderMeme(!ignoreCache)
+    renderJoke(useCache),
+    renderAdvice(useCache),
+    renderFact(useCache),
+    renderWord(useCache),
+    renderMeme(useCache)
   ]);
   renderLetter();
   renderNumber();
 }
 
 // Initial load
+const testingMode = false; // toggle this
+
 document.addEventListener('DOMContentLoaded', () => {
-  refreshAll(true);  // load fresh first time
+  refreshAll(!testingMode); // If testingMode is false, use cache (true), else ignore cache (false)
+});  // load fresh first time
 
   // Optional: add a refresh button if you want
   /*
