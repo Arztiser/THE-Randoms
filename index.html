@@ -53,7 +53,6 @@
       flex-direction: column;
       overflow-y: auto;
       z-index: 999;
-      padding-bottom: 20px;
     }
 
     .topnav.active + .topnav-right {
@@ -93,8 +92,7 @@
       text-decoration: none;
     }
 
-    .accordion-content a:hover,
-    .accordion-content a:focus {
+    .accordion-content a:hover {
       background-color: rgba(255 255 255 / 0.15);
       outline: none;
     }
@@ -107,29 +105,6 @@
 
     .accordion-section.open .accordion-content {
       display: flex;
-    }
-
-    /* New Randoms Of The Day button style */
-    .randoms-button {
-      background: none;
-      border: none;
-      color: #E82B38;
-      font-weight: 700;
-      font-size: 26px;
-      padding: 14px 16px;
-      cursor: pointer;
-      font-family: 'Jersey 10', sans-serif;
-      text-align: left;
-      width: 100%;
-      border-top: 1px solid #444;
-      user-select: none;
-      transition: background-color 0.3s ease;
-    }
-
-    .randoms-button:hover,
-    .randoms-button:focus {
-      background-color: rgba(232, 43, 56, 0.15);
-      outline: none;
     }
 
     .container {
@@ -156,6 +131,25 @@
     .logo:hover {
       text-decoration: none;
     }
+
+    /* New Randoms Of The Day button style */
+    #randoms-button {
+      background: #E82B38;
+      color: white;
+      font-family: 'Jersey 10', sans-serif;
+      font-size: 24px;
+      border: none;
+      padding: 14px;
+      width: 100%;
+      cursor: pointer;
+      text-align: center;
+      margin-top: 8px;
+      user-select: none;
+    }
+
+    #randoms-button:hover {
+      background: #c1242e;
+    }
   </style>
 
   <script src="holiday.js" defer></script> 
@@ -168,11 +162,6 @@
     </div>
 
     <div class="topnav-right">
-      <!-- Randoms Of The Day standalone button -->
-      <button class="randoms-button" onclick="window.location.href='randomsoftheday.html'">
-        Randoms Of The Day
-      </button>
-
       <div class="accordion-section">
         <button class="accordion-toggle">Jokes & Fun</button>
         <div class="accordion-content">
@@ -209,6 +198,9 @@
           <a href="words.html">Words</a>
         </div>
       </div>
+
+      <!-- Randoms Of The Day button below accordion -->
+      <button id="randoms-button">Randoms Of The Day</button>
     </div>
   </header>
 
@@ -218,6 +210,7 @@
   </div>
 
   <script>
+    // Toggle the menu open/close
     function toggleMenu() {
       const topnav = document.querySelector('.topnav');
       const body = document.body;
@@ -225,18 +218,42 @@
       body.classList.toggle('menu-open');
     }
 
+    // Accordion toggle behavior for sections
     document.querySelectorAll('.accordion-toggle').forEach(toggle => {
       toggle.addEventListener('click', () => {
         const parent = toggle.parentElement;
+        // Close all other accordion sections
         document.querySelectorAll('.accordion-section').forEach(section => {
           if (section !== parent) {
             section.classList.remove('open');
+            section.querySelector('.accordion-toggle').setAttribute('aria-expanded', 'false');
+            section.querySelector('.accordion-content').hidden = true;
           }
         });
-        parent.classList.toggle('open');
+        // Toggle current section
+        const isOpen = parent.classList.contains('open');
+        if (!isOpen) {
+          parent.classList.add('open');
+          toggle.setAttribute('aria-expanded', 'true');
+          parent.querySelector('.accordion-content').hidden = false;
+        } else {
+          parent.classList.remove('open');
+          toggle.setAttribute('aria-expanded', 'false');
+          parent.querySelector('.accordion-content').hidden = true;
+        }
       });
     });
 
+    // Handle click on Randoms Of The Day button
+    document.getElementById('randoms-button').addEventListener('click', () => {
+      // Close the menu
+      document.querySelector('.topnav').classList.remove('active');
+      document.body.classList.remove('menu-open');
+      // Navigate to randomsoftheday.html
+      window.location.href = 'randomsoftheday.html';
+    });
+
+    // Service worker registration for PWA (optional)
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/service-worker.js')
         .then(reg => console.log('Service Worker registered:', reg.scope))
