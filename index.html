@@ -36,27 +36,44 @@
       color: #f2f2f2;
     }
 
-    /* Always show menu */
+    .menu-icon {
+      font-size: 30px;
+      color: #f2f2f2;
+      cursor: pointer;
+      user-select: none;
+    }
+
     .topnav-right {
-      display: flex !important;
-      position: relative !important;
-      top: auto !important;
-      left: auto !important;
-      right: auto !important;
+      display: none;
+      position: fixed;
+      top: 60px;
+      left: 0;
+      right: 0;
       background-color: #333;
-      height: auto;
+      max-height: calc(100vh - 60px); /* changed from height */
+      overflow-y: auto;
       flex-direction: column;
-      overflow-y: visible;
-      opacity: 1 !important;
-      pointer-events: auto !important;
-      z-index: 9999 !important;
-      padding: 10px 0;
+      z-index: 999;
+      transition: opacity 0.3s ease;
+      opacity: 0;
+      pointer-events: none;
+      padding-bottom: 60px; /* ensure bottom space for clickable section */
+    }
+
+    .topnav-right.active {
+      display: flex;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    body.menu-open {
+      overflow: hidden;
     }
 
     .accordion-toggle {
       background: none;
       color: #f2f2f2;
-      padding: 14px 16px;
+      padding: 14px;
       text-align: left;
       font-size: 24px;
       border: none;
@@ -77,11 +94,12 @@
       display: none;
       flex-direction: column;
       background-color: #444;
-      padding-left: 20px;
     }
 
     .accordion-content a {
-      padding: 10px 0;
+      padding-left: 28px;
+      padding-top: 10px;
+      padding-bottom: 10px;
       border-top: 1px solid #555;
       font-size: 20px;
       color: #f2f2f2;
@@ -104,27 +122,31 @@
       display: flex;
     }
 
-    /* Clickable section */
+    /* New clickable section styling */
     .clickable-section {
-      background-color: #E82B38 !important;
-      color: white !important;
-      font-weight: 700 !important;
-      font-size: 24px !important;
-      padding: 14px !important;
-      cursor: pointer !important;
-      user-select: none !important;
-      border-top: 1px solid #b22731 !important;
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      margin-top: 4px !important;
-      transition: background-color 0.3s ease !important;
+      background-color: #E82B38;
+      color: white;
+      font-weight: 700;
+      font-size: 24px;
+      padding: 14px;
+      cursor: pointer;
+      user-select: none;
+      border-top: 1px solid #b22731;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.3s ease;
+
+      /* Sticky to bottom */
+      position: sticky;
+      bottom: 0;
+      z-index: 10;
     }
 
     .clickable-section:hover,
     .clickable-section:focus {
-      background-color: #c52430 !important;
-      outline: none !important;
+      background-color: #c52430;
+      outline: none;
     }
 
     .container {
@@ -133,7 +155,6 @@
 
     .content {
       text-align: center;
-      margin: 20px;
     }
 
     .content h1 {
@@ -158,7 +179,7 @@
   <header>
     <div class="topnav">
       <h1><a class="logo" href="/">THE Randoms</a></h1>
-      <!-- Hamburger removed for now -->
+      <span class="menu-icon" onclick="toggleMenu()" tabindex="0" role="button" aria-label="Toggle menu">&#9776;</span>
     </div>
 
     <nav class="topnav-right" role="navigation" aria-label="Main Menu">
@@ -199,8 +220,13 @@
         </div>
       </div>
 
-      <!-- Clickable section always visible -->
-      <div class="clickable-section" tabindex="0" role="link" title="Go to Randoms Of The Day">
+      <!-- RED CLICKABLE SECTION BELOW ACCORDION SECTIONS -->
+      <div 
+        class="clickable-section" 
+        tabindex="0" 
+        role="link"
+        title="Go to Randoms Of The Day"
+      >
         Randoms Of The Day
       </div>
     </nav>
@@ -212,6 +238,16 @@
   </main>
 
   <script>
+    function toggleMenu() {
+      const topnav = document.querySelector('.topnav');
+      const menu = document.querySelector('.topnav-right');
+      const body = document.body;
+
+      topnav.classList.toggle('active');
+      menu.classList.toggle('active');
+      body.classList.toggle('menu-open');
+    }
+
     // Accordion toggles
     document.querySelectorAll('.accordion-toggle').forEach(button => {
       button.addEventListener('click', () => {
@@ -239,7 +275,7 @@
       });
     });
 
-    // Click handler for clickable section
+    // Click handler for red clickable section
     const clickableSection = document.querySelector('.clickable-section');
     clickableSection.addEventListener('click', () => {
       window.location.href = 'randomsoftheday.html';
@@ -250,6 +286,14 @@
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         clickableSection.click();
+      }
+    });
+
+    // Allow menu toggle with keyboard (Enter/Space) on hamburger
+    document.querySelector('.menu-icon').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleMenu();
       }
     });
   </script>
