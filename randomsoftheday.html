@@ -276,39 +276,36 @@
       });
     });
 
-    // Return days since Unix epoch (UTC midnight)
+    // Day seed based on user's local midnight
     function getDaySeed() {
       const now = new Date();
-      const utcMidnight = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
-      return Math.floor(utcMidnight / (1000 * 60 * 60 * 24));
+      const localMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      return Math.floor(localMidnight.getTime() / (1000 * 60 * 60 * 24));
     }
 
-    // Display formatted current date (UTC) in header
+    // Display current date (local)
     function renderCurrentDate() {
       const container = document.getElementById('current-date');
       if (!container) return;
 
       const now = new Date();
-      const utcYear = now.getUTCFullYear();
-      const utcMonth = now.getUTCMonth();
-      const utcDay = now.getUTCDate();
-
-      const utcDate = new Date(Date.UTC(utcYear, utcMonth, utcDay));
-
       const options = { month: 'long', day: 'numeric' };
-      container.textContent = utcDate.toLocaleDateString('en-US', options);
+      container.textContent = now.toLocaleDateString('en-US', options);
     }
 
     // Generic cached fetch helper
     async function fetchCached(key, fetchFn, useCache = true) {
-      const today = new Date().toISOString().slice(0, 10);
+      const today = new Date();
       const cacheKey = `daily_${key}`;
       const cacheDateKey = `daily_${key}_date`;
+
+      // Format today in YYYY-MM-DD for cache comparison
+      const todayString = today.toISOString().slice(0, 10);
 
       if (useCache) {
         const cachedData = localStorage.getItem(cacheKey);
         const cachedDate = localStorage.getItem(cacheDateKey);
-        if (cachedData && cachedDate === today) {
+        if (cachedData && cachedDate === todayString) {
           return cachedData;
         }
       }
@@ -316,7 +313,7 @@
       try {
         const freshData = await fetchFn();
         localStorage.setItem(cacheKey, freshData);
-        localStorage.setItem(cacheDateKey, today);
+        localStorage.setItem(cacheDateKey, todayString);
         return freshData;
       } catch (err) {
         console.error(`Error fetching ${key}:`, err);
@@ -462,4 +459,4 @@
     });
   </script>
 </body>
-  </html>
+</html>
