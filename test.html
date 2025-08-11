@@ -3,21 +3,20 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>THE Randoms Test Menu</title>
+<title>Accordion & Menu Toggle Test</title>
 <style>
   body {
-    font-family: 'Jersey 10', sans-serif;
+    font-family: Arial, sans-serif;
     margin: 0;
-    font-size: 24px;
   }
   .topnav {
     background: #333;
-    color: #f2f2f2;
-    height: 60px;
+    color: white;
+    height: 50px;
     display: flex;
     align-items: center;
-    padding: 0 16px;
     justify-content: space-between;
+    padding: 0 16px;
   }
   .menu-icon {
     font-size: 30px;
@@ -26,10 +25,10 @@
   .topnav-right {
     display: none;
     position: fixed;
-    top: 60px;
+    top: 50px;
     left: 0; right: 0;
     background: #333;
-    height: calc(100vh - 60px);
+    height: calc(100vh - 50px);
     overflow-y: auto;
     flex-direction: column;
     z-index: 999;
@@ -43,141 +42,97 @@
   .accordion-toggle {
     background: none;
     border: none;
-    color: #f2f2f2;
+    color: white;
     padding: 14px;
     width: 100%;
     text-align: left;
     cursor: pointer;
-    font-size: 24px;
+    font-size: 20px;
   }
   .accordion-content {
-    background: #444;
     display: none;
-    flex-direction: column;
-  }
-  .accordion-content a {
-    color: #f2f2f2;
-    padding: 10px 28px;
-    text-decoration: none;
-  }
-  .accordion-content a:hover {
-    background: rgba(255,255,255,0.15);
+    background: #444;
+    padding-left: 20px;
   }
   .accordion-section.open .accordion-content {
-    display: flex;
+    display: block;
   }
-  /* The red clickable section */
   .clickable-section {
-    background-color: #E82B38;
+    background: #E82B38;
     color: white;
     font-weight: 700;
-    text-align: center;
     padding: 18px;
     cursor: pointer;
-    user-select: none;
+    text-align: center;
     border-top: 1px solid #b22731;
-  }
-  .clickable-section:hover,
-  .clickable-section:focus {
-    background-color: #c52430;
-    outline: none;
   }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="topnav">
-    <div>THE Randoms</div>
-    <div class="menu-icon" tabindex="0" aria-label="Toggle menu">&#9776;</div>
+<div class="topnav">
+  <div>THE Randoms</div>
+  <div class="menu-icon" tabindex="0">&#9776;</div>
+</div>
+<nav class="topnav-right" role="navigation" aria-label="Main Menu">
+  <div class="accordion-section">
+    <button class="accordion-toggle">Jokes & Fun</button>
+    <div class="accordion-content">
+      <a href="#">Jokes</a><br />
+      <a href="#">Memes</a><br />
+    </div>
   </div>
-  <nav class="topnav-right" role="navigation" aria-label="Main Menu">
-    <div class="accordion-section">
-      <button class="accordion-toggle" aria-expanded="false">Jokes & Fun</button>
-      <div class="accordion-content">
-        <a href="#">Jokes</a>
-        <a href="#">Memes</a>
-        <a href="#">NFL</a>
-        <a href="#">Quizzes</a>
-      </div>
-    </div>
-    <div class="accordion-section">
-      <button class="accordion-toggle" aria-expanded="false">Knowledge & Facts</button>
-      <div class="accordion-content">
-        <a href="#">Advice</a>
-        <a href="#">Facts</a>
-        <a href="#">People</a>
-        <a href="#">Quotes</a>
-      </div>
-    </div>
-    <div class="accordion-section">
-      <button class="accordion-toggle" aria-expanded="false">Music & Videos</button>
-      <div class="accordion-content">
-        <a href="#">Songs</a>
-        <a href="#">Videos</a>
-      </div>
-    </div>
-    <div class="accordion-section">
-      <button class="accordion-toggle" aria-expanded="false">Words, Letters & Numbers</button>
-      <div class="accordion-content">
-        <a href="#">Letters</a>
-        <a href="#">Numbers</a>
-        <a href="#">Words</a>
-      </div>
-    </div>
 
-    <!-- The red clickable section below -->
-    <div class="clickable-section" tabindex="0" role="button" aria-pressed="false">
-      Randoms Of The Day
+  <div class="accordion-section">
+    <button class="accordion-toggle">Knowledge & Facts</button>
+    <div class="accordion-content">
+      <a href="#">Advice</a><br />
+      <a href="#">Facts</a><br />
     </div>
-  </nav>
-</header>
+  </div>
+
+  <div class="accordion-section">
+    <button class="accordion-toggle">Words, Letters & Numbers</button>
+    <div class="accordion-content">
+      <a href="#">Letters</a><br />
+      <a href="#">Numbers</a><br />
+      <a href="#">Words</a><br />
+    </div>
+  </div>
+
+  <div class="clickable-section" tabindex="0">
+    Randoms Of The Day
+  </div>
+</nav>
 
 <script>
-  // Toggle menu open/close
   const menuIcon = document.querySelector('.menu-icon');
   const topnavRight = document.querySelector('.topnav-right');
 
-  function toggleMenu() {
+  menuIcon.addEventListener('click', () => {
+    menuIcon.parentElement.classList.toggle('active');
     topnavRight.classList.toggle('active');
-  }
-  menuIcon.addEventListener('click', toggleMenu);
-  menuIcon.addEventListener('keydown', (e) => {
-    if(e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      toggleMenu();
-    }
   });
 
   // Accordion toggles
   document.querySelectorAll('.accordion-toggle').forEach(button => {
     button.addEventListener('click', () => {
       const section = button.parentElement;
-      const expanded = button.getAttribute('aria-expanded') === 'true';
+      const isOpen = section.classList.contains('open');
       
-      // Close all other sections
-      document.querySelectorAll('.accordion-section').forEach(sec => {
-        sec.classList.remove('open');
-        sec.querySelector('.accordion-toggle').setAttribute('aria-expanded', 'false');
-      });
-
-      if (!expanded) {
+      // Close all
+      document.querySelectorAll('.accordion-section').forEach(s => s.classList.remove('open'));
+      
+      if (!isOpen) {
         section.classList.add('open');
-        button.setAttribute('aria-expanded', 'true');
       }
     });
   });
 
-  // Clickable red section redirect
-  const clickableSection = document.querySelector('.clickable-section');
-  clickableSection.addEventListener('click', () => {
-    window.location.href = 'randomsoftheday.html';
-  });
-  clickableSection.addEventListener('keydown', (e) => {
-    if(e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      window.location.href = 'randomsoftheday.html';
-    }
+  // Clickable red section redirect example
+  document.querySelector('.clickable-section').addEventListener('click', () => {
+    alert('Redirect to randomsoftheday.html');
+    // window.location.href = 'randomsoftheday.html'; // uncomment in real use
   });
 </script>
 
