@@ -276,14 +276,14 @@
       });
     });
 
-    // Day seed based on user's local midnight
+    // Return days since Unix epoch (local midnight)
     function getDaySeed() {
       const now = new Date();
       const localMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
       return Math.floor(localMidnight.getTime() / (1000 * 60 * 60 * 24));
     }
 
-    // Display current date (local)
+    // Display formatted current date (local time) in header
     function renderCurrentDate() {
       const container = document.getElementById('current-date');
       if (!container) return;
@@ -295,17 +295,14 @@
 
     // Generic cached fetch helper
     async function fetchCached(key, fetchFn, useCache = true) {
-      const today = new Date();
+      const today = new Date().toISOString().slice(0, 10);
       const cacheKey = `daily_${key}`;
       const cacheDateKey = `daily_${key}_date`;
-
-      // Format today in YYYY-MM-DD for cache comparison
-      const todayString = today.toISOString().slice(0, 10);
 
       if (useCache) {
         const cachedData = localStorage.getItem(cacheKey);
         const cachedDate = localStorage.getItem(cacheDateKey);
-        if (cachedData && cachedDate === todayString) {
+        if (cachedData && cachedDate === today) {
           return cachedData;
         }
       }
@@ -313,7 +310,7 @@
       try {
         const freshData = await fetchFn();
         localStorage.setItem(cacheKey, freshData);
-        localStorage.setItem(cacheDateKey, todayString);
+        localStorage.setItem(cacheDateKey, today);
         return freshData;
       } catch (err) {
         console.error(`Error fetching ${key}:`, err);
@@ -452,10 +449,33 @@
       renderNumber();
     }
 
-    // On page load, render current date and all randoms
+    // Schedule update at next local midnight, then every 24 hours after
+    function scheduleMidnightRefresh() {
+      const now = new Date();
+      const nextMidnight = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate() + 1,
+        0, 0, 0, 0
+      );
+      const msUntilMidnight = nextMidnight - now;
+
+      setTimeout(() => {
+        renderCurrentDate();
+        refreshAll();
+
+        setInterval(() => {
+          renderCurrentDate();
+          refreshAll();
+        }, 24 * 60 * 60 * 1000);
+
+      }, msUntilMidnight);
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       renderCurrentDate();
       refreshAll();
+      scheduleMidnightRefresh();
     });
   </script>
 </body>
