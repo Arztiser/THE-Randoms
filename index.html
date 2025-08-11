@@ -129,6 +129,7 @@
       align-items: center;
       justify-content: center;
       transition: background-color 0.3s ease;
+      margin-top: 4px;
     }
 
     .clickable-section:hover,
@@ -169,13 +170,13 @@
   <header>
     <div class="topnav">
       <h1><a class="logo" href="/">THE Randoms</a></h1>
-      <span class="menu-icon" onclick="toggleMenu()">&#9776;</span>
+      <span class="menu-icon" onclick="toggleMenu()" tabindex="0">&#9776;</span>
     </div>
 
-    <div class="topnav-right">
+    <nav class="topnav-right" role="navigation" aria-label="Main Menu">
       <div class="accordion-section">
-        <button class="accordion-toggle">Jokes & Fun</button>
-        <div class="accordion-content">
+        <button class="accordion-toggle" aria-expanded="false">Jokes & Fun</button>
+        <div class="accordion-content" hidden>
           <a href="jokes.html">Jokes</a>
           <a href="memes.html">Memes</a>
           <a href="nfl.html">NFL</a>
@@ -184,8 +185,8 @@
       </div>
 
       <div class="accordion-section">
-        <button class="accordion-toggle">Knowledge & Facts</button>
-        <div class="accordion-content">
+        <button class="accordion-toggle" aria-expanded="false">Knowledge & Facts</button>
+        <div class="accordion-content" hidden>
           <a href="advice.html">Advice</a>
           <a href="facts.html">Facts</a>
           <a href="people.html">People</a>
@@ -194,71 +195,101 @@
       </div>
 
       <div class="accordion-section">
-        <button class="accordion-toggle">Music & Videos</button>
-        <div class="accordion-content">
+        <button class="accordion-toggle" aria-expanded="false">Music & Videos</button>
+        <div class="accordion-content" hidden>
           <a href="songs.html">Songs</a>
           <a href="videos.html">Videos</a>
         </div>
       </div>
 
       <div class="accordion-section">
-        <button class="accordion-toggle">Words, Letters & Numbers</button>
-        <div class="accordion-content">
+        <button class="accordion-toggle" aria-expanded="false">Words, Letters & Numbers</button>
+        <div class="accordion-content" hidden>
           <a href="letters.html">Letters</a>
           <a href="numbers.html">Numbers</a>
           <a href="words.html">Words</a>
         </div>
       </div>
 
-      <!-- The new clickable red button section below -->
-      <div class="accordion-section clickable-section" tabindex="0">
+      <!-- RED CLICKABLE SECTION BELOW ACCORDION SECTIONS -->
+      <div 
+        class="clickable-section" 
+        tabindex="0" 
+        role="link" 
+        aria-label="Randoms Of The Day"
+        title="Go to Randoms Of The Day"
+      >
         Randoms Of The Day
       </div>
-    </div>
+    </nav>
   </header>
 
-  <div class="content">
+  <main class="content">
     <h1>Home</h1>
     <p>Welcome to THE Randoms, a website full of random things to explore and enjoy. If you found this site randomly, welcome! Now come along on this wacky, fun, and random ride through THE Randoms of the world and the internet.</p>
-  </div>
+  </main>
 
   <script>
     function toggleMenu() {
       const topnav = document.querySelector('.topnav');
+      const menu = document.querySelector('.topnav-right');
       const body = document.body;
+
       topnav.classList.toggle('active');
+      menu.classList.toggle('active');
       body.classList.toggle('menu-open');
     }
 
-    document.querySelectorAll('.accordion-toggle').forEach(toggle => {
-      toggle.addEventListener('click', () => {
-        const parent = toggle.parentElement;
-        document.querySelectorAll('.accordion-section').forEach(section => {
-          if (section !== parent) {
-            section.classList.remove('open');
-            section.querySelector('.accordion-toggle').setAttribute('aria-expanded', 'false');
-            section.querySelector('.accordion-content').hidden = true;
+    // Accordion toggles
+    document.querySelectorAll('.accordion-toggle').forEach(button => {
+      button.addEventListener('click', () => {
+        const section = button.parentElement;
+        const isOpen = section.classList.contains('open');
+
+        // Close all sections except the clicked one
+        document.querySelectorAll('.accordion-section').forEach(s => {
+          if (s !== section) {
+            s.classList.remove('open');
+            s.querySelector('.accordion-toggle').setAttribute('aria-expanded', 'false');
+            s.querySelector('.accordion-content').hidden = true;
           }
         });
-        parent.classList.toggle('open');
-        const isOpen = parent.classList.contains('open');
-        toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-        parent.querySelector('.accordion-content').hidden = !isOpen;
+
+        if (!isOpen) {
+          section.classList.add('open');
+          button.setAttribute('aria-expanded', 'true');
+          section.querySelector('.accordion-content').hidden = false;
+        } else {
+          section.classList.remove('open');
+          button.setAttribute('aria-expanded', 'false');
+          section.querySelector('.accordion-content').hidden = true;
+        }
       });
     });
 
-    // Redirect on click or keyboard (Enter/Space) for the clickable red section
+    // Click handler for red clickable section
     const clickableSection = document.querySelector('.clickable-section');
     clickableSection.addEventListener('click', () => {
       window.location.href = 'randomsoftheday.html';
     });
-    clickableSection.addEventListener('keypress', (e) => {
+
+    // Keyboard accessibility (Enter, Space)
+    clickableSection.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
-        window.location.href = 'randomsoftheday.html';
+        clickableSection.click();
       }
     });
 
+    // Allow menu toggle with keyboard (Enter/Space) on hamburger
+    document.querySelector('.menu-icon').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleMenu();
+      }
+    });
+
+    // Register service worker
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/service-worker.js')
         .then(reg => console.log('Service Worker registered:', reg.scope))
