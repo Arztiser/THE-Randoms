@@ -261,7 +261,10 @@
   </main>
 
   <script>
-      // Accordion toggle functionality
+  // Global testing mode toggle: true = allow refresh to change content, false = official mode (no changes)
+const testingMode = false;
+
+// Accordion toggle functionality
 function toggleMenu() {
   const topnav = document.querySelector('.topnav');
   const body = document.body;
@@ -290,173 +293,257 @@ document.querySelectorAll('.accordion-toggle').forEach(toggle => {
   });
 });
 
-// Helper: Get today's date string
-function getToday() {
-  return new Date().toISOString().slice(0, 10);
-}
-
-// Helper: Get day seed (days since epoch)
+// --- Helper Functions ---
 function getDaySeed() {
   const now = new Date();
   const utcMidnight = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
   return Math.floor(utcMidnight / (1000 * 60 * 60 * 24));
 }
 
-// Generic cached fetch helper
-async function fetchCached(key, fetchFn, useCache = true) {
-  const today = getToday();
-  const cacheKey = `daily_${key}`;
-  const cacheDateKey = `daily_${key}_date`;
-
-  if (useCache) {
-    const cachedData = localStorage.getItem(cacheKey);
-    const cachedDate = localStorage.getItem(cacheDateKey);
-    if (cachedData && cachedDate === today) {
-      return cachedData;
-    }
-  }
-
-  try {
-    const freshData = await fetchFn();
-    localStorage.setItem(cacheKey, freshData);
-    localStorage.setItem(cacheDateKey, today);
-    return freshData;
-  } catch (err) {
-    console.error(`Error fetching ${key}:`, err);
-    const fallback = localStorage.getItem(cacheKey);
-    return fallback || `Could not load ${key} today.`;
-  }
-}
-
-// Render letter A-Z deterministic by day
-function renderLetter() {
+// --- Letters: A-Z daily letter or random if testing ---
+function renderLetter(useRandom = false) {
   const container = document.querySelector('#random-letter .random-content');
   if (!container) return;
-  const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  const index = getDaySeed() % letters.length;
-  container.textContent = letters[index];
+
+  if (useRandom) {
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const index = Math.floor(Math.random() * letters.length);
+    container.textContent = letters[index];
+  } else {
+    const daySeed = getDaySeed();
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const index = daySeed % letters.length;
+    container.textContent = letters[index];
+  }
 }
 
-// Render number deterministic by day (1 to 1,000,000)
-function renderNumber() {
+// --- Numbers: 1 to 1,000,000 daily or random if testing ---
+function renderNumber(useRandom = false) {
   const container = document.querySelector('#random-number .random-content');
   if (!container) return;
-  const num = (getDaySeed() * 9301 + 49297) % 1000000 + 1;
-  container.textContent = num.toLocaleString();
+
+  if (useRandom) {
+    const num = Math.floor(Math.random() * 1000000) + 1;
+    container.textContent = num.toLocaleString();
+  } else {
+    const daySeed = getDaySeed();
+    const num = (daySeed * 9301 + 49297) % 1000000 + 1;
+    container.textContent = num.toLocaleString();
+  }
 }
 
-// Fetch joke from API
-async function fetchJoke() {
-  const res = await fetch('https://official-joke-api.appspot.com/jokes/random');
-  if (!res.ok) throw new Error('Joke fetch failed');
-  const data = await res.json();
-  return `${data.setup} ${data.punchline}`;
+// --- Fetch & Cache Jokes ---
+async function fetchJoke(noCache = false) {
+  if (!noCache) {
+    const cached = localStorage.getItem('dailyJoke');
+    const cachedDate = localStorage.getItem('dailyJokeDate');
+    const today = new Date().toISOString().slice(0, 10);
+    if (cached && cachedDate === today) return cached;
+  }
+  try {
+    const response = await fetch('https://official-joke-api.appspot.com/jokes/random');
+    if (!response.ok) throw new Error('Failed to fetch joke');
+    const joke = await response.json();
+    const jokeText = `${joke.setup} ${joke.punchline}`;
+    localStorage.setItem('dailyJoke', jokeText);
+    localStorage.setItem('dailyJokeDate', new Date().toISOString().slice(0, 10));
+    return jokeText;
+  } catch (err) {
+    console.error('Jokes API error:', err);
+    return 'Could not load joke today.';
+  }
 }
+
 async function renderJoke(useCache = true) {
   const container = document.querySelector('#random-joke .random-content');
   if (!container) return;
-  const joke = await fetchCached('joke', fetchJoke, useCache);
+  const joke = await fetchJoke(!useCache);
   container.textContent = joke;
 }
 
-// Fetch advice from API
-async function fetchAdvice() {
-  const res = await fetch('https://api.adviceslip.com/advice');
-  if (!res.ok) throw new Error('Advice fetch failed');
-  const data = await res.json();
-  return data.slip.advice;
+// --- Fetch & Cache Advice ---
+async function fetchAdvice(noCache = false) {
+  if (!noCache) {
+    const cached = localStorage.getItem('dailyAdvice');
+    const cachedDate = localStorage.getItem('dailyAdviceDate');
+    const today = new Date().toISOString().slice(0, 10);
+    if (cached && cachedDate === today) return cached;
+  }
+  try {
+    const response = await fetch('https://api.adviceslip.com/advice');
+    if (!response.ok) throw new Error('Failed to fetch advice');
+    const data = await response.json();
+    const advice = data.slip.advice;
+    localStorage.setItem('dailyAdvice', advice);
+    localStorage.setItem('dailyAdviceDate', new Date().toISOString().slice(0, 10));
+    return advice;
+  } catch (err) {
+    console.error('Advice API error:', err);
+    return 'Could not load advice today.';
+  }
 }
+
 async function renderAdvice(useCache = true) {
   const container = document.querySelector('#random-advice .random-content');
   if (!container) return;
-  const advice = await fetchCached('advice', fetchAdvice, useCache);
+  const advice = await fetchAdvice(!useCache);
   container.textContent = advice;
 }
 
-// Fetch fact from API
-async function fetchFact() {
-  const res = await fetch('https://uselessfacts.jsph.pl/random.json?language=en');
-  if (!res.ok) throw new Error('Fact fetch failed');
-  const data = await res.json();
-  return data.text;
+// --- Fetch & Cache Facts ---
+async function fetchFact(noCache = false) {
+  if (!noCache) {
+    const cached = localStorage.getItem('dailyFact');
+    const cachedDate = localStorage.getItem('dailyFactDate');
+    const today = new Date().toISOString().slice(0, 10);
+    if (cached && cachedDate === today) return cached;
+  }
+  try {
+    const response = await fetch('https://uselessfacts.jsph.pl/random.json?language=en');
+    if (!response.ok) throw new Error('Failed to fetch fact');
+    const data = await response.json();
+    localStorage.setItem('dailyFact', data.text);
+    localStorage.setItem('dailyFactDate', new Date().toISOString().slice(0, 10));
+    return data.text;
+  } catch (err) {
+    console.error('Facts API error:', err);
+    return 'Could not load fact today.';
+  }
 }
+
 async function renderFact(useCache = true) {
   const container = document.querySelector('#random-fact .random-content');
   if (!container) return;
-  const fact = await fetchCached('fact', fetchFact, useCache);
+  const fact = await fetchFact(!useCache);
   container.textContent = fact;
 }
 
-// Fetch word from API
-async function fetchWord() {
-  const res = await fetch('https://random-word-api.herokuapp.com/word?number=1');
-  if (!res.ok) throw new Error('Word fetch failed');
-  const data = await res.json();
-  return data[0];
+// --- Fetch & Cache Words ---
+async function fetchWord(noCache = false) {
+  if (!noCache) {
+    const cached = localStorage.getItem('dailyWord');
+    const cachedDate = localStorage.getItem('dailyWordDate');
+    const today = new Date().toISOString().slice(0, 10);
+    if (cached && cachedDate === today) return cached;
+  }
+  try {
+    const response = await fetch('https://random-word-api.herokuapp.com/word?number=1');
+    if (!response.ok) throw new Error('Failed to fetch word');
+    const data = await response.json();
+    localStorage.setItem('dailyWord', data[0]);
+    localStorage.setItem('dailyWordDate', new Date().toISOString().slice(0, 10));
+    return data[0];
+  } catch (err) {
+    console.error('Words API error:', err);
+    return 'Could not load word today.';
+  }
 }
+
 async function renderWord(useCache = true) {
   const container = document.querySelector('#random-word .random-content');
   if (!container) return;
-  const word = await fetchCached('word', fetchWord, useCache);
+  const word = await fetchWord(!useCache);
   container.textContent = word;
 }
 
-// Fetch meme (image only) from Reddit
-async function fetchMeme() {
-  const subs = ['memes', 'dankmemes', 'funny'];
-  const randomSub = subs[Math.floor(Math.random() * subs.length)];
-  const url = `https://www.reddit.com/r/${randomSub}/hot.json?limit=100`;
-  const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(url)}`;
-  const res = await fetch(proxyUrl);
-  if (!res.ok) throw new Error('Meme fetch failed');
-  const json = await res.json();
+// --- Fetch & Cache Meme ---
+async function fetchMeme(noCache = false) {
+  if (!noCache) {
+    const cached = localStorage.getItem('dailyMeme');
+    const cachedDate = localStorage.getItem('dailyMemeDate');
+    const today = new Date().toISOString().slice(0, 10);
+    if (cached && cachedDate === today) return JSON.parse(cached);
+  }
+  try {
+    const subreddits = ["memes", "dankmemes", "funny"];
+    const randomSub = subreddits[Math.floor(Math.random() * subreddits.length)];
+    const url = `https://www.reddit.com/r/${randomSub}/hot.json?limit=100`;
+    const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(url)}`;
+    const response = await fetch(proxyUrl);
+    if (!response.ok) throw new Error("Failed to fetch meme");
+    const data = await response.json();
 
-  const memes = json.data.children.filter(post =>
-    post.data.url && /\.(jpg|jpeg|png)$/i.test(post.data.url)
-  );
-  if (memes.length === 0) throw new Error('No memes found');
+    const memes = data.data.children.filter(post =>
+      post.data.url &&
+      (post.data.url.endsWith(".jpg") ||
+       post.data.url.endsWith(".png") ||
+       post.data.url.endsWith(".jpeg"))
+    );
 
-  const randomMeme = memes[Math.floor(getDaySeed() % memes.length)].data;
-  return randomMeme.url;
+    if (memes.length === 0) throw new Error("No image memes found.");
+
+    const randomMeme = memes[Math.floor(Math.random() * memes.length)].data;
+    const memeData = { url: randomMeme.url, title: randomMeme.title };
+
+    localStorage.setItem('dailyMeme', JSON.stringify(memeData));
+    localStorage.setItem('dailyMemeDate', new Date().toISOString().slice(0, 10));
+
+    return memeData;
+  } catch (error) {
+    console.error("Error fetching meme:", error);
+    return null;
+  }
 }
 
 async function renderMeme(useCache = true) {
   const container = document.querySelector('#random-meme .random-content');
   if (!container) return;
 
-  try {
-    const memeUrl = await fetchCached('meme', fetchMeme, useCache);
-    container.innerHTML = `<img src="${memeUrl}" alt="Daily Meme" style="max-width:100%; border-radius:8px; margin-top: 10px;" />`;
-  } catch {
+  const memeData = await fetchMeme(!useCache);
+  if (!memeData) {
     container.textContent = 'Failed to load meme.';
+    return;
+  }
+
+  container.innerHTML = `<img src="${memeData.url}" alt="${memeData.title}" style="max-width:100%; border-radius:8px; margin-top: 10px;" />`;
+}
+
+// --- Refresh All ---
+async function refreshAll() {
+  if (testingMode) {
+    // Refresh with new randoms for testing
+    renderLetter(true);
+    renderNumber(true);
+    await Promise.all([
+      renderJoke(false),
+      renderAdvice(false),
+      renderFact(false),
+      renderWord(false),
+      renderMeme(false)
+    ]);
+  } else {
+    // Official mode: do not change anything, just re-render cached/stored content
+    renderLetter(false);
+    renderNumber(false);
+    await Promise.all([
+      renderJoke(true),
+      renderAdvice(true),
+      renderFact(true),
+      renderWord(true),
+      renderMeme(true)
+    ]);
   }
 }
 
-// Refresh all with option to ignore cache
-async function refreshAll(ignoreCache = false) {
-  await Promise.all([
-    renderJoke(!ignoreCache),
-    renderAdvice(!ignoreCache),
-    renderFact(!ignoreCache),
-    renderWord(!ignoreCache),
-    renderMeme(!ignoreCache)
-  ]);
-  renderLetter();
-  renderNumber();
-}
-
-// Initial load
+// --- Initial load ---
 document.addEventListener('DOMContentLoaded', () => {
-  refreshAll(true);  // load fresh first time
+  document.getElementById('refresh-btn').addEventListener('click', refreshAll);
 
-  // Optional: add a refresh button if you want
-  /*
-  const btn = document.createElement('button');
-  btn.textContent = "Quick Refresh All";
-  btn.style = "margin: 20px auto; display: block; padding: 12px 24px; font-size: 18px; cursor: pointer;";
-  btn.onclick = () => refreshAll(true);
-  document.querySelector('.content').appendChild(btn);
-  */
+  if (testingMode) {
+    // In testing mode, generate fresh data at page load
+    refreshAll();
+  } else {
+    // Official mode, load cached data or fetch if none cached
+    renderLetter(false);
+    renderNumber(false);
+    Promise.all([
+      renderJoke(true),
+      renderAdvice(true),
+      renderFact(true),
+      renderWord(true),
+      renderMeme(true)
+    ]);
+  }
 });
   </script>                   
 </body>
