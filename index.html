@@ -53,6 +53,7 @@
       flex-direction: column;
       overflow-y: auto;
       z-index: 999;
+      padding-bottom: 20px;
     }
 
     .topnav.active + .topnav-right {
@@ -92,6 +93,12 @@
       text-decoration: none;
     }
 
+    .accordion-content a:hover,
+    .accordion-content a:focus {
+      background-color: rgba(255 255 255 / 0.15);
+      outline: none;
+    }
+
     .accordion-section {
       display: flex;
       flex-direction: column;
@@ -100,6 +107,29 @@
 
     .accordion-section.open .accordion-content {
       display: flex;
+    }
+
+    /* New Randoms Of The Day button style */
+    .randoms-button {
+      background: none;
+      border: none;
+      color: #E82B38;
+      font-weight: 700;
+      font-size: 26px;
+      padding: 14px 16px;
+      cursor: pointer;
+      font-family: 'Jersey 10', sans-serif;
+      text-align: left;
+      width: 100%;
+      border-top: 1px solid #444;
+      user-select: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .randoms-button:hover,
+    .randoms-button:focus {
+      background-color: rgba(232, 43, 56, 0.15);
+      outline: none;
     }
 
     .container {
@@ -128,7 +158,7 @@
     }
   </style>
 
-<script src="holiday.js" defer></script> 
+  <script src="holiday.js" defer></script> 
 </head>
 <body>
   <header>
@@ -138,6 +168,11 @@
     </div>
 
     <div class="topnav-right">
+      <!-- Randoms Of The Day standalone button -->
+      <button class="randoms-button" onclick="window.location.href='randomsoftheday.html'">
+        Randoms Of The Day
+      </button>
+
       <div class="accordion-section">
         <button class="accordion-toggle">Jokes & Fun</button>
         <div class="accordion-content">
