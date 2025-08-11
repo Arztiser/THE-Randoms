@@ -261,7 +261,7 @@
   </main>
 
   <script>
-  // Toggle this to true for testing (forces fresh fetches every reload and randomizes numbers/letters)
+      // Toggle this to true for testing (forces fresh fetches every reload and randomizes numbers/letters)
 const testingMode = true;
 
 // Accordion toggle functionality
@@ -293,7 +293,7 @@ document.querySelectorAll('.accordion-toggle').forEach(toggle => {
   });
 });
 
-// Helper: Get today's date string
+// Helper: Get today's date string (YYYY-MM-DD)
 function getToday() {
   return new Date().toISOString().slice(0, 10);
 }
@@ -422,15 +422,8 @@ async function renderWord(useCache = true) {
 
 // Fetch meme (image only) from Reddit, deterministic selection by day
 async function fetchMeme() {
-async function fetchMeme(randomize = false) {
   const subs = ['memes', 'dankmemes', 'funny'];
-
-  // Choose subreddit index:
-  const subIndex = randomize 
-    ? Math.floor(Math.random() * subs.length)    // Random subreddit in testing
-    : getDaySeed() % subs.length;                 // Daily deterministic subreddit
-
-  const selectedSub = subs[subIndex];
+  const selectedSub = subs[getDaySeed() % subs.length];
   const url = `https://www.reddit.com/r/${selectedSub}/hot.json?limit=100`;
   const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(url)}`;
   const res = await fetch(proxyUrl);
@@ -442,11 +435,7 @@ async function fetchMeme(randomize = false) {
   );
   if (memes.length === 0) throw new Error('No memes found');
 
-  // Pick meme index:
-  const memeIndex = randomize 
-    ? Math.floor(Math.random() * memes.length)  // Random meme in testing
-    : getDaySeed() % memes.length;               // Daily deterministic meme
-
+  const memeIndex = getDaySeed() % memes.length;
   const memeUrl = memes[memeIndex].data.url;
   return memeUrl;
 }
@@ -455,15 +444,14 @@ async function renderMeme(useCache = true) {
   if (!container) return;
 
   try {
-    // Pass true if testingMode to randomize meme selection after fresh fetch
-    const memeUrl = await fetchCached('meme', () => fetchMeme(testingMode), useCache);
+    const memeUrl = await fetchCached('meme', fetchMeme, useCache);
     container.innerHTML = `<img src="${memeUrl}" alt="Daily Meme" style="max-width:100%; border-radius:8px; margin-top: 10px;" />`;
   } catch {
     container.textContent = 'Failed to load meme.';
   }
 }
 
-// Refresh all with option to ignore cache (testingMode forces ignore cache)
+// Refresh all with option to ignore cache (testingMode forces fresh fetches)
 async function refreshAll() {
   const useCache = !testingMode;
   await Promise.all([
