@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accordion Menu with Redirect</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .accordion {
+      background-color: #eee;
+      cursor: pointer;
+      padding: 14px;
+      width: 100%;
+      border: none;
+      text-align: left;
+      outline: none;
+      transition: background-color 0.2s ease;
+      font-size: 16px;
+    }
+    .accordion:hover {
+      background-color: #ccc;
+    }
+    .accordion.active {
+      background-color: #ccc;
+    }
+    .panel {
+      padding: 0 14px;
+      background-color: white;
+      display: none;
+      overflow: hidden;
+    }
+    /* Make the redirect section look like a button but without collapsing */
+    .redirect-btn {
+      background-color: #eee;
+      cursor: pointer;
+      padding: 14px;
+      width: 100%;
+      border: none;
+      text-align: left;
+      font-size: 16px;
+    }
+    .redirect-btn:hover {
+      background-color: #ccc;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Accordion Menu</h2>
+
+<!-- Normal Accordion Section -->
+<button class="accordion">Section 1</button>
+<div class="panel">
+  <p>Content for Section 1</p>
+</div>
+
+<!-- Another Accordion Section -->
+<button class="accordion">Section 2</button>
+<div class="panel">
+  <p>Content for Section 2</p>
+</div>
+
+<!-- Redirect Section -->
+<button class="redirect-btn" onclick="location.href='randoms.html'">Randoms of the Day</button>
+
+<script>
+  // Handle accordion toggle
+  var acc = document.getElementsByClassName("accordion");
+  for (let i = 0; i < acc.length; i++) {
+    acc[i].addEventListener("click", function () {
+      this.classList.toggle("active");
+      var panel = this.nextElementSibling;
+      panel.style.display = (panel.style.display === "block") ? "none" : "block";
+    });
+  }
+</script>
+
+</body>
+</html>
