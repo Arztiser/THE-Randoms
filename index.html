@@ -40,6 +40,7 @@
       font-size: 30px;
       color: #f2f2f2;
       cursor: pointer;
+      user-select: none;
     }
 
     .topnav-right {
@@ -53,10 +54,15 @@
       flex-direction: column;
       overflow-y: auto;
       z-index: 999;
+      transition: opacity 0.3s ease;
+      opacity: 0;
+      pointer-events: none;
     }
 
-    .topnav.active + .topnav-right {
+    .topnav-right.active {
       display: flex;
+      opacity: 1;
+      pointer-events: auto;
     }
 
     body.menu-open {
@@ -170,7 +176,7 @@
   <header>
     <div class="topnav">
       <h1><a class="logo" href="/">THE Randoms</a></h1>
-      <span class="menu-icon" onclick="toggleMenu()" tabindex="0">&#9776;</span>
+      <span class="menu-icon" onclick="toggleMenu()" tabindex="0" role="button" aria-label="Toggle menu">&#9776;</span>
     </div>
 
     <nav class="topnav-right" role="navigation" aria-label="Main Menu">
