@@ -43,26 +43,28 @@
       user-select: none;
     }
 
+    /* Fixed .topnav-right: no display:none here */
     .topnav-right {
-      display: none;
       position: fixed;
       top: 60px;
       left: 0;
       right: 0;
-      background-color: #333;
       height: calc(100vh - 60px);
+      background-color: #333;
       flex-direction: column;
       overflow-y: auto;
       z-index: 999;
-      transition: opacity 0.3s ease;
+
       opacity: 0;
       pointer-events: none;
+      visibility: hidden;
+      transition: opacity 0.3s ease;
     }
 
     .topnav-right.active {
-      display: flex;
       opacity: 1;
       pointer-events: auto;
+      visibility: visible;
     }
 
     body.menu-open {
