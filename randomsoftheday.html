@@ -261,7 +261,8 @@
   </main>
 
   <script>
-        const testingMode = false; // Set to true to test fresh daily randoms on reload
+  // Toggle this to true for testing (forces fresh fetches every reload and randomizes numbers/letters)
+const testingMode = true;
 
 // Accordion toggle functionality
 function toggleMenu() {
@@ -330,21 +331,37 @@ async function fetchCached(key, fetchFn, useCache = true) {
   }
 }
 
-// Render letter A-Z deterministic by day
+// Render letter A-Z deterministic by day or random if testing
 function renderLetter() {
   const container = document.querySelector('#random-letter .random-content');
   if (!container) return;
   const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  const index = getDaySeed() % letters.length;
-  container.textContent = letters[index];
+
+  if (testingMode) {
+    // random letter every reload in testing mode
+    const randomIndex = Math.floor(Math.random() * letters.length);
+    container.textContent = letters[randomIndex];
+  } else {
+    // deterministic letter by day
+    const index = getDaySeed() % letters.length;
+    container.textContent = letters[index];
+  }
 }
 
-// Render number deterministic by day (1 to 1,000,000)
+// Render number deterministic by day (1 to 1,000,000) or random if testing
 function renderNumber() {
   const container = document.querySelector('#random-number .random-content');
   if (!container) return;
-  const num = (getDaySeed() * 9301 + 49297) % 1000000 + 1;
-  container.textContent = num.toLocaleString();
+
+  if (testingMode) {
+    // random number every reload in testing mode
+    const randomNum = Math.floor(Math.random() * 1000000) + 1;
+    container.textContent = randomNum.toLocaleString();
+  } else {
+    // deterministic number by day
+    const num = (getDaySeed() * 9301 + 49297) % 1000000 + 1;
+    container.textContent = num.toLocaleString();
+  }
 }
 
 // Fetch joke from API
@@ -357,7 +374,7 @@ async function fetchJoke() {
 async function renderJoke(useCache = true) {
   const container = document.querySelector('#random-joke .random-content');
   if (!container) return;
-  const joke = await fetchCached('joke', fetchJoke, useCache && !testingMode);
+  const joke = await fetchCached('joke', fetchJoke, useCache);
   container.textContent = joke;
 }
 
@@ -371,7 +388,7 @@ async function fetchAdvice() {
 async function renderAdvice(useCache = true) {
   const container = document.querySelector('#random-advice .random-content');
   if (!container) return;
-  const advice = await fetchCached('advice', fetchAdvice, useCache && !testingMode);
+  const advice = await fetchCached('advice', fetchAdvice, useCache);
   container.textContent = advice;
 }
 
@@ -385,7 +402,7 @@ async function fetchFact() {
 async function renderFact(useCache = true) {
   const container = document.querySelector('#random-fact .random-content');
   if (!container) return;
-  const fact = await fetchCached('fact', fetchFact, useCache && !testingMode);
+  const fact = await fetchCached('fact', fetchFact, useCache);
   container.textContent = fact;
 }
 
@@ -399,15 +416,15 @@ async function fetchWord() {
 async function renderWord(useCache = true) {
   const container = document.querySelector('#random-word .random-content');
   if (!container) return;
-  const word = await fetchCached('word', fetchWord, useCache && !testingMode);
+  const word = await fetchCached('word', fetchWord, useCache);
   container.textContent = word;
 }
 
-// Fetch meme (image only) from Reddit
+// Fetch meme (image only) from Reddit, deterministic selection by day
 async function fetchMeme() {
   const subs = ['memes', 'dankmemes', 'funny'];
-  const randomSub = subs[Math.floor(Math.random() * subs.length)];
-  const url = `https://www.reddit.com/r/${randomSub}/hot.json?limit=100`;
+  const selectedSub = subs[getDaySeed() % subs.length];
+  const url = `https://www.reddit.com/r/${selectedSub}/hot.json?limit=100`;
   const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(url)}`;
   const res = await fetch(proxyUrl);
   if (!res.ok) throw new Error('Meme fetch failed');
@@ -418,24 +435,25 @@ async function fetchMeme() {
   );
   if (memes.length === 0) throw new Error('No memes found');
 
-  const randomMeme = memes[Math.floor(getDaySeed() % memes.length)].data;
-  return randomMeme.url;
+  const memeIndex = getDaySeed() % memes.length;
+  const memeUrl = memes[memeIndex].data.url;
+  return memeUrl;
 }
-
 async function renderMeme(useCache = true) {
   const container = document.querySelector('#random-meme .random-content');
   if (!container) return;
 
   try {
-    const memeUrl = await fetchCached('meme', fetchMeme, useCache && !testingMode);
+    const memeUrl = await fetchCached('meme', fetchMeme, useCache);
     container.innerHTML = `<img src="${memeUrl}" alt="Daily Meme" style="max-width:100%; border-radius:8px; margin-top: 10px;" />`;
   } catch {
     container.textContent = 'Failed to load meme.';
   }
 }
 
-// Refresh all with option to ignore cache
-async function refreshAll(useCache) {
+// Refresh all with option to ignore cache (testingMode forces ignore cache)
+async function refreshAll() {
+  const useCache = !testingMode;
   await Promise.all([
     renderJoke(useCache),
     renderAdvice(useCache),
@@ -448,20 +466,8 @@ async function refreshAll(useCache) {
 }
 
 // Initial load
-const testingMode = false; // toggle this
-
 document.addEventListener('DOMContentLoaded', () => {
-  refreshAll(!testingMode); // If testingMode is false, use cache (true), else ignore cache (false)
-});  // load fresh first time
-
-  // Optional: add a refresh button if you want
-  /*
-  const btn = document.createElement('button');
-  btn.textContent = "Quick Refresh All";
-  btn.style = "margin: 20px auto; display: block; padding: 12px 24px; font-size: 18px; cursor: pointer;";
-  btn.onclick = () => refreshAll(true);
-  document.querySelector('.content').appendChild(btn);
-  */
+  refreshAll();
 });
   </script>                   
 </body>
