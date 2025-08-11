@@ -144,12 +144,9 @@
       outline: none;
     }
 
-    .container {
-      margin: 20px;
-    }
-
     .content {
       text-align: center;
+      margin: 20px;
     }
 
     .content h1 {
@@ -169,17 +166,15 @@
       text-decoration: none;
     }
   </style>
-
-  <script src="holiday.js" defer></script> 
 </head>
 <body>
   <header>
     <div class="topnav">
       <h1><a class="logo" href="/">THE Randoms</a></h1>
-      <span class="menu-icon" onclick="toggleMenu()" tabindex="0" role="button" aria-label="Toggle menu">&#9776;</span>
+      <span class="menu-icon" onclick="toggleMenu()" tabindex="0" role="button">&#9776;</span>
     </div>
 
-    <nav class="topnav-right" role="navigation" aria-label="Main Menu">
+    <nav class="topnav-right" role="navigation">
       <div class="accordion-section">
         <button class="accordion-toggle" aria-expanded="false">Jokes & Fun</button>
         <div class="accordion-content" hidden>
@@ -218,12 +213,7 @@
       </div>
 
       <!-- Direct clickable accordion-style section for Randoms Of The Day -->
-      <div 
-        class="clickable-section" 
-        tabindex="0" 
-        role="link" 
-        title="Go to Randoms Of The Day"
-      >
+      <div class="clickable-section" tabindex="0" role="link" title="Go to Randoms Of The Day">
         Randoms Of The Day
       </div>
     </nav>
@@ -292,44 +282,6 @@
         toggleMenu();
       }
     });
-
-    // Register service worker
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/service-worker.js')
-        .then(reg => console.log('Service Worker registered:', reg.scope))
-        .catch(err => console.error('Service Worker registration failed:', err));
-    }
-  </script>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "Organization",
-        "name": "THE Randoms",
-        "url": "https://therandoms.pages.dev/",
-        "sameAs": [
-          "https://x.com/Arztiser",
-          "https://www.youtube.com/@ArztiserMusic",
-          "https://open.spotify.com/artist/5iOQLKlc3taptDhisMcPX7?si=-kvaqr4mRSqSB3NthUu2cA",
-          "https://link.deezer.com/s/30rg4dq51eMRZWcy6SzLU",
-          "https://music.amazon.com/artists/B0DF356TRC?ref=dm_sh_0vUueu3N8pJboqKVKQJlQIjsh"
-        ],
-        "description": "THE Randoms Offers Random Facts, Quizzes, And Interactive Fun — All In One Random Place.",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://therandoms.pages.dev/img/pfp.png"
-        }
-      },
-      {
-        "@type": "WebSite",
-        "name": "THE Randoms",
-        "url": "https://therandoms.pages.dev/",
-        "description": "THE Randoms Offers Random Facts, Quizzes, And Interactive Fun — All In One Random Place."
-      }
-    ]
-  }
   </script>
 </body>
 </html>
