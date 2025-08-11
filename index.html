@@ -43,28 +43,26 @@
       user-select: none;
     }
 
-    /* Fixed .topnav-right: no display:none here */
     .topnav-right {
+      display: none;
       position: fixed;
       top: 60px;
       left: 0;
       right: 0;
-      height: calc(100vh - 60px);
       background-color: #333;
+      height: calc(100vh - 60px);
       flex-direction: column;
       overflow-y: auto;
       z-index: 999;
-
+      transition: opacity 0.3s ease;
       opacity: 0;
       pointer-events: none;
-      visibility: hidden;
-      transition: opacity 0.3s ease;
     }
 
     .topnav-right.active {
+      display: flex;
       opacity: 1;
       pointer-events: auto;
-      visibility: visible;
     }
 
     body.menu-open {
@@ -123,7 +121,7 @@
       display: flex;
     }
 
-    /* New clickable section styling */
+    /* Clickable section styled like an accordion header but is a direct link */
     .clickable-section {
       background-color: #E82B38;
       color: white;
@@ -219,12 +217,11 @@
         </div>
       </div>
 
-      <!-- RED CLICKABLE SECTION BELOW ACCORDION SECTIONS -->
+      <!-- Direct clickable accordion-style section for Randoms Of The Day -->
       <div 
         class="clickable-section" 
         tabindex="0" 
         role="link" 
-        aria-label="Randoms Of The Day"
         title="Go to Randoms Of The Day"
       >
         Randoms Of The Day
@@ -275,13 +272,12 @@
       });
     });
 
-    // Click handler for red clickable section
+    // Click handler for direct clickable section
     const clickableSection = document.querySelector('.clickable-section');
     clickableSection.addEventListener('click', () => {
       window.location.href = 'randomsoftheday.html';
     });
 
-    // Keyboard accessibility (Enter, Space)
     clickableSection.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
