@@ -101,7 +101,6 @@
       flex-direction: column;
       background-color: #444;
     }
-
     .accordion-content a {
       padding-left: 28px;
       padding-top: 10px;
@@ -111,19 +110,16 @@
       color: #f2f2f2;
       text-decoration: none;
     }
-
     .accordion-content a:hover,
     .accordion-content a:focus {
       background-color: rgba(255 255 255 / 0.15);
       outline: none;
     }
-
     .accordion-section {
       display: flex;
       flex-direction: column;
       border-top: 1px solid #444;
     }
-
     .accordion-section.open .accordion-content {
       display: flex;
     }
@@ -136,7 +132,6 @@
       text-align: center;
       color: #222;
     }
-
     .content h1 {
       margin-bottom: 20px;
       font-weight: 700;
@@ -155,7 +150,6 @@
       box-shadow: 0 2px 5px rgb(0 0 0 / 0.1);
       text-align: left;
     }
-
     .random-section h2 {
       margin-top: 0;
       font-size: 22px;
@@ -164,7 +158,6 @@
       border-bottom: 2px solid #E82B38;
       padding-bottom: 6px;
     }
-
     .random-content {
       margin-top: 10px;
       font-size: 18px;
@@ -261,214 +254,209 @@
   </main>
 
   <script>
-      // Toggle this to true for testing (forces fresh fetches every reload and randomizes numbers/letters)
-const testingMode = false;
+    const testingMode = false;
 
-// Accordion toggle functionality
-function toggleMenu() {
-  const topnav = document.querySelector('.topnav');
-  const body = document.body;
-  topnav.classList.toggle('active');
-  body.classList.toggle('menu-open');
-}
+    // Accordion toggle functionality
+    function toggleMenu() {
+      const topnav = document.querySelector('.topnav');
+      const body = document.body;
+      topnav.classList.toggle('active');
+      body.classList.toggle('menu-open');
+    }
 
-document.querySelectorAll('.accordion-toggle').forEach(toggle => {
-  toggle.addEventListener('click', () => {
-    const parent = toggle.parentElement;
-    const isOpen = parent.classList.contains('open');
+    document.querySelectorAll('.accordion-toggle').forEach(toggle => {
+      toggle.addEventListener('click', () => {
+        const parent = toggle.parentElement;
+        const isOpen = parent.classList.contains('open');
 
-    // Close all sections
-    document.querySelectorAll('.accordion-section').forEach(section => {
-      section.classList.remove('open');
-      section.querySelector('.accordion-toggle').setAttribute('aria-expanded', 'false');
-      section.querySelector('.accordion-content').hidden = true;
+        // Close all sections
+        document.querySelectorAll('.accordion-section').forEach(section => {
+          section.classList.remove('open');
+          section.querySelector('.accordion-toggle').setAttribute('aria-expanded', 'false');
+          section.querySelector('.accordion-content').hidden = true;
+        });
+
+        // Toggle current
+        if (!isOpen) {
+          parent.classList.add('open');
+          toggle.setAttribute('aria-expanded', 'true');
+          parent.querySelector('.accordion-content').hidden = false;
+        }
+      });
     });
 
-    // Toggle current
-    if (!isOpen) {
-      parent.classList.add('open');
-      toggle.setAttribute('aria-expanded', 'true');
-      parent.querySelector('.accordion-content').hidden = false;
+    // Helper: Get today's date string (YYYY-MM-DD)
+    function getToday() {
+      return new Date().toISOString().slice(0, 10);
     }
-  });
-});
 
-// Helper: Get today's date string (YYYY-MM-DD)
-function getToday() {
-  return new Date().toISOString().slice(0, 10);
-}
-
-// Helper: Get day seed (days since epoch)
-function getDaySeed() {
-  const now = new Date();
-  const utcMidnight = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
-  return Math.floor(utcMidnight / (1000 * 60 * 60 * 24));
-}
-
-// Generic cached fetch helper
-async function fetchCached(key, fetchFn, useCache = true) {
-  const today = getToday();
-  const cacheKey = `daily_${key}`;
-  const cacheDateKey = `daily_${key}_date`;
-
-  if (useCache) {
-    const cachedData = localStorage.getItem(cacheKey);
-    const cachedDate = localStorage.getItem(cacheDateKey);
-    if (cachedData && cachedDate === today) {
-      return cachedData;
+    // Helper: Get day seed (days since epoch)
+    function getDaySeed() {
+      const now = new Date();
+      const utcMidnight = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+      return Math.floor(utcMidnight / (1000 * 60 * 60 * 24));
     }
-  }
 
-  try {
-    const freshData = await fetchFn();
-    localStorage.setItem(cacheKey, freshData);
-    localStorage.setItem(cacheDateKey, today);
-    return freshData;
-  } catch (err) {
-    console.error(`Error fetching ${key}:`, err);
-    const fallback = localStorage.getItem(cacheKey);
-    return fallback || `Could not load ${key} today.`;
-  }
-}
+    // Generic cached fetch helper
+    async function fetchCached(key, fetchFn, useCache = true) {
+      const today = getToday();
+      const cacheKey = `daily_${key}`;
+      const cacheDateKey = `daily_${key}_date`;
 
-// Render letter A-Z deterministic by day or random if testing
-function renderLetter() {
-  const container = document.querySelector('#random-letter .random-content');
-  if (!container) return;
-  const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      if (useCache) {
+        const cachedData = localStorage.getItem(cacheKey);
+        const cachedDate = localStorage.getItem(cacheDateKey);
+        if (cachedData && cachedDate === today) {
+          return cachedData;
+        }
+      }
 
-  if (testingMode) {
-    // random letter every reload in testing mode
-    const randomIndex = Math.floor(Math.random() * letters.length);
-    container.textContent = letters[randomIndex];
-  } else {
-    // deterministic letter by day
-    const index = getDaySeed() % letters.length;
-    container.textContent = letters[index];
-  }
-}
+      try {
+        const freshData = await fetchFn();
+        localStorage.setItem(cacheKey, freshData);
+        localStorage.setItem(cacheDateKey, today);
+        return freshData;
+      } catch (err) {
+        console.error(`Error fetching ${key}:`, err);
+        const fallback = localStorage.getItem(cacheKey);
+        return fallback || `Could not load ${key} today.`;
+      }
+    }
 
-// Render number deterministic by day (1 to 1,000,000) or random if testing
-function renderNumber() {
-  const container = document.querySelector('#random-number .random-content');
-  if (!container) return;
+    // Render letter A-Z deterministic by day or random if testing
+    function renderLetter() {
+      const container = document.querySelector('#random-letter .random-content');
+      if (!container) return;
+      const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
-  if (testingMode) {
-    // random number every reload in testing mode
-    const randomNum = Math.floor(Math.random() * 1000000) + 1;
-    container.textContent = randomNum.toLocaleString();
-  } else {
-    // deterministic number by day
-    const num = (getDaySeed() * 9301 + 49297) % 1000000 + 1;
-    container.textContent = num.toLocaleString();
-  }
-}
+      if (testingMode) {
+        const randomIndex = Math.floor(Math.random() * letters.length);
+        container.textContent = letters[randomIndex];
+      } else {
+        const index = getDaySeed() % letters.length;
+        container.textContent = letters[index];
+      }
+    }
 
-// Fetch joke from API
-async function fetchJoke() {
-  const res = await fetch('https://official-joke-api.appspot.com/jokes/random');
-  if (!res.ok) throw new Error('Joke fetch failed');
-  const data = await res.json();
-  return `${data.setup} ${data.punchline}`;
-}
-async function renderJoke(useCache = true) {
-  const container = document.querySelector('#random-joke .random-content');
-  if (!container) return;
-  const joke = await fetchCached('joke', fetchJoke, useCache);
-  container.textContent = joke;
-}
+    // Render number deterministic by day (1 to 1,000,000) or random if testing
+    function renderNumber() {
+      const container = document.querySelector('#random-number .random-content');
+      if (!container) return;
 
-// Fetch advice from API
-async function fetchAdvice() {
-  const res = await fetch('https://api.adviceslip.com/advice');
-  if (!res.ok) throw new Error('Advice fetch failed');
-  const data = await res.json();
-  return data.slip.advice;
-}
-async function renderAdvice(useCache = true) {
-  const container = document.querySelector('#random-advice .random-content');
-  if (!container) return;
-  const advice = await fetchCached('advice', fetchAdvice, useCache);
-  container.textContent = advice;
-}
+      if (testingMode) {
+        const randomNum = Math.floor(Math.random() * 1000000) + 1;
+        container.textContent = randomNum.toLocaleString();
+      } else {
+        const num = (getDaySeed() * 9301 + 49297) % 1000000 + 1;
+        container.textContent = num.toLocaleString();
+      }
+    }
 
-// Fetch fact from API
-async function fetchFact() {
-  const res = await fetch('https://uselessfacts.jsph.pl/random.json?language=en');
-  if (!res.ok) throw new Error('Fact fetch failed');
-  const data = await res.json();
-  return data.text;
-}
-async function renderFact(useCache = true) {
-  const container = document.querySelector('#random-fact .random-content');
-  if (!container) return;
-  const fact = await fetchCached('fact', fetchFact, useCache);
-  container.textContent = fact;
-}
+    // Fetch joke from API
+    async function fetchJoke() {
+      const res = await fetch('https://official-joke-api.appspot.com/jokes/random');
+      if (!res.ok) throw new Error('Joke fetch failed');
+      const data = await res.json();
+      return `${data.setup} ${data.punchline}`;
+    }
+    async function renderJoke(useCache = true) {
+      const container = document.querySelector('#random-joke .random-content');
+      if (!container) return;
+      const joke = await fetchCached('joke', fetchJoke, useCache);
+      container.textContent = joke;
+    }
 
-// Fetch word from API
-async function fetchWord() {
-  const res = await fetch('https://random-word-api.herokuapp.com/word?number=1');
-  if (!res.ok) throw new Error('Word fetch failed');
-  const data = await res.json();
-  return data[0];
-}
-async function renderWord(useCache = true) {
-  const container = document.querySelector('#random-word .random-content');
-  if (!container) return;
-  const word = await fetchCached('word', fetchWord, useCache);
-  container.textContent = word;
-}
+    // Fetch advice from API
+    async function fetchAdvice() {
+      const res = await fetch('https://api.adviceslip.com/advice');
+      if (!res.ok) throw new Error('Advice fetch failed');
+      const data = await res.json();
+      return data.slip.advice;
+    }
+    async function renderAdvice(useCache = true) {
+      const container = document.querySelector('#random-advice .random-content');
+      if (!container) return;
+      const advice = await fetchCached('advice', fetchAdvice, useCache);
+      container.textContent = advice;
+    }
 
-// Fetch meme (image only) from Reddit, deterministic selection by day
-async function fetchMeme() {
-  const subs = ['memes', 'dankmemes', 'funny'];
-  const selectedSub = subs[getDaySeed() % subs.length];
-  const url = `https://www.reddit.com/r/${selectedSub}/hot.json?limit=100`;
-  const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(url)}`;
-  const res = await fetch(proxyUrl);
-  if (!res.ok) throw new Error('Meme fetch failed');
-  const json = await res.json();
+    // Fetch fact from API
+    async function fetchFact() {
+      const res = await fetch('https://uselessfacts.jsph.pl/random.json?language=en');
+      if (!res.ok) throw new Error('Fact fetch failed');
+      const data = await res.json();
+      return data.text;
+    }
+    async function renderFact(useCache = true) {
+      const container = document.querySelector('#random-fact .random-content');
+      if (!container) return;
+      const fact = await fetchCached('fact', fetchFact, useCache);
+      container.textContent = fact;
+    }
 
-  const memes = json.data.children.filter(post =>
-    post.data.url && /\.(jpg|jpeg|png)$/i.test(post.data.url)
-  );
-  if (memes.length === 0) throw new Error('No memes found');
+    // Fetch word from API
+    async function fetchWord() {
+      const res = await fetch('https://random-word-api.herokuapp.com/word?number=1');
+      if (!res.ok) throw new Error('Word fetch failed');
+      const data = await res.json();
+      return data[0];
+    }
+    async function renderWord(useCache = true) {
+      const container = document.querySelector('#random-word .random-content');
+      if (!container) return;
+      const word = await fetchCached('word', fetchWord, useCache);
+      container.textContent = word;
+    }
 
-  const memeIndex = getDaySeed() % memes.length;
-  const memeUrl = memes[memeIndex].data.url;
-  return memeUrl;
-}
-async function renderMeme(useCache = true) {
-  const container = document.querySelector('#random-meme .random-content');
-  if (!container) return;
+    // Fetch meme (image only) from Reddit, deterministic selection by day
+    async function fetchMeme() {
+      const subs = ['memes', 'dankmemes', 'funny'];
+      const selectedSub = subs[getDaySeed() % subs.length];
+      const url = `https://www.reddit.com/r/${selectedSub}/hot.json?limit=100`;
+      const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(url)}`;
+      const res = await fetch(proxyUrl);
+      if (!res.ok) throw new Error('Meme fetch failed');
+      const json = await res.json();
 
-  try {
-    const memeUrl = await fetchCached('meme', fetchMeme, useCache);
-    container.innerHTML = `<img src="${memeUrl}" alt="Daily Meme" style="max-width:100%; border-radius:8px; margin-top: 10px;" />`;
-  } catch {
-    container.textContent = 'Failed to load meme.';
-  }
-}
+      const memes = json.data.children.filter(post =>
+        post.data.url && /\.(jpg|jpeg|png)$/i.test(post.data.url)
+      );
+      if (memes.length === 0) throw new Error('No memes found');
 
-// Refresh all with option to ignore cache (testingMode forces fresh fetches)
-async function refreshAll() {
-  const useCache = !testingMode;
-  await Promise.all([
-    renderJoke(useCache),
-    renderAdvice(useCache),
-    renderFact(useCache),
-    renderWord(useCache),
-    renderMeme(useCache)
-  ]);
-  renderLetter();
-  renderNumber();
-}
+      const memeIndex = getDaySeed() % memes.length;
+      const memeUrl = memes[memeIndex].data.url;
+      return memeUrl;
+    }
+    async function renderMeme(useCache = true) {
+      const container = document.querySelector('#random-meme .random-content');
+      if (!container) return;
 
-// Initial load
-document.addEventListener('DOMContentLoaded', () => {
-  refreshAll();
-});
+      try {
+        const memeUrl = await fetchCached('meme', fetchMeme, useCache);
+        container.innerHTML = `<img src="${memeUrl}" alt="Daily Meme" style="max-width:100%; border-radius:8px; margin-top: 10px;" />`;
+      } catch {
+        container.textContent = 'Failed to load meme.';
+      }
+    }
+
+    // Refresh all with option to ignore cache (testingMode forces fresh fetches)
+    async function refreshAll() {
+      const useCache = !testingMode;
+      await Promise.all([
+        renderJoke(useCache),
+        renderAdvice(useCache),
+        renderFact(useCache),
+        renderWord(useCache),
+        renderMeme(useCache)
+      ]);
+      renderLetter();
+      renderNumber();
+    }
+
+    // Initial load
+    document.addEventListener('DOMContentLoaded', () => {
+      refreshAll();
+    });
   </script>                   
 </body>
 </html>
