@@ -175,45 +175,56 @@
     }
 
 
-    /* --- Holiday Themes --- */
+    /* --- Holiday Themes (More Festive Colors) --- */
 
     /* Christmas */
     body.holiday-christmas .topnav {
-      background-color: #E82B38;
-      color: white;
+      background-color: #b22222; /* firebrick red */
+      color: #ffffff;
     }
     body.holiday-christmas {
-      background-color: green;
-      color: white;
+      background-color: #228b22; /* forest green */
+      color: #ffffff;
     }
 
     /* Halloween */
     body.holiday-halloween .topnav {
-      background-color: #E82B38;
-      color: inherit; /* Keep original text color */
+      background-color: #ff7518; /* pumpkin orange */
+      color: #4b0082; /* indigo */
     }
     body.holiday-halloween {
-      background-color: orange;
+      background-color: #4b0082; /* dark purple */
+      color: #ff7518; /* pumpkin */
     }
 
     /* Easter */
     body.holiday-easter .topnav {
-      background-color: #B666D2; /* Sicilian lily purple */
-      color: white;
+      background-color: #9b59b6; /* pastel purple */
+      color: #ffffff;
     }
     body.holiday-easter {
-      background-color: #F6E27F; /* Montana yellow */
-      color: #3B8BBE; /* MPC Easter egg blue */
+      background-color: #f9e79f; /* soft yellow */
+      color: #2980b9; /* bright blue */
     }
 
     /* Saint Patrick's Day */
     body.holiday-stpatricks .topnav {
-      background-color: #E82B38;
-      color: white;
+      background-color: #008000; /* shamrock green */
+      color: #ffd700; /* gold */
     }
     body.holiday-stpatricks {
-      background-color: green;
-      color: #FFD700; /* Gold */
+      background-color: #006400; /* dark green */
+      color: #ffd700; /* gold */
+    }
+
+    /* Fourth of July */
+    body.holiday-fourthofjuly .topnav {
+      background-color: #bf0a30; /* bright patriotic red */
+      color: #ffffff;
+    }
+    body.holiday-fourthofjuly {
+      background-color: #002868; /* deep navy blue */
+      color: #ffffff;
     }
   </style>
 </head>
@@ -363,6 +374,8 @@
         holidayClass = 'holiday-easter';
       } else if (month === 3 && day === 17) {
         holidayClass = 'holiday-stpatricks';
+      } else if (month === 7 && day === 4) {
+        holidayClass = 'holiday-fourthofjuly';
       }
 
       if (holidayClass) {
@@ -371,7 +384,6 @@
     }
 
     document.addEventListener('DOMContentLoaded', setHolidayTheme);
-
   </script>
 
   <script type="application/ld+json">
