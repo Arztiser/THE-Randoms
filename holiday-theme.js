@@ -13,7 +13,7 @@ function setHolidayTheme() {
     holidayClass = 'holiday-christmas';
     styles = `
       body.holiday-christmas {
-        background-color: #1E792C;
+        background-color: #00A53C;
         color: white;
       }
       body.holiday-christmas a {
