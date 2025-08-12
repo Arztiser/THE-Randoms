@@ -67,7 +67,7 @@ function setHolidayTheme() {
     holidayClass = 'holiday-stpatricks';
     styles = `
       body.holiday-stpatricks {
-        background-color: #006400;
+        background-color: #009E60;
         color: #FFD700; /* Gold text */
       }
       body.holiday-stpatricks a {
