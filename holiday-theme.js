@@ -55,7 +55,12 @@ function setHolidayTheme() {
       body.holiday-easter a {
         color: #9b59b6;
       }
-      /* No special topnav changes for Easter */
+      body.holiday-easter .topnav {
+        background-color: #DDF0CB; /* Green topnav */
+      }
+      body.holiday-easter .topnav a {
+        color: #6b4c9a; /* Gold text in nav */
+      }
     `;
   } else if (month === 3 && day === 17) {
     // St. Patrick's Day
