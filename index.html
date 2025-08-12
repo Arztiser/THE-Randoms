@@ -50,13 +50,14 @@
       user-select: none;
     }
 
+    /* The entire menu container fills from below topnav to bottom */
     .topnav-right {
       display: none;
       position: fixed;
       top: 60px;
       left: 0;
       right: 0;
-      bottom: 0; /* stretch to bottom */
+      bottom: 0;
       background-color: var(--theme-bg-color);
       overflow-y: auto;
       flex-direction: column;
@@ -65,6 +66,7 @@
       opacity: 0;
       pointer-events: none;
       padding-bottom: 60px; /* space for red clickable section */
+      box-sizing: border-box;
     }
 
     .topnav-right.active {
@@ -75,6 +77,13 @@
 
     body.menu-open {
       overflow: hidden;
+    }
+
+    .accordion-section {
+      display: flex;
+      flex-direction: column;
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      /* Make each accordion section grow only if open */
     }
 
     .accordion-toggle {
@@ -97,10 +106,13 @@
       outline: none;
     }
 
+    /* Accordion content is flex column, scrollable */
     .accordion-content {
       display: none;
       flex-direction: column;
       background-color: var(--theme-bg-color);
+      overflow-y: auto;
+      max-height: 50vh; /* Limit height so it won't overflow full menu */
     }
 
     .accordion-content a {
@@ -117,12 +129,6 @@
     .accordion-content a:focus {
       background-color: rgba(255, 255, 255, 0.15);
       outline: none;
-    }
-
-    .accordion-section {
-      display: flex;
-      flex-direction: column;
-      border-top: 1px solid rgba(255, 255, 255, 0.15);
     }
 
     .accordion-section.open .accordion-content {
@@ -358,7 +364,6 @@
         .then(reg => console.log('Service Worker registered:', reg.scope))
         .catch(err => console.error('Service Worker registration failed:', err));
     }
-
 
     // Holiday theme switcher based on date
     function setHolidayTheme() {
