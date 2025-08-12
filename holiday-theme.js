@@ -12,11 +12,11 @@ function setHolidayTheme() {
     holidayClass = 'holiday-christmas';
     styles = `
       body.holiday-christmas {
-        background-color: #004225;
+        background-color: #008C6C;
         color: white;
       }
       body.holiday-christmas a {
-        color: #aaffaa;
+        color: #ffffff;
       }
       /* Add other Christmas styles here */
     `;
