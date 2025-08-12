@@ -50,7 +50,6 @@
       user-select: none;
     }
 
-    /* The entire menu container fills from below topnav to bottom */
     .topnav-right {
       display: none;
       position: fixed;
@@ -65,7 +64,7 @@
       transition: opacity 0.3s ease;
       opacity: 0;
       pointer-events: none;
-      padding-bottom: 60px; /* space for red clickable section */
+      padding-bottom: 60px;
       box-sizing: border-box;
     }
 
@@ -83,7 +82,6 @@
       display: flex;
       flex-direction: column;
       border-top: 1px solid rgba(255, 255, 255, 0.15);
-      /* Make each accordion section grow only if open */
     }
 
     .accordion-toggle {
@@ -106,13 +104,12 @@
       outline: none;
     }
 
-    /* Accordion content is flex column, scrollable */
     .accordion-content {
       display: none;
       flex-direction: column;
       background-color: var(--theme-bg-color);
       overflow-y: auto;
-      max-height: 50vh; /* Limit height so it won't overflow full menu */
+      max-height: 50vh;
     }
 
     .accordion-content a {
@@ -135,7 +132,6 @@
       display: flex;
     }
 
-    /* New clickable section styling */
     .clickable-section {
       background-color: var(--theme-accent-color);
       color: white;
@@ -186,54 +182,6 @@
     .logo:hover {
       text-decoration: none;
     }
-
-
-    /* --- Holiday Themes (CSS variables updated) --- */
-
-    /* Christmas */
-    body.holiday-christmas {
-      --theme-bg-color: #E82B38; /* firebrick red */
-      --theme-topnav-color: #ffffff;
-      --theme-accent-color: #228b22; /* forest green for clickable section */
-      background-color: #228b22; /* forest green page bg */
-      color: #ffffff;
-    }
-
-    /* Halloween */
-    body.holiday-halloween {
-      --theme-bg-color: #ff7518; /* pumpkin orange */
-      --theme-topnav-color: #4b0082; /* indigo */
-      --theme-accent-color: #4b0082; /* dark purple for clickable section */
-      background-color: #4b0082; /* dark purple page bg */
-      color: #ff7518; /* pumpkin */
-    }
-
-    /* Easter */
-    body.holiday-easter {
-      --theme-bg-color: #9b59b6; /* pastel purple */
-      --theme-topnav-color: #ffffff;
-      --theme-accent-color: #2980b9; /* bright blue for clickable section */
-      background-color: #f9e79f; /* soft yellow page bg */
-      color: #2980b9; /* bright blue */
-    }
-
-    /* Saint Patrick's Day */
-    body.holiday-stpatricks {
-      --theme-bg-color: #008000; /* shamrock green */
-      --theme-topnav-color: #ffd700; /* gold */
-      --theme-accent-color: #006400; /* dark green for clickable section */
-      background-color: #006400; /* dark green page bg */
-      color: #ffd700; /* gold */
-    }
-
-    /* Fourth of July */
-    body.holiday-fourthofjuly {
-      --theme-bg-color: #E82B38; /* bright patriotic red */
-      --theme-topnav-color: #ffffff;
-      --theme-accent-color: #002868; /* deep navy blue for clickable section */
-      background-color: #002868; /* deep navy blue page bg */
-      color: #ffffff;
-    }
   </style>
 </head>
 <body>
@@ -281,7 +229,6 @@
         </div>
       </div>
 
-      <!-- RED CLICKABLE SECTION BELOW ACCORDION SECTIONS -->
       <div
         class="clickable-section"
         tabindex="0"
@@ -309,13 +256,11 @@
       body.classList.toggle('menu-open');
     }
 
-    // Accordion toggles
     document.querySelectorAll('.accordion-toggle').forEach(button => {
       button.addEventListener('click', () => {
         const section = button.parentElement;
         const isOpen = section.classList.contains('open');
 
-        // Close all sections except the clicked one
         document.querySelectorAll('.accordion-section').forEach(s => {
           if (s !== section) {
             s.classList.remove('open');
@@ -336,13 +281,11 @@
       });
     });
 
-    // Click handler for red clickable section
     const clickableSection = document.querySelector('.clickable-section');
     clickableSection.addEventListener('click', () => {
       window.location.href = 'randomsoftheday.html';
     });
 
-    // Keyboard accessibility (Enter, Space)
     clickableSection.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
@@ -350,7 +293,6 @@
       }
     });
 
-    // Allow menu toggle with keyboard (Enter/Space) on hamburger
     document.querySelector('.menu-icon').addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
@@ -358,40 +300,15 @@
       }
     });
 
-    // Register service worker
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/service-worker.js')
         .then(reg => console.log('Service Worker registered:', reg.scope))
         .catch(err => console.error('Service Worker registration failed:', err));
     }
-
-    // Holiday theme switcher based on date
-    function setHolidayTheme() {
-      const now = new Date();
-      const month = now.getMonth() + 1; // 1-12
-      const day = now.getDate();
-
-      let holidayClass = '';
-
-      if ((month === 12 && day >= 1) || (month === 1 && day <= 5)) {
-        holidayClass = 'holiday-christmas';
-      } else if (month === 10 && day >= 25 && day <= 31) {
-        holidayClass = 'holiday-halloween';
-      } else if (month === 4 && day >= 1 && day <= 10) {
-        holidayClass = 'holiday-easter';
-      } else if (month === 3 && day === 17) {
-        holidayClass = 'holiday-stpatricks';
-      } else if (month === 7 && day === 4) {
-        holidayClass = 'holiday-fourthofjuly';
-      }
-
-      if (holidayClass) {
-        document.body.classList.add(holidayClass);
-      }
-    }
-
-    document.addEventListener('DOMContentLoaded', setHolidayTheme);
   </script>
+
+  <!-- Just this one line to load your holiday-theme.js -->
+  <script src="holiday-theme.js" defer></script>
 
   <script type="application/ld+json">
   {
