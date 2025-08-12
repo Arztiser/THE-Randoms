@@ -62,7 +62,7 @@ function setHolidayTheme() {
         color: #acfda2; /* Green text in nav */
       }
     `;
-  } else if (month === 3 && day === 17) {
+  } else if (month === 8 && day === 12) {
     // St. Patrick's Day
     holidayClass = 'holiday-stpatricks';
     styles = `
