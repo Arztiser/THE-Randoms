@@ -62,7 +62,7 @@ function setHolidayTheme() {
         color: #acfda2; /* Green text in nav */
       }
     `;
-  } else if (month === 8 && day === 12) {
+  } else if (month === 3 && day === 17) {
     // St. Patrick's Day
     holidayClass = 'holiday-stpatricks';
     styles = `
@@ -80,7 +80,7 @@ function setHolidayTheme() {
         color: #FFD700; /* Gold text in nav */
       }
     `;
-  } else if (month === 7 && day === 4) {
+  } else if (month === 8 && day === 12) {
     // 4th of July
     holidayClass = 'holiday-fourthofjuly';
     styles = `
