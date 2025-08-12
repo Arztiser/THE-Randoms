@@ -2,13 +2,14 @@
 
 function setHolidayTheme() {
   const now = new Date();
-  const month = now.getMonth() + 1;
+  const month = now.getMonth() + 1; // 1–12
   const day = now.getDate();
 
   let holidayClass = '';
   let styles = '';
 
   if ((month === 8 && day >= 11) || (month === 1 && day <= 5)) {
+    // Christmas
     holidayClass = 'holiday-christmas';
     styles = `
       body.holiday-christmas {
@@ -18,21 +19,33 @@ function setHolidayTheme() {
       body.holiday-christmas a {
         color: #ffffff;
       }
-      /* Add other Christmas styles here */
+      body.holiday-christmas .topnav {
+        background-color: #E82B38; /* Christmas topnav red */
+      }
+      body.holiday-christmas .topnav a {
+        color: white;
+      }
     `;
   } else if (month === 10 && day >= 25 && day <= 31) {
+    // Halloween
     holidayClass = 'holiday-halloween';
     styles = `
       body.holiday-halloween {
-        background-color: #331100;
-        color: orange;
+        background-color: orange;
+        color: black;
       }
       body.holiday-halloween a {
-        color: #ff6600;
+        color: black;
       }
-      /* Add other Halloween styles here */
+      body.holiday-halloween .topnav {
+        background-color: black;
+      }
+      body.holiday-halloween .topnav a {
+        color: black;
+      }
     `;
   } else if (month === 4 && day >= 1 && day <= 10) {
+    // Easter
     holidayClass = 'holiday-easter';
     styles = `
       body.holiday-easter {
@@ -42,21 +55,28 @@ function setHolidayTheme() {
       body.holiday-easter a {
         color: #9b59b6;
       }
-      /* Add other Easter styles here */
+      /* No special topnav changes for Easter */
     `;
   } else if (month === 3 && day === 17) {
+    // St. Patrick's Day
     holidayClass = 'holiday-stpatricks';
     styles = `
       body.holiday-stpatricks {
         background-color: #006400;
-        color: #ffff00;
+        color: #FFD700; /* Gold text */
       }
       body.holiday-stpatricks a {
-        color: #32cd32;
+        color: #FFD700;
       }
-      /* Add other St. Patrick's Day styles here */
+      body.holiday-stpatricks .topnav {
+        background-color: #006400; /* Green topnav */
+      }
+      body.holiday-stpatricks .topnav a {
+        color: #FFD700; /* Gold text in nav */
+      }
     `;
   } else if (month === 7 && day === 4) {
+    // 4th of July
     holidayClass = 'holiday-fourthofjuly';
     styles = `
       body.holiday-fourthofjuly {
@@ -66,7 +86,12 @@ function setHolidayTheme() {
       body.holiday-fourthofjuly a {
         color: #bf0a30;
       }
-      /* Add other 4th of July styles here */
+      body.holiday-fourthofjuly .topnav {
+        background-color: #E82B38; /* Red topnav same as Christmas */
+      }
+      body.holiday-fourthofjuly .topnav a {
+        color: white;
+      }
     `;
   }
 
