@@ -283,6 +283,13 @@
       return Math.floor(localMidnight.getTime() / (1000 * 60 * 60 * 24));
     }
 
+    // Local date string YYYY-MM-DD for cache keys & display
+    function getLocalDateString() {
+      const now = new Date();
+      const localMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      return localMidnight.toISOString().slice(0, 10);
+    }
+
     // Display formatted current date (local time) in header
     function renderCurrentDate() {
       const container = document.getElementById('current-date');
@@ -295,7 +302,7 @@
 
     // Generic cached fetch helper
     async function fetchCached(key, fetchFn, useCache = true) {
-      const today = new Date().toISOString().slice(0, 10);
+      const today = getLocalDateString();
       const cacheKey = `daily_${key}`;
       const cacheDateKey = `daily_${key}_date`;
 
@@ -407,7 +414,8 @@
     // Fetch meme (image only) from Reddit, deterministic selection by day
     async function fetchMeme() {
       const subs = ['memes', 'dankmemes', 'funny'];
-      const selectedSub = subs[getDaySeed() % subs.length];
+      const seed = getDaySeed();
+      const selectedSub = subs[seed % subs.length];
       const url = `https://www.reddit.com/r/${selectedSub}/hot.json?limit=100`;
       const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(url)}`;
       const res = await fetch(proxyUrl);
@@ -419,7 +427,7 @@
       );
       if (memes.length === 0) throw new Error('No memes found');
 
-      const memeIndex = getDaySeed() % memes.length;
+      const memeIndex = seed % memes.length;
       const memeUrl = memes[memeIndex].data.url;
       return memeUrl;
     }
