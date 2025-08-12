@@ -44,7 +44,7 @@ function setHolidayTheme() {
         color: white;
       }
     `;
-  } else if (month === 8 && day >= 11 && day <= 13) {
+  } else if (month === 4 && day >= 1 && day <= 10) {
     // Easter
     holidayClass = 'holiday-easter';
     styles = `
