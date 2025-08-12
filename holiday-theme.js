@@ -8,7 +8,7 @@ function setHolidayTheme() {
   let holidayClass = '';
   let styles = '';
 
-  if ((month === 8 && day >= 11) || (month === 1 && day <= 5)) {
+  if ((month === 12 && day >= 1) || (month === 1 && day <= 5)) {
     // Christmas
     holidayClass = 'holiday-christmas';
     styles = `
@@ -26,7 +26,7 @@ function setHolidayTheme() {
         color: white;
       }
     `;
-  } else if (month === 10 && day >= 25 && day <= 31) {
+  } else if (month === 8 && day >= 11 && day <= 31) {
     // Halloween
     holidayClass = 'holiday-halloween';
     styles = `
