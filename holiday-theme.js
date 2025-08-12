@@ -56,7 +56,7 @@ function setHolidayTheme() {
         color: #9b59b6;
       }
       body.holiday-easter .topnav {
-        background-color: #3D1EE; /* Green topnav */
+        background-color: #6BE2F9; /* Green topnav */
       }
       body.holiday-easter .topnav a {
         color: #6b4c98; /* Gold text in nav */
