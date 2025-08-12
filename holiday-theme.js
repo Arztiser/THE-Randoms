@@ -85,7 +85,7 @@ function setHolidayTheme() {
     holidayClass = 'holiday-fourthofjuly';
     styles = `
       body.holiday-fourthofjuly {
-        background-color: #002868;
+        background-color: #1F61C5;
         color: white;
       }
       body.holiday-fourthofjuly a {
