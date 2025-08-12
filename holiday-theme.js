@@ -80,7 +80,7 @@ function setHolidayTheme() {
         color: #FFD700; /* Gold text in nav */
       }
     `;
-  } else if (month === 8 && day === 12) {
+  } else if (month === 7 && day === 4) {
     // 4th of July
     holidayClass = 'holiday-fourthofjuly';
     styles = `
