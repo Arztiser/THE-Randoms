@@ -173,6 +173,48 @@
     .logo:hover {
       text-decoration: none;
     }
+
+
+    /* --- Holiday Themes --- */
+
+    /* Christmas */
+    body.holiday-christmas .topnav {
+      background-color: #E82B38;
+      color: white;
+    }
+    body.holiday-christmas {
+      background-color: green;
+      color: white;
+    }
+
+    /* Halloween */
+    body.holiday-halloween .topnav {
+      background-color: #E82B38;
+      color: inherit; /* Keep original text color */
+    }
+    body.holiday-halloween {
+      background-color: orange;
+    }
+
+    /* Easter */
+    body.holiday-easter .topnav {
+      background-color: #B666D2; /* Sicilian lily purple */
+      color: white;
+    }
+    body.holiday-easter {
+      background-color: #F6E27F; /* Montana yellow */
+      color: #3B8BBE; /* MPC Easter egg blue */
+    }
+
+    /* Saint Patrick's Day */
+    body.holiday-stpatricks .topnav {
+      background-color: #E82B38;
+      color: white;
+    }
+    body.holiday-stpatricks {
+      background-color: green;
+      color: #FFD700; /* Gold */
+    }
   </style>
 </head>
 <body>
@@ -303,6 +345,33 @@
         .then(reg => console.log('Service Worker registered:', reg.scope))
         .catch(err => console.error('Service Worker registration failed:', err));
     }
+
+
+    // Holiday theme switcher based on date
+    function setHolidayTheme() {
+      const now = new Date();
+      const month = now.getMonth() + 1; // 1-12
+      const day = now.getDate();
+
+      let holidayClass = '';
+
+      if ((month === 8 && day >= 11) || (month === 9 && day <= 5)) {
+        holidayClass = 'holiday-christmas';
+      } else if (month === 10 && day >= 25 && day <= 31) {
+        holidayClass = 'holiday-halloween';
+      } else if (month === 4 && day >= 1 && day <= 10) {
+        holidayClass = 'holiday-easter';
+      } else if (month === 3 && day === 17) {
+        holidayClass = 'holiday-stpatricks';
+      }
+
+      if (holidayClass) {
+        document.body.classList.add(holidayClass);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', setHolidayTheme);
+
   </script>
 
   <script type="application/ld+json">
