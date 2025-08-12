@@ -50,15 +50,16 @@
       user-select: none;
     }
 
+    /* The entire menu container fills from below topnav to bottom */
     .topnav-right {
       display: none;
       position: fixed;
       top: 60px;
       left: 0;
       right: 0;
-      height: calc(100vh - 60px); /* full height below topnav */
+      bottom: 0;
       background-color: var(--theme-bg-color);
-      overflow: hidden; /* hide scroll on container itself */
+      overflow-y: auto;
       flex-direction: column;
       z-index: 999;
       transition: opacity 0.3s ease;
@@ -76,6 +77,13 @@
 
     body.menu-open {
       overflow: hidden;
+    }
+
+    .accordion-section {
+      display: flex;
+      flex-direction: column;
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      /* Make each accordion section grow only if open */
     }
 
     .accordion-toggle {
@@ -98,27 +106,19 @@
       outline: none;
     }
 
-    .accordion-section {
-      display: flex;
-      flex-direction: column;
-      border-top: 1px solid rgba(255, 255, 255, 0.15);
-      flex-grow: 1; /* allow to grow evenly */
-      min-height: 0; /* important for flex children with scroll */
-    }
-
+    /* Accordion content is flex column, scrollable */
     .accordion-content {
       display: none;
       flex-direction: column;
       background-color: var(--theme-bg-color);
       overflow-y: auto;
-      flex-grow: 1; /* fill available space inside accordion */
-      min-height: 0;
-      padding-left: 28px;
-      padding-top: 10px;
-      padding-bottom: 10px;
+      max-height: 50vh; /* Limit height so it won't overflow full menu */
     }
 
     .accordion-content a {
+      padding-left: 28px;
+      padding-top: 10px;
+      padding-bottom: 10px;
       border-top: 1px solid rgba(255, 255, 255, 0.2);
       font-size: 20px;
       color: var(--theme-topnav-color);
@@ -154,7 +154,6 @@
       position: sticky;
       bottom: 0;
       z-index: 10;
-      flex-shrink: 0; /* prevent shrinking */
     }
 
     .clickable-section:hover,
