@@ -56,10 +56,10 @@ function setHolidayTheme() {
         color: #9b59b6;
       }
       body.holiday-easter .topnav {
-        background-color: #DDF0CB; /* Green topnav */
+        background-color: #3D1EE; /* Green topnav */
       }
       body.holiday-easter .topnav a {
-        color: #6b4c9a; /* Gold text in nav */
+        color: #6b4c98; /* Gold text in nav */
       }
     `;
   } else if (month === 3 && day === 17) {
