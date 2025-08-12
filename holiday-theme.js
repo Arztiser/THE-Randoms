@@ -74,7 +74,7 @@ function setHolidayTheme() {
         color: #FFD700;
       }
       body.holiday-stpatricks .topnav {
-        background-color: #009A49; /* Green topnav */
+        background-color: #00851; /* Green topnav */
       }
       body.holiday-stpatricks .topnav a {
         color: #FFD700; /* Gold text in nav */
