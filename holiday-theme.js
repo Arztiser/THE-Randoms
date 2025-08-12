@@ -41,7 +41,7 @@ function setHolidayTheme() {
         background-color: black;
       }
       body.holiday-halloween .topnav a {
-        color: black;
+        color: white;
       }
     `;
   } else if (month === 4 && day >= 1 && day <= 10) {
