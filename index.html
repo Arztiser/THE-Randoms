@@ -13,39 +13,60 @@
   <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet" />
 
   <style>
-    /* Default theme colors as CSS variables */
+    /* Variables for theme colors to keep consistent */
+    :root {
+      --color-christmas-bg: #228b22;       /* forest green */
+      --color-christmas-topnav: #E82B38;   /* firebrick red */
+      --color-christmas-text: #ffffff;
+
+      --color-halloween-bg: #4b0082;        /* dark purple */
+      --color-halloween-topnav: #ff7518;    /* pumpkin orange */
+      --color-halloween-text: #ff7518;
+
+      --color-easter-bg: #f9e79f;           /* soft yellow */
+      --color-easter-topnav: #9b59b6;       /* pastel purple */
+      --color-easter-text: #2980b9;         /* bright blue */
+
+      --color-stpatricks-bg: #006400;       /* dark green */
+      --color-stpatricks-topnav: #008000;   /* shamrock green */
+      --color-stpatricks-text: #ffd700;     /* gold */
+
+      --color-fourthofjuly-bg: #002868;     /* deep navy blue */
+      --color-fourthofjuly-topnav: #E82B38; /* bright patriotic red */
+      --color-fourthofjuly-text: #ffffff;
+
+      /* Default menu gray */
+      --menu-bg-default: #333;
+      --menu-content-bg-default: #444;
+    }
+
     body {
-      --theme-bg-color: #333;
-      --theme-topnav-color: #f2f2f2;
-      --theme-accent-color: #E82B38; /* for clickable section */
       font-family: 'Jersey 10', sans-serif;
       font-size: 30px;
       margin: 0;
       padding: 0;
-      background-color: #fff;
-      color: #000;
     }
 
     .topnav {
       overflow: hidden;
-      background-color: var(--theme-bg-color);
-      color: var(--theme-topnav-color);
+      background-color: var(--menu-bg-default);
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 16px;
       height: 60px;
+      color: #f2f2f2;
     }
 
     .topnav h1 {
       margin: 0;
       font-size: 24px;
-      color: var(--theme-topnav-color);
+      color: inherit;
     }
 
     .menu-icon {
       font-size: 30px;
-      color: var(--theme-topnav-color);
+      color: inherit;
       cursor: pointer;
       user-select: none;
     }
@@ -56,15 +77,17 @@
       top: 60px;
       left: 0;
       right: 0;
-      bottom: 0; /* stretch to bottom */
-      background-color: var(--theme-bg-color);
+      bottom: 0;
+      background-color: var(--menu-bg-default);
       overflow-y: auto;
       flex-direction: column;
       z-index: 999;
       transition: opacity 0.3s ease;
       opacity: 0;
       pointer-events: none;
-      padding-bottom: 60px; /* space for red clickable section */
+      padding-bottom: 60px;
+      height: calc(100vh - 60px);
+      box-sizing: border-box;
     }
 
     .topnav-right.active {
@@ -77,9 +100,16 @@
       overflow: hidden;
     }
 
+    .accordion-section {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
     .accordion-toggle {
       background: none;
-      color: var(--theme-topnav-color);
+      color: #f2f2f2;
       padding: 14px;
       text-align: left;
       font-size: 24px;
@@ -100,16 +130,18 @@
     .accordion-content {
       display: none;
       flex-direction: column;
-      background-color: var(--theme-bg-color);
+      background-color: var(--menu-content-bg-default);
+      flex-grow: 1;
+      overflow-y: auto;
     }
 
     .accordion-content a {
       padding-left: 28px;
       padding-top: 10px;
       padding-bottom: 10px;
-      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      border-top: 1px solid #555;
       font-size: 20px;
-      color: var(--theme-topnav-color);
+      color: #f2f2f2;
       text-decoration: none;
     }
 
@@ -119,19 +151,13 @@
       outline: none;
     }
 
-    .accordion-section {
-      display: flex;
-      flex-direction: column;
-      border-top: 1px solid rgba(255, 255, 255, 0.15);
-    }
-
     .accordion-section.open .accordion-content {
       display: flex;
     }
 
     /* New clickable section styling */
     .clickable-section {
-      background-color: var(--theme-accent-color);
+      background-color: #E82B38;
       color: white;
       font-weight: 700;
       font-size: 24px;
@@ -173,7 +199,7 @@
     }
 
     .logo {
-      color: var(--theme-topnav-color);
+      color: #f2f2f2;
       text-decoration: none;
     }
 
@@ -182,52 +208,88 @@
     }
 
 
-    /* --- Holiday Themes (CSS variables updated) --- */
+    /* --- Holiday Themes with matching accordion menu colors --- */
 
     /* Christmas */
     body.holiday-christmas {
-      --theme-bg-color: #E82B38; /* firebrick red */
-      --theme-topnav-color: #ffffff;
-      --theme-accent-color: #228b22; /* forest green for clickable section */
-      background-color: #228b22; /* forest green page bg */
-      color: #ffffff;
+      --menu-bg-default: var(--color-christmas-bg);
+      --menu-content-bg-default: #2c6b2c; /* slightly lighter forest green */
+      background-color: var(--color-christmas-bg);
+      color: var(--color-christmas-text);
+    }
+    body.holiday-christmas .topnav {
+      background-color: var(--color-christmas-topnav);
+      color: var(--color-christmas-text);
+    }
+    body.holiday-christmas .accordion-toggle,
+    body.holiday-christmas .accordion-content a {
+      color: var(--color-christmas-text);
     }
 
     /* Halloween */
     body.holiday-halloween {
-      --theme-bg-color: #ff7518; /* pumpkin orange */
-      --theme-topnav-color: #4b0082; /* indigo */
-      --theme-accent-color: #4b0082; /* dark purple for clickable section */
-      background-color: #4b0082; /* dark purple page bg */
-      color: #ff7518; /* pumpkin */
+      --menu-bg-default: var(--color-halloween-bg);
+      --menu-content-bg-default: #5a1d9e; /* slightly lighter purple */
+      background-color: var(--color-halloween-bg);
+      color: var(--color-halloween-text);
+    }
+    body.holiday-halloween .topnav {
+      background-color: var(--color-halloween-topnav);
+      color: var(--color-halloween-text);
+    }
+    body.holiday-halloween .accordion-toggle,
+    body.holiday-halloween .accordion-content a {
+      color: var(--color-halloween-text);
     }
 
     /* Easter */
     body.holiday-easter {
-      --theme-bg-color: #9b59b6; /* pastel purple */
-      --theme-topnav-color: #ffffff;
-      --theme-accent-color: #2980b9; /* bright blue for clickable section */
-      background-color: #f9e79f; /* soft yellow page bg */
-      color: #2980b9; /* bright blue */
+      --menu-bg-default: var(--color-easter-bg);
+      --menu-content-bg-default: #fbeaa5; /* lighter soft yellow */
+      background-color: var(--color-easter-bg);
+      color: var(--color-easter-text);
+    }
+    body.holiday-easter .topnav {
+      background-color: var(--color-easter-topnav);
+      color: #ffffff;
+    }
+    body.holiday-easter .accordion-toggle,
+    body.holiday-easter .accordion-content a {
+      color: var(--color-easter-text);
     }
 
     /* Saint Patrick's Day */
     body.holiday-stpatricks {
-      --theme-bg-color: #008000; /* shamrock green */
-      --theme-topnav-color: #ffd700; /* gold */
-      --theme-accent-color: #006400; /* dark green for clickable section */
-      background-color: #006400; /* dark green page bg */
-      color: #ffd700; /* gold */
+      --menu-bg-default: var(--color-stpatricks-bg);
+      --menu-content-bg-default: #004d00; /* darker green */
+      background-color: var(--color-stpatricks-bg);
+      color: var(--color-stpatricks-text);
+    }
+    body.holiday-stpatricks .topnav {
+      background-color: var(--color-stpatricks-topnav);
+      color: var(--color-stpatricks-text);
+    }
+    body.holiday-stpatricks .accordion-toggle,
+    body.holiday-stpatricks .accordion-content a {
+      color: var(--color-stpatricks-text);
     }
 
     /* Fourth of July */
     body.holiday-fourthofjuly {
-      --theme-bg-color: #E82B38; /* bright patriotic red */
-      --theme-topnav-color: #ffffff;
-      --theme-accent-color: #002868; /* deep navy blue for clickable section */
-      background-color: #002868; /* deep navy blue page bg */
-      color: #ffffff;
+      --menu-bg-default: var(--color-fourthofjuly-bg);
+      --menu-content-bg-default: #003366; /* slightly lighter navy */
+      background-color: var(--color-fourthofjuly-bg);
+      color: var(--color-fourthofjuly-text);
     }
+    body.holiday-fourthofjuly .topnav {
+      background-color: var(--color-fourthofjuly-topnav);
+      color: var(--color-fourthofjuly-text);
+    }
+    body.holiday-fourthofjuly .accordion-toggle,
+    body.holiday-fourthofjuly .accordion-content a {
+      color: var(--color-fourthofjuly-text);
+    }
+
   </style>
 </head>
 <body>
@@ -368,7 +430,7 @@
 
       let holidayClass = '';
 
-      if ((month === 8 && day >= 11) || (month === 1 && day <= 5)) {
+      if ((month === 12 && day >= 1) || (month === 1 && day <= 5)) {
         holidayClass = 'holiday-christmas';
       } else if (month === 10 && day >= 25 && day <= 31) {
         holidayClass = 'holiday-halloween';
