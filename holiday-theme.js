@@ -107,7 +107,7 @@ function setHolidayTheme() {
         color: white;
       }
       body.holiday-valentinesday a {
-        color: #bf0a30;
+        color: #E54551;
       }
       body.holiday-valentinesday .topnav {
         background-color: #E82B38; /* Red topnav same as Christmas */
