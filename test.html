@@ -3,48 +3,353 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Homepage Mockup with Dark Mode Toggle</title>
+  <meta name="theme-color" content="#E82B38" />
+  <meta name="description" content="THE Randoms Is A Website That Lets You View And Do Random Things Such As Random Quizzes, Facts, Quotes, Numbers, And Letters." />
+  <meta property="og:image" content="https://therandoms.pages.dev/img/pofp.png" />
+  <title>THE Randoms</title>
+  <link rel="icon" type="image/png" href="./img/pfp.png" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="apple-touch-icon" sizes="192x192" href="/img/prfp.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
   <style>
+    /* Default theme colors as CSS variables */
     body {
+      --theme-bg-color: #333;
+      --theme-topnav-color: #f2f2f2;
+      --theme-accent-color: #E82B38; /* for clickable section */
+      font-family: 'Jersey 10', sans-serif;
+      font-size: 30px;
       margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: var(--bg-color, #fff);
-      color: var(--text-color, #222);
-      transition: background-color 0.3s, color 0.3s;
+      padding: 0;
+      background-color: #fff;
+      color: #000;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
+
     body.dark-mode {
-      --bg-color: #121212;
-      --text-color: #eee;
+      background-color: #121212;
+      color: #eee;
     }
-    header {
+
+    .topnav {
+      overflow: hidden;
+      background-color: var(--theme-bg-color);
+      color: var(--theme-topnav-color);
       display: flex;
       align-items: center;
-      background: #eee;
-      padding: 1rem;
+      justify-content: space-between;
+      padding: 0 16px;
+      height: 60px;
+      position: relative;
     }
-    body.dark-mode header {
-      background: #222;
+
+    body.dark-mode .topnav {
+      background-color: #222;
+      color: #ddd;
     }
-    #hamburger-menu {
-      font-size: 2rem;
+
+    .topnav h1 {
+      margin: 0;
+      font-size: 24px;
+      color: inherit;
+    }
+
+    .menu-icon {
+      font-size: 30px;
+      color: inherit;
       cursor: pointer;
-      margin-right: 0.5rem;
+      user-select: none;
+      margin-left: 10px;
     }
-    /* The darkmode toggle button styles will be injected by darkmode.js */
+
+    #darkmode-toggle {
+      font-family: 'Jersey 10', sans-serif;
+      font-size: 30px;
+      color: inherit;
+      background: none;
+      border: none;
+      cursor: pointer;
+      margin-right: 10px;
+      display: flex;
+      align-items: center;
+      transition: color 0.3s ease;
+      user-select: none;
+    }
+
+    #darkmode-toggle:focus {
+      outline: 2px solid var(--theme-accent-color);
+      outline-offset: 2px;
+    }
+
+    .material-icons {
+      user-select: none;
+    }
+
+    .topnav-right {
+      display: none;
+      position: fixed;
+      top: 60px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--theme-bg-color);
+      overflow-y: auto;
+      flex-direction: column;
+      z-index: 999;
+      transition: opacity 0.3s ease;
+      opacity: 0;
+      pointer-events: none;
+      padding-bottom: 60px;
+      box-sizing: border-box;
+    }
+
+    body.dark-mode .topnav-right {
+      background-color: #222;
+    }
+
+    .topnav-right.active {
+      display: flex;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    body.menu-open {
+      overflow: hidden;
+    }
+
+    .accordion-section {
+      display: flex;
+      flex-direction: column;
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .accordion-toggle {
+      background: none;
+      color: inherit;
+      padding: 14px;
+      text-align: left;
+      font-size: 24px;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      width: 100%;
+      font-family: 'Jersey 10', sans-serif;
+      transition: background-color 0.3s ease;
+    }
+
+    .accordion-toggle:hover,
+    .accordion-toggle:focus {
+      background-color: rgba(255, 255, 255, 0.1);
+      outline: none;
+    }
+
+    .accordion-content {
+      display: none;
+      flex-direction: column;
+      background-color: var(--theme-bg-color);
+      overflow-y: auto;
+      max-height: 50vh;
+    }
+
+    .accordion-content a {
+      padding-left: 28px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      font-size: 20px;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .accordion-content a:hover,
+    .accordion-content a:focus {
+      background-color: rgba(255, 255, 255, 0.15);
+      outline: none;
+    }
+
+    .accordion-section.open .accordion-content {
+      display: flex;
+    }
+
+    .clickable-section {
+      background-color: var(--theme-accent-color);
+      color: white;
+      font-weight: 700;
+      font-size: 24px;
+      padding: 14px;
+      cursor: pointer;
+      user-select: none;
+      border-top: 1px solid #b22731;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.3s ease;
+      margin-top: 4px;
+
+      position: sticky;
+      bottom: 0;
+      z-index: 10;
+    }
+
+    .clickable-section:hover,
+    .clickable-section:focus {
+      background-color: #c52430;
+      outline: none;
+    }
+
+    .container {
+      margin: 20px;
+    }
+
+    .content {
+      text-align: center;
+    }
+
+    .content h1 {
+      margin-bottom: 20px;
+    }
+
+    .content p {
+      line-height: 1.5;
+    }
+
+    .logo {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .logo:hover {
+      text-decoration: none;
+    }
   </style>
 </head>
 <body>
   <header>
-    <span id="hamburger-menu" class="material-icons">menu</span>
-    <!-- darkmode.js will insert the toggle button here -->
-    <h1 style="margin-left: 1rem;">My Homepage</h1>
+    <div class="topnav">
+      <h1><a class="logo" href="/">THE Randoms</a></h1>
+      <span class="menu-icon" onclick="toggleMenu()" tabindex="0" role="button" aria-label="Toggle menu">&#9776;</span>
+    </div>
+
+    <nav class="topnav-right" role="navigation" aria-label="Main Menu">
+      <div class="accordion-section">
+        <button class="accordion-toggle" aria-expanded="false">Jokes & Fun</button>
+        <div class="accordion-content" hidden>
+          <a href="jokes.html">Jokes</a>
+          <a href="memes.html">Memes</a>
+          <a href="nfl.html">NFL</a>
+          <a href="quizzes.html">Quizzes</a>
+        </div>
+      </div>
+
+      <div class="accordion-section">
+        <button class="accordion-toggle" aria-expanded="false">Knowledge & Facts</button>
+        <div class="accordion-content" hidden>
+          <a href="advice.html">Advice</a>
+          <a href="facts.html">Facts</a>
+          <a href="people.html">People</a>
+          <a href="quotes.html">Quotes</a>
+        </div>
+      </div>
+
+      <div class="accordion-section">
+        <button class="accordion-toggle" aria-expanded="false">Music & Videos</button>
+        <div class="accordion-content" hidden>
+          <a href="songs.html">Songs</a>
+          <a href="videos.html">Videos</a>
+        </div>
+      </div>
+
+      <div class="accordion-section">
+        <button class="accordion-toggle" aria-expanded="false">Words, Letters & Numbers</button>
+        <div class="accordion-content" hidden>
+          <a href="letters.html">Letters</a>
+          <a href="numbers.html">Numbers</a>
+          <a href="words.html">Words</a>
+        </div>
+      </div>
+
+      <div
+        class="clickable-section"
+        tabindex="0"
+        role="link"
+        title="Go to Randoms Of The Day"
+      >
+        Randoms Of The Day
+      </div>
+    </nav>
   </header>
 
-  <main style="padding: 1rem;">
-    <p>Welcome to your site mockup! Toggle dark mode with the icon next to the hamburger menu.</p>
+  <main class="content">
+    <h1>Home</h1>
+    <p>Welcome to THE Randoms, a website full of random things to explore and enjoy. If you found this site randomly, welcome! Now come along on this wacky, fun, and random ride through THE Randoms of the world and the internet.</p>
   </main>
 
-  <script src="darkmode.js"></script>
+  <script>
+    function toggleMenu() {
+      const topnav = document.querySelector('.topnav');
+      const menu = document.querySelector('.topnav-right');
+      const body = document.body;
+
+      topnav.classList.toggle('active');
+      menu.classList.toggle('active');
+      body.classList.toggle('menu-open');
+    }
+
+    document.querySelectorAll('.accordion-toggle').forEach(button => {
+      button.addEventListener('click', () => {
+        const section = button.parentElement;
+        const isOpen = section.classList.contains('open');
+
+        document.querySelectorAll('.accordion-section').forEach(s => {
+          if (s !== section) {
+            s.classList.remove('open');
+            s.querySelector('.accordion-toggle').setAttribute('aria-expanded', 'false');
+            s.querySelector('.accordion-content').hidden = true;
+          }
+        });
+
+        if (!isOpen) {
+          section.classList.add('open');
+          button.setAttribute('aria-expanded', 'true');
+          section.querySelector('.accordion-content').hidden = false;
+        } else {
+          section.classList.remove('open');
+          button.setAttribute('aria-expanded', 'false');
+          section.querySelector('.accordion-content').hidden = true;
+        }
+      });
+    });
+
+    const clickableSection = document.querySelector('.clickable-section');
+    clickableSection.addEventListener('click', () => {
+      window.location.href = 'randomsoftheday.html';
+    });
+
+    clickableSection.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        clickableSection.click();
+      }
+    });
+
+    document.querySelector('.menu-icon').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleMenu();
+      }
+    });
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then(reg => console.log('Service Worker registered:', reg.scope))
+        .catch(err => console.error('Service Worker registration failed:', err));
+    }
+  </script>
+
+  <!-- Load your JS files here -->
+  <script src="holiday-theme.js" defer></script>
+  <script src="darkmode-toggle.js" defer></script>
 </body>
 </html>
