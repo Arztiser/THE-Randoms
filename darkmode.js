@@ -15,16 +15,14 @@ const css = `
     font-family: Arial, sans-serif;
   }
   #darkmode-toggle {
-    position: fixed;
-    top: 1rem;
-    right: 1rem;
     background: none;
     border: none;
     cursor: pointer;
     font-size: 2rem;
     color: var(--text-color);
     transition: color 0.3s ease;
-    z-index: 1000;
+    display: flex;
+    align-items: center;
   }
   #darkmode-toggle:focus {
     outline: 2px solid #0078D4;
@@ -35,19 +33,6 @@ const style = document.createElement('style');
 style.textContent = css;
 document.head.appendChild(style);
 
-// Create toggle button dynamically
-const toggleBtn = document.createElement('button');
-toggleBtn.id = 'darkmode-toggle';
-toggleBtn.setAttribute('aria-label', 'Toggle dark mode');
-
-const icon = document.createElement('span');
-icon.className = 'material-icons';
-icon.id = 'darkmode-icon';
-icon.textContent = 'wb_sunny'; // default icon
-
-toggleBtn.appendChild(icon);
-document.body.appendChild(toggleBtn);
-
 // Load Google Material Icons if not already loaded
 if (!document.querySelector('link[href*="fonts.googleapis.com/icon?family=Material+Icons"]')) {
   const link = document.createElement('link');
@@ -55,6 +40,30 @@ if (!document.querySelector('link[href*="fonts.googleapis.com/icon?family=Materi
   link.rel = 'stylesheet';
   document.head.appendChild(link);
 }
+
+// Find existing toggle button or create it once
+let toggleBtn = document.getElementById('darkmode-toggle');
+if (!toggleBtn) {
+  toggleBtn = document.createElement('button');
+  toggleBtn.id = 'darkmode-toggle';
+  toggleBtn.setAttribute('aria-label', 'Toggle dark mode');
+
+  const icon = document.createElement('span');
+  icon.className = 'material-icons';
+  icon.id = 'darkmode-icon';
+  toggleBtn.appendChild(icon);
+
+  // Append the toggle button next to the hamburger menu if exists,
+  // else append to body
+  const hamburger = document.querySelector('#hamburger-menu');
+  if (hamburger && hamburger.parentNode) {
+    hamburger.parentNode.insertBefore(toggleBtn, hamburger);
+  } else {
+    document.body.appendChild(toggleBtn);
+  }
+}
+
+const icon = document.getElementById('darkmode-icon');
 
 // Load saved preference
 const savedMode = localStorage.getItem('darkMode');
