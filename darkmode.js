@@ -3,12 +3,21 @@
 
   // --- Inject Material Icons (so we can use 'wb_sunny' / 'dark_mode') ---
   function ensureMaterialIcons() {
-    if (!document.querySelector('link[href*="Material+Icons"]')) {
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = 'https://fonts.googleapis.com/icon?family=Material+Icons';
-      document.head.appendChild(link);
-    }
+    return new Promise((resolve) => {
+      if (!document.querySelector('link[href*="Material+Icons"]')) {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = 'https://fonts.googleapis.com/icon?family=Material+Icons';
+        link.onload = () => resolve();
+        link.onerror = () => {
+          console.warn('Failed to load Material Icons stylesheet.');
+          resolve(); // resolve anyway to not block UI
+        };
+        document.head.appendChild(link);
+      } else {
+        resolve();
+      }
+    });
   }
 
   // --- Inject CSS for dark mode + toggle button ---
@@ -212,8 +221,8 @@
   }
 
   // --- Boot ---
-  function boot() {
-    ensureMaterialIcons();
+  async function boot() {
+    await ensureMaterialIcons();
     injectCSS();
     insertToggle();
     initTheme();
