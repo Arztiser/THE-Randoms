@@ -3,21 +3,47 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Dark Mode Toggle Test</title>
-  
-  <!-- Google Material Icons -->
+  <title>Homepage Mockup with Dark Mode Toggle</title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-  
-  <!-- Link to your darkmode CSS -->
-  <link rel="stylesheet" href="darkmode.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: var(--bg-color, #fff);
+      color: var(--text-color, #222);
+      transition: background-color 0.3s, color 0.3s;
+    }
+    body.dark-mode {
+      --bg-color: #121212;
+      --text-color: #eee;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      background: #eee;
+      padding: 1rem;
+    }
+    body.dark-mode header {
+      background: #222;
+    }
+    #hamburger-menu {
+      font-size: 2rem;
+      cursor: pointer;
+      margin-right: 0.5rem;
+    }
+    /* The darkmode toggle button styles will be injected by darkmode.js */
+  </style>
 </head>
 <body>
-  <button id="darkmode-toggle" aria-label="Toggle dark mode">
-    <span class="material-icons" id="darkmode-icon">wb_sunny</span>
-  </button>
-  
-  <h1>Dark Mode Toggle Test</h1>
-  <p>Toggle the button to switch between light and dark mode.</p>
+  <header>
+    <span id="hamburger-menu" class="material-icons">menu</span>
+    <!-- darkmode.js will insert the toggle button here -->
+    <h1 style="margin-left: 1rem;">My Homepage</h1>
+  </header>
+
+  <main style="padding: 1rem;">
+    <p>Welcome to your site mockup! Toggle dark mode with the icon next to the hamburger menu.</p>
+  </main>
 
   <script src="darkmode.js"></script>
 </body>
