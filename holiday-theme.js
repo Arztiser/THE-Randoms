@@ -98,7 +98,7 @@ function setHolidayTheme() {
         color: white;
       }
     `;
-  } else if (month === 8 && day === 12) { 
+  } else if (month === 2 && day === 14) { 
     // 4th of July
     holidayClass = 'holiday-valentinesday';
     styles = `
