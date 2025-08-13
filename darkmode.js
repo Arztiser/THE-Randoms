@@ -1,4 +1,3 @@
-/* darkmode-toggle.js — single-file dark mode (CSS + logic + icons) */
 (() => {
   'use strict';
 
@@ -147,6 +146,12 @@
   let toggleBtn, icon;
 
   function insertToggle() {
+    // Only insert toggle on homepage
+    const pathname = window.location.pathname;
+    if (!(pathname === '/' || pathname.endsWith('/index.html'))) {
+      return; // Skip inserting toggle on other pages
+    }
+
     const topnav = document.querySelector('.topnav');
     if (!topnav) return;
 
