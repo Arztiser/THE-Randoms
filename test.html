@@ -11,7 +11,6 @@
   <link rel="manifest" href="/manifest.json" />
   <link rel="apple-touch-icon" sizes="192x192" href="/img/prfp.png" />
   <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
 
   <style>
     /* Default theme colors as CSS variables */
@@ -25,12 +24,6 @@
       padding: 0;
       background-color: #fff;
       color: #000;
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
-
-    body.dark-mode {
-      background-color: #121212;
-      color: #eee;
     }
 
     .topnav {
@@ -42,48 +35,18 @@
       justify-content: space-between;
       padding: 0 16px;
       height: 60px;
-      position: relative;
-    }
-
-    body.dark-mode .topnav {
-      background-color: #222;
-      color: #ddd;
     }
 
     .topnav h1 {
       margin: 0;
       font-size: 24px;
-      color: inherit;
+      color: var(--theme-topnav-color);
     }
 
     .menu-icon {
       font-size: 30px;
-      color: inherit;
+      color: var(--theme-topnav-color);
       cursor: pointer;
-      user-select: none;
-      margin-left: 10px;
-    }
-
-    #darkmode-toggle {
-      font-family: 'Jersey 10', sans-serif;
-      font-size: 30px;
-      color: inherit;
-      background: none;
-      border: none;
-      cursor: pointer;
-      margin-right: 10px;
-      display: flex;
-      align-items: center;
-      transition: color 0.3s ease;
-      user-select: none;
-    }
-
-    #darkmode-toggle:focus {
-      outline: 2px solid var(--theme-accent-color);
-      outline-offset: 2px;
-    }
-
-    .material-icons {
       user-select: none;
     }
 
@@ -105,10 +68,6 @@
       box-sizing: border-box;
     }
 
-    body.dark-mode .topnav-right {
-      background-color: #222;
-    }
-
     .topnav-right.active {
       display: flex;
       opacity: 1;
@@ -127,7 +86,7 @@
 
     .accordion-toggle {
       background: none;
-      color: inherit;
+      color: var(--theme-topnav-color);
       padding: 14px;
       text-align: left;
       font-size: 24px;
@@ -159,7 +118,7 @@
       padding-bottom: 10px;
       border-top: 1px solid rgba(255, 255, 255, 0.2);
       font-size: 20px;
-      color: inherit;
+      color: var(--theme-topnav-color);
       text-decoration: none;
     }
 
@@ -216,7 +175,7 @@
     }
 
     .logo {
-      color: inherit;
+      color: var(--theme-topnav-color);
       text-decoration: none;
     }
 
@@ -348,8 +307,39 @@
     }
   </script>
 
-  <!-- Load your JS files here -->
-  <script src="holiday-theme.js" defer></script>
-  <script src="darkmode-toggle.js" defer></script>
+  <!-- Load the external JS file with dark mode toggle -->
+  <script src="/darkmode-toggle.js" defer></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "name": "THE Randoms",
+        "url": "https://therandoms.pages.dev/",
+        "sameAs": [
+          "https://x.com/Arztiser",
+          "https://www.youtube.com/@ArztiserMusic",
+          "https://open.spotify.com/artist/5iOQLKlc3taptDhisMcPX7?si=-kvaqr4mRSqSB3NthUu2cA",
+          "https://link.deezer.com/s/30rg4dq51eMRZWcy6SzLU",
+          "https://music.amazon.com/artists/B0DF356TRC?ref=dm_sh_0vUueu3N8pJboqKVKQJlQIjsh"
+        ],
+        "description": "THE Randoms Offers Random Facts, Quizzes, And Interactive Fun — All In One Random Place.",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://therandoms.pages.dev/img/pfp.png"
+        }
+      },
+      {
+        "@type": "WebSite",
+        "name": "THE Randoms",
+        "url": "https://therandoms.pages.dev/",
+        "description": "THE Randoms Offers Random Facts, Quizzes, And Interactive Fun — All In One Random Place."
+      }
+    ]
+  }
+  </script>
+
 </body>
 </html>
