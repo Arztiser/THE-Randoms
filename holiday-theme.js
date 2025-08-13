@@ -98,7 +98,25 @@ function setHolidayTheme() {
         color: white;
       }
     `;
-  }
+  } else if (month === 8 && day === 12) { 
+    // 4th of July
+    holidayClass = 'holiday-valentinesday';
+    styles = `
+      body.holiday-valentinesday {
+        background-color: #E3A8C6;
+        color: white;
+      }
+      body.holiday-valentinesday a {
+        color: #bf0a30;
+      }
+      body.holiday-valentinesday .topnav {
+        background-color: #E82B38; /* Red topnav same as Christmas */
+      }
+      body.holiday-valentinesday .topnav a {
+        color: white;
+      }
+    `;
+  } 
 
   if (holidayClass) {
     document.body.classList.add(holidayClass);
