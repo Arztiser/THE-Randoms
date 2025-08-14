@@ -342,6 +342,12 @@
   }
   </script>
 
+  <script>
+  if (window.location.hostname === 'therandoms.pages.dev') {
+    window.location.replace('https://therandoms.org' + window.location.pathname + window.location.search + window.location.hash);
+  }
+  </script>
+
   <script src="/holiday-theme.js"></script>
 </body>
 </html>
