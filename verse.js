@@ -6,20 +6,27 @@ document.addEventListener('DOMContentLoaded', async () => {
   container.textContent = 'Loading verse...';
 
   try {
-    // Use AllOrigins proxy to bypass CORS
-    const response = await fetch(
-      'https://api.allorigins.win/raw?url=https://bible-api.com/data/web/random'
-    );
+    const response = await fetch('https://bible-api.com/data/web/random');
     const data = await response.json();
 
-    if (!data.verses || data.verses.length === 0) {
-      container.textContent = 'No verse found.';
+    // Check if the expected fields exist
+    if (!data.text || !data.reference) {
+      container.textContent = 'Failed to load verse.';
       return;
     }
 
-    const verse = data.verses[0];
-    // Format: BookName Chapter:Verse - Text
-    container.textContent = `${verse.book_name} ${verse.chapter}:${verse.verse} - ${verse.text}`;
+    // Split reference into book, chapter, and verse
+    // Example: "John 3:16"
+    const refMatch = data.reference.match(/^(.+?) (\d+):(\d+)$/);
+    if (!refMatch) {
+      container.textContent = `Verse: ${data.text}`; // fallback
+      return;
+    }
+
+    const [, book, chapter, verse] = refMatch;
+
+    // Format: Book Chapter:Verse - Verse text
+    container.textContent = `${book} ${chapter}:${verse} - ${data.text}`;
   } catch (err) {
     console.error('Error fetching verse:', err);
     container.textContent = 'Failed to load verse.';
