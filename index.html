@@ -6,6 +6,7 @@
   <meta name="theme-color" content="#E82B38" />
   <meta name="description" content="THE Randoms Is A Website That Lets You View And Do Random Things Such As Random Quizzes, Facts, Quotes, Numbers, And Letters." />
   <meta property="og:image" content="https://therandoms.org/img/pofp.png" />
+  <meta http-equiv="refresh" content="0;url=https://therandoms.org/" />
   <title>THE Randoms</title>
   <link rel="icon" type="image/png" href="./img/pfp.png" />
   <link rel="manifest" href="/manifest.json" />
@@ -343,5 +344,18 @@
   </script>
 
   <script src="/holiday-theme.js"></script>
+
+<script>
+  (function() {
+    // Only redirect if we're still on the old pages.dev domain
+    if (window.location.hostname === "therandoms.pages.dev") {
+      // Preserve path and query string
+      const newUrl = "https://therandoms.org" + window.location.pathname + window.location.search;
+      // Permanent redirect
+      window.location.replace(newUrl);
+    }
+  })();
+</script>
+  
 </body>
 </html>
