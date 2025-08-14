@@ -8,9 +8,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!response.ok) throw new Error('Failed to fetch verse');
       const data = await response.json();
 
-      // Format: Book Chapter:Verse - Verse Text
-      const formatted = `${data.book_name} ${data.chapter}:${data.verse} - ${data.text}`;
-      
+      // Use the first verse in the verses array
+      const verse = data.verses[0];
+
+      const formatted = `${verse.book_name} ${verse.chapter}:${verse.verse} - ${verse.text}`;
       verseContainer.textContent = formatted;
     } catch (error) {
       console.error('Error fetching verse:', error);
