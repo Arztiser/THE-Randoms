@@ -1,9 +1,32 @@
 (() => {
   'use strict';
 
-  // --- Inject Material Icons (so we can use 'wb_sunny' / 'dark_mode') ---
+  /* ---------------- CONFIG ---------------- */
+  // Set to true if you only want the toggle on the homepage:
+  const HOME_ONLY = true;
+
+  function isHomepage() {
+    // normalize trailing slash
+    const p = location.pathname.replace(/\/+$/, '');
+    return p === '' || p === '/' || p.endsWith('/index.html') || p.endsWith('/index');
+  }
+
+  /* --------- Material Icons injection ------- */
   function ensureMaterialIcons() {
     return new Promise((resolve) => {
+      // Preconnects help reliability/speed (safe to add multiple times, we guard below)
+      const ensurePreconnect = (href, cross = false) => {
+        if (!document.querySelector(`link[rel="preconnect"][href="${href}"]`)) {
+          const pc = document.createElement('link');
+          pc.rel = 'preconnect';
+          pc.href = href;
+          if (cross) pc.crossOrigin = 'anonymous';
+          document.head.appendChild(pc);
+        }
+      };
+      ensurePreconnect('https://fonts.googleapis.com');
+      ensurePreconnect('https://fonts.gstatic.com', true);
+
       if (!document.querySelector('link[href*="Material+Icons"]')) {
         const link = document.createElement('link');
         link.rel = 'stylesheet';
@@ -11,7 +34,7 @@
         link.onload = () => resolve();
         link.onerror = () => {
           console.warn('Failed to load Material Icons stylesheet.');
-          resolve(); // resolve anyway to not block UI
+          resolve(); // resolve anyway so UI isn’t blocked
         };
         document.head.appendChild(link);
       } else {
@@ -20,8 +43,10 @@
     });
   }
 
-  // --- Inject CSS for dark mode + toggle button ---
+  /* ------------ CSS injection (yours) -------- */
   function injectCSS() {
+    if (document.getElementById('darkmode-injected-css')) return;
+
     const css = `
       /* Toggle button look */
       .darkmode-toggle {
@@ -101,11 +126,12 @@
       }
     `;
     const style = document.createElement('style');
+    style.id = 'darkmode-injected-css';
     style.textContent = css;
     document.head.appendChild(style);
   }
 
-  // --- Theme persistence helpers ---
+  /* ---------- Persistence helpers (yours) ---------- */
   const KEYS = ['theme', 'darkmode-enabled', 'darkMode']; // support old keys too
 
   function getStoredTheme() {
@@ -115,18 +141,19 @@
       if (v === 'light') return 'light';
       if (v === 'true') return 'dark';
       if (v === 'false') return 'light';
+      if (v === 'enabled') return 'dark';
+      if (v === 'disabled') return 'light';
     }
     return null;
   }
 
   function storeTheme(mode) {
-    // Use one canonical key but also update legacy for compatibility
     localStorage.setItem('theme', mode);
     localStorage.setItem('darkmode-enabled', mode === 'dark' ? 'true' : 'false');
     localStorage.setItem('darkMode', mode === 'dark' ? 'enabled' : 'disabled');
   }
 
-  // --- Update browser UI color (PWA / mobile address bar) ---
+  /* --------- Meta theme-color updater (yours) -------- */
   function updateThemeColor(isDark) {
     let meta = document.querySelector('meta[name="theme-color"]');
     if (!meta) {
@@ -134,35 +161,35 @@
       meta.name = 'theme-color';
       document.head.appendChild(meta);
     }
-    // Use topnav background for dark; keep your brand accent for light
     meta.setAttribute('content', isDark ? '#222222' : '#E82B38');
   }
 
-  // --- Apply mode to document ---
+  /* ----------------- Apply mode ----------------- */
+  let toggleBtn, iconSpan;
+
   function applyMode(mode) {
     const isDark = mode === 'dark';
     document.body.classList.toggle('dark-mode', isDark);
     updateThemeColor(isDark);
-    if (toggleBtn) {
+
+    if (toggleBtn && iconSpan) {
       toggleBtn.setAttribute('aria-pressed', String(isDark));
-      icon.textContent = isDark ? 'dark_mode' : 'wb_sunny';
-      toggleBtn.title = isDark ? 'Switch to light mode' : 'Switch to dark mode';
-      toggleBtn.setAttribute('aria-label', toggleBtn.title);
+      iconSpan.textContent = isDark ? 'dark_mode' : 'wb_sunny';
+      const title = isDark ? 'Switch to light mode' : 'Switch to dark mode';
+      toggleBtn.title = title;
+      toggleBtn.setAttribute('aria-label', title);
     }
   }
 
-  // --- Create and insert the toggle (before the hamburger) ---
-  let toggleBtn, icon;
-
+  /* ------------- Insert toggle (kept) ------------- */
   function insertToggle() {
-    // Only insert toggle on homepage
-    const pathname = window.location.pathname;
-    if (!(pathname === '/' || pathname.endsWith('/index.html'))) {
-      return; // Skip inserting toggle on other pages
-    }
+    if (HOME_ONLY && !isHomepage()) return;
 
     const topnav = document.querySelector('.topnav');
     if (!topnav) return;
+
+    // Avoid duplicates
+    if (topnav.querySelector('.darkmode-toggle')) return;
 
     const menuIcon = topnav.querySelector('.menu-icon');
 
@@ -173,20 +200,17 @@
     toggleBtn.setAttribute('aria-label', 'Toggle dark mode');
     toggleBtn.title = 'Toggle dark mode';
 
-    icon = document.createElement('span');
-    icon.className = 'material-icons';
-    icon.textContent = 'wb_sunny'; // default until we compute actual mode
-    toggleBtn.appendChild(icon);
+    iconSpan = document.createElement('span');
+    iconSpan.className = 'material-icons';
+    iconSpan.textContent = 'wb_sunny'; // will be flipped by applyMode/initTheme
+    toggleBtn.appendChild(iconSpan);
 
     if (menuIcon && menuIcon.parentElement === topnav) {
-      // Place directly in front of the hamburger on the right
       topnav.insertBefore(toggleBtn, menuIcon);
     } else {
-      // Fallback: append to the right end
       topnav.appendChild(toggleBtn);
     }
 
-    // Events
     toggleBtn.addEventListener('click', onToggle);
     toggleBtn.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
@@ -202,7 +226,7 @@
     storeTheme(isDark ? 'dark' : 'light');
   }
 
-  // --- Initialize respecting stored pref or system pref ---
+  /* -------------- Init respecting prefs -------------- */
   function initTheme() {
     const stored = getStoredTheme();
     const prefersDark =
@@ -211,7 +235,6 @@
     const mode = stored || (prefersDark ? 'dark' : 'light');
     applyMode(mode);
 
-    // If user hasn't chosen and system preference changes later, follow it
     if (!stored && window.matchMedia) {
       const mq = window.matchMedia('(prefers-color-scheme: dark)');
       mq.addEventListener?.('change', (e) => {
@@ -220,12 +243,12 @@
     }
   }
 
-  // --- Boot ---
+  /* -------------------- Boot -------------------- */
   async function boot() {
-    await ensureMaterialIcons();
-    injectCSS();
-    insertToggle();
-    initTheme();
+    await ensureMaterialIcons();   // make sure ligatures work
+    injectCSS();                   // your full CSS block
+    insertToggle();                // add toggle (home-only or everywhere)
+    initTheme();                   // apply stored/system mode
   }
 
   if (document.readyState === 'loading') {
