@@ -8,7 +8,7 @@
   function isHomepage() {
     // normalize trailing slash
     const p = location.pathname.replace(/\/+$/, '');
-    return p === '' || p === '/' || p.endsWith('/test.html') || p.endsWith('/index');
+    return p === '' || p === '/' || p.endsWith('/test.html') || p.endsWith('/test');
   }
 
   /* --------- Material Icons injection ------- */
