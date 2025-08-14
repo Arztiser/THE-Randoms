@@ -3,18 +3,19 @@
 
   /* ---------------- CONFIG ---------------- */
   // Set to true if you only want the toggle on the homepage:
-  const HOME_ONLY = true;
+  const HOME_ONLY = false;
 
   function isHomepage() {
-    // normalize trailing slash
     const p = location.pathname.replace(/\/+$/, '');
-    return p === '' || p === '/' || p.endsWith('/test.html') || p.endsWith('/test');
+    return p === '' || p === '/' || p.endsWith('/index.html') || p.endsWith('/index');
   }
 
   /* --------- Material Icons injection ------- */
+  let materialIconsLoaded = false;
+
   function ensureMaterialIcons() {
     return new Promise((resolve) => {
-      // Preconnects help reliability/speed (safe to add multiple times, we guard below)
+      // Preconnects (helps speed/reliability)
       const ensurePreconnect = (href, cross = false) => {
         if (!document.querySelector(`link[rel="preconnect"][href="${href}"]`)) {
           const pc = document.createElement('link');
@@ -27,18 +28,29 @@
       ensurePreconnect('https://fonts.googleapis.com');
       ensurePreconnect('https://fonts.gstatic.com', true);
 
-      if (!document.querySelector('link[href*="Material+Icons"]')) {
-        const link = document.createElement('link');
+      // Stylesheet
+      let link = document.querySelector('link[href*="Material+Icons"]');
+      if (!link) {
+        link = document.createElement('link');
         link.rel = 'stylesheet';
         link.href = 'https://fonts.googleapis.com/icon?family=Material+Icons';
-        link.onload = () => resolve();
-        link.onerror = () => {
-          console.warn('Failed to load Material Icons stylesheet.');
-          resolve(); // resolve anyway so UI isn’t blocked
-        };
+        link.onload = () => { materialIconsLoaded = true; resolve(); };
+        link.onerror = () => { console.warn('Material Icons failed to load. Falling back to SVG.'); resolve(); };
         document.head.appendChild(link);
       } else {
-        resolve();
+        // If already present we still try to detect load using document.fonts
+        const done = () => resolve();
+        if (document.fonts?.check) {
+          // Give the browser a tick to register
+          setTimeout(() => {
+            try {
+              materialIconsLoaded = document.fonts.check('24px "Material Icons"');
+            } catch {}
+            done();
+          }, 0);
+        } else {
+          done();
+        }
       }
     });
   }
@@ -70,8 +82,14 @@
       .darkmode-toggle .material-icons {
         font-size: 30px;
       }
+      /* SVG fallback sizing */
+      .darkmode-icon svg {
+        width: 30px;
+        height: 30px;
+        display: block;
+      }
 
-      /* Make sure color transitions feel nice (optional) */
+      /* Smooth transitions */
       html, body, .topnav, .topnav-right, .accordion-toggle, .accordion-content a, .clickable-section {
         transition: background-color .25s ease, color .25s ease, border-color .25s ease;
       }
@@ -114,7 +132,7 @@
         border-top: 1px solid rgba(255,255,255,.15) !important;
       }
 
-      /* Clickable bottom section in dark (keeps your red accent but tuned a bit) */
+      /* Clickable bottom section in dark */
       body.dark-mode .clickable-section {
         background-color: #c52430 !important;
         border-top: 1px solid #932028 !important;
@@ -164,32 +182,79 @@
     meta.setAttribute('content', isDark ? '#222222' : '#E82B38');
   }
 
+  /* ----------------- Icons (SVG fallback) ----------------- */
+  function makeSunIconSVG() {
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', '0 0 24 24');
+    svg.setAttribute('aria-hidden', 'true');
+    const rays = [
+      ['12','1','12','3'], ['12','21','12','23'],
+      ['1','12','3','12'], ['21','12','23','12'],
+      ['4.2','4.2','5.6','5.6'], ['18.4','18.4','19.8','19.8'],
+      ['4.2','19.8','5.6','18.4'], ['18.4','5.6','19.8','4.2']
+    ];
+    rays.forEach(([x1,y1,x2,y2]) => {
+      const line = document.createElementNS(svg.namespaceURI, 'line');
+      line.setAttribute('x1', x1); line.setAttribute('y1', y1);
+      line.setAttribute('x2', x2); line.setAttribute('y2', y2);
+      line.setAttribute('stroke', 'currentColor');
+      line.setAttribute('stroke-width', '2');
+      line.setAttribute('stroke-linecap', 'round');
+      svg.appendChild(line);
+    });
+    const circle = document.createElementNS(svg.namespaceURI, 'circle');
+    circle.setAttribute('cx','12'); circle.setAttribute('cy','12'); circle.setAttribute('r','5');
+    circle.setAttribute('fill','none'); circle.setAttribute('stroke','currentColor'); circle.setAttribute('stroke-width','2');
+    svg.appendChild(circle);
+    return svg;
+  }
+
+  function makeMoonIconSVG() {
+    // Crescent (MIT-style path similar to Feather)
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', '0 0 24 24');
+    svg.setAttribute('aria-hidden', 'true');
+    const path = document.createElementNS(svg.namespaceURI, 'path');
+    path.setAttribute('d', 'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z');
+    path.setAttribute('fill', 'currentColor');
+    svg.appendChild(path);
+    return svg;
+  }
+
   /* ----------------- Apply mode ----------------- */
-  let toggleBtn, iconSpan;
+  let toggleBtn, iconContainer, usingMaterial = false;
+
+  function setIcon(isDark) {
+    // Clear current icon
+    iconContainer.replaceChildren();
+    if (usingMaterial) {
+      const span = document.createElement('span');
+      span.className = 'material-icons';
+      span.textContent = isDark ? 'dark_mode' : 'wb_sunny';
+      iconContainer.appendChild(span);
+    } else {
+      iconContainer.appendChild(isDark ? makeMoonIconSVG() : makeSunIconSVG());
+    }
+  }
 
   function applyMode(mode) {
     const isDark = mode === 'dark';
     document.body.classList.toggle('dark-mode', isDark);
     updateThemeColor(isDark);
 
-    if (toggleBtn && iconSpan) {
+    if (toggleBtn && iconContainer) {
       toggleBtn.setAttribute('aria-pressed', String(isDark));
-      iconSpan.textContent = isDark ? 'dark_mode' : 'wb_sunny';
+      setIcon(isDark);
       const title = isDark ? 'Switch to light mode' : 'Switch to dark mode';
       toggleBtn.title = title;
       toggleBtn.setAttribute('aria-label', title);
     }
   }
 
-  /* ------------- Insert toggle (kept) ------------- */
-  function insertToggle() {
-    if (HOME_ONLY && !isHomepage()) return;
-
-    const topnav = document.querySelector('.topnav');
-    if (!topnav) return;
-
-    // Avoid duplicates
-    if (topnav.querySelector('.darkmode-toggle')) return;
+  /* ------------- Insert toggle ------------- */
+  function insertToggle(topnav) {
+    if ((HOME_ONLY && !isHomepage()) || !topnav) return;
+    if (topnav.querySelector('.darkmode-toggle')) return; // avoid duplicates
 
     const menuIcon = topnav.querySelector('.menu-icon');
 
@@ -200,10 +265,9 @@
     toggleBtn.setAttribute('aria-label', 'Toggle dark mode');
     toggleBtn.title = 'Toggle dark mode';
 
-    iconSpan = document.createElement('span');
-    iconSpan.className = 'material-icons';
-    iconSpan.textContent = 'wb_sunny'; // will be flipped by applyMode/initTheme
-    toggleBtn.appendChild(iconSpan);
+    iconContainer = document.createElement('span');
+    iconContainer.className = 'darkmode-icon';
+    toggleBtn.appendChild(iconContainer);
 
     if (menuIcon && menuIcon.parentElement === topnav) {
       topnav.insertBefore(toggleBtn, menuIcon);
@@ -226,6 +290,20 @@
     storeTheme(isDark ? 'dark' : 'light');
   }
 
+  /* ---------- Wait for .topnav if loaded late ---------- */
+  function findTopnavWithRetry(maxMs = 5000, interval = 100) {
+    return new Promise((resolve) => {
+      const start = performance.now();
+      const tryFind = () => {
+        const el = document.querySelector('.topnav');
+        if (el) return resolve(el);
+        if (performance.now() - start >= maxMs) return resolve(null);
+        setTimeout(tryFind, interval);
+      };
+      tryFind();
+    });
+  }
+
   /* -------------- Init respecting prefs -------------- */
   function initTheme() {
     const stored = getStoredTheme();
@@ -245,10 +323,12 @@
 
   /* -------------------- Boot -------------------- */
   async function boot() {
-    await ensureMaterialIcons();   // make sure ligatures work
-    injectCSS();                   // your full CSS block
-    insertToggle();                // add toggle (home-only or everywhere)
-    initTheme();                   // apply stored/system mode
+    await ensureMaterialIcons();     // try to load Material Icons
+    usingMaterial = materialIconsLoaded; // decide renderer
+    injectCSS();                     // your full CSS
+    const topnav = await findTopnavWithRetry();
+    insertToggle(topnav);            // add the toggle (every page by default)
+    initTheme();                     // apply stored/system mode
   }
 
   if (document.readyState === 'loading') {
