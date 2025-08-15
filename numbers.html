@@ -124,24 +124,33 @@
 
     .content h1 {
       margin-bottom: 20px;
-    text-align: left;   
+      text-align: left;   
     }
 
     .content p {
       line-height: 1.5;
     }
 
-.logo {
-  color: #f2f2f2;
-  text-decoration: none;
-}
+    .logo {
+      color: #f2f2f2;
+      text-decoration: none;
+    }
 
-.logo:visited,
-.logo:active,
-.logo:hover {
-  text-decoration: none;
-}
+    .logo:visited,
+    .logo:active,
+    .logo:hover {
+      text-decoration: none;
+    }
 
+    /* Responsive page title for mobile screens */
+    @media (max-width: 480px) {
+      .content h1 {
+        font-size: 6vw;       /* scales with viewport width */
+        white-space: nowrap;   /* prevents breaking into two lines */
+        overflow: hidden;      /* hides overflow if too long */
+        text-overflow: ellipsis; /* shows ... if text is too long */
+      }
+    }
   </style>
 </head>
 <body>
