@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#E82B38">
+  <title>Random Page - THE Randoms</title>
+</head>
+<body>
+  <p style="text-align:center; margin-top:50px;">Taking you to a random page...</p>
+
+  <script>
+    // List all your site pages here
+    const pages = [
+      '/jokes.html',
+      '/memes.html',
+      '/nfl.html',
+      '/quizzes.html',
+      '/advice.html',
+      '/facts.html',
+      '/people.html',
+      '/quotes.html',
+      '/songs.html',
+      '/videos.html',
+      '/letters.html',
+      '/numbers.html',
+      '/words.html'
+    ];
+
+    // Pick a random page
+    const randomPage = pages[Math.floor(Math.random() * pages.length)];
+
+    // Redirect after a short delay (optional)
+    setTimeout(() => {
+      window.location.href = randomPage;
+    }, 500); // 500ms gives users a little feedback
+
+  </script>
+</body>
+</html>
