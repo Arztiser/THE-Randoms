@@ -1,109 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#E82B38" />
-  <title>Random Page - THE Randoms</title>
-  <link rel="icon" type="image/png" href="./img/pfp.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://therandoms.pages.dev/css/styles.css" />
-</head>
-<body>
-  <header>
-    <div class="topnav">
-      <h1><a class="logo" href="/">THE Randoms</a></h1>
-      <span class="menu-icon" onclick="toggleMenu()">&#9776;</span>
-    </div>
-
-    <nav class="topnav-right">
-      <!-- Same accordion menu as homepage -->
-      <div class="accordion-section">
-        <button class="accordion-toggle">Jokes & Fun</button>
-        <div class="accordion-content">
-          <a href="jokes.html">Jokes</a>
-          <a href="memes.html">Memes</a>
-          <a href="nfl.html">NFL</a>
-          <a href="quizzes.html">Quizzes</a>
-        </div>
-      </div>
-      <div class="accordion-section">
-        <button class="accordion-toggle">Knowledge & Facts</button>
-        <div class="accordion-content">
-          <a href="advice.html">Advice</a>
-          <a href="facts.html">Facts</a>
-          <a href="people.html">People</a>
-          <a href="quotes.html">Quotes</a>
-        </div>
-      </div>
-      <div class="accordion-section">
-        <button class="accordion-toggle">Music & Videos</button>
-        <div class="accordion-content">
-          <a href="songs.html">Songs</a>
-          <a href="videos.html">Videos</a>
-        </div>
-      </div>
-      <div class="accordion-section">
-        <button class="accordion-toggle">Words, Letters & Numbers</button>
-        <div class="accordion-content">
-          <a href="letters.html">Letters</a>
-          <a href="numbers.html">Numbers</a>
-          <a href="words.html">Words</a>
-        </div>
-      </div>
-    </nav>
-  </header>
-
-  <main class="content">
-    <h1>Random Page</h1>
-    <p>Hang tight! You’re being sent to a random page...</p>
-  </main>
-
-  <script>
-    function toggleMenu() {
-      const topnav = document.querySelector('.topnav');
-      const menu = document.querySelector('.topnav-right');
-      const body = document.body;
-      topnav.classList.toggle('active');
-      menu.classList.toggle('active');
-      body.classList.toggle('menu-open');
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#E82B38">
+  <title>Redirecting - THE Randoms</title>
+  <link rel="icon" type="image/png" href="./img/pfp.png">
+  <link rel="stylesheet" href="https://therandoms.pages.dev/css/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Jersey 10', sans-serif;
+      font-size: 30px;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #fff;
+      color: #333;
+      text-align: center;
     }
 
-    document.querySelectorAll('.accordion-toggle').forEach(button => {
-      button.addEventListener('click', () => {
-        const section = button.parentElement;
-        const isOpen = section.classList.contains('open');
-        document.querySelectorAll('.accordion-section').forEach(s => {
-          if (s !== section) {
-            s.classList.remove('open');
-            s.querySelector('.accordion-content').hidden = true;
-          }
-        });
-        if (!isOpen) {
-          section.classList.add('open');
-          section.querySelector('.accordion-content').hidden = false;
-        } else {
-          section.classList.remove('open');
-          section.querySelector('.accordion-content').hidden = true;
-        }
-      });
-    });
+    .topnav h1 a {
+      font-family: 'Jersey 10', sans-serif;
+      color: #E82B38;
+      text-decoration: none;
+    }
 
-    // Random redirect
+    .container {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <header class="topnav">
+    <h1><a class="logo" href="/">THE Randoms</a></h1>
+  </header>
+
+  <div class="container">
+    <p>Redirecting to a random page...</p>
+  </div>
+
+  <script>
+    // List all pages you want to randomly redirect to
     const pages = [
-      '/jokes.html','/memes.html','/nfl.html','/quizzes.html',
-      '/advice.html','/facts.html','/people.html','/quotes.html',
-      '/songs.html','/videos.html','/letters.html','/numbers.html','/words.html','/wouldyourather.html' 
+      "jokes.html",
+      "memes.html",
+      "nfl.html",
+      "quizzes.html",
+      "advice.html",
+      "facts.html",
+      "people.html",
+      "quotes.html",
+      "songs.html",
+      "videos.html",
+      "letters.html",
+      "numbers.html",
+      "words.html",
+      "wouldyourather.html"
     ];
+
+    // Pick a random page
     const randomPage = pages[Math.floor(Math.random() * pages.length)];
 
-    // Redirect after a brief pause
+    // Redirect after 1.5 seconds
     setTimeout(() => {
       window.location.href = randomPage;
-    }, 700);
+    }, 1500);
   </script>
-
-  <!-- Load your theme scripts if needed -->
-  <script src="holiday-theme.js" defer></script>
 </body>
 </html>
