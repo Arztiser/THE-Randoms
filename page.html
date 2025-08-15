@@ -1,41 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#E82B38">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#E82B38" />
   <title>Random Page - THE Randoms</title>
+  <link rel="icon" type="image/png" href="./img/pfp.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://therandoms.pages.dev/css/styles.css" />
 </head>
 <body>
-  <p style="text-align:center; margin-top:50px;">Taking you to a random page...</p>
+  <header>
+    <div class="topnav">
+      <h1><a class="logo" href="/">THE Randoms</a></h1>
+      <span class="menu-icon" onclick="toggleMenu()">&#9776;</span>
+    </div>
+
+    <nav class="topnav-right">
+      <!-- Same accordion menu as homepage -->
+      <div class="accordion-section">
+        <button class="accordion-toggle">Jokes & Fun</button>
+        <div class="accordion-content">
+          <a href="jokes.html">Jokes</a>
+          <a href="memes.html">Memes</a>
+          <a href="nfl.html">NFL</a>
+          <a href="quizzes.html">Quizzes</a>
+        </div>
+      </div>
+      <div class="accordion-section">
+        <button class="accordion-toggle">Knowledge & Facts</button>
+        <div class="accordion-content">
+          <a href="advice.html">Advice</a>
+          <a href="facts.html">Facts</a>
+          <a href="people.html">People</a>
+          <a href="quotes.html">Quotes</a>
+        </div>
+      </div>
+      <div class="accordion-section">
+        <button class="accordion-toggle">Music & Videos</button>
+        <div class="accordion-content">
+          <a href="songs.html">Songs</a>
+          <a href="videos.html">Videos</a>
+        </div>
+      </div>
+      <div class="accordion-section">
+        <button class="accordion-toggle">Words, Letters & Numbers</button>
+        <div class="accordion-content">
+          <a href="letters.html">Letters</a>
+          <a href="numbers.html">Numbers</a>
+          <a href="words.html">Words</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="content">
+    <h1>Random Page</h1>
+    <p>Hang tight! You’re being sent to a random page...</p>
+  </main>
 
   <script>
-    // List all your site pages here
-    const pages = [
-      '/jokes.html',
-      '/memes.html',
-      '/nfl.html',
-      '/quizzes.html',
-      '/advice.html',
-      '/facts.html',
-      '/people.html',
-      '/quotes.html',
-      '/songs.html',
-      '/videos.html',
-      '/letters.html',
-      '/numbers.html',
-      '/words.html',
-      '/wouldyourather.html'
-    ];
+    function toggleMenu() {
+      const topnav = document.querySelector('.topnav');
+      const menu = document.querySelector('.topnav-right');
+      const body = document.body;
+      topnav.classList.toggle('active');
+      menu.classList.toggle('active');
+      body.classList.toggle('menu-open');
+    }
 
-    // Pick a random page
+    document.querySelectorAll('.accordion-toggle').forEach(button => {
+      button.addEventListener('click', () => {
+        const section = button.parentElement;
+        const isOpen = section.classList.contains('open');
+        document.querySelectorAll('.accordion-section').forEach(s => {
+          if (s !== section) {
+            s.classList.remove('open');
+            s.querySelector('.accordion-content').hidden = true;
+          }
+        });
+        if (!isOpen) {
+          section.classList.add('open');
+          section.querySelector('.accordion-content').hidden = false;
+        } else {
+          section.classList.remove('open');
+          section.querySelector('.accordion-content').hidden = true;
+        }
+      });
+    });
+
+    // Random redirect
+    const pages = [
+      '/jokes.html','/memes.html','/nfl.html','/quizzes.html',
+      '/advice.html','/facts.html','/people.html','/quotes.html',
+      '/songs.html','/videos.html','/letters.html','/numbers.html','/words.html','/wouldyourather.html' 
+    ];
     const randomPage = pages[Math.floor(Math.random() * pages.length)];
 
-    // Redirect after a short delay (optional)
+    // Redirect after a brief pause
     setTimeout(() => {
       window.location.href = randomPage;
-    }, 500); // 500ms gives users a little feedback
-
+    }, 700);
   </script>
+
+  <!-- Load your theme scripts if needed -->
+  <script src="holiday-theme.js" defer></script>
 </body>
 </html>
