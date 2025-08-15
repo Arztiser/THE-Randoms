@@ -221,5 +221,24 @@
     <script src="numbers.js"></script>
 
     <script src="holiday-theme.js" defer></script>
+
+<script>
+    function adjustHeaderFont() {
+  const h1 = document.querySelector('.topnav h1');
+  const maxWidth = h1.parentElement.offsetWidth - 50; // leave space for menu icon
+  h1.style.whiteSpace = 'nowrap';
+  let fontSize = 24; // starting font size in px
+
+  while (h1.scrollWidth > maxWidth && fontSize > 14) {
+    fontSize -= 1;
+    h1.style.fontSize = fontSize + 'px';
+  }
+}
+
+// Run on load
+window.addEventListener('load', adjustHeaderFont);
+// Run on resize
+window.addEventListener('resize', adjustHeaderFont);
+</script>    
 </body>
 </html>
