@@ -268,5 +268,33 @@
 
     window.onload = loadQuestion;
   </script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const topnav = document.querySelector(".topnav");
+  const menuIcon = document.querySelector(".menu-icon");
+  const body = document.body;
+  const topnavRight = document.querySelector(".topnav-right");
+
+  // Hamburger menu toggle
+  menuIcon.addEventListener("click", () => {
+    topnav.classList.toggle("active");
+    topnavRight.classList.toggle("active");
+    body.classList.toggle("menu-open");
+  });
+
+  // Accordion toggle functionality
+  document.querySelectorAll(".accordion-toggle").forEach(toggle => {
+    toggle.addEventListener("click", () => {
+      const parentSection = toggle.parentElement;
+      document.querySelectorAll(".accordion-section").forEach(section => {
+        if (section !== parentSection) section.classList.remove("open");
+      });
+      parentSection.classList.toggle("open");
+    });
+  });
+});
+</script>
+  
 </body>
 </html>
