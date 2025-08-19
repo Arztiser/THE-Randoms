@@ -21,8 +21,8 @@
       transition: transform 0.2s ease, filter 0.2s ease;
       vertical-align: middle;
       cursor: pointer;
-      width: 28px;
-      height: 28px;
+      width: 30px;
+      height: 30px;
       margin-left: 10px;
     }
     #topnav-icons {
@@ -51,9 +51,9 @@
   const savedMode = localStorage.getItem('dark-mode');
   if (savedMode === 'dark') document.body.classList.add('dark-mode');
 
-  // White Google-style SVG icons
-  const sunIcon = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" width="24"><circle fill="%23FFFFFF" cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="4" stroke="%23FFFFFF" stroke-width="2"/><line x1="12" y1="20" x2="12" y2="23" stroke="%23FFFFFF" stroke-width="2"/><line x1="4.22" y1="4.22" x2="6.36" y2="6.36" stroke="%23FFFFFF" stroke-width="2"/><line x1="17.64" y1="17.64" x2="19.78" y2="19.78" stroke="%23FFFFFF" stroke-width="2"/><line x1="1" y1="12" x2="4" y2="12" stroke="%23FFFFFF" stroke-width="2"/><line x1="20" y1="12" x2="23" y2="12" stroke="%23FFFFFF" stroke-width="2"/><line x1="4.22" y1="19.78" x2="6.36" y2="17.64" stroke="%23FFFFFF" stroke-width="2"/><line x1="17.64" y1="6.36" x2="19.78" y2="4.22" stroke="%23FFFFFF" stroke-width="2"/></svg>';
-  const moonIcon = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" width="24"><path fill="%23FFFFFF" d="M12 2a10 10 0 1010 10A10 10 0 0012 2zm0 18a8 8 0 118-8 8 8 0 01-8 8z"/></svg>';
+  // White SVG icons with fixed sun rays
+  const sunIcon = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="30" width="30"><circle fill="%23FFFFFF" cx="15" cy="15" r="6"/><line x1="15" y1="0" x2="15" y2="5" stroke="%23FFFFFF" stroke-width="2"/><line x1="15" y1="25" x2="15" y2="30" stroke="%23FFFFFF" stroke-width="2"/><line x1="0" y1="15" x2="5" y2="15" stroke="%23FFFFFF" stroke-width="2"/><line x1="25" y1="15" x2="30" y2="15" stroke="%23FFFFFF" stroke-width="2"/><line x1="4" y1="4" x2="8" y2="8" stroke="%23FFFFFF" stroke-width="2"/><line x1="22" y1="4" x2="26" y2="8" stroke="%23FFFFFF" stroke-width="2"/><line x1="4" y1="26" x2="8" y2="22" stroke="%23FFFFFF" stroke-width="2"/><line x1="22" y1="26" x2="26" y2="22" stroke="%23FFFFFF" stroke-width="2"/></svg>';
+  const moonIcon = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="30" width="30"><path fill="%23FFFFFF" d="M15 2a13 13 0 1013 13A13 13 0 0015 2zm0 24a11 11 0 1111-11 11 11 0 01-11 11z"/></svg>';
 
   const updateIcon = () => {
     darkToggle.src = document.body.classList.contains('dark-mode') ? moonIcon : sunIcon;
