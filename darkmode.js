@@ -11,7 +11,6 @@
   // Inject CSS for dark mode and icon styling
   const style = document.createElement('style');
   style.innerHTML = `
-  style.innerHTML = `
   body { transition: background-color 0.4s ease, color 0.4s ease; }
   body.dark-mode { background-color: #111 !important; color: #f2f2f2 !important; }
   body.dark-mode .topnav { background-color: #222 !important; }
