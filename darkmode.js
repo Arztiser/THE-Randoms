@@ -29,16 +29,16 @@
     #topnav-icons {
       display: flex;
       align-items: center;
-      margin-left: 24px; /* more breathing room from hamburger menu */
+      margin-left: 12px; /* closer to hamburger, not too tight */
     }
     .dark-toggle {
       font-family: 'Material Symbols Outlined';
       font-weight: normal;
       font-style: normal;
-      font-size: 28px; /* slightly larger */
-      color: #fff;
+      font-size: 24px; /* slightly smaller */
+      color: #fff; /* fully white */
       cursor: pointer;
-      margin-left: 16px;
+      margin-left: 12px;
       user-select: none;
       -webkit-user-drag: none;
       transition: transform 0.2s ease;
@@ -57,7 +57,7 @@
     document.querySelector('.topnav').appendChild(topnavIcons);
   }
 
-  // Create toggle element
+  // Create toggle element if missing
   let darkToggle = document.querySelector('.dark-toggle');
   if (!darkToggle) {
     darkToggle = document.createElement('span');
