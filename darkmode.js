@@ -11,32 +11,26 @@
   // Inject CSS for dark mode and icon styling
   const style = document.createElement('style');
   style.innerHTML = `
-  body {
-    transition: background-color 0.4s ease, color 0.4s ease;
-  }
-  body.dark-mode {
-    background-color: #111 !important;
-    color: #f2f2f2 !important;
-  }
-  body.dark-mode .topnav {
-    background-color: #222 !important;
-  }
+  body { transition: background-color 0.4s ease, color 0.4s ease; }
+  body.dark-mode { background-color: #111 !important; color: #f2f2f2 !important; }
+  body.dark-mode .topnav { background-color: #222 !important; }
   body.dark-mode .topnav h1,
   body.dark-mode .accordion-toggle,
-  body.dark-mode .accordion-content a {
-    color: #f2f2f2 !important;
-  }
+  body.dark-mode .accordion-content a { color: #f2f2f2 !important; }
+
   .topnav {
     display: flex;
-    align-items: center; /* vertically center items */
+    align-items: center;
     justify-content: space-between;
   }
+
   #topnav-icons {
     display: flex;
-    align-items: center; /* vertically center with hamburger */
-    margin-left: auto; /* hug the hamburger */
-    gap: 6px; /* space between icons */
+    align-items: center;
+    margin-left: auto;
+    gap: 6px;
   }
+
   .dark-toggle {
     font-family: 'Material Symbols Outlined';
     font-weight: normal;
@@ -44,12 +38,26 @@
     font-size: 26px;
     color: #ffffff;
     cursor: pointer;
-    margin: 0; /* remove extra spacing */
-    padding: 0; /* remove extra spacing */
-    line-height: 1; /* ensures proper vertical alignment */
+    margin: 0;
+    padding: 0;
+    line-height: 1;
     user-select: none;
     -webkit-user-drag: none;
     transition: none;
+  }
+
+  /* Mobile-specific spacing */
+  @media (max-width: 768px) {
+    #topnav-icons {
+      gap: 14px; /* move the sun icon further from hamburger */
+    }
+  }
+
+  /* Desktop / horizontal mode spacing */
+  @media (min-width: 769px) {
+    #topnav-icons {
+      gap: 6px; /* closer on desktop */
+    }
   }
 `;
   document.head.appendChild(style);
