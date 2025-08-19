@@ -19,15 +19,15 @@
       background: none;
       border: none;
       cursor: pointer;
-      padding: 8px;
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      z-index: 1000;
+      padding: 6px;
+      margin-right: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
     #darkModeToggle svg {
-      width: 28px;
-      height: 28px;
+      width: 26px;
+      height: 26px;
       fill: currentColor;
     }
   `;
@@ -46,7 +46,14 @@
   // Create button
   const toggle = document.createElement("button");
   toggle.id = "darkModeToggle";
-  document.body.appendChild(toggle);
+
+  // Find accordion menu container
+  const accordion = document.querySelector(".accordion"); // change if your menu has another class/id
+  if (accordion) {
+    accordion.parentNode.insertBefore(toggle, accordion);
+  } else {
+    document.body.appendChild(toggle); // fallback
+  }
 
   // Apply saved theme
   const savedTheme = localStorage.getItem("theme");
