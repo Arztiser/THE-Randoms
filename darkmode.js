@@ -29,13 +29,13 @@
     #topnav-icons {
       display: flex;
       align-items: center;
-      margin-left: 6px; /* much closer to hamburger */
+      margin-left: 3px; /* much closer to hamburger */
     }
     .dark-toggle {
       font-family: 'Material Symbols Outlined';
       font-weight: normal;
       font-style: normal;
-      font-size: 22px; /* slightly smaller */
+      font-size: 26px; /* slightly smaller */
       color: #ffffff; /* fully white */
       cursor: pointer;
       margin: 0;
