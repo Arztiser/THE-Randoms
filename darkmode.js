@@ -18,13 +18,13 @@
   body.dark-mode .accordion-toggle,
   body.dark-mode .accordion-content a { color: #f2f2f2 !important; }
 
-  .topnav { display: flex; align-items: center; justify-content: space-between; }
+  .topnav { display: flex; align-items: center; justify-content: flex-start; position: relative; }
 
   #topnav-icons {
     display: flex;
     align-items: center;
-    margin-left: auto;
-    gap: 12px; /* default for desktop */
+    position: absolute;
+    right: 16px; /* distance from right edge */
   }
 
   .dark-toggle {
@@ -34,17 +34,14 @@
     font-size: 26px;
     color: #ffffff;
     cursor: pointer;
-    margin: 0;
-    padding: 0;
-    line-height: 1;
+    margin-left: 24px; /* pinky spacing from hamburger menu */
     user-select: none;
     -webkit-user-drag: none;
-    transition: none;
+    line-height: 1;
   }
 
-  /* Mobile-specific spacing: bigger gap for 'pinky space' */
-  @media (max-width: 768px) {
-    #topnav-icons { gap: 28px; }
+  @media (min-width: 769px) {
+    .dark-toggle { margin-left: 12px; } /* closer on desktop */
   }
 `;
   document.head.appendChild(style);
