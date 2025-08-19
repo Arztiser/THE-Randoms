@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#E82B38" />
+  <meta name="description" content="THE Randoms Is A Website That Lets You View And Do Random Things Such As Random Quizzes, Facts, Quotes, Numbers, And Letters." />
+  <meta property="og:image" content="https://therandoms.org/img/pofp.png" />
+  <title>THE Randoms</title>
+  <link rel="icon" type="image/png" href="./img/pfp.png" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="apple-touch-icon" sizes="192x192" href="/img/prfp.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet" />
+
+  <style>
+    /* Default theme colors as CSS variables */
+    body {
+      --theme-bg-color: #333;
+      --theme-topnav-color: #f2f2f2;
+      --theme-accent-color: #E82B38; /* for clickable section */
+      font-family: 'Jersey 10', sans-serif;
+      font-size: 30px;
+      margin: 0;
+      padding: 0;
+      background-color: #fff;
+      color: #000;
+    }
+
+    .topnav {
+      overflow: hidden;
+      background-color: var(--theme-bg-color);
+      color: var(--theme-topnav-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      height: 60px;
+    }
+
+    .topnav h1 {
+      margin: 0;
+      font-size: 24px;
+      color: var(--theme-topnav-color);
+    }
+
+    .menu-icon {
+      font-size: 30px;
+      color: var(--theme-topnav-color);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .topnav-right {
+      display: none;
+      position: fixed;
+      top: 60px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--theme-bg-color);
+      overflow-y: auto;
+      flex-direction: column;
+      z-index: 999;
+      transition: opacity 0.3s ease;
+      opacity: 0;
+      pointer-events: none;
+      padding-bottom: 60px;
+      box-sizing: border-box;
+    }
+
+    .topnav-right.active {
+      display: flex;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    body.menu-open {
+      overflow: hidden;
+    }
+
+    .accordion-section {
+      display: flex;
+      flex-direction: column;
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .accordion-toggle {
+      background: none;
+      color: var(--theme-topnav-color);
+      padding: 14px;
+      text-align: left;
+      font-size: 24px;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      width: 100%;
+      font-family: 'Jersey 10', sans-serif;
+      transition: background-color 0.3s ease;
+    }
+
+    .accordion-toggle:hover,
+    .accordion-toggle:focus {
+      background-color: rgba(255, 255, 255, 0.1);
+      outline: none;
+    }
+
+    .accordion-content {
+      display: none;
+      flex-direction: column;
+      background-color: var(--theme-bg-color);
+      overflow-y: auto;
+      max-height: 50vh;
+    }
+
+    .accordion-content a {
+      padding-left: 28px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      font-size: 20px;
+      color: var(--theme-topnav-color);
+      text-decoration: none;
+    }
+
+    .accordion-content a:hover,
+    .accordion-content a:focus {
+      background-color: rgba(255, 255, 255, 0.15);
+      outline: none;
+    }
+
+    .accordion-section.open .accordion-content {
+      display: flex;
+    }
+
+    .clickable-section {
+      background-color: var(--theme-accent-color);
+      color: white;
+      font-weight: 700;
+      font-size: 24px;
+      padding: 14px;
+      cursor: pointer;
+      user-select: none;
+      border-top: 1px solid #b22731;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.3s ease;
+      margin-top: 4px;
+
+      position: sticky;
+      bottom: 0;
+      z-index: 10;
+    }
+
+    .clickable-section:hover,
+    .clickable-section:focus {
+      background-color: #c52430;
+      outline: none;
+    }
+
+    .container {
+      margin: 20px;
+    }
+
+    .content {
+      text-align: center;
+    }
+
+    .content h1 {
+      margin-bottom: 20px;
+    }
+
+    .content p {
+      line-height: 1.5;
+    }
+
+    .logo {
+      color: var(--theme-topnav-color);
+      text-decoration: none;
+    }
+
+    .logo:hover {
+      text-decoration: none;
+    }
+
+    /* Mobile padding for readability */
+@media (max-width: 768px) {
+  .container {
+    margin: 20px;
+    padding-left: 16px;
+    padding-right: 16px;
+    box-sizing: border-box;
+  }
+
+  .content p, .content h1 {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="topnav">
+      <h1><a class="logo" href="#" id="homepage-logo">THE Randoms</a></h1>
+      <span class="menu-icon" onclick="toggleMenu()" tabindex="0" role="button" aria-label="Toggle menu">&#9776;</span>
+    </div>
+
+    <nav class="topnav-right" role="navigation" aria-label="Main Menu">
+      <div class="accordion-section">
+        <button class="accordion-toggle" aria-expanded="false">Jokes & Fun</button>
+        <div class="accordion-content" hidden>
+          <a href="jokes.html">Jokes</a>
+          <a href="memes.html">Memes</a>
+          <a href="nfl.html">NFL</a>
+          <a href="quizzes.html">Quizzes</a>
+          <a href="wouldyourather.html">Would You Rather</a>
+        </div>
+      </div>
+
+      <div class="accordion-section">
+        <button class="accordion-toggle" aria-expanded="false">Knowledge & Facts</button>
+        <div class="accordion-content" hidden>
+          <a href="advice.html">Advice</a>
+          <a href="facts.html">Facts</a>
+          <a href="pages.html">Pages</a>
+          <a href="people.html">People</a>
+          <a href="quotes.html">Quotes</a>
+        </div>
+      </div>
+
+      <div class="accordion-section">
+        <button class="accordion-toggle" aria-expanded="false">Music & Videos</button>
+        <div class="accordion-content" hidden>
+          <a href="songs.html">Songs</a>
+          <a href="videos.html">Videos</a>
+        </div>
+      </div>
+
+      <div class="accordion-section">
+        <button class="accordion-toggle" aria-expanded="false">Words, Letters & Numbers</button>
+        <div class="accordion-content" hidden>
+          <a href="letters.html">Letters</a>
+          <a href="numbers.html">Numbers</a>
+          <a href="words.html">Words</a>
+        </div>
+      </div>
+
+      <div
+        class="clickable-section"
+        tabindex="0"
+        role="link"
+        title="Go to Randoms Of The Day"
+      >
+        Randoms Of The Day
+      </div>
+    </nav>
+  </header>
+
+  <main class="content">
+    <h1>Home</h1>
+    <p>Welcome to THE Randoms, a website full of random things to explore and enjoy. If you found this site randomly, welcome! Now come along on this wacky, fun, and random ride through THE Randoms of the world and the internet.</p>
+  </main>
+
+  <script>
+    function toggleMenu() {
+      const topnav = document.querySelector('.topnav');
+      const menu = document.querySelector('.topnav-right');
+      const body = document.body;
+
+      topnav.classList.toggle('active');
+      menu.classList.toggle('active');
+      body.classList.toggle('menu-open');
+    }
+
+    document.querySelectorAll('.accordion-toggle').forEach(button => {
+      button.addEventListener('click', () => {
+        const section = button.parentElement;
+        const isOpen = section.classList.contains('open');
+
+        document.querySelectorAll('.accordion-section').forEach(s => {
+          if (s !== section) {
+            s.classList.remove('open');
+            s.querySelector('.accordion-toggle').setAttribute('aria-expanded', 'false');
+            s.querySelector('.accordion-content').hidden = true;
+          }
+        });
+
+        if (!isOpen) {
+          section.classList.add('open');
+          button.setAttribute('aria-expanded', 'true');
+          section.querySelector('.accordion-content').hidden = false;
+        } else {
+          section.classList.remove('open');
+          button.setAttribute('aria-expanded', 'false');
+          section.querySelector('.accordion-content').hidden = true;
+        }
+      });
+    });
+
+    const clickableSection = document.querySelector('.clickable-section');
+    clickableSection.addEventListener('click', () => {
+      window.location.href = 'randomsoftheday.html';
+    });
+
+    clickableSection.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        clickableSection.click();
+      }
+    });
+
+    document.querySelector('.menu-icon').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleMenu();
+      }
+    });
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then(reg => console.log('Service Worker registered:', reg.scope))
+        .catch(err => console.error('Service Worker registration failed:', err));
+    }
+  </script>
+
+  <!-- Just this one line to load your holiday-theme.js -->
+  <script src="holiday-theme.js" defer></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "name": "THE Randoms",
+        "url": "https://therandoms.pages.dev/",
+        "sameAs": [
+          "https://x.com/Arztiser",
+          "https://www.youtube.com/@ArztiserMusic",
+          "https://open.spotify.com/artist/5iOQLKlc3taptDhisMcPX7?si=-kvaqr4mRSqSB3NthUu2cA",
+          "https://link.deezer.com/s/30rg4dq51eMRZWcy6SzLU",
+          "https://music.amazon.com/artists/B0DF356TRC?ref=dm_sh_0vUueu3N8pJboqKVKQJlQIjsh"
+        ],
+        "description": "THE Randoms Offers Random Facts, Quizzes, And Interactive Fun — All In One Random Place.",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://therandoms.pages.dev/img/pfp.png"
+        }
+      },
+      {
+        "@type": "WebSite",
+        "name": "THE Randoms",
+        "url": "https://therandoms.pages.dev",
+        "description": "THE Randoms Offers Random Facts, Quizzes, And Interactive Fun — All In One Random Place."
+      }
+    ]
+  }
+  </script>
+
+  <script src="rainbow-flash.js" defer></script>
+  
+</body>
+</html>
