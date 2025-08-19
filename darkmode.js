@@ -51,9 +51,9 @@
   const savedMode = localStorage.getItem('dark-mode');
   if (savedMode === 'dark') document.body.classList.add('dark-mode');
 
-  // White SVG icons with fixed sun rays
-  const sunIcon = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="30" width="30"><circle fill="%23FFFFFF" cx="15" cy="15" r="6"/><line x1="15" y1="0" x2="15" y2="5" stroke="%23FFFFFF" stroke-width="2"/><line x1="15" y1="25" x2="15" y2="30" stroke="%23FFFFFF" stroke-width="2"/><line x1="0" y1="15" x2="5" y2="15" stroke="%23FFFFFF" stroke-width="2"/><line x1="25" y1="15" x2="30" y2="15" stroke="%23FFFFFF" stroke-width="2"/><line x1="4" y1="4" x2="8" y2="8" stroke="%23FFFFFF" stroke-width="2"/><line x1="22" y1="4" x2="26" y2="8" stroke="%23FFFFFF" stroke-width="2"/><line x1="4" y1="26" x2="8" y2="22" stroke="%23FFFFFF" stroke-width="2"/><line x1="22" y1="26" x2="26" y2="22" stroke="%23FFFFFF" stroke-width="2"/></svg>';
-  const moonIcon = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="30" width="30"><path fill="%23FFFFFF" d="M15 2a13 13 0 1013 13A13 13 0 0015 2zm0 24a11 11 0 1111-11 11 11 0 01-11 11z"/></svg>';
+  // Google wb_sunny SVG (white) & simple moon SVG
+  const sunIcon = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="%23FFFFFF" height="30" width="30" viewBox="0 0 24 24"><path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.8 1.42-1.42zm10.45-1.79l-1.79 1.79 1.42 1.42 1.79-1.8-1.42-1.41zm-4.21-.05h-2v3h2v-3zm7 7h-3v2h3v-2zm-14 0H3v2h3v-2zm12.36 7.36l1.79 1.79 1.41-1.41-1.79-1.79-1.41 1.41zm-10.45 1.79l1.79-1.79-1.42-1.42-1.79 1.79 1.42 1.42zm4.21.05h2v-3h-2v3zm-2-7a5 5 0 115-5 5 5 0 01-5 5z"/></svg>';
+  const moonIcon = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="%23FFFFFF" height="30" width="30" viewBox="0 0 24 24"><path d="M12 2a9.931 9.931 0 00-7.071 2.929 10 10 0 0014.142 14.142A9.931 9.931 0 0012 2z"/></svg>';
 
   const updateIcon = () => {
     darkToggle.src = document.body.classList.contains('dark-mode') ? moonIcon : sunIcon;
