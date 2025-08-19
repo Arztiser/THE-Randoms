@@ -8,9 +8,6 @@
       background: #121212 !important;
       color: #f5f5f5 !important;
     }
-    body.dark-mode a {
-      color: #4dabf7 !important;
-    }
     body.dark-mode img.icon {
       filter: invert(1) brightness(1.2) !important;
     }
@@ -20,7 +17,7 @@
       border: none;
       cursor: pointer;
       padding: 6px;
-      margin-right: 8px;
+      margin-left: auto;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -33,7 +30,7 @@
   `;
   document.head.appendChild(style);
 
-  // Sun & Moon icons (SVG)
+  // Sun & Moon icons
   const moonSVG = `
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
       <path d="M12 2a9.99 9.99 0 0 0-9.95 9.05A7 7 0 0 0 12 22a9.99 9.99 0 0 0 9.95-9.05A7 7 0 0 0 12 2z"/>
@@ -47,10 +44,10 @@
   const toggle = document.createElement("button");
   toggle.id = "darkModeToggle";
 
-  // Find accordion menu container
-  const accordion = document.querySelector(".accordion"); // change if your menu has another class/id
-  if (accordion) {
-    accordion.parentNode.insertBefore(toggle, accordion);
+  // Insert inside topnav
+  const topnav = document.querySelector(".topnav");
+  if (topnav) {
+    topnav.appendChild(toggle);
   } else {
     document.body.appendChild(toggle); // fallback
   }
