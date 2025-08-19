@@ -1,75 +1,57 @@
 (() => {
+  if (!document.querySelector('.topnav')) return; // Only run if topnav exists
   const body = document.body;
+  const topnav = document.querySelector('.topnav');
 
   // Inject dark mode CSS
-  const style = document.createElement("style");
-  style.innerHTML = `
+  const style = document.createElement('style');
+  style.textContent = `
     body.dark-mode {
-      background: #121212 !important;
-      color: #f5f5f5 !important;
+      background-color: #111;
+      color: #f2f2f2;
     }
-    body.dark-mode img.icon {
-      filter: invert(1) brightness(1.2) !important;
+    body.dark-mode .topnav {
+      background-color: #222;
+      color: #f2f2f2;
     }
-
-    #darkModeToggle {
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 6px;
-      margin-left: auto;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-    #darkModeToggle svg {
-      width: 26px;
-      height: 26px;
-      fill: currentColor;
+    body.dark-mode .topnav a,
+    body.dark-mode .accordion-toggle,
+    body.dark-mode .accordion-content a {
+      color: #f2f2f2;
     }
   `;
   document.head.appendChild(style);
 
-  // Sun & Moon icons
-  const moonSVG = `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-      <path d="M12 2a9.99 9.99 0 0 0-9.95 9.05A7 7 0 0 0 12 22a9.99 9.99 0 0 0 9.95-9.05A7 7 0 0 0 12 2z"/>
-    </svg>`;
-  const sunSVG = `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-      <path d="M6.76 4.84l-1.8-1.79L3.17 4.83l1.79 1.79 1.8-1.78zM1 13h3v-2H1v2zm10-9h2V1h-2v3zm7.66 2.04l1.79-1.79-1.41-1.41-1.79 1.79 1.41 1.41zM20 11v2h3v-2h-3zm-9 9h2v-3h-2v3zm4.24-2.84l1.8 1.79 1.41-1.41-1.79-1.79-1.42 1.41zM6.76 19.16l-1.8 1.79 1.41 1.41 1.8-1.79-1.41-1.41zM12 6a6 6 0 1 1 0 12A6 6 0 0 1 12 6z"/>
-    </svg>`;
+  // Create toggle container
+  const toggle = document.createElement('div');
+  toggle.style.cursor = 'pointer';
+  toggle.style.fontSize = '24px';
+  toggle.style.marginLeft = 'auto';
+  toggle.style.display = 'flex';
+  toggle.style.alignItems = 'center';
+  toggle.style.justifyContent = 'center';
+  toggle.style.width = '40px';
+  toggle.style.height = '40px';
+  toggle.style.userSelect = 'none';
 
-  // Create button
-  const toggle = document.createElement("button");
-  toggle.id = "darkModeToggle";
+  // SVG icons
+  const sunSVG = `<svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 0 24 24" fill="currentColor"><path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.8zM1 11h3v2H1zm10-10h2v3h-2zm9.66 4.05l-1.41-1.41-1.8 1.79 1.41 1.41zM17.24 19.16l1.8 1.79 1.41-1.41-1.79-1.8zM20 11h3v2h-3zm-8 8h2v3h-2zm-6.36-2.05l-1.41 1.41 1.8 1.79 1.41-1.41z"/></svg>`;
+  const moonSVG = `<svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12.43 2.3a9 9 0 0 0-1.01 17.88 7 7 0 0 1 7-7 7.01 7.01 0 0 1-5.99-10.88z"/></svg>`;
 
-  // Insert inside topnav
-  const topnav = document.querySelector(".topnav");
-  if (topnav) {
-    topnav.appendChild(toggle);
-  } else {
-    document.body.appendChild(toggle); // fallback
-  }
+  toggle.innerHTML = sunSVG;
+  topnav.insertBefore(toggle, topnav.querySelector('.menu-icon')); // Insert before menu icon
 
-  // Apply saved theme
-  const savedTheme = localStorage.getItem("theme");
-  if (savedTheme === "dark") {
-    body.classList.add("dark-mode");
-    toggle.innerHTML = sunSVG;
-  } else {
+  // Load saved mode
+  let darkMode = localStorage.getItem('darkMode') === 'true';
+  if (darkMode) {
+    body.classList.add('dark-mode');
     toggle.innerHTML = moonSVG;
   }
 
-  // Toggle theme
-  toggle.addEventListener("click", () => {
-    body.classList.toggle("dark-mode");
-    if (body.classList.contains("dark-mode")) {
-      toggle.innerHTML = sunSVG;
-      localStorage.setItem("theme", "dark");
-    } else {
-      toggle.innerHTML = moonSVG;
-      localStorage.setItem("theme", "light");
-    }
+  toggle.addEventListener('click', () => {
+    darkMode = !darkMode;
+    body.classList.toggle('dark-mode', darkMode);
+    toggle.innerHTML = darkMode ? moonSVG : sunSVG;
+    localStorage.setItem('darkMode', darkMode);
   });
 })();
