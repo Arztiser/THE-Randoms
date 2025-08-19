@@ -29,22 +29,19 @@
     #topnav-icons {
       display: flex;
       align-items: center;
-      margin-left: 12px; /* closer to hamburger, not too tight */
+      margin-left: 6px; /* much closer to hamburger */
     }
     .dark-toggle {
       font-family: 'Material Symbols Outlined';
       font-weight: normal;
       font-style: normal;
-      font-size: 24px; /* slightly smaller */
-      color: #fff; /* fully white */
+      font-size: 22px; /* slightly smaller */
+      color: #ffffff; /* fully white */
       cursor: pointer;
-      margin-left: 12px;
+      margin: 0;
       user-select: none;
       -webkit-user-drag: none;
-      transition: transform 0.2s ease;
-    }
-    .dark-toggle:hover {
-      transform: scale(1.2);
+      transition: none; /* remove scaling effect */
     }
   `;
   document.head.appendChild(style);
