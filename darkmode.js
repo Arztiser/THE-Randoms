@@ -11,6 +11,7 @@
   // Inject CSS for dark mode and icon styling
   const style = document.createElement('style');
   style.innerHTML = `
+  style.innerHTML = `
   body { transition: background-color 0.4s ease, color 0.4s ease; }
   body.dark-mode { background-color: #111 !important; color: #f2f2f2 !important; }
   body.dark-mode .topnav { background-color: #222 !important; }
@@ -18,13 +19,17 @@
   body.dark-mode .accordion-toggle,
   body.dark-mode .accordion-content a { color: #f2f2f2 !important; }
 
-  .topnav { display: flex; align-items: center; justify-content: flex-start; position: relative; }
+  .topnav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* logo left, icons right */
+    padding: 0 16px;
+  }
 
   #topnav-icons {
     display: flex;
     align-items: center;
-    position: absolute;
-    right: 16px; /* distance from right edge */
+    gap: 16px; /* space between hamburger and dark mode icons */
   }
 
   .dark-toggle {
@@ -34,14 +39,13 @@
     font-size: 26px;
     color: #ffffff;
     cursor: pointer;
-    margin-left: 24px; /* pinky spacing from hamburger menu */
     user-select: none;
     -webkit-user-drag: none;
     line-height: 1;
   }
 
-  @media (min-width: 769px) {
-    .dark-toggle { margin-left: 12px; } /* closer on desktop */
+  @media (max-width: 768px) {
+    #topnav-icons { gap: 12px; } /* slightly smaller spacing on mobile */
   }
 `;
   document.head.appendChild(style);
