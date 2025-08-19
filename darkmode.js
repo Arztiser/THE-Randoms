@@ -18,17 +18,13 @@
   body.dark-mode .accordion-toggle,
   body.dark-mode .accordion-content a { color: #f2f2f2 !important; }
 
-  .topnav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
+  .topnav { display: flex; align-items: center; justify-content: space-between; }
 
   #topnav-icons {
     display: flex;
     align-items: center;
     margin-left: auto;
-    gap: 6px;
+    gap: 12px; /* default for desktop */
   }
 
   .dark-toggle {
@@ -46,18 +42,9 @@
     transition: none;
   }
 
-  /* Mobile-specific spacing */
+  /* Mobile-specific spacing: bigger gap for 'pinky space' */
   @media (max-width: 768px) {
-    #topnav-icons {
-      gap: 56px; /* move the sun icon further from hamburger */
-    }
-  }
-
-  /* Desktop / horizontal mode spacing */
-  @media (min-width: 769px) {
-    #topnav-icons {
-      gap: 24px; /* closer on desktop */
-    }
+    #topnav-icons { gap: 28px; }
   }
 `;
   document.head.appendChild(style);
