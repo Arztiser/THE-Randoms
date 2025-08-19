@@ -12,18 +12,27 @@ logo.addEventListener('click', () => {
     clickCount = 0;
     lastFlash = now;
 
-    const overlay = document.createElement('div');
-    overlay.style.position = 'fixed';
-    overlay.style.top = '0';
-    overlay.style.left = '0';
-    overlay.style.width = '100%';
-    overlay.style.height = '100%';
-    overlay.style.background = 'repeating-linear-gradient(90deg, red, orange 10%, yellow 20%, green 30%, blue 40%, indigo 50%, violet 60%)';
-    overlay.style.zIndex = '9999';
-    document.body.appendChild(overlay);
+    // Apply rainbow style
+    logo.style.background = 'linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet)';
+    logo.style.webkitBackgroundClip = 'text';
+    logo.style.webkitTextFillColor = 'transparent';
+    logo.style.fontWeight = '900'; // optional: make it bolder for brightness
+    logo.style.transition = 'background 0.3s ease-in-out';
 
+    // Animate a rainbow shift
+    let step = 0;
+    const interval = setInterval(() => {
+      step += 20;
+      logo.style.background = `linear-gradient(${step}deg, red, orange, yellow, green, blue, indigo, violet)`;
+    }, 50);
+
+    // Stop animation after 1 second
     setTimeout(() => {
-      document.body.removeChild(overlay);
-    }, 1000); // flash for 1 second
+      clearInterval(interval);
+      logo.style.background = '';
+      logo.style.webkitBackgroundClip = '';
+      logo.style.webkitTextFillColor = '';
+      logo.style.fontWeight = '';
+    }, 1000);
   }
 });
