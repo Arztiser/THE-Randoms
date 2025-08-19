@@ -5,14 +5,14 @@ const logo = document.getElementById('homepage-logo');
 
 logo.addEventListener('click', () => {
   const now = Date.now();
-  if (now - lastFlash < 60000) return; // 1-minute cooldown
+  if (now - lastFlash < 60 * 60 * 1000) return; // 1-hour cooldown
   clickCount++;
 
   if (clickCount >= 10) {
     clickCount = 0;
     lastFlash = now;
 
-    // Create a style element for rainbow animation if it doesn't exist
+    // Create style element for rainbow animation if it doesn't exist
     if (!document.getElementById('rainbow-flash-style')) {
       const style = document.createElement('style');
       style.id = 'rainbow-flash-style';
@@ -28,7 +28,7 @@ logo.addEventListener('click', () => {
           100% { color: #FF0000; }
         }
         .rainbow-flash {
-          animation: rainbowFlash 1s linear;
+          animation: rainbowFlash 5s linear;
           font-weight: 900; /* extra bold for brightness */
         }
       `;
@@ -38,7 +38,7 @@ logo.addEventListener('click', () => {
     // Add class to trigger animation
     logo.classList.add('rainbow-flash');
 
-    // Remove class after 1 second
+    // Remove class after 5 seconds
     setTimeout(() => {
       logo.classList.remove('rainbow-flash');
     }, 5000);
