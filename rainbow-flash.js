@@ -1,46 +1,29 @@
-let clickCount = 0;
-let lastFlash = 0;
+// rainbow-flash.js
+(() => {
+  const logo = document.querySelector('.logo');
+  const content = document.querySelector('.content');
+  const COOLDOWN = 60 * 60 * 1000; // 1 hour in ms
+  const DURATION = 5000; // 5 seconds of rainbow
 
-const logo = document.getElementById('homepage-logo');
+  let lastTriggered = 0;
 
-logo.addEventListener('click', () => {
-  const now = Date.now();
-  if (now - lastFlash < 60 * 60 * 1000) return; // 1-hour cooldown
-  clickCount++;
+  logo.addEventListener('click', () => {
+    const now = Date.now();
+    if (now - lastTriggered < COOLDOWN) return;
+    lastTriggered = now;
 
-  if (clickCount >= 10) {
-    clickCount = 0;
-    lastFlash = now;
+    // Apply rainbow gradient
+    content.style.background = 'none';
+    content.style.color = 'transparent';
+    content.style.backgroundImage = 'linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet)';
+    content.style.backgroundClip = 'text';
+    content.style.webkitBackgroundClip = 'text';
+    content.style.transition = `background-image ${DURATION}ms ease, color ${DURATION}ms ease`;
 
-    // Create style element for rainbow animation if it doesn't exist
-    if (!document.getElementById('rainbow-flash-style')) {
-      const style = document.createElement('style');
-      style.id = 'rainbow-flash-style';
-      style.innerHTML = `
-        @keyframes rainbowFlash {
-          0% { color: #FF0000; }
-          14% { color: #FF7F00; }
-          28% { color: #FFFF00; }
-          42% { color: #00FF00; }
-          57% { color: #0000FF; }
-          71% { color: #4B0082; }
-          85% { color: #8F00FF; }
-          100% { color: #FF0000; }
-        }
-        .rainbow-flash {
-          animation: rainbowFlash 5s linear;
-          font-weight: 900; /* extra bold for brightness */
-        }
-      `;
-      document.head.appendChild(style);
-    }
-
-    // Add class to trigger animation
-    logo.classList.add('rainbow-flash');
-
-    // Remove class after 5 seconds
+    // Fade out after DURATION
     setTimeout(() => {
-      logo.classList.remove('rainbow-flash');
-    }, 5000);
-  }
-});
+      content.style.color = '#000'; // or whatever your default text color is
+      content.style.backgroundImage = 'none';
+    }, DURATION);
+  });
+})();
