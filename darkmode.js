@@ -1,74 +1,52 @@
 (() => {
-  // Inject CSS for dark mode and transitions
-  const style = document.createElement('style');
-  style.innerHTML = `
-    body {
-      transition: background-color 0.4s ease, color 0.4s ease;
-    }
-    body.dark-mode {
-      background-color: #111 !important;
-      color: #f2f2f2 !important;
-    }
-    body.dark-mode .topnav {
-      background-color: #222 !important;
-    }
-    body.dark-mode .topnav h1,
-    body.dark-mode .accordion-toggle,
-    body.dark-mode .accordion-content a {
-      color: #f2f2f2 !important;
-    }
-    #topnav-icons img {
-      transition: transform 0.2s ease, filter 0.2s ease;
-      vertical-align: middle;
-      cursor: pointer;
-      width: 28px;
-      height: 28px;
-      margin-right: 10px;
-    }
-    #topnav-icons {
-      display: flex;
-      align-items: center;
-      margin-left: auto;
-    }
-  `;
-  document.head.appendChild(style);
+  // Only run on index.html for the toggle injection
+  const isHomepage = location.pathname.endsWith('/') || location.pathname.endsWith('index.html');
 
-  // Inject the container in topnav if it doesn't exist
-  let topnavIcons = document.getElementById('topnav-icons');
-  if (!topnavIcons) {
-    topnavIcons = document.createElement('div');
-    topnavIcons.id = 'topnav-icons';
+  // Create dark mode toggle
+  const darkToggle = document.createElement('img');
+  darkToggle.id = 'dark-mode-toggle';
+  darkToggle.alt = 'Dark mode toggle';
+  darkToggle.style.cursor = 'pointer';
+  darkToggle.style.width = '28px';
+  darkToggle.style.height = '28px';
+  darkToggle.style.marginRight = '12px';
+  darkToggle.style.verticalAlign = 'middle';
+  darkToggle.style.transition = 'opacity 0.3s';
+
+  // Append to topnav only on homepage
+  if (isHomepage) {
     const topnav = document.querySelector('.topnav');
-    topnav.appendChild(topnavIcons);
+    topnav.insertBefore(darkToggle, topnav.querySelector('.menu-icon'));
   }
 
-  // Create toggle icon
-  const darkToggle = document.createElement('img');
-  darkToggle.alt = 'Dark Mode';
-  topnavIcons.appendChild(darkToggle);
-
-  // Load saved mode
-  const savedMode = localStorage.getItem('dark-mode');
-  if (savedMode === 'dark') document.body.classList.add('dark-mode');
-
-  const updateIcon = () => {
-    darkToggle.src = document.body.classList.contains('dark-mode')
-      ? 'https://upload.wikimedia.org/wikipedia/commons/8/8c/OOjs_UI_icon_moon.svg'
-      : 'https://upload.wikimedia.org/wikipedia/commons/3/3c/OOjs_UI_icon_sun.svg';
+  // Apply dark mode function
+  const applyDarkMode = (on) => {
+    const body = document.body;
+    if (on) {
+      body.classList.add('dark-mode');
+      body.style.backgroundColor = '#222';
+      body.style.color = '#f2f2f2';
+      document.querySelectorAll('.topnav, .topnav-right, .accordion-toggle, .accordion-content a, .clickable-section')
+        .forEach(el => el.style.color = '#f2f2f2');
+      if (darkToggle) darkToggle.src = 'https://fonts.gstatic.com/s/i/materialicons/nightlight_round/v12/24px.svg';
+    } else {
+      body.classList.remove('dark-mode');
+      body.style.backgroundColor = '#fff';
+      body.style.color = '#000';
+      document.querySelectorAll('.topnav, .topnav-right, .accordion-toggle, .accordion-content a, .clickable-section')
+        .forEach(el => el.style.color = el.classList.contains('clickable-section') ? 'white' : '#333');
+      if (darkToggle) darkToggle.src = 'https://fonts.gstatic.com/s/i/materialicons/sunny/v13/24px.svg';
+    }
   };
 
-  const toggleMode = () => {
-    document.body.classList.toggle('dark-mode');
-    localStorage.setItem('dark-mode', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
-    updateIcon();
-  };
+  // Load preference from localStorage
+  const darkPref = localStorage.getItem('dark-mode') === 'true';
+  applyDarkMode(darkPref);
 
-  darkToggle.addEventListener('click', toggleMode);
-
-  // Hover effect
-  darkToggle.addEventListener('mouseenter', () => darkToggle.style.transform = 'scale(1.2)');
-  darkToggle.addEventListener('mouseleave', () => darkToggle.style.transform = 'scale(1)');
-
-  // Initialize
-  updateIcon();
+  // Toggle dark mode on click
+  darkToggle.addEventListener('click', () => {
+    const isDark = document.body.classList.contains('dark-mode');
+    applyDarkMode(!isDark);
+    localStorage.setItem('dark-mode', !isDark);
+  });
 })();
