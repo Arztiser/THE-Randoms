@@ -1,61 +1,50 @@
-// rainbow-flash.js
 (() => {
   const logo = document.querySelector('.logo');
-  const CLICK_THRESHOLD = 10;
-  const EFFECT_DURATION = 5000; // 5 seconds
+  const CLICK_THRESHOLD = 10; // clicks needed
   const COOLDOWN = 60 * 60 * 1000; // 1 hour
+  const DURATION = 5000; // 5 seconds
+
   let clickCount = 0;
 
-  const rainbowColors = [
-    '#FF0000', '#FF7F00', '#FFFF00', '#00FF00',
-    '#0000FF', '#4B0082', '#8B00FF'
-  ];
-
-  function animateRainbow(element) {
-    let start = null;
-    const text = element.textContent;
-    const gradientSteps = rainbowColors.length;
-    
-    function step(timestamp) {
-      if (!start) start = timestamp;
-      const elapsed = timestamp - start;
-      const percent = (elapsed / EFFECT_DURATION) % 1; // cycle across duration
-
-      let gradientStr = 'linear-gradient(to right, ';
-      for (let i = 0; i < gradientSteps; i++) {
-        const colorIndex = (i + Math.floor(percent * gradientSteps)) % gradientSteps;
-        gradientStr += rainbowColors[colorIndex] + (i < gradientSteps - 1 ? ', ' : '');
-      }
-      gradientStr += ')';
-
-      element.style.background = gradientStr;
-      element.style.webkitBackgroundClip = 'text';
-      element.style.webkitTextFillColor = 'transparent';
-      element.style.display = 'inline-block';
-
-      if (elapsed < EFFECT_DURATION) {
-        requestAnimationFrame(step);
-      } else {
-        element.style.background = '';
-        element.style.webkitBackgroundClip = '';
-        element.style.webkitTextFillColor = '';
-      }
-    }
-
-    requestAnimationFrame(step);
-  }
+  // Use localStorage to persist cooldown
+  let lastTriggered = parseInt(localStorage.getItem('rainbowLast')) || 0;
 
   logo.addEventListener('click', () => {
-    const lastTime = localStorage.getItem('rainbowLast') || 0;
+    clickCount++;
     const now = Date.now();
 
-    if (now - lastTime < COOLDOWN) return; // still on cooldown
+    if (clickCount < CLICK_THRESHOLD) return;
+    if (now - lastTriggered < COOLDOWN) return; // still on cooldown
 
-    clickCount++;
-    if (clickCount >= CLICK_THRESHOLD) {
-      localStorage.setItem('rainbowLast', now);
-      clickCount = 0;
-      animateRainbow(logo);
-    }
+    clickCount = 0;
+    lastTriggered = now;
+    localStorage.setItem('rainbowLast', lastTriggered);
+
+    // Apply rainbow gradient to logo
+    logo.style.background = 'linear-gradient(270deg, red, orange, yellow, green, blue, indigo, violet, red)';
+    logo.style.backgroundSize = '600% 100%';
+    logo.style.color = 'transparent';
+    logo.style.backgroundClip = 'text';
+    logo.style.webkitBackgroundClip = 'text';
+
+    let start = null;
+    const animate = (timestamp) => {
+      if (!start) start = timestamp;
+      const elapsed = timestamp - start;
+      const progress = elapsed / DURATION;
+      logo.style.backgroundPosition = `${progress * 200}% 0`; // slow smooth movement
+
+      if (elapsed < DURATION) {
+        requestAnimationFrame(animate);
+      } else {
+        // Reset logo to original style
+        logo.style.color = '';
+        logo.style.background = 'none';
+        logo.style.backgroundClip = '';
+        logo.style.webkitBackgroundClip = '';
+      }
+    };
+
+    requestAnimationFrame(animate);
   });
 })();
