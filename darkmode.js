@@ -29,7 +29,7 @@
     #topnav-icons {
       display: flex;
       align-items: center;
-      margin-left: 1px; /* much closer to hamburger */
+      margin-left: 10px; /* much closer to hamburger */
     }
     .dark-toggle {
       font-family: 'Material Symbols Outlined';
