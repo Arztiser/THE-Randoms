@@ -13,11 +13,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet" />
 
   <style>
-    /* Default theme colors as CSS variables */
     body {
       --theme-bg-color: #333;
       --theme-topnav-color: #f2f2f2;
-      --theme-accent-color: #E82B38; /* for clickable section */
+      --theme-accent-color: #E82B38;
       font-family: 'Jersey 10', sans-serif;
       font-size: 30px;
       margin: 0;
@@ -146,7 +145,6 @@
       justify-content: center;
       transition: background-color 0.3s ease;
       margin-top: 4px;
-
       position: sticky;
       bottom: 0;
       z-index: 10;
@@ -183,20 +181,19 @@
       text-decoration: none;
     }
 
-    /* Mobile padding for readability */
-@media (max-width: 768px) {
-  .container {
-    margin: 20px;
-    padding-left: 16px;
-    padding-right: 16px;
-    box-sizing: border-box;
-  }
+    @media (max-width: 768px) {
+      .container {
+        margin: 20px;
+        padding-left: 16px;
+        padding-right: 16px;
+        box-sizing: border-box;
+      }
 
-  .content p, .content h1 {
-    padding-left: 8px;
-    padding-right: 8px;
-  }
-}
+      .content p, .content h1 {
+        padding-left: 8px;
+        padding-right: 8px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -246,12 +243,7 @@
         </div>
       </div>
 
-      <div
-        class="clickable-section"
-        tabindex="0"
-        role="link"
-        title="Go to Randoms Of The Day"
-      >
+      <div class="clickable-section" tabindex="0" role="link" title="Go to Randoms Of The Day">
         Randoms Of The Day
       </div>
     </nav>
@@ -264,13 +256,9 @@
 
   <script>
     function toggleMenu() {
-      const topnav = document.querySelector('.topnav');
       const menu = document.querySelector('.topnav-right');
-      const body = document.body;
-
-      topnav.classList.toggle('active');
+      document.body.classList.toggle('menu-open');
       menu.classList.toggle('active');
-      body.classList.toggle('menu-open');
     }
 
     document.querySelectorAll('.accordion-toggle').forEach(button => {
@@ -324,41 +312,8 @@
     }
   </script>
 
-  <!-- Just this one line to load your holiday-theme.js -->
-  <script src="holiday-theme.js" defer></script>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "Organization",
-        "name": "THE Randoms",
-        "url": "https://therandoms.pages.dev/",
-        "sameAs": [
-          "https://x.com/Arztiser",
-          "https://www.youtube.com/@ArztiserMusic",
-          "https://open.spotify.com/artist/5iOQLKlc3taptDhisMcPX7?si=-kvaqr4mRSqSB3NthUu2cA",
-          "https://link.deezer.com/s/30rg4dq51eMRZWcy6SzLU",
-          "https://music.amazon.com/artists/B0DF356TRC?ref=dm_sh_0vUueu3N8pJboqKVKQJlQIjsh"
-        ],
-        "description": "THE Randoms Offers Random Facts, Quizzes, And Interactive Fun — All In One Random Place.",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://therandoms.pages.dev/img/pfp.png"
-        }
-      },
-      {
-        "@type": "WebSite",
-        "name": "THE Randoms",
-        "url": "https://therandoms.pages.dev",
-        "description": "THE Randoms Offers Random Facts, Quizzes, And Interactive Fun — All In One Random Place."
-      }
-    ]
-  }
-  </script>
-
+  <!-- Load other scripts like rainbow-flash.js if needed -->
   <script src="rainbow-flash.js" defer></script>
-  
+
 </body>
 </html>
