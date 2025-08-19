@@ -23,7 +23,7 @@
       cursor: pointer;
       width: 28px;
       height: 28px;
-      margin-right: 10px;
+      margin-left: 10px;
     }
     #topnav-icons {
       display: flex;
@@ -51,9 +51,9 @@
   const savedMode = localStorage.getItem('dark-mode');
   if (savedMode === 'dark') document.body.classList.add('dark-mode');
 
-  // Use Google Material Icons SVGs
-  const sunIcon = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" width="24"><path fill="%23FFC107" d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.8 1.42-1.42zm10.48 0l1.8-1.79-1.41-1.41-1.79 1.79 1.4 1.41zm0 10.48l1.79 1.8 1.41-1.41-1.8-1.79-1.4 1.4zm-10.48 0l-1.79 1.8 1.41 1.41 1.79-1.8-1.41-1.41zM12 6a6 6 0 100 12 6 6 0 000-12zm0-4h-1v3h1V2zm0 19h-1v3h1v-3zm10-10h-3v1h3v-1zm-19 0H0v1h3v-1z"/></svg>';
-  const moonIcon = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" width="24"><path fill="%23FFC107" d="M9.37 5.51a7 7 0 109.12 9.12 9 9 0 01-9.12-9.12z"/></svg>';
+  // White Google-style SVG icons
+  const sunIcon = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" width="24"><circle fill="%23FFFFFF" cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="4" stroke="%23FFFFFF" stroke-width="2"/><line x1="12" y1="20" x2="12" y2="23" stroke="%23FFFFFF" stroke-width="2"/><line x1="4.22" y1="4.22" x2="6.36" y2="6.36" stroke="%23FFFFFF" stroke-width="2"/><line x1="17.64" y1="17.64" x2="19.78" y2="19.78" stroke="%23FFFFFF" stroke-width="2"/><line x1="1" y1="12" x2="4" y2="12" stroke="%23FFFFFF" stroke-width="2"/><line x1="20" y1="12" x2="23" y2="12" stroke="%23FFFFFF" stroke-width="2"/><line x1="4.22" y1="19.78" x2="6.36" y2="17.64" stroke="%23FFFFFF" stroke-width="2"/><line x1="17.64" y1="6.36" x2="19.78" y2="4.22" stroke="%23FFFFFF" stroke-width="2"/></svg>';
+  const moonIcon = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" width="24"><path fill="%23FFFFFF" d="M12 2a10 10 0 1010 10A10 10 0 0012 2zm0 18a8 8 0 118-8 8 8 0 01-8 8z"/></svg>';
 
   const updateIcon = () => {
     darkToggle.src = document.body.classList.contains('dark-mode') ? moonIcon : sunIcon;
