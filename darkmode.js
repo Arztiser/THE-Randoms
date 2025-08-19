@@ -1,9 +1,9 @@
 (() => {
   const topnav = document.querySelector('.topnav');
-  if (!topnav) return; // Only run on pages with topnav
+  if (!topnav) return;
   const body = document.body;
 
-  // Inject CSS for dark mode and toggle styling
+  // Inject dark mode CSS
   const style = document.createElement('style');
   style.textContent = `
     body.dark-mode {
@@ -13,7 +13,7 @@
     body.dark-mode .topnav {
       background-color: #222;
     }
-    body.dark-mode .topnav a,
+    body.dark-mode .topnav h1 a,
     body.dark-mode .accordion-toggle,
     body.dark-mode .accordion-content a {
       color: #f2f2f2 !important;
@@ -24,10 +24,11 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 40px;
-      height: 40px;
+      width: 36px;
+      height: 36px;
       user-select: none;
-      margin-left: 16px;
+      margin-right: 8px;
+      flex-shrink: 0;
       color: #f2f2f2;
     }
   `;
@@ -42,18 +43,18 @@
   toggle.className = 'dark-mode-toggle';
   toggle.innerHTML = sunSVG;
 
-  // Insert the toggle before the menu icon
+  // Insert before menu icon
   const menuIcon = topnav.querySelector('.menu-icon');
   topnav.insertBefore(toggle, menuIcon);
 
-  // Load saved mode from localStorage
+  // Load saved mode
   let darkMode = localStorage.getItem('darkMode') === 'true';
   if (darkMode) {
     body.classList.add('dark-mode');
     toggle.innerHTML = moonSVG;
   }
 
-  // Toggle event
+  // Toggle click
   toggle.addEventListener('click', () => {
     darkMode = !darkMode;
     body.classList.toggle('dark-mode', darkMode);
