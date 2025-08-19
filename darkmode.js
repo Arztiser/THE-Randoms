@@ -49,14 +49,14 @@
   /* Mobile-specific spacing */
   @media (max-width: 768px) {
     #topnav-icons {
-      gap: 14px; /* move the sun icon further from hamburger */
+      gap: 16px; /* move the sun icon further from hamburger */
     }
   }
 
   /* Desktop / horizontal mode spacing */
   @media (min-width: 769px) {
     #topnav-icons {
-      gap: 6px; /* closer on desktop */
+      gap: 8px; /* closer on desktop */
     }
   }
 `;
