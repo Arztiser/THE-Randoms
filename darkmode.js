@@ -1,52 +1,76 @@
 (() => {
-  // Only run on index.html for the toggle injection
-  const isHomepage = location.pathname.endsWith('/') || location.pathname.endsWith('index.html');
+  // Inject CSS for dark mode and transitions
+  const style = document.createElement('style');
+  style.innerHTML = `
+    body {
+      transition: background-color 0.4s ease, color 0.4s ease;
+    }
+    body.dark-mode {
+      background-color: #111 !important;
+      color: #f2f2f2 !important;
+    }
+    body.dark-mode .topnav {
+      background-color: #222 !important;
+    }
+    body.dark-mode .topnav h1,
+    body.dark-mode .accordion-toggle,
+    body.dark-mode .accordion-content a {
+      color: #f2f2f2 !important;
+    }
+    #topnav-icons img {
+      transition: transform 0.2s ease, filter 0.2s ease;
+      vertical-align: middle;
+      cursor: pointer;
+      width: 28px;
+      height: 28px;
+      margin-right: 10px;
+    }
+    #topnav-icons {
+      display: flex;
+      align-items: center;
+      margin-left: auto;
+    }
+  `;
+  document.head.appendChild(style);
 
-  // Create dark mode toggle
-  const darkToggle = document.createElement('img');
-  darkToggle.id = 'dark-mode-toggle';
-  darkToggle.alt = 'Dark mode toggle';
-  darkToggle.style.cursor = 'pointer';
-  darkToggle.style.width = '28px';
-  darkToggle.style.height = '28px';
-  darkToggle.style.marginRight = '12px';
-  darkToggle.style.verticalAlign = 'middle';
-  darkToggle.style.transition = 'opacity 0.3s';
-
-  // Append to topnav only on homepage
-  if (isHomepage) {
+  // Inject the container in topnav if it doesn't exist
+  let topnavIcons = document.getElementById('topnav-icons');
+  if (!topnavIcons) {
+    topnavIcons = document.createElement('div');
+    topnavIcons.id = 'topnav-icons';
     const topnav = document.querySelector('.topnav');
-    topnav.insertBefore(darkToggle, topnav.querySelector('.menu-icon'));
+    topnav.appendChild(topnavIcons);
   }
 
-  // Apply dark mode function
-  const applyDarkMode = (on) => {
-    const body = document.body;
-    if (on) {
-      body.classList.add('dark-mode');
-      body.style.backgroundColor = '#222';
-      body.style.color = '#f2f2f2';
-      document.querySelectorAll('.topnav, .topnav-right, .accordion-toggle, .accordion-content a, .clickable-section')
-        .forEach(el => el.style.color = '#f2f2f2');
-      if (darkToggle) darkToggle.src = 'https://fonts.gstatic.com/s/i/materialicons/nightlight_round/v12/24px.svg';
-    } else {
-      body.classList.remove('dark-mode');
-      body.style.backgroundColor = '#fff';
-      body.style.color = '#000';
-      document.querySelectorAll('.topnav, .topnav-right, .accordion-toggle, .accordion-content a, .clickable-section')
-        .forEach(el => el.style.color = el.classList.contains('clickable-section') ? 'white' : '#333');
-      if (darkToggle) darkToggle.src = 'https://fonts.gstatic.com/s/i/materialicons/sunny/v13/24px.svg';
-    }
+  // Create toggle icon
+  const darkToggle = document.createElement('img');
+  darkToggle.alt = 'Dark Mode';
+  topnavIcons.appendChild(darkToggle);
+
+  // Load saved mode
+  const savedMode = localStorage.getItem('dark-mode');
+  if (savedMode === 'dark') document.body.classList.add('dark-mode');
+
+  // Use Google Material Icons SVGs
+  const sunIcon = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" width="24"><path fill="%23FFC107" d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.8 1.42-1.42zm10.48 0l1.8-1.79-1.41-1.41-1.79 1.79 1.4 1.41zm0 10.48l1.79 1.8 1.41-1.41-1.8-1.79-1.4 1.4zm-10.48 0l-1.79 1.8 1.41 1.41 1.79-1.8-1.41-1.41zM12 6a6 6 0 100 12 6 6 0 000-12zm0-4h-1v3h1V2zm0 19h-1v3h1v-3zm10-10h-3v1h3v-1zm-19 0H0v1h3v-1z"/></svg>';
+  const moonIcon = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" width="24"><path fill="%23FFC107" d="M9.37 5.51a7 7 0 109.12 9.12 9 9 0 01-9.12-9.12z"/></svg>';
+
+  const updateIcon = () => {
+    darkToggle.src = document.body.classList.contains('dark-mode') ? moonIcon : sunIcon;
   };
 
-  // Load preference from localStorage
-  const darkPref = localStorage.getItem('dark-mode') === 'true';
-  applyDarkMode(darkPref);
+  const toggleMode = () => {
+    document.body.classList.toggle('dark-mode');
+    localStorage.setItem('dark-mode', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+    updateIcon();
+  };
 
-  // Toggle dark mode on click
-  darkToggle.addEventListener('click', () => {
-    const isDark = document.body.classList.contains('dark-mode');
-    applyDarkMode(!isDark);
-    localStorage.setItem('dark-mode', !isDark);
-  });
+  darkToggle.addEventListener('click', toggleMode);
+
+  // Hover effect
+  darkToggle.addEventListener('mouseenter', () => darkToggle.style.transform = 'scale(1.2)');
+  darkToggle.addEventListener('mouseleave', () => darkToggle.style.transform = 'scale(1)');
+
+  // Initialize
+  updateIcon();
 })();
