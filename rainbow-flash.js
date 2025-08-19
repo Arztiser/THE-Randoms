@@ -1,7 +1,7 @@
 (() => {
   const logo = document.querySelector('.logo');
   const CLICK_THRESHOLD = 10; // clicks needed
-  const COOLDOWN = 5000; // 1 hour
+  const COOLDOWN = 60 * 60 * 1000; // 1 hour
   const DURATION = 5000; // 5 seconds
 
   let clickCount = 0;
