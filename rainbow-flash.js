@@ -1,44 +1,29 @@
-// rainbow-flash.js
+let clickCount = 0;
+let lastFlash = 0;
 
-(() => {
-  const logo = document.querySelector('.logo');
-  if (!logo) return;
+const logo = document.getElementById('homepage-logo');
 
-  let clickCount = 0;
-  let lastTrigger = 0;
+logo.addEventListener('click', () => {
+  const now = Date.now();
+  if (now - lastFlash < 60000) return; // 1-minute cooldown
+  clickCount++;
 
-  // Create rainbow overlay
-  const rainbow = document.createElement('div');
-  rainbow.id = 'rainbow-flash';
-  Object.assign(rainbow.style, {
-    position: 'fixed',
-    top: '0',
-    left: '0',
-    width: '100%',
-    height: '100%',
-    pointerEvents: 'none',
-    opacity: '0',
-    zIndex: '9999',
-    background: 'repeating-linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet)',
-    backgroundSize: '100% 100%',
-    transition: 'opacity 0.2s ease'
-  });
-  document.body.appendChild(rainbow);
+  if (clickCount >= 10) {
+    clickCount = 0;
+    lastFlash = now;
 
-  logo.addEventListener('click', () => {
-    const now = Date.now();
-    if (now - lastTrigger < 60000) return; // 1-minute cooldown
+    const overlay = document.createElement('div');
+    overlay.style.position = 'fixed';
+    overlay.style.top = '0';
+    overlay.style.left = '0';
+    overlay.style.width = '100%';
+    overlay.style.height = '100%';
+    overlay.style.background = 'repeating-linear-gradient(90deg, red, orange 10%, yellow 20%, green 30%, blue 40%, indigo 50%, violet 60%)';
+    overlay.style.zIndex = '9999';
+    document.body.appendChild(overlay);
 
-    clickCount++;
-
-    if (clickCount >= 10) {
-      clickCount = 0;
-      lastTrigger = now;
-
-      rainbow.style.opacity = '1';
-      setTimeout(() => {
-        rainbow.style.opacity = '0';
-      }, 1000);
-    }
-  });
-})();
+    setTimeout(() => {
+      document.body.removeChild(overlay);
+    }, 1000); // flash for 1 second
+  }
+});
