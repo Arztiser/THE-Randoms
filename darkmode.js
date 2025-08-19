@@ -18,17 +18,13 @@
   body.dark-mode .accordion-toggle,
   body.dark-mode .accordion-content a { color: #f2f2f2 !important; }
 
-  .topnav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between; /* logo left, icons right */
-    padding: 0 16px;
-  }
+  .topnav { display: flex; align-items: center; justify-content: space-between; }
 
   #topnav-icons {
     display: flex;
     align-items: center;
-    gap: 16px; /* space between hamburger and dark mode icons */
+    margin-left: auto;
+    gap: 12px; /* default for desktop */
   }
 
   .dark-toggle {
@@ -38,13 +34,17 @@
     font-size: 26px;
     color: #ffffff;
     cursor: pointer;
+    margin: 0;
+    padding: 0;
+    line-height: 1;
     user-select: none;
     -webkit-user-drag: none;
-    line-height: 1;
+    transition: none;
   }
 
+  /* Mobile-specific spacing: bigger gap for 'pinky space' */
   @media (max-width: 768px) {
-    #topnav-icons { gap: 12px; } /* slightly smaller spacing on mobile */
+    #topnav-icons { gap: 28px; }
   }
 `;
   document.head.appendChild(style);
