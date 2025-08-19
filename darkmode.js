@@ -11,39 +11,40 @@
   // Inject CSS for dark mode and icon styling
   const style = document.createElement('style');
   style.innerHTML = `
-    body {
-      transition: background-color 0.4s ease, color 0.4s ease;
-    }
-    body.dark-mode {
-      background-color: #111 !important;
-      color: #f2f2f2 !important;
-    }
-    body.dark-mode .topnav {
-      background-color: #222 !important;
-    }
-    body.dark-mode .topnav h1,
-    body.dark-mode .accordion-toggle,
-    body.dark-mode .accordion-content a {
-      color: #f2f2f2 !important;
-    }
-    #topnav-icons {
-      display: flex;
-      align-items: center;
-      margin-left: 160px; /* much closer to hamburger */
-    }
-    .dark-toggle {
-      font-family: 'Material Symbols Outlined';
-      font-weight: normal;
-      font-style: normal;
-      font-size: 26px; /* slightly smaller */
-      color: #ffffff; /* fully white */
-      cursor: pointer;
-      margin: 0;
-      user-select: none;
-      -webkit-user-drag: none;
-      transition: none; /* remove scaling effect */
-    }
-  `;
+  body {
+    transition: background-color 0.4s ease, color 0.4s ease;
+  }
+  body.dark-mode {
+    background-color: #111 !important;
+    color: #f2f2f2 !important;
+  }
+  body.dark-mode .topnav {
+    background-color: #222 !important;
+  }
+  body.dark-mode .topnav h1,
+  body.dark-mode .accordion-toggle,
+  body.dark-mode .accordion-content a {
+    color: #f2f2f2 !important;
+  }
+  #topnav-icons {
+    display: flex;
+    align-items: center;
+    margin-left: auto; /* hug hamburger menu */
+    gap: 6px; /* space between icons */
+  }
+  .dark-toggle {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 26px;
+    color: #ffffff; /* fully white */
+    cursor: pointer;
+    margin: 0;
+    user-select: none;
+    -webkit-user-drag: none;
+    transition: none;
+  }
+`;
   document.head.appendChild(style);
 
   // Add icon container if missing
