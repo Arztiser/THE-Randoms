@@ -26,10 +26,15 @@
   body.dark-mode .accordion-content a {
     color: #f2f2f2 !important;
   }
+  .topnav {
+    display: flex;
+    align-items: center; /* vertically center items */
+    justify-content: space-between;
+  }
   #topnav-icons {
     display: flex;
-    align-items: center;
-    margin-left: auto; /* hug hamburger menu */
+    align-items: center; /* vertically center with hamburger */
+    margin-left: auto; /* hug the hamburger */
     gap: 6px; /* space between icons */
   }
   .dark-toggle {
@@ -37,9 +42,11 @@
     font-weight: normal;
     font-style: normal;
     font-size: 26px;
-    color: #ffffff; /* fully white */
+    color: #ffffff;
     cursor: pointer;
-    margin: 0;
+    margin: 0; /* remove extra spacing */
+    padding: 0; /* remove extra spacing */
+    line-height: 1; /* ensures proper vertical alignment */
     user-select: none;
     -webkit-user-drag: none;
     transition: none;
