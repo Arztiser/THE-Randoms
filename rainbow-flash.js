@@ -12,27 +12,35 @@ logo.addEventListener('click', () => {
     clickCount = 0;
     lastFlash = now;
 
-    // Apply rainbow style
-    logo.style.background = 'linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet)';
-    logo.style.webkitBackgroundClip = 'text';
-    logo.style.webkitTextFillColor = 'transparent';
-    logo.style.fontWeight = '900'; // optional: make it bolder for brightness
-    logo.style.transition = 'background 0.3s ease-in-out';
+    // Create a style element for rainbow animation if it doesn't exist
+    if (!document.getElementById('rainbow-flash-style')) {
+      const style = document.createElement('style');
+      style.id = 'rainbow-flash-style';
+      style.innerHTML = `
+        @keyframes rainbowFlash {
+          0% { color: #FF0000; }
+          14% { color: #FF7F00; }
+          28% { color: #FFFF00; }
+          42% { color: #00FF00; }
+          57% { color: #0000FF; }
+          71% { color: #4B0082; }
+          85% { color: #8F00FF; }
+          100% { color: #FF0000; }
+        }
+        .rainbow-flash {
+          animation: rainbowFlash 1s linear;
+          font-weight: 900; /* extra bold for brightness */
+        }
+      `;
+      document.head.appendChild(style);
+    }
 
-    // Animate a rainbow shift
-    let step = 0;
-    const interval = setInterval(() => {
-      step += 20;
-      logo.style.background = `linear-gradient(${step}deg, red, orange, yellow, green, blue, indigo, violet)`;
-    }, 50);
+    // Add class to trigger animation
+    logo.classList.add('rainbow-flash');
 
-    // Stop animation after 1 second
+    // Remove class after 1 second
     setTimeout(() => {
-      clearInterval(interval);
-      logo.style.background = '';
-      logo.style.webkitBackgroundClip = '';
-      logo.style.webkitTextFillColor = '';
-      logo.style.fontWeight = '';
+      logo.classList.remove('rainbow-flash');
     }, 1000);
   }
 });
