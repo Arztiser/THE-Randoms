@@ -41,6 +41,6 @@ logo.addEventListener('click', () => {
     // Remove class after 1 second
     setTimeout(() => {
       logo.classList.remove('rainbow-flash');
-    }, 1000);
+    }, 5000);
   }
 });
