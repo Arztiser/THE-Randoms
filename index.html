@@ -39,6 +39,23 @@
       margin: 0;
       font-size: 24px;
       color: var(--theme-topnav-color);
+      display: flex;
+      align-items: center;
+    }
+
+    .topnav .logo {
+      color: var(--theme-topnav-color);
+      text-decoration: none;
+    }
+
+    .topnav .logo:hover {
+      text-decoration: none;
+    }
+
+    #mascot {
+      height: 40px;
+      margin-left: 10px;
+      cursor: pointer;
     }
 
     .menu-icon {
@@ -171,21 +188,6 @@
       line-height: 1.5;
     }
 
-    .logo {
-      color: var(--theme-topnav-color);
-      text-decoration: none;
-    }
-
-    .logo:hover {
-      text-decoration: none;
-    }
-
-    .mascot-container img {
-      max-width: 300px;
-      cursor: pointer;
-      margin-top: 20px;
-    }
-
     @media (max-width: 768px) {
       .container {
         margin: 20px;
@@ -204,9 +206,13 @@
 <body>
   <header>
     <div class="topnav">
-      <h1><a class="logo" href="#" id="homepage-logo">THE Randoms</a></h1>
+      <h1>
+        <a class="logo" href="#" id="homepage-logo">THE Randoms</a>
+        <img id="mascot" src="img/Mascot.png" data-gif="img/MascotBlink.gif" alt="Mascot">
+      </h1>
       <span class="menu-icon" onclick="toggleMenu()" tabindex="0" role="button" aria-label="Toggle menu">&#9776;</span>
     </div>
+
     <nav class="topnav-right" role="navigation" aria-label="Main Menu">
       <div class="accordion-section">
         <button class="accordion-toggle" aria-expanded="false">Jokes & Fun</button>
@@ -256,11 +262,6 @@
   <main class="content">
     <h1>Home</h1>
     <p>Welcome to THE Randoms, a website full of random things to explore and enjoy. If you found this site randomly, welcome! Now come along on this wacky, fun, and random ride through THE Randoms of the world and the internet.</p>
-
-    <div class="mascot-container">
-      <img id="mascot" src="img/Mascot.png" data-gif="img/MascotBlink.gif" alt="Mascot">
-      <p>Click the mascot to see it in action!</p>
-    </div>
   </main>
 
   <script>
@@ -317,17 +318,17 @@
       }
     });
 
-    // Mascot GIF toggle
+    // Mascot GIF plays once per click
     const mascot = document.getElementById('mascot');
     const stillSrc = mascot.src;
     const gifSrc = mascot.getAttribute('data-gif');
+    const gifDuration = 1000; // GIF length in ms; adjust to match your GIF
 
     mascot.addEventListener('click', () => {
-      if (mascot.src.endsWith('Mascot.png')) {
-        mascot.src = gifSrc;
-      } else {
-        mascot.src = stillSrc;
-      }
+      mascot.src = gifSrc; // Play GIF
+      setTimeout(() => {
+        mascot.src = stillSrc; // Revert to still image
+      }, gifDuration);
     });
   </script>
 
