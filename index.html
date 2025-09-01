@@ -1,345 +1,298 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#E82B38" />
-  <meta name="description" content="THE Randoms Is A Website That Lets You View And Do Random Things Such As Random Quizzes, Facts, Quotes, Numbers, And Letters." />
-  <meta property="og:image" content="https://therandoms.org/img/pofp.png" />
-  <title>THE Randoms</title>
-  <link rel="icon" type="image/png" href="./img/pfp.png" />
-  <link rel="manifest" href="/manifest.json" />
-  <link rel="apple-touch-icon" sizes="192x192" href="/img/prfp.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet" />
-  <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>THE Randoms</title>
+<link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow-x: auto; /* horizontal scroll allowed */
+    overflow-y: hidden; /* no vertical scroll */
+    font-family: 'Jersey 10', sans-serif;
+    background-color: #fff;
+    color: #000;
+  }
 
-    body {
-      --theme-bg-color: #333;
-      --theme-topnav-color: #f2f2f2;
-      --theme-accent-color: #E82B38;
-      font-family: 'Jersey 10', sans-serif;
-      font-size: 28px;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      background-color: #fff;
-      color: #000;
-    }
+  body {
+    display: flex;
+    flex-direction: column;
+  }
 
-    main.content {
-      flex: 1 1 auto;
-      padding: 20px;
-      overflow: auto; /* scroll only if content overflows */
-    }
+  .topnav {
+    background-color: #333;
+    color: #f2f2f2;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    flex-shrink: 0;
+  }
 
-    .topnav {
-      overflow: hidden;
-      background-color: var(--theme-bg-color);
-      color: var(--theme-topnav-color);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 16px;
-      height: 60px;
-    }
+  .topnav .logo {
+    color: #f2f2f2;
+    text-decoration: none;
+    font-size: 24px;
+  }
 
-    .topnav h1 {
-      margin: 0;
-      font-size: 24px;
-      color: var(--theme-topnav-color);
-      display: flex;
-      align-items: center;
-    }
+  .menu-icon {
+    font-size: 30px;
+    cursor: pointer;
+  }
 
-    .topnav .logo {
-      color: var(--theme-topnav-color);
-      text-decoration: none;
-    }
+  main.content {
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 20px;
+    box-sizing: border-box;
+  }
 
-    .topnav .logo:hover {
-      text-decoration: none;
-    }
+  main.content h1 {
+    margin: 0 0 20px 0;
+    font-size: 32px;
+  }
 
-    .menu-icon {
-      font-size: 30px;
-      color: var(--theme-topnav-color);
-      cursor: pointer;
-      user-select: none;
-    }
+  main.content p {
+    margin: 0;
+    font-size: 20px;
+    line-height: 1.5;
+  }
 
-    .topnav-right {
-      display: none;
-      position: fixed;
-      top: 60px;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: var(--theme-bg-color);
-      overflow-y: auto;
-      flex-direction: column;
-      z-index: 999;
-      transition: opacity 0.3s ease;
-      opacity: 0;
-      pointer-events: none;
-      padding-bottom: 60px;
-      box-sizing: border-box;
-    }
+  .topnav-right {
+    display: none;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #333;
+    overflow-y: auto;
+    flex-direction: column;
+    z-index: 999;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+    pointer-events: none;
+    padding-bottom: 60px;
+    box-sizing: border-box;
+  }
 
-    .topnav-right.active {
-      display: flex;
-      opacity: 1;
-      pointer-events: auto;
-    }
+  .topnav-right.active {
+    display: flex;
+    opacity: 1;
+    pointer-events: auto;
+  }
 
-    body.menu-open {
-      overflow: hidden;
-    }
+  .accordion-section {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+  }
 
-    .accordion-section {
-      display: flex;
-      flex-direction: column;
-      border-top: 1px solid rgba(255, 255, 255, 0.15);
-    }
+  .accordion-toggle {
+    background: none;
+    color: #f2f2f2;
+    padding: 14px;
+    text-align: left;
+    font-size: 24px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    font-family: 'Jersey 10', sans-serif;
+  }
 
-    .accordion-toggle {
-      background: none;
-      color: var(--theme-topnav-color);
-      padding: 14px;
-      text-align: left;
-      font-size: 24px;
-      border: none;
-      outline: none;
-      cursor: pointer;
-      width: 100%;
-      font-family: 'Jersey 10', sans-serif;
-      transition: background-color 0.3s ease;
-    }
+  .accordion-toggle:hover, .accordion-toggle:focus {
+    background-color: rgba(255,255,255,0.1);
+    outline: none;
+  }
 
-    .accordion-toggle:hover,
-    .accordion-toggle:focus {
-      background-color: rgba(255, 255, 255, 0.1);
-      outline: none;
-    }
+  .accordion-content {
+    display: none;
+    flex-direction: column;
+    background-color: #333;
+    overflow-y: auto;
+    max-height: 50vh;
+  }
 
-    .accordion-content {
-      display: none;
-      flex-direction: column;
-      background-color: var(--theme-bg-color);
-      overflow-y: auto;
-      max-height: 50vh;
-    }
+  .accordion-content a {
+    padding: 10px 28px;
+    border-top: 1px solid rgba(255,255,255,0.2);
+    font-size: 20px;
+    color: #f2f2f2;
+    text-decoration: none;
+  }
 
-    .accordion-content a {
-      padding-left: 28px;
-      padding-top: 10px;
-      padding-bottom: 10px;
-      border-top: 1px solid rgba(255, 255, 255, 0.2);
-      font-size: 20px;
-      color: var(--theme-topnav-color);
-      text-decoration: none;
-    }
+  .accordion-content a:hover, .accordion-content a:focus {
+    background-color: rgba(255,255,255,0.15);
+    outline: none;
+  }
 
-    .accordion-content a:hover,
-    .accordion-content a:focus {
-      background-color: rgba(255, 255, 255, 0.15);
-      outline: none;
-    }
+  .accordion-section.open .accordion-content {
+    display: flex;
+  }
 
-    .accordion-section.open .accordion-content {
-      display: flex;
-    }
+  .clickable-section {
+    background-color: #E82B38;
+    color: white;
+    font-weight: 700;
+    font-size: 22px; /* slightly smaller */
+    padding: 14px;
+    cursor: pointer;
+    text-align: center;
+    border-top: 1px solid #b22731;
+    margin-top: 4px;
+  }
 
-    .clickable-section {
-      background-color: var(--theme-accent-color);
-      color: white;
-      font-weight: 700;
-      font-size: 24px;
-      padding: 14px;
-      cursor: pointer;
-      user-select: none;
-      border-bottom: 1px solid #b22731;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background-color 0.3s ease;
-      margin-bottom: 4px;
-    }
+  .clickable-section:hover, .clickable-section:focus {
+    background-color: #c52430;
+    outline: none;
+  }
 
-    .clickable-section:hover,
-    .clickable-section:focus {
-      background-color: #c52430;
-      outline: none;
-    }
+  footer.site-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background-color: #333;
+    color: #f2f2f2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 20px;
+    font-size: 18px;
+    box-sizing: border-box;
+    z-index: 1000;
+  }
 
-    footer.site-footer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 60px;
-      background-color: var(--theme-bg-color);
-      color: var(--theme-topnav-color);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 5px 20px;
-      font-size: 18px; /* slightly smaller */
-      box-sizing: border-box;
-      z-index: 1000;
-    }
+  #footer-mascot {
+    height: 50px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
 
-    #footer-mascot {
-      height: 50px;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    }
-
-    #footer-mascot:hover {
-      transform: scale(1.1) rotate(-5deg);
-    }
-
-    @media (max-width: 768px) {
-      main.content {
-        padding-bottom: 70px; /* prevents overlap with footer */
-      }
-
-      .content p, .content h1 {
-        padding-left: 8px;
-        padding-right: 8px;
-      }
-    }
-  </style>
+  #footer-mascot:hover {
+    transform: scale(1.1) rotate(-5deg);
+  }
+</style>
 </head>
 <body>
-  <header>
-    <div class="topnav">
-      <h1>
-        <a class="logo" href="#" id="homepage-logo">THE Randoms</a>
-      </h1>
-      <span class="menu-icon" onclick="toggleMenu()" tabindex="0" role="button" aria-label="Toggle menu">&#9776;</span>
+
+<header class="topnav">
+  <a href="#" class="logo">THE Randoms</a>
+  <span class="menu-icon" onclick="toggleMenu()">&#9776;</span>
+</header>
+
+<nav class="topnav-right" role="navigation" aria-label="Main Menu">
+  <div class="accordion-section">
+    <button class="accordion-toggle" aria-expanded="false">Jokes & Fun</button>
+    <div class="accordion-content" hidden>
+      <a href="jokes.html">Jokes</a>
+      <a href="memes.html">Memes</a>
+      <a href="nfl.html">NFL</a>
+      <a href="quizzes.html">Quizzes</a>
+      <a href="wouldyourather.html">Would You Rather</a>
     </div>
+  </div>
 
-    <nav class="topnav-right" role="navigation" aria-label="Main Menu">
-      <div class="accordion-section">
-        <button class="accordion-toggle" aria-expanded="false">Jokes & Fun</button>
-        <div class="accordion-content" hidden>
-          <a href="jokes.html">Jokes</a>
-          <a href="memes.html">Memes</a>
-          <a href="nfl.html">NFL</a>
-          <a href="quizzes.html">Quizzes</a>
-          <a href="wouldyourather.html">Would You Rather</a>
-        </div>
-      </div>
-
-      <div class="accordion-section">
-        <button class="accordion-toggle" aria-expanded="false">Knowledge & Facts</button>
-        <div class="accordion-content" hidden>
-          <a href="advice.html">Advice</a>
-          <a href="facts.html">Facts</a>
-          <a href="pages.html">Pages</a>
-          <a href="people.html">People</a>
-          <a href="quotes.html">Quotes</a>
-        </div>
-      </div>
-
-      <div class="accordion-section">
-        <button class="accordion-toggle" aria-expanded="false">Music & Videos</button>
-        <div class="accordion-content" hidden>
-          <a href="songs.html">Songs</a>
-          <a href="videos.html">Videos</a>
-        </div>
-      </div>
-
-      <div class="accordion-section">
-        <button class="accordion-toggle" aria-expanded="false">Words, Letters & Numbers</button>
-        <div class="accordion-content" hidden>
-          <a href="letters.html">Letters</a>
-          <a href="numbers.html">Numbers</a>
-          <a href="words.html">Words</a>
-        </div>
-      </div>
-
-      <!-- Randoms Of The Day button at the bottom -->
-      <div class="clickable-section" tabindex="0" role="link" title="Go to Randoms Of The Day">
-        Randoms Of The Day
-      </div>
-    </nav>
-  </header>
-
-  <main class="content">
-    <h1>Home</h1>
-    <p>Welcome to THE Randoms, a website full of random things to explore and enjoy. If you found this site randomly, welcome! Now come along on this wacky, fun, and random ride through THE Randoms of the world and the internet.</p>
-  </main>
-
-  <footer class="site-footer">
-    <div class="footer-left">
-      <p>&copy; <span id="year"></span> THE Randoms</p>
+  <div class="accordion-section">
+    <button class="accordion-toggle" aria-expanded="false">Knowledge & Facts</button>
+    <div class="accordion-content" hidden>
+      <a href="advice.html">Advice</a>
+      <a href="facts.html">Facts</a>
+      <a href="pages.html">Pages</a>
+      <a href="people.html">People</a>
+      <a href="quotes.html">Quotes</a>
     </div>
-    <div class="footer-right">
-      <a href="randuino.html" title="Meet Randuino!">
-        <img id="footer-mascot" src="img/Mascot.png" alt="Randuino">
-      </a>
+  </div>
+
+  <div class="accordion-section">
+    <button class="accordion-toggle" aria-expanded="false">Music & Videos</button>
+    <div class="accordion-content" hidden>
+      <a href="songs.html">Songs</a>
+      <a href="videos.html">Videos</a>
     </div>
-  </footer>
+  </div>
 
-  <script>
-    function toggleMenu() {
-      const menu = document.querySelector('.topnav-right');
-      document.body.classList.toggle('menu-open');
-      menu.classList.toggle('active');
-    }
+  <div class="accordion-section">
+    <button class="accordion-toggle" aria-expanded="false">Words, Letters & Numbers</button>
+    <div class="accordion-content" hidden>
+      <a href="letters.html">Letters</a>
+      <a href="numbers.html">Numbers</a>
+      <a href="words.html">Words</a>
+    </div>
+  </div>
 
-    document.querySelectorAll('.accordion-toggle').forEach(button => {
-      button.addEventListener('click', () => {
-        const section = button.parentElement;
-        const isOpen = section.classList.contains('open');
+  <div class="clickable-section" tabindex="0" role="link" title="Go to Randoms Of The Day">
+    Randoms Of The Day
+  </div>
+</nav>
 
-        document.querySelectorAll('.accordion-section').forEach(s => {
-          if (s !== section) {
-            s.classList.remove('open');
-            s.querySelector('.accordion-toggle').setAttribute('aria-expanded', 'false');
-            s.querySelector('.accordion-content').hidden = true;
-          }
-        });
+<main class="content">
+  <h1>Home</h1>
+  <p>Welcome to THE Randoms, a website full of random things to explore and enjoy. If you found this site randomly, welcome! Now come along on this wacky, fun, and random ride through THE Randoms of the world and the internet.</p>
+</main>
 
-        if (!isOpen) {
-          section.classList.add('open');
-          button.setAttribute('aria-expanded', 'true');
-          section.querySelector('.accordion-content').hidden = false;
-        } else {
-          section.classList.remove('open');
-          button.setAttribute('aria-expanded', 'false');
-          section.querySelector('.accordion-content').hidden = true;
+<footer class="site-footer">
+  <div class="footer-left">&copy; <span id="year"></span> THE Randoms</div>
+  <div class="footer-right">
+    <img id="footer-mascot" src="img/Mascot.png" alt="Randuino">
+  </div>
+</footer>
+
+<script>
+  // Set current year
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  // Toggle menu
+  function toggleMenu() {
+    const menu = document.querySelector('.topnav-right');
+    menu.classList.toggle('active');
+  }
+
+  // Accordion
+  document.querySelectorAll('.accordion-toggle').forEach(button => {
+    button.addEventListener('click', () => {
+      const section = button.parentElement;
+      const isOpen = section.classList.contains('open');
+      document.querySelectorAll('.accordion-section').forEach(s => {
+        if (s !== section) {
+          s.classList.remove('open');
+          s.querySelector('.accordion-toggle').setAttribute('aria-expanded', 'false');
+          s.querySelector('.accordion-content').hidden = true;
         }
       });
-    });
-
-    const clickableSection = document.querySelector('.clickable-section');
-    clickableSection.addEventListener('click', () => {
-      window.location.href = 'randomsoftheday.html';
-    });
-    clickableSection.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        clickableSection.click();
+      if (!isOpen) {
+        section.classList.add('open');
+        button.setAttribute('aria-expanded', 'true');
+        section.querySelector('.accordion-content').hidden = false;
+      } else {
+        section.classList.remove('open');
+        button.setAttribute('aria-expanded', 'false');
+        section.querySelector('.accordion-content').hidden = true;
       }
     });
+  });
 
-    document.querySelector('.menu-icon').addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        toggleMenu();
-      }
-    });
+  // Randoms Of The Day click
+  const clickableSection = document.querySelector('.clickable-section');
+  clickableSection.addEventListener('click', () => {
+    window.location.href = 'randomsoftheday.html';
+  });
+  clickableSection.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      clickableSection.click();
+    }
+  });
+</script>
 
-    document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
-
-  <script src="rainbow-flash.js" defer></script>
-  <script src="holiday-theme.js" defer></script>
 </body>
 </html>
