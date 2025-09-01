@@ -11,7 +11,6 @@
   <link rel="manifest" href="/manifest.json" />
   <link rel="apple-touch-icon" sizes="192x192" href="/img/prfp.png" />
   <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet" />
-
   <style>
     body {
       --theme-bg-color: #333;
@@ -181,6 +180,12 @@
       text-decoration: none;
     }
 
+    .mascot-container img {
+      max-width: 300px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
     @media (max-width: 768px) {
       .container {
         margin: 20px;
@@ -202,7 +207,6 @@
       <h1><a class="logo" href="#" id="homepage-logo">THE Randoms</a></h1>
       <span class="menu-icon" onclick="toggleMenu()" tabindex="0" role="button" aria-label="Toggle menu">&#9776;</span>
     </div>
-
     <nav class="topnav-right" role="navigation" aria-label="Main Menu">
       <div class="accordion-section">
         <button class="accordion-toggle" aria-expanded="false">Jokes & Fun</button>
@@ -252,15 +256,22 @@
   <main class="content">
     <h1>Home</h1>
     <p>Welcome to THE Randoms, a website full of random things to explore and enjoy. If you found this site randomly, welcome! Now come along on this wacky, fun, and random ride through THE Randoms of the world and the internet.</p>
+
+    <div class="mascot-container">
+      <img id="mascot" src="img/Mascot.png" data-gif="img/MascotBlink.gif" alt="Mascot">
+      <p>Click the mascot to see it in action!</p>
+    </div>
   </main>
 
   <script>
+    // Toggle menu
     function toggleMenu() {
       const menu = document.querySelector('.topnav-right');
       document.body.classList.toggle('menu-open');
       menu.classList.toggle('active');
     }
 
+    // Accordion behavior
     document.querySelectorAll('.accordion-toggle').forEach(button => {
       button.addEventListener('click', () => {
         const section = button.parentElement;
@@ -286,11 +297,11 @@
       });
     });
 
+    // Clickable section
     const clickableSection = document.querySelector('.clickable-section');
     clickableSection.addEventListener('click', () => {
       window.location.href = 'randomsoftheday.html';
     });
-
     clickableSection.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
@@ -298,15 +309,28 @@
       }
     });
 
+    // Menu icon keyboard support
     document.querySelector('.menu-icon').addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         toggleMenu();
       }
     });
+
+    // Mascot GIF toggle
+    const mascot = document.getElementById('mascot');
+    const stillSrc = mascot.src;
+    const gifSrc = mascot.getAttribute('data-gif');
+
+    mascot.addEventListener('click', () => {
+      if (mascot.src.endsWith('Mascot.png')) {
+        mascot.src = gifSrc;
+      } else {
+        mascot.src = stillSrc;
+      }
+    });
   </script>
 
-  <!-- Load other scripts if needed -->
   <script src="rainbow-flash.js" defer></script>
 </body>
 </html>
