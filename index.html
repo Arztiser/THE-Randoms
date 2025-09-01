@@ -208,7 +208,7 @@
     <div class="topnav">
       <h1>
         <a class="logo" href="#" id="homepage-logo">THE Randoms</a>
-        <img id="mascot" src="img/Mascot.png" data-gif="img/MascotBlink.gif" alt="Mascot">
+        <img id="mascot" src="img/Mascot.png" alt="Mascot">
       </h1>
       <span class="menu-icon" onclick="toggleMenu()" tabindex="0" role="button" aria-label="Toggle menu">&#9776;</span>
     </div>
@@ -318,17 +318,10 @@
       }
     });
 
-    // Mascot GIF plays once per click
+    // Mascot click redirects to Randuino page
     const mascot = document.getElementById('mascot');
-    const stillSrc = mascot.src;
-    const gifSrc = mascot.getAttribute('data-gif');
-    const gifDuration = 1000; // GIF length in ms; adjust to match your GIF
-
     mascot.addEventListener('click', () => {
-      mascot.src = gifSrc; // Play GIF
-      setTimeout(() => {
-        mascot.src = stillSrc; // Revert to still image
-      }, gifDuration);
+      window.location.href = 'randuino.html'; // Redirect to Randuino page
     });
   </script>
 
