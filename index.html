@@ -31,7 +31,9 @@
     }
 
     main.content {
-      flex: 1; /* ensures footer sticks at bottom on short pages */
+      flex: 1;
+      position: relative;
+      padding-bottom: 100px; /* space for clickable section + footer */
     }
 
     .topnav {
@@ -43,6 +45,7 @@
       justify-content: space-between;
       padding: 0 16px;
       height: 60px;
+      flex-shrink: 0;
     }
 
     .topnav h1 {
@@ -152,6 +155,10 @@
     }
 
     .clickable-section {
+      position: absolute;
+      bottom: 0;
+      left: 20px;
+      right: 20px;
       background-color: var(--theme-accent-color);
       color: white;
       font-weight: 700;
@@ -164,9 +171,6 @@
       align-items: center;
       justify-content: center;
       transition: background-color 0.3s ease;
-      margin-top: 4px;
-      position: relative; /* changed from sticky */
-      bottom: auto;
       z-index: 10;
     }
 
@@ -193,7 +197,6 @@
     }
 
     footer.site-footer {
-      flex-shrink: 0; /* keeps footer at bottom */
       background-color: var(--theme-bg-color);
       color: var(--theme-topnav-color);
       display: flex;
@@ -203,6 +206,7 @@
       width: 100%;
       height: 60px;
       box-sizing: border-box;
+      flex-shrink: 0;
     }
 
     #footer-mascot {
