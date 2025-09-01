@@ -52,12 +52,6 @@
       text-decoration: none;
     }
 
-    #mascot {
-      height: 30px;
-      margin-left: 0px;
-      cursor: pointer;
-    }
-
     .menu-icon {
       font-size: 30px;
       color: var(--theme-topnav-color);
@@ -188,6 +182,30 @@
       line-height: 1.5;
     }
 
+    footer.site-footer {
+      background-color: var(--theme-bg-color);
+      color: var(--theme-topnav-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      position: relative;
+      bottom: 0;
+      width: 100%;
+      height: 60px;
+      box-sizing: border-box;
+    }
+
+    #footer-mascot {
+      height: 50px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    #footer-mascot:hover {
+      transform: scale(1.1) rotate(-5deg);
+    }
+
     @media (max-width: 768px) {
       .container {
         margin: 20px;
@@ -208,7 +226,6 @@
     <div class="topnav">
       <h1>
         <a class="logo" href="#" id="homepage-logo">THE Randoms</a>
-        <img id="mascot" src="img/Mascot.png" alt="Mascot">
       </h1>
       <span class="menu-icon" onclick="toggleMenu()" tabindex="0" role="button" aria-label="Toggle menu">&#9776;</span>
     </div>
@@ -264,6 +281,18 @@
     <p>Welcome to THE Randoms, a website full of random things to explore and enjoy. If you found this site randomly, welcome! Now come along on this wacky, fun, and random ride through THE Randoms of the world and the internet.</p>
   </main>
 
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-left">
+      <p>&copy; <span id="year"></span> THE Randoms</p>
+    </div>
+    <div class="footer-right">
+      <a href="randuino.html" title="Meet Randuino!">
+        <img id="footer-mascot" src="img/Mascot.png" alt="Randuino">
+      </a>
+    </div>
+  </footer>
+
   <script>
     // Toggle menu
     function toggleMenu() {
@@ -318,11 +347,8 @@
       }
     });
 
-    // Mascot click redirects to Randuino page
-    const mascot = document.getElementById('mascot');
-    mascot.addEventListener('click', () => {
-      window.location.href = 'randuino.html'; // Redirect to Randuino page
-    });
+    // Auto update year
+    document.getElementById("year").textContent = new Date().getFullYear();
   </script>
 
   <script src="rainbow-flash.js" defer></script>
