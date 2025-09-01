@@ -15,7 +15,6 @@
     html, body {
       height: 100%;
       margin: 0;
-      overflow: hidden; /* prevent any scrolling */
     }
 
     body {
@@ -23,7 +22,7 @@
       --theme-topnav-color: #f2f2f2;
       --theme-accent-color: #E82B38;
       font-family: 'Jersey 10', sans-serif;
-      font-size: 28px; /* slightly smaller */
+      font-size: 28px;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
@@ -32,10 +31,9 @@
     }
 
     main.content {
-      flex: 1 0 auto;
-      overflow: hidden;
+      flex: 1 1 auto;
       padding: 20px;
-      text-align: center;
+      overflow: auto; /* scroll only if content overflows */
     }
 
     .topnav {
@@ -163,12 +161,12 @@
       padding: 14px;
       cursor: pointer;
       user-select: none;
-      border-top: 1px solid #b22731;
+      border-bottom: 1px solid #b22731;
       display: flex;
       align-items: center;
       justify-content: center;
       transition: background-color 0.3s ease;
-      margin-top: 4px;
+      margin-bottom: 4px;
     }
 
     .clickable-section:hover,
@@ -189,7 +187,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 5px 20px;
-      font-size: 18px; /* smaller text */
+      font-size: 18px; /* slightly smaller */
       box-sizing: border-box;
       z-index: 1000;
     }
@@ -205,11 +203,8 @@
     }
 
     @media (max-width: 768px) {
-      .container {
-        margin: 20px;
-        padding-left: 16px;
-        padding-right: 16px;
-        box-sizing: border-box;
+      main.content {
+        padding-bottom: 70px; /* prevents overlap with footer */
       }
 
       .content p, .content h1 {
@@ -229,7 +224,6 @@
     </div>
 
     <nav class="topnav-right" role="navigation" aria-label="Main Menu">
-
       <div class="accordion-section">
         <button class="accordion-toggle" aria-expanded="false">Jokes & Fun</button>
         <div class="accordion-content" hidden>
@@ -273,7 +267,6 @@
       <div class="clickable-section" tabindex="0" role="link" title="Go to Randoms Of The Day">
         Randoms Of The Day
       </div>
-
     </nav>
   </header>
 
@@ -294,14 +287,12 @@
   </footer>
 
   <script>
-    // Toggle menu
     function toggleMenu() {
       const menu = document.querySelector('.topnav-right');
       document.body.classList.toggle('menu-open');
       menu.classList.toggle('active');
     }
 
-    // Accordion behavior
     document.querySelectorAll('.accordion-toggle').forEach(button => {
       button.addEventListener('click', () => {
         const section = button.parentElement;
@@ -327,7 +318,6 @@
       });
     });
 
-    // Clickable section
     const clickableSection = document.querySelector('.clickable-section');
     clickableSection.addEventListener('click', () => {
       window.location.href = 'randomsoftheday.html';
@@ -339,7 +329,6 @@
       }
     });
 
-    // Menu icon keyboard support
     document.querySelector('.menu-icon').addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
@@ -347,7 +336,6 @@
       }
     });
 
-    // Auto update year
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
 
