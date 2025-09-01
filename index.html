@@ -28,11 +28,10 @@
       min-height: 100vh;
       background-color: #fff;
       color: #000;
-      margin: 0;
     }
 
     main.content {
-      flex: 1 0 auto; /* fill remaining vertical space */
+      flex: 1 0 auto;
     }
 
     .topnav {
@@ -152,6 +151,28 @@
       display: flex;
     }
 
+    .clickable-section {
+      background-color: var(--theme-accent-color);
+      color: white;
+      font-weight: 700;
+      font-size: 24px;
+      padding: 14px;
+      cursor: pointer;
+      user-select: none;
+      border-bottom: 1px solid #b22731;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.3s ease;
+      margin-bottom: 4px;
+    }
+
+    .clickable-section:hover,
+    .clickable-section:focus {
+      background-color: #c52430;
+      outline: none;
+    }
+
     .container {
       margin: 20px;
     }
@@ -169,7 +190,6 @@
     }
 
     footer.site-footer {
-      flex-shrink: 0;
       background-color: var(--theme-bg-color);
       color: var(--theme-topnav-color);
       display: flex;
@@ -178,6 +198,7 @@
       padding: 10px 20px;
       width: 100%;
       height: 60px;
+      flex-shrink: 0;
       box-sizing: border-box;
     }
 
@@ -216,6 +237,7 @@
     </div>
 
     <nav class="topnav-right" role="navigation" aria-label="Main Menu">
+      <!-- Randoms Of The Day button at top -->
       <div class="clickable-section" tabindex="0" role="link" title="Go to Randoms Of The Day">
         Randoms Of The Day
       </div>
