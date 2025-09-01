@@ -15,6 +15,7 @@
     html, body {
       height: 100%;
       margin: 0;
+      overflow: hidden; /* prevent any scrolling */
     }
 
     body {
@@ -22,7 +23,7 @@
       --theme-topnav-color: #f2f2f2;
       --theme-accent-color: #E82B38;
       font-family: 'Jersey 10', sans-serif;
-      font-size: 30px;
+      font-size: 28px; /* slightly smaller */
       display: flex;
       flex-direction: column;
       min-height: 100vh;
@@ -32,7 +33,9 @@
 
     main.content {
       flex: 1 0 auto;
-      padding-bottom: 60px; /* make space for footer */
+      overflow: hidden;
+      padding: 20px;
+      text-align: center;
     }
 
     .topnav {
@@ -160,12 +163,12 @@
       padding: 14px;
       cursor: pointer;
       user-select: none;
-      border-bottom: 1px solid #b22731;
+      border-top: 1px solid #b22731;
       display: flex;
       align-items: center;
       justify-content: center;
       transition: background-color 0.3s ease;
-      margin-bottom: 4px;
+      margin-top: 4px;
     }
 
     .clickable-section:hover,
@@ -174,23 +177,6 @@
       outline: none;
     }
 
-    .container {
-      margin: 20px;
-    }
-
-    .content {
-      text-align: center;
-    }
-
-    .content h1 {
-      margin-bottom: 20px;
-    }
-
-    .content p {
-      line-height: 1.5;
-    }
-
-    /* FIXED FOOTER */
     footer.site-footer {
       position: fixed;
       bottom: 0;
@@ -202,7 +188,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 20px;
+      padding: 5px 20px;
+      font-size: 18px; /* smaller text */
       box-sizing: border-box;
       z-index: 1000;
     }
@@ -282,7 +269,7 @@
         </div>
       </div>
 
-      <!-- Randoms Of The Day button at bottom -->
+      <!-- Randoms Of The Day button at the bottom -->
       <div class="clickable-section" tabindex="0" role="link" title="Go to Randoms Of The Day">
         Randoms Of The Day
       </div>
