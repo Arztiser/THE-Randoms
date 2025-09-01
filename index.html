@@ -12,16 +12,26 @@
   <link rel="apple-touch-icon" sizes="192x192" href="/img/prfp.png" />
   <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet" />
   <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
     body {
       --theme-bg-color: #333;
       --theme-topnav-color: #f2f2f2;
       --theme-accent-color: #E82B38;
       font-family: 'Jersey 10', sans-serif;
       font-size: 30px;
-      margin: 0;
-      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
       background-color: #fff;
       color: #000;
+    }
+
+    main.content {
+      flex: 1;
     }
 
     .topnav {
@@ -189,8 +199,6 @@
       justify-content: space-between;
       align-items: center;
       padding: 10px 20px;
-      position: relative;
-      bottom: 0;
       width: 100%;
       height: 60px;
       box-sizing: border-box;
@@ -293,19 +301,10 @@
   </footer>
 
   <script>
-    // Toggle menu with scrollbar fix
+    // Toggle menu
     function toggleMenu() {
       const menu = document.querySelector('.topnav-right');
-      const body = document.body;
-
-      if (!body.classList.contains('menu-open')) {
-        const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
-        body.style.paddingRight = scrollBarWidth + 'px';
-      } else {
-        body.style.paddingRight = '';
-      }
-
-      body.classList.toggle('menu-open');
+      document.body.classList.toggle('menu-open');
       menu.classList.toggle('active');
     }
 
