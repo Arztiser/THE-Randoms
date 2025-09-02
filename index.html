@@ -13,57 +13,58 @@
   <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet" />
   <style>
     html, body {
-      margin: 0;
       height: 100%;
-      overflow: hidden; /* prevents scroll */
+      margin: 0;
+      overflow-x: hidden; /* prevent horizontal scroll */
     }
 
     body {
+      --theme-bg-color: #333;
+      --theme-topnav-color: #f2f2f2;
+      --theme-accent-color: #E82B38;
       font-family: 'Jersey 10', sans-serif;
-      font-size: 30px;
+      font-size: 28px;
       display: flex;
       flex-direction: column;
+      min-height: 100vh;
       background-color: #fff;
       color: #000;
-      min-height: 100vh;
     }
 
     main.content {
       flex: 1 0 auto;
-      display: flex;
-      flex-direction: column;
-      justify-content: center; /* vertical center */
-      align-items: center; /* horizontal center */
-      text-align: center;
       padding: 20px;
+      overflow-y: hidden; /* remove vertical scroll on mobile vertical */
       box-sizing: border-box;
-      overflow: hidden; /* prevent scrolling */
     }
 
     .topnav {
-      background-color: #333;
-      color: #f2f2f2;
+      overflow: hidden;
+      background-color: var(--theme-bg-color);
+      color: var(--theme-topnav-color);
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 16px;
       height: 60px;
-      flex-shrink: 0;
     }
 
     .topnav h1 {
       margin: 0;
       font-size: 24px;
+      color: var(--theme-topnav-color);
+      display: flex;
+      align-items: center;
     }
 
     .topnav .logo {
-      color: #f2f2f2;
+      color: var(--theme-topnav-color);
       text-decoration: none;
     }
 
     .menu-icon {
       font-size: 30px;
-      color: #f2f2f2;
+      color: var(--theme-topnav-color);
       cursor: pointer;
       user-select: none;
     }
@@ -75,7 +76,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background-color: #333;
+      background-color: var(--theme-bg-color);
       overflow-y: auto;
       flex-direction: column;
       z-index: 999;
@@ -104,7 +105,7 @@
 
     .accordion-toggle {
       background: none;
-      color: #f2f2f2;
+      color: var(--theme-topnav-color);
       padding: 14px;
       text-align: left;
       font-size: 24px;
@@ -112,31 +113,38 @@
       outline: none;
       cursor: pointer;
       width: 100%;
+      font-family: 'Jersey 10', sans-serif;
       transition: background-color 0.3s ease;
     }
 
-    .accordion-toggle:hover {
-      background-color: rgba(255,255,255,0.1);
+    .accordion-toggle:hover,
+    .accordion-toggle:focus {
+      background-color: rgba(255, 255, 255, 0.1);
+      outline: none;
     }
 
     .accordion-content {
       display: none;
       flex-direction: column;
-      background-color: #333;
+      background-color: var(--theme-bg-color);
       overflow-y: auto;
       max-height: 50vh;
     }
 
     .accordion-content a {
-      padding: 10px 28px;
-      border-top: 1px solid rgba(255,255,255,0.2);
+      padding-left: 28px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
       font-size: 20px;
-      color: #f2f2f2;
+      color: var(--theme-topnav-color);
       text-decoration: none;
     }
 
-    .accordion-content a:hover {
-      background-color: rgba(255,255,255,0.15);
+    .accordion-content a:hover,
+    .accordion-content a:focus {
+      background-color: rgba(255, 255, 255, 0.15);
+      outline: none;
     }
 
     .accordion-section.open .accordion-content {
@@ -144,17 +152,25 @@
     }
 
     .clickable-section {
-      background-color: #E82B38;
+      background-color: var(--theme-accent-color);
       color: white;
       font-weight: 700;
       font-size: 24px;
       padding: 14px;
       cursor: pointer;
+      user-select: none;
+      border-bottom: 1px solid #b22731;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-bottom: 1px solid #b22731;
-      margin-top: auto; /* stick to bottom of menu */
+      transition: background-color 0.3s ease;
+      margin-bottom: 4px;
+    }
+
+    .clickable-section:hover,
+    .clickable-section:focus {
+      background-color: #c52430;
+      outline: none;
     }
 
     footer.site-footer {
@@ -163,13 +179,13 @@
       left: 0;
       width: 100%;
       height: 60px;
-      background-color: #333;
-      color: #f2f2f2;
+      background-color: var(--theme-bg-color);
+      color: var(--theme-topnav-color);
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 5px 20px;
-      font-size: 24px;
+      font-size: 20px; /* slightly smaller */
       box-sizing: border-box;
       z-index: 1000;
     }
@@ -186,7 +202,7 @@
 
     @media (max-width: 768px) {
       main.content {
-        padding-bottom: 80px; /* prevent footer overlap */
+        padding-bottom: 70px; /* prevents overlap with footer */
       }
     }
   </style>
@@ -194,11 +210,13 @@
 <body>
   <header>
     <div class="topnav">
-      <h1><a class="logo" href="#">THE Randoms</a></h1>
-      <span class="menu-icon" onclick="toggleMenu()">&#9776;</span>
+      <h1>
+        <a class="logo" href="#" id="homepage-logo">THE Randoms</a>
+      </h1>
+      <span class="menu-icon" onclick="toggleMenu()" tabindex="0" role="button" aria-label="Toggle menu">&#9776;</span>
     </div>
 
-    <nav class="topnav-right">
+    <nav class="topnav-right" role="navigation" aria-label="Main Menu">
       <div class="accordion-section">
         <button class="accordion-toggle" aria-expanded="false">Jokes & Fun</button>
         <div class="accordion-content" hidden>
@@ -238,7 +256,7 @@
         </div>
       </div>
 
-      <div class="clickable-section" tabindex="0" role="link">
+      <div class="clickable-section" tabindex="0" role="link" title="Go to Randoms Of The Day">
         Randoms Of The Day
       </div>
     </nav>
@@ -254,15 +272,13 @@
       <p>&copy; <span id="year"></span> THE Randoms</p>
     </div>
     <div class="footer-right">
-      <a href="randuino.html">
+      <a href="randuino.html" title="Meet Randuino!">
         <img id="footer-mascot" src="img/Mascot.png" alt="Randuino">
       </a>
     </div>
   </footer>
 
   <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-
     function toggleMenu() {
       const menu = document.querySelector('.topnav-right');
       document.body.classList.toggle('menu-open');
@@ -273,29 +289,49 @@
       button.addEventListener('click', () => {
         const section = button.parentElement;
         const isOpen = section.classList.contains('open');
+
         document.querySelectorAll('.accordion-section').forEach(s => {
           if (s !== section) {
             s.classList.remove('open');
-            s.querySelector('.accordion-toggle').setAttribute('aria-expanded','false');
+            s.querySelector('.accordion-toggle').setAttribute('aria-expanded', 'false');
             s.querySelector('.accordion-content').hidden = true;
           }
         });
-        if(!isOpen) {
+
+        if (!isOpen) {
           section.classList.add('open');
-          button.setAttribute('aria-expanded','true');
+          button.setAttribute('aria-expanded', 'true');
           section.querySelector('.accordion-content').hidden = false;
         } else {
           section.classList.remove('open');
-          button.setAttribute('aria-expanded','false');
+          button.setAttribute('aria-expanded', 'false');
           section.querySelector('.accordion-content').hidden = true;
         }
       });
     });
 
-    const clickable = document.querySelector('.clickable-section');
-    clickable.addEventListener('click', () => {
+    const clickableSection = document.querySelector('.clickable-section');
+    clickableSection.addEventListener('click', () => {
       window.location.href = 'randomsoftheday.html';
     });
+    clickableSection.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        clickableSection.click();
+      }
+    });
+
+    document.querySelector('.menu-icon').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleMenu();
+      }
+    });
+
+    document.getElementById("year").textContent = new Date().getFullYear();
   </script>
+
+  <script src="rainbow-flash.js" defer></script>
+  <script src="holiday-theme.js" defer></script>
 </body>
 </html>
