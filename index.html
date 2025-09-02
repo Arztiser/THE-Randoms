@@ -34,13 +34,12 @@
     main.content {
       flex: 1 0 auto;
       padding: 20px;
-      overflow-y: hidden; /* remove vertical scroll on mobile vertical */
+      display: flex;           /* flex container */
+      flex-direction: column;  /* vertical stack */
+      align-items: center;     /* center horizontally */
+      overflow-y: hidden;      /* remove vertical scroll on mobile vertical */
       box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      justify-content: center; /* center vertically */
-      align-items: center;    /* center horizontally */
-      text-align: center;
+      text-align: center;      /* center text inside */
     }
 
     .topnav {
@@ -211,17 +210,13 @@
       }
     }
 
-    /* Footer becomes relative on short horizontal screens (landscape phones) */
-    @media (max-height: 500px) and (orientation: landscape) {
-      footer.site-footer {
-        position: relative;
-        bottom: auto;
-      }
-
-      main.content {
-        padding-bottom: 20px;
-      }
-    }
+    /* Footer becomes part of page flow on short landscape phones */
+@media (max-height: 500px) and (orientation: landscape) {
+  footer.site-footer {
+    position: relative;
+    bottom: auto;
+  }
+}
   </style>
 </head>
 <body>
