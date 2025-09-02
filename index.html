@@ -34,12 +34,13 @@
     main.content {
       flex: 1 0 auto;
       padding: 20px;
-      display: flex;           /* flex container */
-      flex-direction: column;  /* vertical stack */
-      align-items: center;     /* center horizontally */
-      overflow-y: hidden;      /* remove vertical scroll on mobile vertical */
+      overflow-y: hidden; /* remove vertical scroll on mobile vertical */
       box-sizing: border-box;
-      text-align: center;      /* center text inside */
+      display: flex;
+      flex-direction: column;
+      justify-content: center; /* center vertically */
+      align-items: center;    /* center horizontally */
+      text-align: center;
     }
 
     .topnav {
@@ -207,6 +208,18 @@
     @media (max-width: 768px) {
       main.content {
         padding-bottom: 70px; /* prevents overlap with footer */
+      }
+    }
+
+    /* Footer becomes relative on short horizontal screens (landscape phones) */
+    @media (max-height: 500px) and (orientation: landscape) {
+      footer.site-footer {
+        position: relative;
+        bottom: auto;
+      }
+
+      main.content {
+        padding-bottom: 20px;
       }
     }
   </style>
