@@ -32,11 +32,13 @@ function setHolidayTheme() {
   // Ensure main.content stretches
   const main = document.querySelector('main.content');
   if (main) {
-    main.style.flex = '1';
+    main.style.flex = '1 0 auto'; // grow but allow shrink
   }
 
   // Ensure footer exists
   const footer = ensureFooter();
+  footer.style.flexShrink = '0'; // prevent shrinking
+  footer.style.marginTop = 'auto'; // push footer to bottom
 
   const now = new Date();
   const month = now.getMonth() + 1;
