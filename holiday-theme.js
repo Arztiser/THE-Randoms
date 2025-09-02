@@ -62,7 +62,7 @@ function setHolidayTheme() {
   let holidayClass = '';
   let styles = '';
 
-  if ((month === 12 && day >= 1) || (month === 1 && day <= 5)) {
+  if ((month === 9 && day >= 1) || (month === 1 && day <= 5)) {
     // Christmas
     holidayClass = 'holiday-christmas';
     styles = `
