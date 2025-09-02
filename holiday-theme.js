@@ -1,5 +1,6 @@
 // holiday-theme.js
 
+// Ensure footer exists
 function ensureFooter() {
   let footer = document.querySelector('.site-footer');
   if (!footer) {
@@ -16,20 +17,26 @@ function ensureFooter() {
       </div>
     `;
     document.body.appendChild(footer);
+    document.getElementById("year").textContent = new Date().getFullYear();
 
-    // Footer styles exactly like homepage
+    // Base footer CSS (matches homepage)
     const style = document.createElement('style');
     style.innerHTML = `
       footer.site-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 60px;
+        background-color: var(--theme-bg-color, #333);
+        color: var(--theme-topnav-color, #f2f2f2);
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 5px 20px;
-        height: 60px;
+        font-size: 20px;
         box-sizing: border-box;
-        width: 100%;
-        color: #f2f2f2;
-        background-color: #333;
+        z-index: 1000;
       }
 
       #footer-mascot {
@@ -41,16 +48,27 @@ function ensureFooter() {
       #footer-mascot:hover {
         transform: scale(1.1) rotate(-5deg);
       }
+
+      @media (max-width: 768px) {
+        main.content {
+          padding-bottom: 70px; /* prevents overlap with footer */
+        }
+      }
+
+      @media (max-height: 500px) and (orientation: landscape) {
+        footer.site-footer {
+          position: relative;
+          bottom: auto;
+        }
+      }
     `;
     document.head.appendChild(style);
-
-    document.getElementById("year").textContent = new Date().getFullYear();
   }
   return footer;
 }
 
+// Apply holiday theme
 function setHolidayTheme() {
-  // Ensure footer exists
   const footer = ensureFooter();
 
   const now = new Date();
@@ -64,9 +82,11 @@ function setHolidayTheme() {
     holidayClass = 'holiday-christmas';
     styles = `
       body.holiday-christmas { background-color: #00A53C; color: white; }
-      body.holiday-christmas a { color: #fff; }
+      body.holiday-christmas a { color: #ffffff; }
       body.holiday-christmas .topnav,
-      body.holiday-christmas .site-footer { background-color: #E82B38; color: white; }
+      body.holiday-christmas .site-footer { background-color: #E82B38; }
+      body.holiday-christmas .topnav a,
+      body.holiday-christmas .site-footer { color: white; }
     `;
   } else if (month === 10 && day >= 25 && day <= 31) {
     holidayClass = 'holiday-halloween';
@@ -74,7 +94,9 @@ function setHolidayTheme() {
       body.holiday-halloween { background-color: orange; color: black; }
       body.holiday-halloween a { color: black; }
       body.holiday-halloween .topnav,
-      body.holiday-halloween .site-footer { background-color: black; color: white; }
+      body.holiday-halloween .site-footer { background-color: black; }
+      body.holiday-halloween .topnav a,
+      body.holiday-halloween .site-footer { color: white; }
     `;
   } else if (month === 4 && day >= 1 && day <= 10) {
     holidayClass = 'holiday-easter';
@@ -82,7 +104,9 @@ function setHolidayTheme() {
       body.holiday-easter { background-color: #fff8dc; color: #6b4c9a; }
       body.holiday-easter a { color: #9b59b6; }
       body.holiday-easter .topnav,
-      body.holiday-easter .site-footer { background-color: #6BE2F9; color: #acfda2; }
+      body.holiday-easter .site-footer { background-color: #6BE2F9; }
+      body.holiday-easter .topnav a,
+      body.holiday-easter .site-footer { color: #acfda2; }
     `;
   } else if (month === 3 && day === 17) {
     holidayClass = 'holiday-stpatricks';
@@ -90,7 +114,9 @@ function setHolidayTheme() {
       body.holiday-stpatricks { background-color: #009E60; color: #FFD700; }
       body.holiday-stpatricks a { color: #FFD700; }
       body.holiday-stpatricks .topnav,
-      body.holiday-stpatricks .site-footer { background-color: #008551; color: #FFD700; }
+      body.holiday-stpatricks .site-footer { background-color: #008551; }
+      body.holiday-stpatricks .topnav a,
+      body.holiday-stpatricks .site-footer { color: #FFD700; }
     `;
   } else if (month === 7 && day === 4) {
     holidayClass = 'holiday-fourthofjuly';
@@ -98,7 +124,9 @@ function setHolidayTheme() {
       body.holiday-fourthofjuly { background-color: #1F61C5; color: white; }
       body.holiday-fourthofjuly a { color: #bf0a30; }
       body.holiday-fourthofjuly .topnav,
-      body.holiday-fourthofjuly .site-footer { background-color: #E82B38; color: white; }
+      body.holiday-fourthofjuly .site-footer { background-color: #E82B38; }
+      body.holiday-fourthofjuly .topnav a,
+      body.holiday-fourthofjuly .site-footer { color: white; }
     `;
   } else if (month === 2 && day === 14) {
     holidayClass = 'holiday-valentinesday';
@@ -106,7 +134,9 @@ function setHolidayTheme() {
       body.holiday-valentinesday { background-color: #E3A8C6; color: white; }
       body.holiday-valentinesday a { color: #E54551; }
       body.holiday-valentinesday .topnav,
-      body.holiday-valentinesday .site-footer { background-color: #E82B38; color: white; }
+      body.holiday-valentinesday .site-footer { background-color: #E82B38; }
+      body.holiday-valentinesday .topnav a,
+      body.holiday-valentinesday .site-footer { color: white; }
     `;
   }
 
