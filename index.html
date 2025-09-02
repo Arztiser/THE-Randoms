@@ -15,7 +15,6 @@
     html, body {
       height: 100%;
       margin: 0;
-      overflow-x: hidden; /* prevent horizontal scroll */
     }
 
     body {
@@ -29,13 +28,26 @@
       min-height: 100vh;
       background-color: #fff;
       color: #000;
+      text-align: center; /* center content horizontally */
     }
 
     main.content {
-      flex: 1 0 auto;
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center; /* center vertically */
+      align-items: center; /* center horizontally */
       padding: 20px;
-      overflow-y: hidden; /* remove vertical scroll on mobile vertical */
-      box-sizing: border-box;
+      overflow: auto;
+    }
+
+    main.content h1 {
+      margin-bottom: 20px;
+    }
+
+    main.content p {
+      line-height: 1.5;
+      max-width: 600px;
     }
 
     .topnav {
@@ -59,6 +71,10 @@
 
     .topnav .logo {
       color: var(--theme-topnav-color);
+      text-decoration: none;
+    }
+
+    .topnav .logo:hover {
       text-decoration: none;
     }
 
@@ -185,7 +201,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 5px 20px;
-      font-size: 20px; /* slightly smaller */
+      font-size: 18px;
       box-sizing: border-box;
       z-index: 1000;
     }
@@ -204,15 +220,28 @@
       main.content {
         padding-bottom: 70px; /* prevents overlap with footer */
       }
+
+      main.content h1, main.content p {
+        padding-left: 10px;
+        padding-right: 10px;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      main.content h1 {
+        font-size: 26px;
+      }
+      main.content p {
+        font-size: 18px;
+      }
     }
   </style>
 </head>
 <body>
   <header>
     <div class="topnav">
-      <h1>
-        <a class="logo" href="#" id="homepage-logo">THE Randoms</a>
-      </h1>
+      <h1><a class="logo" href="#" id="homepage-logo">THE Randoms</a></h1>
       <span class="menu-icon" onclick="toggleMenu()" tabindex="0" role="button" aria-label="Toggle menu">&#9776;</span>
     </div>
 
@@ -289,7 +318,6 @@
       button.addEventListener('click', () => {
         const section = button.parentElement;
         const isOpen = section.classList.contains('open');
-
         document.querySelectorAll('.accordion-section').forEach(s => {
           if (s !== section) {
             s.classList.remove('open');
@@ -297,7 +325,6 @@
             s.querySelector('.accordion-content').hidden = true;
           }
         });
-
         if (!isOpen) {
           section.classList.add('open');
           button.setAttribute('aria-expanded', 'true');
