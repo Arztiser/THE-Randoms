@@ -19,15 +19,23 @@ function ensureFooter() {
     document.body.appendChild(footer);
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    // Base footer CSS (matches homepage)
+    // Base footer + layout CSS
     const style = document.createElement('style');
     style.innerHTML = `
+      html, body {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+      }
+
+      body > .container {
+        flex: 1; /* pushes footer down if page is short */
+      }
+
       footer.site-footer {
-        position: fixed;
-        bottom: 0;
-        left: 0;
+        position: relative;
         width: 100%;
-        height: 60px;
         background-color: var(--theme-bg-color, #333);
         color: var(--theme-topnav-color, #f2f2f2);
         display: flex;
@@ -37,6 +45,7 @@ function ensureFooter() {
         font-size: 20px;
         box-sizing: border-box;
         z-index: 1000;
+        margin-top: auto; /* keeps it at bottom */
       }
 
       #footer-mascot {
@@ -47,19 +56,6 @@ function ensureFooter() {
 
       #footer-mascot:hover {
         transform: scale(1.1) rotate(-5deg);
-      }
-
-      @media (max-width: 768px) {
-        main.content {
-          padding-bottom: 70px; /* prevents overlap with footer */
-        }
-      }
-
-      @media (max-height: 500px) and (orientation: landscape) {
-        footer.site-footer {
-          position: relative;
-          bottom: auto;
-        }
       }
     `;
     document.head.appendChild(style);
