@@ -224,7 +224,7 @@ async function fetchMeme(){
   const subs=['memes','dankmemes','funny'];
   const seed=getDaySeed();
   const selectedSub=subs[seed%subs.length];
-  const url=`https://www.reddit.com/r/${selectedSub}/hot.json?limit=100`;
+  const url=`https://www.reddit.com/r/${selectedSub}/hot.json?limit=50`;
   const proxyUrl=`https://corsproxy.io/?${encodeURIComponent(url)}`;
   const res=await fetch(proxyUrl);
   if(!res.ok)throw new Error('Meme fetch failed');
