@@ -9,7 +9,6 @@
   <link rel="icon" type="image/png" href="./img/pfp.png" />
   <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet" />
   <style>
-    /* Basic body + font */
     body {
       font-family: 'Jersey 10', sans-serif;
       font-size: 24px;
@@ -18,7 +17,6 @@
       background: #f9f9f9;
       color: #222;
     }
-    /* Topnav styles */
     .topnav {
       overflow: hidden;
       background-color: #333;
@@ -29,512 +27,262 @@
       height: 60px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.15);
     }
-    /* Site title as subtle clickable text */
-    .logo-link {
-      color: white;
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 24px;
-      user-select: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      height: 60px;
-    }
-    .logo-link:hover,
-    .logo-link:focus {
-      text-decoration: none;
-      color: white;
-      outline: none;
-    }
-    /* Hamburger menu */
-    .menu-icon {
-      font-size: 30px;
-      color: white;
-      cursor: pointer;
-      user-select: none;
-    }
-    /* Accordion menu container */
-    .topnav-right {
-      display: none;
-      position: fixed;
-      top: 60px;
-      left: 0;
-      right: 0;
-      background-color: #333;
-      height: calc(100vh - 60px);
-      flex-direction: column;
-      overflow-y: auto;
-      z-index: 999;
-    }
-    /* Show menu when active */
-    .topnav.active + .topnav-right {
-      display: flex;
-    }
-    body.menu-open {
-      overflow: hidden;
-    }
-    /* Accordion toggle buttons */
-    .accordion-toggle {
-      background: none;
-      color: #f2f2f2;
-      padding: 14px;
-      text-align: left;
-      font-size: 24px;
-      border: none;
-      outline: none;
-      cursor: pointer;
-      width: 100%;
-      font-family: 'Jersey 10', sans-serif;
-    }
-    /* Accordion content */
-    .accordion-content {
-      display: none;
-      flex-direction: column;
-      background-color: #444;
-    }
-    .accordion-content a {
-      padding-left: 28px;
-      padding-top: 10px;
-      padding-bottom: 10px;
-      border-top: 1px solid #555;
-      font-size: 20px;
-      color: #f2f2f2;
-      text-decoration: none;
-    }
-    .accordion-content a:hover,
-    .accordion-content a:focus {
-      background-color: rgba(255 255 255 / 0.15);
-      outline: none;
-    }
-    .accordion-section {
-      display: flex;
-      flex-direction: column;
-      border-top: 1px solid #444;
-    }
-    .accordion-section.open .accordion-content {
-      display: flex;
-    }
-    /* Main content container */
-    .content {
-      max-width: 800px;
-      margin: 40px auto;
-      padding: 0 16px;
-      text-align: center;
-      color: #222;
-    }
-    .content h1 {
-      margin-bottom: 20px;
-      font-weight: 700;
-    }
-    .content p {
-      line-height: 1.6;
-      font-size: 20px;
-    }
-    /* Loading placeholders for each random type */
-    .random-section {
-      margin: 24px 0;
-      padding: 16px;
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgb(0 0 0 / 0.1);
-      text-align: left;
-    }
-    .random-section h2 {
-      margin-top: 0;
-      font-size: 22px;
-      color: #E82B38;
-      font-weight: 700;
-      border-bottom: 2px solid #E82B38;
-      padding-bottom: 6px;
-    }
-    .random-content {
-      margin-top: 10px;
-      font-size: 18px;
-      min-height: 48px;
-    }
+    .logo-link { color: white; text-decoration: none; font-weight:700; font-size:24px; cursor:pointer; display:flex; align-items:center; height:60px;}
+    .logo-link:hover,.logo-link:focus{color:white;outline:none;text-decoration:none;}
+    .menu-icon{font-size:30px;color:white;cursor:pointer;}
+    .topnav-right{display:none;position:fixed;top:60px;left:0;right:0;background-color:#333;height:calc(100vh-60px);flex-direction:column;overflow-y:auto;z-index:999;}
+    .topnav.active+.topnav-right{display:flex;}
+    body.menu-open{overflow:hidden;}
+    .accordion-toggle{background:none;color:#f2f2f2;padding:14px;text-align:left;font-size:24px;border:none;outline:none;cursor:pointer;width:100%;font-family:'Jersey 10',sans-serif;}
+    .accordion-content{display:none;flex-direction:column;background-color:#444;}
+    .accordion-content a{padding-left:28px;padding-top:10px;padding-bottom:10px;border-top:1px solid #555;font-size:20px;color:#f2f2f2;text-decoration:none;}
+    .accordion-content a:hover,.accordion-content a:focus{background-color:rgba(255 255 255 / 0.15);outline:none;}
+    .accordion-section{display:flex;flex-direction:column;border-top:1px solid #444;}
+    .accordion-section.open .accordion-content{display:flex;}
+    .content{max-width:800px;margin:40px auto;padding:0 16px;text-align:center;color:#222;}
+    .content h1{margin-bottom:20px;font-weight:700;}
+    .content p{line-height:1.6;font-size:20px;}
+    .random-section{margin:24px 0;padding:16px;background:white;border-radius:8px;box-shadow:0 2px 5px rgb(0 0 0 / 0.1);text-align:left;}
+    .random-section h2{margin-top:0;font-size:22px;color:#E82B38;font-weight:700;border-bottom:2px solid #E82B38;padding-bottom:6px;}
+    .random-content{margin-top:10px;font-size:18px;min-height:48px;}
   </style>
 </head>
 <body>
-  <header>
-    <div class="topnav">
-      <h1><a class="logo-link" href="/">THE Randoms</a></h1>
-      <span class="menu-icon" onclick="toggleMenu()">&#9776;</span>
+<header>
+  <div class="topnav">
+    <h1><a class="logo-link" href="/">THE Randoms</a></h1>
+    <span class="menu-icon" onclick="toggleMenu()">&#9776;</span>
+  </div>
+  <nav class="topnav-right" aria-label="Site navigation">
+    <div class="accordion-section">
+      <button class="accordion-toggle" aria-expanded="false">Jokes & Fun</button>
+      <div class="accordion-content" hidden>
+        <a href="jokes.html">Jokes</a>
+        <a href="memes.html">Memes</a>
+        <a href="nfl.html">NFL</a>
+        <a href="quizzes.html">Quizzes</a>
+        <a href="wouldyourather.html">Would You Rather</a>
+      </div>
     </div>
-
-    <nav class="topnav-right" aria-label="Site navigation">
-      <div class="accordion-section">
-        <button class="accordion-toggle" aria-expanded="false">Jokes & Fun</button>
-        <div class="accordion-content" hidden>
-          <a href="jokes.html">Jokes</a>
-          <a href="memes.html">Memes</a>
-          <a href="nfl.html">NFL</a>
-          <a href="quizzes.html">Quizzes</a>
-          <a href="wouldyourather.html">Would You Rather</a>
-        </div>
+    <div class="accordion-section">
+      <button class="accordion-toggle" aria-expanded="false">Knowledge & Facts</button>
+      <div class="accordion-content" hidden>
+        <a href="advice.html">Advice</a>
+        <a href="facts.html">Facts</a>
+        <a href="pages.html">Pages</a>
+        <a href="people.html">People</a>
+        <a href="quotes.html">Quotes</a>
       </div>
-
-      <div class="accordion-section">
-        <button class="accordion-toggle" aria-expanded="false">Knowledge & Facts</button>
-        <div class="accordion-content" hidden>
-          <a href="advice.html">Advice</a>
-          <a href="facts.html">Facts</a>
-          <a href="pages.html">Pages</a>
-          <a href="people.html">People</a>
-          <a href="quotes.html">Quotes</a>
-        </div>
+    </div>
+    <div class="accordion-section">
+      <button class="accordion-toggle" aria-expanded="false">Music & Videos</button>
+      <div class="accordion-content" hidden>
+        <a href="songs.html">Songs</a>
+        <a href="videos.html">Videos</a>
       </div>
-
-      <div class="accordion-section">
-        <button class="accordion-toggle" aria-expanded="false">Music & Videos</button>
-        <div class="accordion-content" hidden>
-          <a href="songs.html">Songs</a>
-          <a href="videos.html">Videos</a>
-        </div>
+    </div>
+    <div class="accordion-section">
+      <button class="accordion-toggle" aria-expanded="false">Words, Letters & Numbers</button>
+      <div class="accordion-content" hidden>
+        <a href="letters.html">Letters</a>
+        <a href="numbers.html">Numbers</a>
+        <a href="words.html">Words</a>
       </div>
+    </div>
+  </nav>
+</header>
 
-      <div class="accordion-section">
-        <button class="accordion-toggle" aria-expanded="false">Words, Letters & Numbers</button>
-        <div class="accordion-content" hidden>
-          <a href="letters.html">Letters</a>
-          <a href="numbers.html">Numbers</a>
-          <a href="words.html">Words</a>
-        </div>
-      </div>
-    </nav>
-  </header>
+<main class="content" role="main" aria-live="polite">
+  <h1>Randoms Of The Day</h1>
+  <p>Here Are Your Randoms Of The Day For <span id="current-date"></span></p>
 
-  <main class="content" role="main" aria-live="polite">
-    <h1>Randoms Of The Day</h1>
-    <p>Here Are Your Randoms Of The Day For <span id="current-date"></span></p>
+  <section class="random-section" id="random-joke">
+    <h2>Joke</h2>
+    <div class="random-content">Loading joke...</div>
+  </section>
+  <section class="random-section" id="random-advice">
+    <h2>Advice</h2>
+    <div class="random-content">Loading advice...</div>
+  </section>
+  <section class="random-section" id="random-fact">
+    <h2>Fact</h2>
+    <div class="random-content">Loading fact...</div>
+  </section>
+  <section class="random-section" id="random-meme">
+    <h2>Meme</h2>
+    <div class="random-content">Loading meme...</div>
+  </section>
+  <section class="random-section" id="random-word">
+    <h2>Word</h2>
+    <div class="random-content">Loading word...</div>
+  </section>
+  <section class="random-section" id="random-number">
+    <h2>Number</h2>
+    <div class="random-content">Loading number...</div>
+  </section>
+  <section class="random-section" id="random-letter">
+    <h2>Letter</h2>
+    <div class="random-content">Loading letter...</div>
+  </section>
+</main>
 
-    <!-- Sections for each Random type with loading placeholders -->
-    <section class="random-section" id="random-joke">
-      <h2>Joke</h2>
-      <div class="random-content">Loading joke...</div>
-    </section>
+<script>
+const testingMode = false;
 
-    <section class="random-section" id="random-advice">
-      <h2>Advice</h2>
-      <div class="random-content">Loading advice...</div>
-    </section>
-
-    <section class="random-section" id="random-fact">
-      <h2>Fact</h2>
-      <div class="random-content">Loading fact...</div>
-    </section>
-
-    <section class="random-section" id="random-meme">
-      <h2>Meme</h2>
-      <div class="random-content">Loading meme...</div>
-    </section>
-
-    <section class="random-section" id="random-word">
-      <h2>Word</h2>
-      <div class="random-content">Loading word...</div>
-    </section>
-
-    <section class="random-section" id="random-number">
-      <h2>Number</h2>
-      <div class="random-content">Loading number...</div>
-    </section>
-
-    <section class="random-section" id="random-letter">
-      <h2>Letter</h2>
-      <div class="random-content">Loading letter...</div>
-    </section>
-  </main>
-
-  <script>
-    const testingMode = false;
-
-// Toggle hamburger menu
+// Hamburger menu toggle
 function toggleMenu() {
-  const topnav = document.querySelector('.topnav');
-  const body = document.body;
-  topnav.classList.toggle('active');
-  body.classList.toggle('menu-open');
+  document.querySelector('.topnav').classList.toggle('active');
+  document.body.classList.toggle('menu-open');
 }
 
-// Accordion toggle functionality
+// Accordion
 document.querySelectorAll('.accordion-toggle').forEach(toggle => {
   toggle.addEventListener('click', () => {
     const parent = toggle.parentElement;
     const isOpen = parent.classList.contains('open');
-
-    // Close all sections
-    document.querySelectorAll('.accordion-section').forEach(section => {
+    document.querySelectorAll('.accordion-section').forEach(section=>{
       section.classList.remove('open');
-      section.querySelector('.accordion-toggle').setAttribute('aria-expanded', 'false');
-      section.querySelector('.accordion-content').hidden = true;
+      section.querySelector('.accordion-toggle').setAttribute('aria-expanded','false');
+      section.querySelector('.accordion-content').hidden=true;
     });
-
-    // Toggle current
-    if (!isOpen) {
+    if(!isOpen){
       parent.classList.add('open');
-      toggle.setAttribute('aria-expanded', 'true');
-      parent.querySelector('.accordion-content').hidden = false;
+      toggle.setAttribute('aria-expanded','true');
+      parent.querySelector('.accordion-content').hidden=false;
     }
   });
 });
 
-// Return days since Unix epoch (local midnight)
-function getDaySeed() {
-  const now = new Date();
-  const localMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  return Math.floor(localMidnight.getTime() / (1000 * 60 * 60 * 24));
+function getDaySeed(){
+  const now=new Date();
+  const localMidnight=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  return Math.floor(localMidnight.getTime()/(1000*60*60*24));
 }
 
-// Local date string YYYY-MM-DD for cache keys & display
-function getLocalDateString() {
-  const now = new Date();
-  const localMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  return localMidnight.toISOString().slice(0, 10);
+function getLocalDateString(){
+  const now=new Date();
+  const localMidnight=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  return localMidnight.toISOString().slice(0,10);
 }
 
-// Display formatted current date (local time) in header
-function renderCurrentDate() {
-  const container = document.getElementById('current-date');
-  if (!container) return;
-
-  const now = new Date();
-  const options = { month: 'long', day: 'numeric' };
-  container.textContent = now.toLocaleDateString('en-US', options);
+function renderCurrentDate(){
+  const container=document.getElementById('current-date');
+  if(!container)return;
+  container.textContent=new Date().toLocaleDateString('en-US',{month:'long',day:'numeric'});
 }
 
-// Generic cached fetch helper
-async function fetchCached(key, fetchFn, useCache = true) {
-  const today = getLocalDateString();
-  const cacheKey = `daily_${key}`;
-  const cacheDateKey = `daily_${key}_date`;
-
-  if (useCache) {
-    const cachedData = localStorage.getItem(cacheKey);
-    const cachedDate = localStorage.getItem(cacheDateKey);
-    if (cachedData && cachedDate === today) {
-      return cachedData;
-    }
+// Generic cache fetch
+async function fetchCached(key, fetchFn, useCache=true){
+  const today=getLocalDateString();
+  const cacheKey=`daily_${key}`;
+  const cacheDateKey=`daily_${key}_date`;
+  if(useCache){
+    const cachedData=localStorage.getItem(cacheKey);
+    const cachedDate=localStorage.getItem(cacheDateKey);
+    if(cachedData && cachedDate===today) return cachedData;
   }
-
-  try {
-    const freshData = await fetchFn();
-    localStorage.setItem(cacheKey, freshData);
-    localStorage.setItem(cacheDateKey, today);
+  try{
+    const freshData=await fetchFn();
+    localStorage.setItem(cacheKey,freshData);
+    localStorage.setItem(cacheDateKey,today);
     return freshData;
-  } catch (err) {
-    console.error(`Error fetching ${key}:`, err);
-    const fallback = localStorage.getItem(cacheKey);
-    return fallback || `Could not load ${key} today.`;
+  }catch(err){
+    console.error(`Error fetching ${key}:`,err);
+    return localStorage.getItem(cacheKey) || `Could not load ${key} today.`;
   }
 }
 
-// Render letter A-Z deterministic by day or random if testing
-function renderLetter() {
-  const container = document.querySelector('#random-letter .random-content');
-  if (!container) return;
-  const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
-  if (testingMode) {
-    const randomIndex = Math.floor(Math.random() * letters.length);
-    container.textContent = letters[randomIndex];
-  } else {
-    const index = getDaySeed() % letters.length;
-    container.textContent = letters[index];
-  }
+// Render functions
+function renderLetter(){
+  const container=document.querySelector('#random-letter .random-content');
+  if(!container)return;
+  const letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const index=testingMode ? Math.floor(Math.random()*letters.length) : getDaySeed()%letters.length;
+  container.textContent=letters[index];
 }
 
-// Render number deterministic by day (1 to 1,000,000) or random if testing
-function renderNumber() {
-  const container = document.querySelector('#random-number .random-content');
-  if (!container) return;
-
-  if (testingMode) {
-    const randomNum = Math.floor(Math.random() * 1000000) + 1;
-    container.textContent = randomNum.toLocaleString();
-  } else {
-    const num = (getDaySeed() * 9301 + 49297) % 1000000 + 1;
-    container.textContent = num.toLocaleString();
-  }
+function renderNumber(){
+  const container=document.querySelector('#random-number .random-content');
+  if(!container)return;
+  const num=testingMode ? Math.floor(Math.random()*1000000)+1 : (getDaySeed()*9301+49297)%1000000+1;
+  container.textContent=num.toLocaleString();
 }
 
-// Fetch joke from API
-async function fetchJoke() {
-  const res = await fetch('https://official-joke-api.appspot.com/jokes/random');
-  if (!res.ok) throw new Error('Joke fetch failed');
-  const data = await res.json();
-  return `${data.setup} ${data.punchline}`;
-}
-async function renderJoke(useCache = true) {
-  const container = document.querySelector('#random-joke .random-content');
-  if (!container) return;
-  const joke = await fetchCached('joke', fetchJoke, useCache);
-  container.textContent = joke;
-}
+async function fetchJoke(){const res=await fetch('https://official-joke-api.appspot.com/jokes/random');if(!res.ok)throw new Error('Joke fetch failed');const data=await res.json();return `${data.setup} ${data.punchline}`;}
+async function renderJoke(useCache=true){const container=document.querySelector('#random-joke .random-content');if(!container)return;container.textContent=await fetchCached('joke',fetchJoke,useCache);}
 
-// Fetch advice from API
-async function fetchAdvice() {
-  const res = await fetch('https://api.adviceslip.com/advice');
-  if (!res.ok) throw new Error('Advice fetch failed');
-  const data = await res.json();
-  return data.slip.advice;
-}
-async function renderAdvice(useCache = true) {
-  const container = document.querySelector('#random-advice .random-content');
-  if (!container) return;
-  const advice = await fetchCached('advice', fetchAdvice, useCache);
-  container.textContent = advice;
+async function fetchAdvice(){const res=await fetch('https://api.adviceslip.com/advice');if(!res.ok)throw new Error('Advice fetch failed');const data=await res.json();return data.slip.advice;}
+async function renderAdvice(useCache=true){const container=document.querySelector('#random-advice .random-content');if(!container)return;container.textContent=await fetchCached('advice',fetchAdvice,useCache);}
+
+async function fetchFact(){const res=await fetch('https://uselessfacts.jsph.pl/random.json?language=en');if(!res.ok)throw new Error('Fact fetch failed');const data=await res.json();return data.text;}
+async function renderFact(useCache=true){const container=document.querySelector('#random-fact .random-content');if(!container)return;container.textContent=await fetchCached('fact',fetchFact,useCache);}
+
+async function fetchWord(){const res=await fetch('https://random-word-api.herokuapp.com/word?number=1');if(!res.ok)throw new Error('Word fetch failed');const data=await res.json();return data[0];}
+async function renderWord(useCache=true){const container=document.querySelector('#random-word .random-content');if(!container)return;container.textContent=await fetchCached('word',fetchWord,useCache);}
+
+async function fetchMeme(){
+  const subs=['memes','dankmemes','funny'];
+  const seed=getDaySeed();
+  const selectedSub=subs[seed%subs.length];
+  const url=`https://www.reddit.com/r/${selectedSub}/hot.json?limit=100`;
+  const proxyUrl=`https://corsproxy.io/?${encodeURIComponent(url)}`;
+  const res=await fetch(proxyUrl);
+  if(!res.ok)throw new Error('Meme fetch failed');
+  const json=await res.json();
+  const memes=json.data.children.filter(post=>post.data.url && /\.(jpg|jpeg|png)$/i.test(post.data.url));
+  if(memes.length===0)throw new Error('No memes found');
+  return memes[seed%memes.length].data.url;
 }
 
-// Fetch fact from API
-async function fetchFact() {
-  const res = await fetch('https://uselessfacts.jsph.pl/random.json?language=en');
-  if (!res.ok) throw new Error('Fact fetch failed');
-  const data = await res.json();
-  return data.text;
-}
-async function renderFact(useCache = true) {
-  const container = document.querySelector('#random-fact .random-content');
-  if (!container) return;
-  const fact = await fetchCached('fact', fetchFact, useCache);
-  container.textContent = fact;
+async function renderMeme(useCache=true){
+  const container=document.querySelector('#random-meme .random-content');
+  if(!container)return;
+  try{
+    const memeUrl=await fetchCached('meme',fetchMeme,useCache);
+    container.innerHTML=`<img src="${memeUrl}" alt="Daily Meme" style="max-width:100%;border-radius:8px;margin-top:10px;" />`;
+  }catch{return container.textContent='Failed to load meme.';}
 }
 
-// Fetch word from API
-async function fetchWord() {
-  const res = await fetch('https://random-word-api.herokuapp.com/word?number=1');
-  if (!res.ok) throw new Error('Word fetch failed');
-  const data = await res.json();
-  return data[0];
-}
-async function renderWord(useCache = true) {
-  const container = document.querySelector('#random-word .random-content');
-  if (!container) return;
-  const word = await fetchCached('word', fetchWord, useCache);
-  container.textContent = word;
-}
-
-// Fetch meme (image only) from Reddit, deterministic selection by day
-async function fetchMeme() {
-  const subs = ['memes', 'dankmemes', 'funny'];
-  const seed = getDaySeed();
-  const selectedSub = subs[seed % subs.length];
-  const url = `https://www.reddit.com/r/${selectedSub}/hot.json?limit=100`;
-  const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(url)}`;
-  const res = await fetch(proxyUrl);
-  if (!res.ok) throw new Error('Meme fetch failed');
-  const json = await res.json();
-
-  const memes = json.data.children.filter(post =>
-    post.data.url && /\.(jpg|jpeg|png)$/i.test(post.data.url)
-  );
-  if (memes.length === 0) throw new Error('No memes found');
-
-  const memeIndex = seed % memes.length;
-  const memeUrl = memes[memeIndex].data.url;
-  return memeUrl;
-}
-async function renderMeme(useCache = true) {
-  const container = document.querySelector('#random-meme .random-content');
-  if (!container) return;
-
-  try {
-    const memeUrl = await fetchCached('meme', fetchMeme, useCache);
-    container.innerHTML = `<img src="${memeUrl}" alt="Daily Meme" style="max-width:100%; border-radius:8px; margin-top: 10px;" />`;
-  } catch {
-    container.textContent = 'Failed to load meme.';
-  }
-}
-
-// Render cached data ONLY, no fetch (for initial page load when cache valid)
-function renderFromCacheOnly() {
-  const keys = [
-    { id: 'random-joke', key: 'joke' },
-    { id: 'random-advice', key: 'advice' },
-    { id: 'random-fact', key: 'fact' },
-    { id: 'random-word', key: 'word' },
-    { id: 'random-meme', key: 'meme' }
-  ];
-
-  keys.forEach(({ id, key }) => {
-    const container = document.querySelector(`#${id} .random-content`);
-    const cachedData = localStorage.getItem(`daily_${key}`);
-    if (!container) return;
-
-    if (key === 'meme') {
-      container.innerHTML = cachedData
-        ? `<img src="${cachedData}" alt="Daily Meme" style="max-width:100%; border-radius:8px; margin-top: 10px;" />`
-        : 'No cached meme available.';
-    } else {
-      container.textContent = cachedData || `No cached ${key} available.`;
-    }
+function renderFromCacheOnly(){
+  const keys=[{id:'random-joke',key:'joke'},{id:'random-advice',key:'advice'},{id:'random-fact',key:'fact'},{id:'random-word',key:'word'},{id:'random-meme',key:'meme'}];
+  keys.forEach(({id,key})=>{
+    const container=document.querySelector(`#${id} .random-content`);
+    const cachedData=localStorage.getItem(`daily_${key}`);
+    if(!container)return;
+    if(key==='meme') container.innerHTML=cachedData?`<img src="${cachedData}" alt="Daily Meme" style="max-width:100%;border-radius:8px;margin-top:10px;" />`:'No cached meme available.';
+    else container.textContent=cachedData||`No cached ${key} available.`;
   });
-
-  // Also render deterministic letter and number (not cached)
   renderLetter();
   renderNumber();
 }
 
-// Refresh all randoms and render current date (fetch or cache based on useCache)
-async function refreshAll() {
-  const useCache = !testingMode;
-  await Promise.all([
-    renderJoke(useCache),
-    renderAdvice(useCache),
-    renderFact(useCache),
-    renderWord(useCache),
-    renderMeme(useCache)
-  ]);
+async function refreshAll(){
+  const useCache=!testingMode;
+  await Promise.all([renderJoke(useCache),renderAdvice(useCache),renderFact(useCache),renderWord(useCache),renderMeme(useCache)]);
   renderLetter();
   renderNumber();
 }
 
-// Schedule update at next local midnight, then every 24 hours after
-function scheduleMidnightRefresh() {
-  const now = new Date();
-  const nextMidnight = new Date(
-    now.getFullYear(),
-    now.getMonth(),
-    now.getDate() + 1,
-    0, 0, 0, 0
-  );
-  const msUntilMidnight = nextMidnight - now;
-
-  setTimeout(async () => {
+function scheduleMidnightRefresh(){
+  const now=new Date();
+  const nextMidnight=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1,0,0,0,0);
+  setTimeout(async()=>{
     renderCurrentDate();
     await refreshAll();
-
-    setInterval(async () => {
-      renderCurrentDate();
-      await refreshAll();
-    }, 24 * 60 * 60 * 1000);
-
-  }, msUntilMidnight);
+    setInterval(async()=>{renderCurrentDate();await refreshAll();},24*60*60*1000);
+  },nextMidnight-now);
 }
 
-// On page load
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded',async()=>{
   renderCurrentDate();
-
-  const today = getLocalDateString();
-  const keys = ['joke', 'advice', 'fact', 'word', 'meme'];
-  const hasFullCache = keys.every(key => {
-    const cacheDate = localStorage.getItem(`daily_${key}_date`);
-    const cacheData = localStorage.getItem(`daily_${key}`);
-    return cacheData && cacheDate === today;
-  });
-
-  if (!hasFullCache) {
-    // No valid cache for today, fetch fresh
-    await refreshAll();
-  } else {
-    // Use cache only, no fetch
-    renderFromCacheOnly();
-  }
-
+  const today=getLocalDateString();
+  const keys=['joke','advice','fact','word','meme'];
+  const hasFullCache=keys.every(key=>{const cacheDate=localStorage.getItem(`daily_${key}_date`);const cacheData=localStorage.getItem(`daily_${key}`);return cacheData && cacheDate===today;});
+  if(!hasFullCache){await refreshAll();}
+  else renderFromCacheOnly();
   scheduleMidnightRefresh();
 });
-  </script>
-
-  <script src="holiday-theme.js" defer></script>
+</script>
+<script src="holiday-theme.js" defer></script>
 </body>
 </html>
