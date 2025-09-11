@@ -192,7 +192,7 @@ async function fetchCached(key, fetchFn, useCache=true){
   }
 }
 
-// Render functions
+// Letters & numbers (instant)
 function renderLetter(){
   const container=document.querySelector('#random-letter .random-content');
   if(!container)return;
@@ -208,6 +208,33 @@ function renderNumber(){
   container.textContent=num.toLocaleString();
 }
 
+// Fallback word list
+const fallbackWords = ["random","fun","color","code","web","page","randuino","site","day","fact","letter"];
+
+// Word with timeout + fallback
+async function fetchWord(){
+  const url = 'https://random-word-api.herokuapp.com/word?number=1';
+  try {
+    const res = await Promise.race([
+      fetch(url),
+      new Promise((_, reject) => setTimeout(()=>reject("Timeout"),5000))
+    ]);
+    if(!res.ok) throw new Error('Word fetch failed');
+    const data = await res.json();
+    return data[0];
+  } catch {
+    const seed = getDaySeed();
+    return fallbackWords[seed % fallbackWords.length];
+  }
+}
+
+async function renderWord(useCache=true){
+  const container=document.querySelector('#random-word .random-content');
+  if(!container)return;
+  container.textContent=await fetchCached('word',fetchWord,useCache);
+}
+
+// Jokes, advice, facts, memes
 async function fetchJoke(){const res=await fetch('https://official-joke-api.appspot.com/jokes/random');if(!res.ok)throw new Error('Joke fetch failed');const data=await res.json();return `${data.setup} ${data.punchline}`;}
 async function renderJoke(useCache=true){const container=document.querySelector('#random-joke .random-content');if(!container)return;container.textContent=await fetchCached('joke',fetchJoke,useCache);}
 
@@ -216,9 +243,6 @@ async function renderAdvice(useCache=true){const container=document.querySelecto
 
 async function fetchFact(){const res=await fetch('https://uselessfacts.jsph.pl/random.json?language=en');if(!res.ok)throw new Error('Fact fetch failed');const data=await res.json();return data.text;}
 async function renderFact(useCache=true){const container=document.querySelector('#random-fact .random-content');if(!container)return;container.textContent=await fetchCached('fact',fetchFact,useCache);}
-
-async function fetchWord(){const res=await fetch('https://random-word-api.herokuapp.com/word?number=1');if(!res.ok)throw new Error('Word fetch failed');const data=await res.json();return data[0];}
-async function renderWord(useCache=true){const container=document.querySelector('#random-word .random-content');if(!container)return;container.textContent=await fetchCached('word',fetchWord,useCache);}
 
 async function fetchMeme(){
   const subs=['memes','dankmemes','funny'];
@@ -243,6 +267,7 @@ async function renderMeme(useCache=true){
   }catch{return container.textContent='Failed to load meme.';}
 }
 
+// Render letters/numbers instantly if cached
 function renderFromCacheOnly(){
   const keys=[{id:'random-joke',key:'joke'},{id:'random-advice',key:'advice'},{id:'random-fact',key:'fact'},{id:'random-word',key:'word'},{id:'random-meme',key:'meme'}];
   keys.forEach(({id,key})=>{
@@ -256,11 +281,12 @@ function renderFromCacheOnly(){
   renderNumber();
 }
 
+// Refresh all (slow stuff async, letters/numbers instant)
 async function refreshAll(){
-  const useCache=!testingMode;
-  await Promise.all([renderJoke(useCache),renderAdvice(useCache),renderFact(useCache),renderWord(useCache),renderMeme(useCache)]);
   renderLetter();
   renderNumber();
+  const useCache = !testingMode;
+  await Promise.all([renderJoke(useCache), renderAdvice(useCache), renderFact(useCache), renderWord(useCache), renderMeme(useCache)]);
 }
 
 function scheduleMidnightRefresh(){
@@ -275,9 +301,16 @@ function scheduleMidnightRefresh(){
 
 document.addEventListener('DOMContentLoaded',async()=>{
   renderCurrentDate();
+  renderLetter(); // instant
+  renderNumber(); // instant
+
   const today=getLocalDateString();
   const keys=['joke','advice','fact','word','meme'];
-  const hasFullCache=keys.every(key=>{const cacheDate=localStorage.getItem(`daily_${key}_date`);const cacheData=localStorage.getItem(`daily_${key}`);return cacheData && cacheDate===today;});
+  const hasFullCache=keys.every(key=>{
+    const cacheDate=localStorage.getItem(`daily_${key}_date`);
+    const cacheData=localStorage.getItem(`daily_${key}`);
+    return cacheData && cacheDate===today;
+  });
   if(!hasFullCache){await refreshAll();}
   else renderFromCacheOnly();
   scheduleMidnightRefresh();
