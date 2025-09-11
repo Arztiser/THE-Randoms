@@ -1,51 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#E82B38" />
-  <meta name="description" content="THE Randoms - Randoms Of The Day" />
-  <title>Randoms Of The Day - THE Randoms</title>
-  <link rel="icon" type="image/png" href="./img/pfp.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet" />
-  <style>
-    body {
-      font-family: 'Jersey 10', sans-serif;
-      font-size: 24px;
-      margin: 0;
-      padding: 0;
-      background: #f9f9f9;
-      color: #222;
-    }
-    .topnav {
-      overflow: hidden;
-      background-color: #333;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 16px;
-      height: 60px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-    }
-    .logo-link { color: white; text-decoration: none; font-weight:700; font-size:24px; cursor:pointer; display:flex; align-items:center; height:60px;}
-    .logo-link:hover,.logo-link:focus{color:white;outline:none;text-decoration:none;}
-    .menu-icon{font-size:30px;color:white;cursor:pointer;}
-    .topnav-right{display:none;position:fixed;top:60px;left:0;right:0;background-color:#333;height:calc(100vh-60px);flex-direction:column;overflow-y:auto;z-index:999;}
-    .topnav.active+.topnav-right{display:flex;}
-    body.menu-open{overflow:hidden;}
-    .accordion-toggle{background:none;color:#f2f2f2;padding:14px;text-align:left;font-size:24px;border:none;outline:none;cursor:pointer;width:100%;font-family:'Jersey 10',sans-serif;}
-    .accordion-content{display:none;flex-direction:column;background-color:#444;}
-    .accordion-content a{padding-left:28px;padding-top:10px;padding-bottom:10px;border-top:1px solid #555;font-size:20px;color:#f2f2f2;text-decoration:none;}
-    .accordion-content a:hover,.accordion-content a:focus{background-color:rgba(255 255 255 / 0.15);outline:none;}
-    .accordion-section{display:flex;flex-direction:column;border-top:1px solid #444;}
-    .accordion-section.open .accordion-content{display:flex;}
-    .content{max-width:800px;margin:40px auto;padding:0 16px;text-align:center;color:#222;}
-    .content h1{margin-bottom:20px;font-weight:700;}
-    .content p{line-height:1.6;font-size:20px;}
-    .random-section{margin:24px 0;padding:16px;background:white;border-radius:8px;box-shadow:0 2px 5px rgb(0 0 0 / 0.1);text-align:left;}
-    .random-section h2{margin-top:0;font-size:22px;color:#E82B38;font-weight:700;border-bottom:2px solid #E82B38;padding-bottom:6px;}
-    .random-content{margin-top:10px;font-size:18px;min-height:48px;}
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#E82B38" />
+<meta name="description" content="THE Randoms - Randoms Of The Day" />
+<title>Randoms Of The Day - THE Randoms</title>
+<link rel="icon" type="image/png" href="./img/pfp.png" />
+<link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet" />
+<style>
+body {
+  font-family: 'Jersey 10', sans-serif;
+  font-size: 24px;
+  margin: 0;
+  padding: 0;
+  background: #f9f9f9;
+  color: #222;
+}
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  height: 60px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+.logo-link { color: white; text-decoration: none; font-weight:700; font-size:24px; cursor:pointer; display:flex; align-items:center; height:60px;}
+.logo-link:hover,.logo-link:focus{color:white;outline:none;text-decoration:none;}
+.menu-icon{font-size:30px;color:white;cursor:pointer;}
+.topnav-right{
+  display:none;
+  position:fixed;
+  top:60px;
+  left:0;
+  right:0;
+  bottom:0; /* fill to bottom */
+  background-color:#333;
+  flex-direction:column;
+  overflow-y:auto;
+  z-index:999;
+}
+.topnav.active+.topnav-right{display:flex;}
+body.menu-open{overflow:hidden;}
+.accordion-toggle{background:none;color:#f2f2f2;padding:14px;text-align:left;font-size:24px;border:none;outline:none;cursor:pointer;width:100%;font-family:'Jersey 10',sans-serif;}
+.accordion-content{display:none;flex-direction:column;background-color:#444;}
+.accordion-content a{padding-left:28px;padding-top:10px;padding-bottom:10px;border-top:1px solid #555;font-size:20px;color:#f2f2f2;text-decoration:none;}
+.accordion-content a:hover,.accordion-content a:focus{background-color:rgba(255 255 255 / 0.15);outline:none;}
+.accordion-section{display:flex;flex-direction:column;border-top:1px solid #444;}
+.accordion-section.open .accordion-content{display:flex;}
+.content{max-width:800px;margin:40px auto;padding:0 16px;text-align:center;color:#222;}
+.content h1{margin-bottom:20px;font-weight:700;}
+.content p{line-height:1.6;font-size:20px;}
+.random-section{margin:24px 0;padding:16px;background:white;border-radius:8px;box-shadow:0 2px 5px rgb(0 0 0 / 0.1);text-align:left;}
+.random-section h2{margin-top:0;font-size:22px;color:#E82B38;font-weight:700;border-bottom:2px solid #E82B38;padding-bottom:6px;}
+.random-content{margin-top:10px;font-size:18px;min-height:48px;}
+</style>
 </head>
 <body>
 <header>
@@ -127,7 +138,7 @@
 </main>
 
 <script>
-const testingMode = false;
+const testingMode=false;
 
 // Hamburger menu toggle
 function toggleMenu() {
@@ -136,10 +147,10 @@ function toggleMenu() {
 }
 
 // Accordion
-document.querySelectorAll('.accordion-toggle').forEach(toggle => {
-  toggle.addEventListener('click', () => {
-    const parent = toggle.parentElement;
-    const isOpen = parent.classList.contains('open');
+document.querySelectorAll('.accordion-toggle').forEach(toggle=>{
+  toggle.addEventListener('click',()=>{
+    const parent=toggle.parentElement;
+    const isOpen=parent.classList.contains('open');
     document.querySelectorAll('.accordion-section').forEach(section=>{
       section.classList.remove('open');
       section.querySelector('.accordion-toggle').setAttribute('aria-expanded','false');
@@ -208,30 +219,35 @@ function renderNumber(){
   container.textContent=num.toLocaleString();
 }
 
-// Fallback word list
-const fallbackWords = ["random","fun","color","code","web","page","randuino","site","day","fact","letter"];
+// === Word list caching (monthly) ===
+async function fetchWordList(){
+  const cacheKey='word_list';
+  const cacheDateKey='word_list_month';
+  const now=new Date();
+  const currentMonth=now.getFullYear()+'-'+(now.getMonth()+1);
+  const cachedMonth=localStorage.getItem(cacheDateKey);
+  const cachedData=localStorage.getItem(cacheKey);
 
-// Word with timeout + fallback
-async function fetchWord(){
-  const url = 'https://random-word-api.herokuapp.com/word?number=1';
-  try {
-    const res = await Promise.race([
-      fetch(url),
-      new Promise((_, reject) => setTimeout(()=>reject("Timeout"),5000))
-    ]);
-    if(!res.ok) throw new Error('Word fetch failed');
-    const data = await res.json();
-    return data[0];
-  } catch {
-    const seed = getDaySeed();
-    return fallbackWords[seed % fallbackWords.length];
+  if(cachedData && cachedMonth===currentMonth) return JSON.parse(cachedData);
+
+  try{
+    const res=await fetch('https://random-word-api.herokuapp.com/word?number=50');
+    const data=await res.json();
+    localStorage.setItem(cacheKey,JSON.stringify(data));
+    localStorage.setItem(cacheDateKey,currentMonth);
+    return data;
+  }catch(err){
+    console.error('Error fetching word list:',err);
+    return cachedData ? JSON.parse(cachedData) : ["random","fun","color","code","web","page","day","fact","letter"];
   }
 }
 
 async function renderWord(useCache=true){
   const container=document.querySelector('#random-word .random-content');
   if(!container)return;
-  container.textContent=await fetchCached('word',fetchWord,useCache);
+  const wordList=await fetchWordList();
+  const index=getDaySeed()%wordList.length;
+  container.textContent=wordList[index];
 }
 
 // Jokes, advice, facts, memes
@@ -267,7 +283,7 @@ async function renderMeme(useCache=true){
   }catch{return container.textContent='Failed to load meme.';}
 }
 
-// Render letters/numbers instantly if cached
+// Instant render from cache
 function renderFromCacheOnly(){
   const keys=[{id:'random-joke',key:'joke'},{id:'random-advice',key:'advice'},{id:'random-fact',key:'fact'},{id:'random-word',key:'word'},{id:'random-meme',key:'meme'}];
   keys.forEach(({id,key})=>{
@@ -281,14 +297,15 @@ function renderFromCacheOnly(){
   renderNumber();
 }
 
-// Refresh all (slow stuff async, letters/numbers instant)
+// Refresh all
 async function refreshAll(){
   renderLetter();
   renderNumber();
-  const useCache = !testingMode;
+  const useCache=!testingMode;
   await Promise.all([renderJoke(useCache), renderAdvice(useCache), renderFact(useCache), renderWord(useCache), renderMeme(useCache)]);
 }
 
+// Schedule midnight refresh
 function scheduleMidnightRefresh(){
   const now=new Date();
   const nextMidnight=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1,0,0,0,0);
@@ -299,11 +316,11 @@ function scheduleMidnightRefresh(){
   },nextMidnight-now);
 }
 
+// DOM ready
 document.addEventListener('DOMContentLoaded',async()=>{
   renderCurrentDate();
-  renderLetter(); // instant
-  renderNumber(); // instant
-
+  renderLetter();
+  renderNumber();
   const today=getLocalDateString();
   const keys=['joke','advice','fact','word','meme'];
   const hasFullCache=keys.every(key=>{
