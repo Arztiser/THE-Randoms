@@ -11,7 +11,7 @@ function ensureFooter() {
         <p>&copy; <span id="year"></span> THE Randoms</p>
       </div>
       <div class="footer-right">
-        <a href="randuino.html" title="Meet Randuino!">
+        <a href="randuino.html" title="Randuino">
           <img id="footer-mascot" src="img/Mascot.png" alt="Randuino">
         </a>
       </div>
@@ -63,9 +63,10 @@ function ensureFooter() {
   return footer;
 }
 
-// Apply holiday theme
+// Apply holiday theme + mascot
 function setHolidayTheme() {
   const footer = ensureFooter();
+  const mascotImg = footer.querySelector('#footer-mascot');
 
   const now = new Date();
   const month = now.getMonth() + 1;
@@ -73,9 +74,11 @@ function setHolidayTheme() {
 
   let holidayClass = '';
   let styles = '';
+  let mascotFile = 'Mascot.png'; // default mascot
 
   if ((month === 12 && day >= 1) || (month === 1 && day <= 5)) {
     holidayClass = 'holiday-christmas';
+    mascotFile = 'christmasmascot.png';
     styles = `
       body.holiday-christmas { background-color: #00A53C; color: white; }
       body.holiday-christmas a { color: #ffffff; }
@@ -86,6 +89,7 @@ function setHolidayTheme() {
     `;
   } else if (month === 10 && day >= 25 && day <= 31) {
     holidayClass = 'holiday-halloween';
+    mascotFile = 'halloweenmascot.png';
     styles = `
       body.holiday-halloween { background-color: orange; color: black; }
       body.holiday-halloween a { color: black; }
@@ -94,18 +98,9 @@ function setHolidayTheme() {
       body.holiday-halloween .topnav a,
       body.holiday-halloween .site-footer { color: white; }
     `;
-  } else if (month === 4 && day >= 1 && day <= 10) {
-    holidayClass = 'holiday-easter';
-    styles = `
-      body.holiday-easter { background-color: #fff8dc; color: #6b4c9a; }
-      body.holiday-easter a { color: #9b59b6; }
-      body.holiday-easter .topnav,
-      body.holiday-easter .site-footer { background-color: #6BE2F9; }
-      body.holiday-easter .topnav a,
-      body.holiday-easter .site-footer { color: #acfda2; }
-    `;
   } else if (month === 3 && day === 17) {
     holidayClass = 'holiday-stpatricks';
+    mascotFile = 'stpatricksmascot.png';
     styles = `
       body.holiday-stpatricks { background-color: #009E60; color: #FFD700; }
       body.holiday-stpatricks a { color: #FFD700; }
@@ -116,6 +111,7 @@ function setHolidayTheme() {
     `;
   } else if (month === 7 && day === 4) {
     holidayClass = 'holiday-fourthofjuly';
+    mascotFile = 'fourthofjulymascot.png';
     styles = `
       body.holiday-fourthofjuly { background-color: #1F61C5; color: white; }
       body.holiday-fourthofjuly a { color: #bf0a30; }
@@ -126,6 +122,7 @@ function setHolidayTheme() {
     `;
   } else if (month === 2 && day === 14) {
     holidayClass = 'holiday-valentinesday';
+    mascotFile = 'valentinesmascot.png';
     styles = `
       body.holiday-valentinesday { background-color: #E3A8C6; color: white; }
       body.holiday-valentinesday a { color: #E54551; }
@@ -143,6 +140,9 @@ function setHolidayTheme() {
     styleSheet.type = "text/css";
     styleSheet.innerText = styles;
     document.head.appendChild(styleSheet);
+
+    // Swap mascot image
+    mascotImg.src = `img/${mascotFile}`;
   }
 }
 
