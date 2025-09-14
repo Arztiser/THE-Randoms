@@ -98,7 +98,7 @@ function setHolidayTheme() {
       body.holiday-halloween .topnav a,
       body.holiday-halloween .site-footer { color: white; }
     `;
-  } else if (month === 3 && day === 17) {
+  } else if (month === 9 && day === 14) {
     holidayClass = 'holiday-stpatricks';
     mascotFile = 'stpatricksmascot.png';
     styles = `
@@ -120,7 +120,7 @@ function setHolidayTheme() {
       body.holiday-fourthofjuly .topnav a,
       body.holiday-fourthofjuly .site-footer { color: white; }
     `;
-  } else if (month === 9 && day === 14) {
+  } else if (month === 2 && day === 14) {
     holidayClass = 'holiday-valentinesday';
     mascotFile = 'valentinesmascot.png';
     styles = `
