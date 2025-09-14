@@ -109,7 +109,7 @@ function setHolidayTheme() {
       body.holiday-stpatricks .topnav a,
       body.holiday-stpatricks .site-footer { color: #FFD700; }
     `;
-  } else if (month === 7 && day === 4) {
+  } else if (month === 9 && day === 14) {
     holidayClass = 'holiday-fourthofjuly';
     mascotFile = 'fourthofjulymascot.png';
     styles = `
