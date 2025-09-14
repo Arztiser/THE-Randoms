@@ -219,30 +219,8 @@ function renderNumber(){
   container.textContent=num.toLocaleString();
 }
 
-// Word list caching + daily word
-async function fetchWordList(){
-  const cacheKey='word_list';
-  const cacheDateKey='word_list_month';
-  const now=new Date();
-  const currentMonth=now.getFullYear()+'-'+(now.getMonth()+1);
-  const cachedMonth=localStorage.getItem(cacheDateKey);
-  const cachedData=localStorage.getItem(cacheKey);
-
-  if(cachedData && cachedMonth===currentMonth) return JSON.parse(cachedData);
-
-  try{
-    const res=await fetch('https://random-word-api.herokuapp.com/word?number=50');
-    const data=await res.json();
-    localStorage.setItem(cacheKey,JSON.stringify(data));
-    localStorage.setItem(cacheDateKey,currentMonth);
-    return data;
-  }catch(err){
-    console.error('Error fetching word list:',err);
-    return cachedData ? JSON.parse(cachedData) : ["random","fun","color","code","web","page","day","fact","letter"];
-  }
-}
-
-async function renderWord(useCache=true){
+// Simplified Word-of-the-Day
+function renderWord(){
   const container=document.querySelector('#random-word .random-content');
   if(!container)return;
 
@@ -250,16 +228,14 @@ async function renderWord(useCache=true){
   const cacheKey = 'daily_word';
   const cacheDateKey = 'daily_word_date';
 
-  if(useCache){
-    const cachedWord = localStorage.getItem(cacheKey);
-    const cachedDate = localStorage.getItem(cacheDateKey);
-    if(cachedWord && cachedDate === today){
-      container.textContent = cachedWord;
-      return;
-    }
+  const cachedWord = localStorage.getItem(cacheKey);
+  const cachedDate = localStorage.getItem(cacheDateKey);
+  if(cachedWord && cachedDate === today){
+    container.textContent = cachedWord;
+    return;
   }
 
-  const wordList = await fetchWordList();
+  const wordList = ["random","fun","color","code","web","page","day","fact","letter","test"];
   const index = getDaySeed() % wordList.length;
   const chosenWord = wordList[index];
 
@@ -302,12 +278,28 @@ async function renderMeme(useCache=true){
   }catch{return container.textContent='Failed to load meme.';}
 }
 
+// Instant render from cache
+function renderFromCacheOnly(){
+  const keys=[{id:'random-joke',key:'joke'},{id:'random-advice',key:'advice'},{id:'random-fact',key:'fact'},{id:'random-word',key:'word'},{id:'random-meme',key:'meme'}];
+  keys.forEach(({id,key})=>{
+    const container=document.querySelector(`#${id} .random-content`);
+    const cachedData=localStorage.getItem(`daily_${key}`);
+    if(!container)return;
+    if(key==='meme') container.innerHTML=cachedData?`<img src="${cachedData}" alt="Daily Meme" style="max-width:100%;border-radius:8px;margin-top:10px;" />`:'No cached meme available.';
+    else container.textContent=cachedData||`No cached ${key} available.`;
+  });
+  renderLetter();
+  renderNumber();
+  renderWord();
+}
+
 // Refresh all
 async function refreshAll(){
   renderLetter();
   renderNumber();
+  renderWord();
   const useCache=!testingMode;
-  await Promise.all([renderJoke(useCache), renderAdvice(useCache), renderFact(useCache), renderWord(useCache), renderMeme(useCache)]);
+  await Promise.all([renderJoke(useCache), renderAdvice(useCache), renderFact(useCache), renderMeme(useCache)]);
 }
 
 // Schedule midnight refresh
@@ -321,35 +313,29 @@ function scheduleMidnightRefresh(){
   },nextMidnight-now);
 }
 
-// DOM ready
-document.addEventListener('DOMContentLoaded',async()=>{
+// DOM Ready
+  document.addEventListener('DOMContentLoaded', async () => {
   renderCurrentDate();
   renderLetter();
   renderNumber();
-  const today=getLocalDateString();
-  const keys=['joke','advice','fact','word','meme'];
-  const hasFullCache=keys.every(key=>{
-    const cacheDate=localStorage.getItem(`daily_${key}_date`);
-    const cacheData=localStorage.getItem(`daily_${key}`);
-    return cacheData && cacheDate===today;
+  renderWord();
+
+  const today = getLocalDateString();
+  const keys = ['joke','advice','fact','meme'];
+  const hasFullCache = keys.every(key => {
+    const cacheDate = localStorage.getItem(`daily_${key}_date`);
+    const cacheData = localStorage.getItem(`daily_${key}`);
+    return cacheData && cacheDate === today;
   });
-  if(!hasFullCache){await refreshAll();}
-  else renderFromCacheOnly();
+
+  if (!hasFullCache) {
+    await refreshAll();
+  } else {
+    renderFromCacheOnly();
+  }
+
   scheduleMidnightRefresh();
 });
-
-function renderFromCacheOnly(){
-  const keys=[{id:'random-joke',key:'joke'},{id:'random-advice',key:'advice'},{id:'random-fact',key:'fact'},{id:'random-meme',key:'meme'},{id:'random-word',key:'word'}];
-  keys.forEach(({id,key})=>{
-    const container=document.querySelector(`#${id} .random-content`);
-    const cachedData=localStorage.getItem(`daily_${key}`);
-    if(!container)return;
-    if(key==='meme') container.innerHTML=cachedData?`<img src="${cachedData}" alt="Daily Meme" style="max-width:100%;border-radius:8px;margin-top:10px;" />`:'No cached meme available.';
-    else container.textContent=cachedData||`No cached ${key} available.`;
-  });
-  renderLetter();
-  renderNumber();
-}
 </script>
 <script src="holiday-theme.js" defer></script>
 </body>
