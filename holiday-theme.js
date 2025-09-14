@@ -87,7 +87,7 @@ function setHolidayTheme() {
       body.holiday-christmas .topnav a,
       body.holiday-christmas .site-footer { color: white; }
     `;
-  } else if (month === 10 && day >= 25 && day <= 31) {
+  } else if (month === 9 && day >= 14 && day <= 31) {
     holidayClass = 'holiday-halloween';
     mascotFile = 'halloweenmascot.png';
     styles = `
@@ -98,7 +98,7 @@ function setHolidayTheme() {
       body.holiday-halloween .topnav a,
       body.holiday-halloween .site-footer { color: white; }
     `;
-  } else if (month === 9 && day === 14) {
+  } else if (month === 3 && day === 17) {
     holidayClass = 'holiday-stpatricks';
     mascotFile = 'stpatricksmascot.png';
     styles = `
