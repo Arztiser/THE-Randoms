@@ -3,98 +3,137 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#E82B38">
 <title>Randle - THE Randoms</title>
 <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+
 <style>
-body {
-  font-family: 'Jersey 10', sans-serif;
-  background: #fff;
-  color: #000;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 0;
-  padding: 10px;
-}
+/* Reset & base */
+html, body { height:100%; margin:0; font-family:'Jersey 10', sans-serif; }
+body { display:flex; flex-direction:column; background:#fff; color:#000; min-height:100vh; }
 
-h1 {
-  color: #E82B38;
-  font-size: 32px;
-  margin-bottom: 10px;
-}
+/* Topnav */
+.topnav { display:flex; justify-content:space-between; align-items:center; height:60px; background:#333; color:#f2f2f2; padding:0 16px; }
+.topnav h1 { margin:0; font-size:24px; }
+.topnav .logo { color:#f2f2f2; text-decoration:none; }
+.menu-icon { font-size:30px; cursor:pointer; }
+.topnav-right { display:none; position:fixed; top:60px; left:0; right:0; bottom:0; background:#333; flex-direction:column; overflow-y:auto; z-index:999; padding-bottom:60px; }
+.topnav-right.active { display:flex; }
 
-#board {
-  display: grid;
-  grid-template-rows: repeat(6, 50px);
-  grid-gap: 5px;
-  margin-bottom: 10px;
-}
+/* Accordion menu */
+.accordion-section { display:flex; flex-direction:column; border-top:1px solid rgba(255,255,255,0.15); }
+.accordion-toggle { background:none; color:#f2f2f2; padding:14px; font-size:24px; border:none; text-align:left; cursor:pointer; }
+.accordion-toggle:hover { background:rgba(255,255,255,0.1); }
+.accordion-content { display:none; flex-direction:column; background:#333; overflow-y:auto; }
+.accordion-content a { padding:10px 28px; font-size:20px; color:#f2f2f2; text-decoration:none; border-top:1px solid rgba(255,255,255,0.2); }
+.accordion-section.open .accordion-content { display:flex; }
 
-.row {
-  display: flex;
-  justify-content: center;
-}
+/* Footer */
+footer.site-footer { position:fixed; bottom:0; left:0; width:100%; height:60px; background:#333; color:#f2f2f2; display:flex; justify-content:space-between; align-items:center; padding:5px 20px; font-size:20px; }
+#footer-mascot { height:50px; cursor:pointer; transition:transform 0.2s; }
+#footer-mascot:hover { transform:scale(1.1) rotate(-5deg); }
 
-.cell {
-  width: 50px;
-  height: 50px;
-  border: 2px solid #333;
-  margin: 2px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28px;
-  font-weight: 700;
-  text-transform: uppercase;
-  border-radius: 6px;
-  transition: all 0.2s ease;
-  background: #f2f2f2;
-  font-family: 'Jersey 10', sans-serif;
-}
+/* Main content */
+main.content { flex:1 0 auto; padding:20px; display:flex; flex-direction:column; align-items:center; overflow-y:auto; text-align:center; box-sizing:border-box; }
 
-.cell.correct { background: #4caf50; color: #fff; }
-.cell.present { background: #ff9800; color: #fff; }
-.cell.wrong { background: #333; color: #fff; }
+/* Board */
+#board { display:grid; grid-template-rows:repeat(6,50px); grid-gap:5px; margin-bottom:10px; }
+.row { display:flex; justify-content:center; }
+.cell { width:50px; height:50px; margin:2px; display:flex; align-items:center; justify-content:center; font-size:28px; font-weight:700; border:2px solid #333; border-radius:6px; background:#f2f2f2; transition:all 0.2s; }
+.cell.correct { background:#4caf50; color:#fff; }
+.cell.present { background:#ff9800; color:#fff; }
+.cell.wrong { background:#333; color:#fff; }
 
-#keyboard {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 5px;
-}
+/* Keyboard */
+#keyboard { display:flex; flex-wrap:wrap; justify-content:center; gap:5px; margin-bottom:10px; }
+.key { width:40px; height:40px; background:#E82B38; color:#fff; font-size:18px; font-weight:700; border:none; border-radius:8px; cursor:pointer; display:flex; align-items:center; justify-content:center; user-select:none; transition:all 0.15s; }
+.key:hover:not(.blackout) { transform:translateY(-1px); box-shadow:0 4px 8px rgba(0,0,0,0.3); }
+.key.blackout { background:#333; cursor:default; box-shadow:none; }
+.key.special { width:70px; font-size:16px; }
 
-.key {
-  width: 40px;
-  height: 40px;
-  background: #E82B38;
-  color: #fff;
-  font-size: 18px;
-  font-weight: 700;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  user-select: none;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  transition: all 0.15s ease;
-  font-family: 'Jersey 10', sans-serif;
-}
-
-.key:hover:not(.blackout) { transform: translateY(-1px); box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
-.key.blackout { background: #333; cursor: default; box-shadow: none; }
-.key.special { width: 70px; font-size: 16px; }
+/* Answer display */
+#answer-display { margin-top:10px; font-size:24px; font-weight:700; color:#E82B38; }
 </style>
 </head>
 <body>
 
-<h1>Randle</h1>
-<div id="board"></div>
-<div id="keyboard"></div>
+<!-- Topnav -->
+<header>
+  <div class="topnav">
+    <h1><a class="logo" href="/">THE Randoms</a></h1>
+    <span class="menu-icon" onclick="toggleMenu()">&#9776;</span>
+  </div>
+  <nav class="topnav-right">
+    <div class="accordion-section">
+      <button class="accordion-toggle">Jokes & Fun</button>
+      <div class="accordion-content">
+        <a href="jokes.html">Jokes</a>
+        <a href="memes.html">Memes</a>
+        <a href="nfl.html">NFL</a>
+        <a href="quizzes.html">Quizzes</a>
+        <a href="wouldyourather.html">Would You Rather</a>
+      </div>
+    </div>
+    <div class="accordion-section">
+      <button class="accordion-toggle">Knowledge & Facts</button>
+      <div class="accordion-content">
+        <a href="advice.html">Advice</a>
+        <a href="facts.html">Facts</a>
+        <a href="pages.html">Pages</a>
+        <a href="people.html">People</a>
+        <a href="quotes.html">Quotes</a>
+      </div>
+    </div>
+    <div class="accordion-section">
+      <button class="accordion-toggle">Music & Videos</button>
+      <div class="accordion-content">
+        <a href="songs.html">Songs</a>
+        <a href="videos.html">Videos</a>
+      </div>
+    </div>
+    <div class="accordion-section">
+      <button class="accordion-toggle">Words, Letters & Numbers</button>
+      <div class="accordion-content">
+        <a href="letters.html">Letters</a>
+        <a href="numbers.html">Numbers</a>
+        <a href="words.html">Words</a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main class="content">
+  <h1>Randle</h1>
+  <div id="board"></div>
+  <div id="keyboard"></div>
+  <div id="answer-display"></div>
+</main>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="footer-left">
+    <p>&copy; <span id="year"></span> THE Randoms</p>
+  </div>
+  <div class="footer-right">
+    <a href="randuino.html">
+      <img id="footer-mascot" src="img/Mascot.png" alt="Randuino">
+    </a>
+  </div>
+</footer>
 
 <script>
-// Keyboard sets by day
+// Topnav toggle
+function toggleMenu() { document.querySelector('.topnav-right').classList.toggle('active'); document.body.classList.toggle('menu-open'); }
+document.querySelectorAll('.accordion-toggle').forEach(btn => btn.addEventListener('click', () => {
+  const section = btn.parentElement;
+  const isOpen = section.classList.contains('open');
+  document.querySelectorAll('.accordion-section').forEach(s => { s.classList.remove('open'); s.querySelector('.accordion-content').style.display='none'; });
+  if(!isOpen){ section.classList.add('open'); section.querySelector('.accordion-content').style.display='flex'; }
+}));
+
+document.getElementById("year").textContent = new Date().getFullYear();
+
+// --- Randle game logic ---
 const keySets = {
   0: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''), 
   1: ['😀','😂','😍','😎','🥳','😡','😭','😴','😱','😇','🤯','🤔','😜','🤢','🤮','😳','🤫','🫣','😈','👻','💩','🦄','🐶','🐱','🍕','🍔'],
@@ -108,124 +147,77 @@ const keySets = {
 const today = new Date().getDay();
 const keys = keySets[today];
 
-// Generate puzzle (5 characters)
 let puzzle = [];
-while (puzzle.length < 5) {
-  const candidate = keys[Math.floor(Math.random()*keys.length)];
-  puzzle.push(candidate);
-}
+while(puzzle.length<5){ puzzle.push(keys[Math.floor(Math.random()*keys.length)]); }
 
-// Game state
-let board = Array.from({length:6}, () => Array(5).fill(''));
-let boardColors = Array.from({length:6}, () => Array(5).fill(''));
-let currentRow = 0;
-let currentCol = 0;
+let board = Array.from({length:6},()=>Array(5).fill(''));
+let boardColors = Array.from({length:6},()=>Array(5).fill(''));
+let currentRow=0, currentCol=0;
 
 const boardDiv = document.getElementById('board');
 const keyboardDiv = document.getElementById('keyboard');
+const answerDisplay = document.getElementById('answer-display');
 
-function renderBoard() {
-  boardDiv.innerHTML = '';
-  board.forEach((row,rowIndex) => {
-    const rowDiv = document.createElement('div');
-    rowDiv.classList.add('row');
-    row.forEach((cell,colIndex) => {
-      const cellDiv = document.createElement('div');
-      cellDiv.classList.add('cell');
-      const color = boardColors[rowIndex][colIndex];
-      if(color) cellDiv.classList.add(color);
-      cellDiv.textContent = cell;
+function renderBoard(){
+  boardDiv.innerHTML='';
+  board.forEach((row,rowIndex)=>{
+    const rowDiv=document.createElement('div'); rowDiv.classList.add('row');
+    row.forEach((cell,colIndex)=>{
+      const cellDiv=document.createElement('div'); cellDiv.classList.add('cell');
+      const color=boardColors[rowIndex][colIndex]; if(color) cellDiv.classList.add(color);
+      cellDiv.textContent=cell;
       rowDiv.appendChild(cellDiv);
     });
     boardDiv.appendChild(rowDiv);
   });
 }
 
-function renderKeyboard() {
-  keyboardDiv.innerHTML = '';
-  keys.forEach(k => {
-    const keyBtn = document.createElement('button');
-    keyBtn.classList.add('key');
-    keyBtn.textContent = k;
-    keyBtn.onclick = () => pressKey(k);
-    keyboardDiv.appendChild(keyBtn);
+function renderKeyboard(){
+  keyboardDiv.innerHTML='';
+  keys.forEach(k=>{
+    const keyBtn=document.createElement('button'); keyBtn.classList.add('key'); keyBtn.textContent=k;
+    keyBtn.onclick=()=>pressKey(k); keyboardDiv.appendChild(keyBtn);
   });
-
-  const backspace = document.createElement('button');
-  backspace.classList.add('key','special');
-  backspace.textContent = '⌫';
-  backspace.onclick = backspaceKey;
-  keyboardDiv.appendChild(backspace);
-
-  const enter = document.createElement('button');
-  enter.classList.add('key','special');
-  enter.textContent = 'Enter';
-  enter.onclick = submitGuess;
-  keyboardDiv.appendChild(enter);
+  const backspace=document.createElement('button'); backspace.classList.add('key','special'); backspace.textContent='⌫'; backspace.onclick=backspaceKey; keyboardDiv.appendChild(backspace);
+  const enter=document.createElement('button'); enter.classList.add('key','special'); enter.textContent='Enter'; enter.onclick=submitGuess; keyboardDiv.appendChild(enter);
 }
 
-function pressKey(k) {
-  if(currentCol<5) {
-    board[currentRow][currentCol] = k;
-    boardColors[currentRow][currentCol] = '';
-    currentCol++;
-    renderBoard();
-  }
+function pressKey(k){
+  if(currentCol<5){ board[currentRow][currentCol]=k; boardColors[currentRow][currentCol]=''; currentCol++; renderBoard(); }
 }
 
-function backspaceKey() {
-  if(currentCol>0) {
-    currentCol--;
-    board[currentRow][currentCol] = '';
-    boardColors[currentRow][currentCol] = '';
-    renderBoard();
-  }
+function backspaceKey(){
+  if(currentCol>0){ currentCol--; board[currentRow][currentCol]=''; boardColors[currentRow][currentCol]=''; renderBoard(); }
 }
 
-function submitGuess() {
+function submitGuess(){
   if(currentCol<5) return;
+  const guess=board[currentRow].slice();
+  let puzzleCopy=puzzle.slice();
 
-  const guess = board[currentRow].slice();
-  let puzzleCopy = puzzle.slice();
-  
-  // First pass: correct spots
-  guess.forEach((c,i) => {
-    if(c===puzzle[i]) {
-      boardColors[currentRow][i]='correct';
-      puzzleCopy[i]=null;
-    }
-  });
-
-  // Second pass: present in puzzle but wrong spot
+  // correct
+  guess.forEach((c,i)=>{ if(c===puzzle[i]){ boardColors[currentRow][i]='correct'; puzzleCopy[i]=null; } });
+  // present/wrong
   guess.forEach((c,i)=>{
-    if(!boardColors[currentRow][i]) {
-      const idx = puzzleCopy.indexOf(c);
-      if(idx>-1) {
-        boardColors[currentRow][i]='present';
-        puzzleCopy[idx]=null;
-      } else {
-        boardColors[currentRow][i]='wrong';
-        // black out keyboard key
-        document.querySelectorAll('.key').forEach(kb=>{
-          if(kb.textContent===c) kb.classList.add('blackout');
-        });
-      }
+    if(!boardColors[currentRow][i]){
+      const idx=puzzleCopy.indexOf(c);
+      if(idx>-1){ boardColors[currentRow][i]='present'; puzzleCopy[idx]=null; }
+      else{ boardColors[currentRow][i]='wrong'; document.querySelectorAll('.key').forEach(kb=>{ if(kb.textContent===c) kb.classList.add('blackout'); }); }
     }
   });
 
-  currentRow++;
-  currentCol=0;
-  renderBoard();
+  currentRow++; currentCol=0; renderBoard();
 
-  if(guess.join('')===puzzle.join('')) {
-    setTimeout(()=>alert('You got it!'),100);
-  } else if(currentRow===6) {
-    setTimeout(()=>alert('Out of tries! Answer: '+puzzle.join('')),100);
+  if(guess.join('')===puzzle.join('')){
+    answerDisplay.textContent='You got it! ✅ Answer: '+puzzle.join('');
+  } else if(currentRow===6){
+    answerDisplay.textContent='Out of tries! ❌ Answer: '+puzzle.join('');
   }
 }
 
 renderBoard();
 renderKeyboard();
 </script>
+
 </body>
 </html>
