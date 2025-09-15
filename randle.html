@@ -4,40 +4,40 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#E82B38">
-<meta name="description" content="THE Randoms Is A Website That Lets You Play A Random 5-Character Puzzle Game. Letters, Numbers, Emojis, Symbols Depending On The Day.">
 <title>Randle - THE Randoms</title>
-<link rel="icon" type="image/png" href="./img/pfp.png">
-<link rel="stylesheet" href="https://therandoms.pages.dev/css/styles.css">
 <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
-  html, body { margin:0; padding:0; font-family:'Jersey 10',sans-serif; height:100%; }
-  body { display:flex; flex-direction:column; min-height:100vh; background:#fff; color:#000; overflow:hidden; }
-  .topnav { display:flex; align-items:center; justify-content:space-between; padding:0 16px; height:60px; background:#333; color:#f2f2f2; }
-  .topnav h1 { margin:0; font-size:24px; }
-  .topnav .logo { color:#f2f2f2; text-decoration:none; }
-  .menu-icon { font-size:30px; cursor:pointer; }
-  .topnav-right { display:none; position:fixed; top:60px; right:0; background:#333; width:100%; height:100vh; flex-direction:column; z-index:999; overflow-y:auto; }
-  .topnav.active .topnav-right { display:flex; }
-  body.menu-open { overflow:hidden; }
-  .accordion-section { display:flex; flex-direction:column; border-top:1px solid #444; }
-  .accordion-toggle { background:none; color:#f2f2f2; padding:14px; text-align:left; font-size:24px; border:none; cursor:pointer; width:100%; font-family:'Jersey 10'; }
-  .accordion-content { display:none; flex-direction:column; background:#444; }
-  .accordion-content a { padding:10px 28px; font-size:20px; color:#f2f2f2; text-decoration:none; border-top:1px solid #555; }
-  .accordion-section.open .accordion-content { display:flex; }
-  .container { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; overflow:hidden; }
-  #board { display:grid; grid-template-rows:repeat(6,1fr); grid-gap:5px; margin-bottom:10px; }
-  .row { display:grid; grid-template-columns:repeat(5,60px); grid-gap:5px; justify-content:center; }
-  .cell { width:60px; height:60px; display:flex; align-items:center; justify-content:center; border:2px solid #999; font-size:32px; font-family:'Jersey 10'; user-select:none; }
-  .cell.correct { background:#6aaa64; color:#fff; border:none; }
-  .cell.present { background:#c9b458; color:#fff; border:none; }
-  .cell.wrong { background:#787c7e; color:#fff; border:none; }
-  #keyboard { display:grid; grid-template-columns:repeat(10,1fr); grid-gap:5px; justify-content:center; }
-  .key { padding:10px; background:#ddd; border-radius:5px; font-size:22px; cursor:pointer; user-select:none; text-align:center; }
-  .key.blackout { background:#000; color:#fff; }
-  .key.enter { grid-column:span 2; background:#E82B38; color:#fff; }
-  .key.backspace { grid-column:span 2; }
-  #answer-display { margin-top:10px; font-size:24px; font-weight:700; }
-  footer { height:60px; background:#333; color:#f2f2f2; display:flex; justify-content:space-between; align-items:center; padding:0 20px; }
+html, body { margin:0; padding:0; font-family:'Jersey 10', sans-serif; height:100%; }
+body { display:flex; flex-direction:column; min-height:100vh; background:#fff; color:#000; }
+.topnav { display:flex; align-items:center; justify-content:space-between; padding:0 16px; height:60px; background:#333; color:#f2f2f2; }
+.topnav h1 { margin:0; font-size:24px; }
+.topnav .logo { color:#f2f2f2; text-decoration:none; }
+.menu-icon { font-size:30px; cursor:pointer; }
+.topnav-right { display:none; position:fixed; top:60px; right:0; background:#333; width:100%; height:100vh; flex-direction:column; z-index:999; overflow-y:auto; }
+.topnav.active .topnav-right { display:flex; }
+body.menu-open { overflow:hidden; }
+.accordion-section { display:flex; flex-direction:column; border-top:1px solid #444; }
+.accordion-toggle { background:none; color:#f2f2f2; padding:14px; text-align:left; font-size:24px; border:none; cursor:pointer; width:100%; }
+.accordion-content { display:none; flex-direction:column; background:#444; }
+.accordion-content a { padding:10px 28px; font-size:20px; color:#f2f2f2; text-decoration:none; border-top:1px solid #555; }
+.accordion-section.open .accordion-content { display:flex; }
+
+.container { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; padding:10px 0 80px; box-sizing:border-box; }
+
+#board { display:grid; grid-template-rows:repeat(6,1fr); grid-gap:4px; margin-bottom:8px; }
+.row { display:grid; grid-template-columns:repeat(5,50px); grid-gap:4px; justify-content:center; }
+.cell { width:50px; height:50px; display:flex; align-items:center; justify-content:center; border:2px solid #999; font-size:28px; user-select:none; }
+.cell.correct { background:#6aaa64; color:#fff; border:none; }
+.cell.present { background:#c9b458; color:#fff; border:none; }
+.cell.wrong { background:#787c7e; color:#fff; border:none; }
+
+#keyboard { display:flex; flex-wrap:wrap; justify-content:center; max-width:420px; margin-top:6px; }
+.key { padding:8px; margin:2px; background:#ddd; border-radius:5px; font-size:20px; cursor:pointer; text-align:center; user-select:none; flex:1 0 18%; box-sizing:border-box; }
+.key.blackout { background:#000; color:#fff; }
+.key.enter, .key.backspace { flex:1 0 38%; background:#E82B38; color:#fff; }
+
+#answer-display { margin-top:10px; font-size:20px; font-weight:700; text-align:center; }
+footer { height:60px; background:#333; color:#f2f2f2; display:flex; justify-content:space-between; align-items:center; padding:0 20px; flex-shrink:0; }
 </style>
 </head>
 <body>
@@ -67,21 +67,6 @@
           <a href="quotes.html">Quotes</a>
         </div>
       </div>
-      <div class="accordion-section">
-        <button class="accordion-toggle">Music & Videos</button>
-        <div class="accordion-content">
-          <a href="songs.html">Songs</a>
-          <a href="videos.html">Videos</a>
-        </div>
-      </div>
-      <div class="accordion-section">
-        <button class="accordion-toggle">Words, Letters & Numbers</button>
-        <div class="accordion-content">
-          <a href="letters.html">Letters</a>
-          <a href="numbers.html">Numbers</a>
-          <a href="words.html">Words</a>
-        </div>
-      </div>
     </div>
   </div>
 </header>
@@ -98,132 +83,136 @@
 </footer>
 
 <script>
-/* HEADER MENU */
-function toggleMenu() {
+// HEADER MENU
+function toggleMenu(){
   document.querySelector('.topnav').classList.toggle('active');
   document.body.classList.toggle('menu-open');
 }
-document.querySelectorAll('.accordion-toggle').forEach(toggle => {
-  toggle.addEventListener('click', () => {
-    const parent = toggle.parentElement;
-    document.querySelectorAll('.accordion-section').forEach(section => {
-      if (section !== parent) section.classList.remove('open');
+document.querySelectorAll('.accordion-toggle').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const parent = btn.parentElement;
+    document.querySelectorAll('.accordion-section').forEach(s=>{
+      if(s!==parent)s.classList.remove('open');
     });
     parent.classList.toggle('open');
   });
 });
 
-/* GAME LOGIC */
-const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-const today = new Date().getDay(); // 0=Sunday
-const dayMode = today; // 0-6
-
-const puzzles = {
-  letters:["APPLE","HOUSE","BRAVE","LIGHT","TRAIN","WORLD","SWEET"],
-  emojis:["😀😎🥳🤖👻","🐶🐱🐭🦊🐰","🍎🍌🍇🍓🍒","⚽🏀🏈⚾🎾","🚗🚕🚙🚌🚓"],
-  numbers:["12345","67890","13579","24680","11223"],
-  symbols:["!@#$%","^&*()","[]{}<>","~`|/"]
-};
-const keyboardSets = {
-  letters:"ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""),
-  emojis:["😀","😎","🥳","🤖","👻","🐶","🐱","🐭","🦊","🐰","🍎","🍌","🍇","🍓","🍒","⚽","🏀","🏈","⚾","🎾","🚗","🚕","🚙","🚌","🚓","🌞","🌙","⭐","🔥"],
-  numbers:"0123456789".split(""),
-  symbols:["!","@","#","$","%","^","&","*","(",")","[","]","{","}","<",">","~","`","|","/","-","="]
-};
-
+// GAME LOGIC
 const modes=["letters","emojis","numbers","symbols","letters","emojis","numbers"];
-const currentMode=modes[dayMode];
-const puzzleList = puzzles[currentMode];
-const keyboardList = keyboardSets[currentMode];
+const currentMode=modes[new Date().getDay()];
 
-let answer = puzzleList[Math.floor(Math.random()*puzzleList.length)];
-let board=[];
-let currentRow=0;
-let currentGuess="";
+// dynamic 5-character puzzle per day
+function generatePuzzle(){
+  const chars={
+    letters:"ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+    emojis:["😀","😎","🥳","🤖","👻","🐶","🐱","🐭","🦊","🐰","🍎","🍌","🍇","🍓","🍒","⚽","🏀","🏈","⚾","🎾","🚗","🚕","🚙","🚌","🚓"],
+    numbers:"0123456789",
+    symbols:"!@#$%^&*()[]{}<>~`|/-="
+  };
+  let result="";
+  const source=chars[currentMode];
+  for(let i=0;i<5;i++){
+    result+=Array.isArray(source)?source[Math.floor(Math.random()*source.length)]:source[Math.floor(Math.random()*source.length)];
+  }
+  return result;
+}
 
-const maxRows=6;
+let answer=generatePuzzle();
+let currentGuess="", currentRow=0, maxRows=6;
 
+// Board
 function createBoard(){
-  const boardEl=document.getElementById("board");
-  boardEl.innerHTML="";
-  for(let i=0;i<maxRows;i++){
-    let row=document.createElement("div");
+  const board=document.getElementById("board");
+  board.innerHTML="";
+  for(let r=0;r<maxRows;r++){
+    const row=document.createElement("div");
     row.className="row";
-    for(let j=0;j<5;j++){
-      let cell=document.createElement("div");
+    for(let c=0;c<5;c++){
+      const cell=document.createElement("div");
       cell.className="cell";
       row.appendChild(cell);
     }
-    boardEl.appendChild(row);
+    board.appendChild(row);
   }
 }
+
+// Keyboard
 function createKeyboard(){
   const kb=document.getElementById("keyboard");
   kb.innerHTML="";
-  keyboardList.forEach(k=>{
-    let key=document.createElement("div");
+  const keys={
+    letters:"ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""),
+    emojis:["😀","😎","🥳","🤖","👻","🐶","🐱","🐭","🦊","🐰","🍎","🍌","🍇","🍓","🍒","⚽","🏀","🏈","⚾","🎾","🚗","🚕","🚙","🚌","🚓"],
+    numbers:"0123456789".split(""),
+    symbols:["!","@","#","$","%","^","&","*","(",")","[","]","{","}","<",">","~","`","|","/","-","="]
+  };
+  keys[currentMode].forEach(k=>{
+    const key=document.createElement("div");
     key.className="key";
     key.textContent=k;
     key.onclick=()=>pressKey(k);
     kb.appendChild(key);
   });
-  let enter=document.createElement("div");
-  enter.className="key enter";
-  enter.textContent="Enter";
-  enter.onclick=submitGuess;
-  kb.appendChild(enter);
-  let back=document.createElement("div");
-  back.className="key backspace";
-  back.textContent="⌫";
-  back.onclick=backspace;
-  kb.appendChild(back);
+  const enter=document.createElement("div");
+  enter.className="key enter"; enter.textContent="Enter"; enter.onclick=submitGuess; kb.appendChild(enter);
+  const back=document.createElement("div");
+  back.className="key backspace"; back.textContent="⌫"; back.onclick=backspace; kb.appendChild(back);
 }
+
+// Press/backspace
 function pressKey(k){
-  if(currentGuess.length<5) {
-    currentGuess+=k;
-    updateBoard();
-  }
+  if(currentGuess.length<5){ currentGuess+=k; updateBoard(); }
 }
-function backspace(){
-  currentGuess=currentGuess.slice(0,-1);
-  updateBoard();
-}
+function backspace(){ currentGuess=currentGuess.slice(0,-1); updateBoard(); }
+
+// Submit guess
 function submitGuess(){
   if(currentGuess.length!==5)return;
-  const row=document.getElementById("board").children[currentRow];
-  let guessArray=currentGuess.split("");
-  let answerArray=answer.split("");
-  let keyEls=document.querySelectorAll("#keyboard .key");
+  const rowEl=document.getElementById("board").children[currentRow];
   for(let i=0;i<5;i++){
-    let cell=row.children[i];
-    cell.textContent=guessArray[i];
-    if(guessArray[i]===answerArray[i]){
-      cell.classList.add("correct");
-    } else if(answerArray.includes(guessArray[i])){
-      cell.classList.add("present");
-    } else{
-      cell.classList.add("wrong");
-      keyEls.forEach(k=>{if(k.textContent===guessArray[i])k.classList.add("blackout");});
+    const cell=rowEl.children[i];
+    if(currentGuess[i]===answer[i]){ cell.className="cell correct"; }
+    else if(answer.includes(currentGuess[i])){ cell.className="cell present"; }
+    else{ cell.className="cell wrong"; }
+  }
+  // black out keys
+  document.querySelectorAll("#keyboard .key").forEach(key=>{
+    if(!answer.includes(key.textContent) && currentGuess.includes(key.textContent)){
+      key.classList.add("blackout");
     }
+  });
+  if(currentGuess===answer){
+    document.getElementById("answer-display").textContent="Correct! The answer was "+answer;
+    disableKeyboard();
+    return;
   }
-  currentRow++;
   currentGuess="";
-  if(currentRow>=maxRows||guessArray.join("")===answer){
-    document.getElementById("answer-display").textContent="Answer: "+answer;
-  }
-  updateBoard();
-}
-function updateBoard(){
-  const row=document.getElementById("board").children[currentRow];
-  for(let i=0;i<5;i++){
-    row.children[i].textContent=currentGuess[i]||"";
+  currentRow++;
+  if(currentRow>=maxRows){
+    document.getElementById("answer-display").textContent="Game Over! The answer was "+answer;
+    disableKeyboard();
   }
 }
 
+// Update board while typing
+function updateBoard(){
+  const rowEl=document.getElementById("board").children[currentRow];
+  for(let i=0;i<5;i++){
+    const cell=rowEl.children[i];
+    cell.textContent=currentGuess[i]||"";
+  }
+}
+
+// disable keyboard at game end
+function disableKeyboard(){
+  document.querySelectorAll("#keyboard .key").forEach(k=>k.onclick=null);
+}
+
+// Init
 createBoard();
 createKeyboard();
 </script>
 
-<script src="holiday-theme.js" defer></script>
 </body>
 </html>
