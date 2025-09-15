@@ -12,35 +12,43 @@
     --theme-top:#f2f2f2;
     --accent:#E82B38;
   }
-  html,body{
-    height:100%;margin:0;
-    font-family:'Jersey 10',sans-serif;
-    background:#fff;color:#000;
-    display:flex;flex-direction:column;
-  }
-  .topnav{
-    height:720px;background:var(--theme-bg);color:var(--theme-top);
-    display:flex;align-items:center;justify-content:space-between;
-    padding:0 16px;box-sizing:border-box;z-index:20;
-  }
-  .topnav h1{margin:0;font-size:22px;}
-  .topnav .logo{color:var(--theme-top);text-decoration:none;}
-  .menu-icon{font-size:28px;cursor:pointer;user-select:none;color:var(--theme-top);}
-  .topnav-right{display:none;position:fixed;top:60px;left:0;right:0;bottom:0;background:var(--theme-bg);z-index:999;flex-direction:column;overflow-y:auto;}
-  .topnav.active .topnav-right{display:flex;}
-  .accordion-section{display:flex;flex-direction:column;border-top:1px solid #444;}
-  .accordion-toggle{background:none;color:var(--theme-top);padding:14px;text-align:left;font-size:20px;border:none;cursor:pointer;width:100%;font-family:'Jersey 10',sans-serif;}
-  .accordion-content{display:none;flex-direction:column;background:#444;}
-  .accordion-section.open .accordion-content{display:flex;}
-  .accordion-content a{padding:10px 28px;color:var(--theme-top);text-decoration:none;border-top:1px solid #555;font-size:18px;}
-  .clickable-section{background:var(--accent);color:#fff;padding:12px;text-align:center;font-weight:700;margin:8px;border-radius:6px;cursor:pointer;}
+  html, body {
+  height:100%;
+  margin:0;
+  font-family:'Jersey 10',sans-serif;
+  background:#fff;
+  color:#000;
+  display:flex;
+  flex-direction:column;
+}
 
-  /* page container */
-  .page {
-    flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
-    padding:14px; box-sizing:border-box;
-    min-height:calc(100vh - 120px);
-  }
+/* nav */
+.topnav {
+  height:80px; /* normal topnav height */
+  background:var(--theme-bg);
+  color:var(--theme-top);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 20px;
+  box-sizing:border-box;
+  z-index:20;
+}
+.topnav h1 {
+  margin:0;
+  font-size:28px; /* bigger text */
+}
+
+/* page container */
+.page {
+  flex:1; /* take all available space between nav and footer */
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:14px;
+  box-sizing:border-box;
+}
   h2 {
     margin:8px 0 20px 0;
     font-size:40px; /* bigger */
