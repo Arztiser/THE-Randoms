@@ -13,6 +13,7 @@
   .gray { background-color:#787c7e; color:white; border-color:#787c7e; }
   .keyboard { display:flex; justify-content:center; flex-wrap:wrap; margin-top:20px; }
   .key { width:50px; height:50px; margin:2px; font-size:28px; cursor:pointer; display:flex; align-items:center; justify-content:center; border:1px solid #333; border-radius:4px; background:#eee; }
+  .key.used { background:#333; color:#fff; cursor:default; }
   .key:hover { background:#ddd; }
   h1, p { margin:0 0 10px; }
 </style>
@@ -73,6 +74,7 @@ function renderKeyboard(){
     const key = document.createElement('div');
     key.className='key';
     key.textContent=c;
+    key.dataset.char=c;
     key.addEventListener('click',()=>addChar(c));
     keyboardContainer.appendChild(key);
   });
@@ -81,10 +83,21 @@ renderKeyboard();
 
 // ----- Game logic -----
 function addChar(c){
+  if(currentRow>=maxGuesses) return;
+  if(currentGuess.includes(c)) return; // Only use each char once
   if(currentGuess.length < sequenceLength){
     currentGuess.push(c);
     updateBoard();
+    updateKeyboard();
     if(currentGuess.length===sequenceLength) checkGuess();
+  }
+}
+
+function removeChar(){
+  if(currentGuess.length>0){
+    currentGuess.pop();
+    updateBoard();
+    updateKeyboard();
   }
 }
 
@@ -93,6 +106,12 @@ function updateBoard(){
   for(let i=0;i<sequenceLength;i++){
     row.children[i].textContent = currentGuess[i] || '';
   }
+}
+
+function updateKeyboard(){
+  document.querySelectorAll('.key').forEach(key=>{
+    key.classList.toggle('used', currentGuess.includes(key.dataset.char));
+  });
 }
 
 function checkGuess(){
@@ -117,21 +136,24 @@ function checkGuess(){
     document.getElementById('message').textContent='🎉 You guessed it!';
   } else {
     currentRow++;
+    currentGuess=[];
+    updateKeyboard();
     if(currentRow>=maxGuesses){
       document.getElementById('message').textContent='❌ Out of tries! Answer: ' + target.join('');
     }
-    currentGuess=[];
   }
 }
 
-// Optional: Keyboard input via actual keyboard
+// ----- Keyboard input -----
 document.addEventListener('keydown',(e)=>{
   if(currentRow>=maxGuesses) return;
-  const key = e.key.toUpperCase();
-  if(today.chars.includes(key)){
-    addChar(key);
+  const key = e.key;
+  if(key==='Backspace') removeChar();
+  else if(today.chars.includes(key.toUpperCase())){
+    addChar(today.type==='letters' ? key.toUpperCase() : key);
   }
 });
+
 </script>
 
 </body>
