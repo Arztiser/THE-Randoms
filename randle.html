@@ -6,15 +6,15 @@
 <title>Randle - Random Word Game</title>
 <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
-  body { font-family:'Jersey 10',sans-serif; background:#fff; text-align:center; margin:0; padding:20px; color:#222;}
-  h1 { color:#E82B38; }
-  #grid { display:grid; grid-template-columns: repeat(5, 50px); grid-gap:5px; justify-content:center; margin:20px auto;}
-  .cell { width:50px;height:50px;line-height:50px;border:2px solid #333;font-size:24px;text-transform:uppercase; }
-  .correct { background:#E82B38; color:white; }
-  .present { background:gold; color:black; }
-  .absent { background:#ccc; color:white; }
-  #keyboard { margin-top:20px; }
-  button.key { margin:2px; padding:10px 12px; font-size:18px; cursor:pointer; }
+body { font-family:'Jersey 10',sans-serif; background:#fff; text-align:center; margin:0; padding:20px; color:#222;}
+h1 { color:#E82B38; }
+#grid { display:grid; grid-template-columns: repeat(5, 50px); grid-gap:5px; justify-content:center; margin:20px auto;}
+.cell { width:50px;height:50px;line-height:50px;border:2px solid #333;font-size:24px;text-transform:uppercase; }
+.correct { background:#E82B38; color:white; }
+.present { background:gold; color:black; }
+.absent { background:#ccc; color:white; }
+#keyboard { margin-top:20px; }
+button.key { margin:2px; padding:10px 12px; font-size:18px; cursor:pointer; }
 </style>
 </head>
 <body>
@@ -34,7 +34,7 @@ let currentGuess = "";
 let gameOver = false;
 let wordQueue = ["random"];
 
-// -- Create grid
+// Grid setup
 const grid = document.getElementById('grid');
 for(let i=0;i<WORD_LENGTH*MAX_GUESSES;i++){
   const cell = document.createElement('div');
@@ -42,25 +42,34 @@ for(let i=0;i<WORD_LENGTH*MAX_GUESSES;i++){
   grid.appendChild(cell);
 }
 
-// -- Fetch synonyms from Datamuse
+// Datamuse API synonyms
 async function fetchSynonyms(word){
   try {
-    const res = await fetch(`https://api.datamuse.com/words?rel_syn=${random}&max=20`);
+    const res = await fetch(`https://api.datamuse.com/words?rel_syn=${word}&max=20`);
     const data = await res.json();
     return data.map(d => d.word.toUpperCase()).filter(w => w.length===WORD_LENGTH);
   } catch { return []; }
 }
 
-// -- Generate target word
+// Check if word exists in dictionary (Datamuse)
+async function isValidWord(word){
+  try{
+    const res = await fetch(`https://api.datamuse.com/words?sp=${word.toLowerCase()}&max=1`);
+    const data = await res.json();
+    return data.length>0 && data[0].word.toUpperCase()===word.toUpperCase();
+  }catch{return false;}
+}
+
+// Generate next target
 async function nextWord(){
   if(wordQueue.length===0) wordQueue.push("random");
   const target = wordQueue.shift();
-  const newSynonyms = await fetchSynonyms(target);
-  wordQueue.push(...newSynonyms);
+  const synonyms = await fetchSynonyms(target);
+  wordQueue.push(...synonyms);
   return target;
 }
 
-// -- Update grid
+// Update grid
 function updateGrid(){
   for(let r=0;r<MAX_GUESSES;r++){
     for(let c=0;c<WORD_LENGTH;c++){
@@ -75,7 +84,7 @@ function updateGrid(){
   }
 }
 
-// -- Keyboard
+// Keyboard
 const keyboard = document.getElementById('keyboard');
 "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('').forEach(l=>{
   const key = document.createElement('button');
@@ -88,29 +97,30 @@ const backKey=document.createElement('button'); backKey.className='key'; backKey
 
 let targetWord;
 
-// -- Handle input
-function handleInput(letter){
+// Handle input
+async function handleInput(letter){
   if(gameOver) return;
-  if(letter==='BACK') currentGuess=currentGuess.slice(0,-1);
+  if(letter==='BACK'){ currentGuess=currentGuess.slice(0,-1); }
   else if(letter==='ENTER'){
     if(currentGuess.length!==WORD_LENGTH){ message.textContent='Word too short!'; return; }
+    if(!(await isValidWord(currentGuess))){ message.textContent='Not a valid word!'; return; }
     guesses.push(currentGuess);
     updateGrid();
     if(currentGuess===targetWord){ message.textContent='🎉 Correct!'; gameOver=true; setTimeout(startNewWord,2000);}
-    else if(guesses.length===MAX_GUESSES){ message.textContent=`❌ Word was ${targetWord}`; gameOver=true; setTimeout(startNewWord,2000);}
+    else if(guesses.length===MAX_GUESSES){ message.textContent=`❌ Out of tries! Word was ${targetWord}`; gameOver=true; setTimeout(startNewWord,3000);}
     currentGuess="";
   } else if(currentGuess.length<WORD_LENGTH) currentGuess+=letter;
   updateGrid();
 }
 
-// -- Start a new word
+// Start a new word
 async function startNewWord(){
   guesses=[]; currentGuess=""; gameOver=false; message.textContent="";
   targetWord = await nextWord();
   updateGrid();
 }
 
-// -- Initialize
+// Initialize
 startNewWord();
 </script>
 
