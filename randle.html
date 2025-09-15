@@ -7,91 +7,94 @@
 <title>Randle — THE Randoms</title>
 <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --theme-bg:#333;
-    --theme-top:#f2f2f2;
-    --accent:#E82B38;
-  }
-  html, body {
-  height:100%;
-  margin:0;
+:root{
+  --theme-bg:#333;
+  --theme-top:#f2f2f2;
+  --accent:#E82B38;
+}
+html,body{
+  height:100%;margin:0;
   font-family:'Jersey 10',sans-serif;
-  background:#fff;
-  color:#000;
-  display:flex;
-  flex-direction:column;
+  background:#fff;color:#000;
+  display:flex;flex-direction:column;
 }
-
-/* nav */
-.topnav {
-  height:80px; /* normal topnav height */
+.topnav{
+  height:72px; /* fixed height */
+  background:var(--theme-bg);color:var(--theme-top);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 16px;box-sizing:border-box;z-index:20;
+  position: relative; /* so .topnav-right can be absolute inside */
+}
+.topnav h1{margin:0;font-size:22px;}
+.topnav .logo{color:var(--theme-top);text-decoration:none;}
+.menu-icon{font-size:28px;cursor:pointer;user-select:none;color:var(--theme-top);}
+.topnav-right{
+  display:none;
+  position:absolute;
+  top:72px; /* sits right below nav */
+  left:0;right:0;
   background:var(--theme-bg);
-  color:var(--theme-top);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 20px;
-  box-sizing:border-box;
-  z-index:20;
+  z-index:999;
+  flex-direction:column;
+  overflow-y:auto;
 }
-.topnav h1 {
-  margin:0;
-  font-size:28px; /* bigger text */
-}
+.topnav.active .topnav-right{display:flex;}
+.accordion-section{display:flex;flex-direction:column;border-top:1px solid #444;}
+.accordion-toggle{background:none;color:var(--theme-top);padding:14px;text-align:left;font-size:20px;border:none;cursor:pointer;width:100%;font-family:'Jersey 10',sans-serif;}
+.accordion-content{display:none;flex-direction:column;background:#444;}
+.accordion-section.open .accordion-content{display:flex;}
+.accordion-content a{padding:10px 28px;color:var(--theme-top);text-decoration:none;border-top:1px solid #555;font-size:18px;}
+.clickable-section{background:var(--accent);color:#fff;padding:12px;text-align:center;font-weight:700;margin:8px;border-radius:6px;cursor:pointer;}
 
 /* page container */
 .page {
-  flex:1; /* take all available space between nav and footer */
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  padding:14px;
-  box-sizing:border-box;
+  flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:14px; box-sizing:border-box;
+  min-height:calc(100vh - 120px);
 }
-  h2 {
-    margin:8px 0 20px 0;
-    font-size:40px; /* bigger */
-    text-align:center;
-  }
+h2 {
+  margin:8px 0 20px 0;
+  font-size:40px; /* bigger */
+  text-align:center;
+}
 
-  /* Board */
-  #board { display:grid; grid-template-rows: repeat(6, 1fr); gap:6px; margin-top:6px; }
-  .row { display:flex; gap:6px; justify-content:center; }
-  .cell {
-    width:56px; height:56px; display:flex; align-items:center; justify-content:center;
-    border:2px solid #bdbdbd; font-size:28px; box-sizing:border-box; border-radius:6px;
-    font-family: 'Jersey 10','Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji',sans-serif;
-    word-break:keep-all;
-  }
-  .cell.correct{background:#6aaa64;border:none;color:#fff;}
-  .cell.present{background:#c9b458;border:none;color:#fff;}
-  .cell.wrong{background:#787c7e;border:none;color:#fff;}
+/* Board */
+#board { display:grid; grid-template-rows: repeat(6, 1fr); gap:6px; margin-top:6px; }
+.row { display:flex; gap:6px; justify-content:center; }
+.cell {
+  width:56px; height:56px; display:flex; align-items:center; justify-content:center;
+  border:2px solid #bdbdbd; font-size:28px; box-sizing:border-box; border-radius:6px;
+  font-family: 'Jersey 10','Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji',sans-serif;
+  word-break:keep-all;
+}
+.cell.correct{background:#6aaa64;border:none;color:#fff;}
+.cell.present{background:#c9b458;border:none;color:#fff;}
+.cell.wrong{background:#787c7e;border:none;color:#fff;}
 
-  /* keyboard */
-  #keyboard {
-    width:100%; max-width:640px;
-    display:flex; flex-wrap:wrap; justify-content:center; gap:8px;
-    margin-top:12px;
-  }
-  .key {
-    min-width:42px; padding:8px 10px; border-radius:6px;
-    background:#e6e6e6; text-align:center; cursor:pointer; user-select:none;
-    box-sizing:border-box; font-size:18px;
-    font-family:'Jersey 10','Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji',sans-serif;
-  }
-  .key.enter,.key.backspace{background:var(--accent);color:#fff;min-width:92px;}
-  .key.key-correct{background:#6aaa64;color:#fff;}
-  .key.key-present{background:#c9b458;color:#fff;}
-  .key.key-wrong{background:#787c7e;color:#fff;}
+/* keyboard */
+#keyboard {
+  width:100%; max-width:640px;
+  display:flex; flex-wrap:wrap; justify-content:center; gap:8px;
+  margin-top:12px;
+}
+.key {
+  min-width:42px; padding:8px 10px; border-radius:6px;
+  background:#e6e6e6; text-align:center; cursor:pointer; user-select:none;
+  box-sizing:border-box; font-size:18px;
+  font-family:'Jersey 10','Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji',sans-serif;
+}
+.key.enter,.key.backspace{background:var(--accent);color:#fff;min-width:92px;}
+.key.key-correct{background:#6aaa64;color:#fff;}
+.key.key-present{background:#c9b458;color:#fff;}
+.key.key-wrong{background:#787c7e;color:#fff;}
 
-  #answer-display { margin-top:12px;font-weight:700;text-align:center; }
+#answer-display { margin-top:12px;font-weight:700;text-align:center; }
 
-  @media (max-width:520px){
-    .cell { width:44px;height:44px;font-size:22px; }
-    .key { min-width:36px;font-size:16px;padding:6px 8px; }
-    .key.enter,.key.backspace { min-width:76px; }
-  }
+@media (max-width:520px){
+  .cell { width:44px;height:44px;font-size:22px; }
+  .key { min-width:36px;font-size:16px;padding:6px 8px; }
+  .key.enter,.key.backspace { min-width:76px; }
+}
 </style>
 </head>
 <body>
