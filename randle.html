@@ -2,159 +2,161 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Randle - Random Wordle Clone</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Randle - THE Randoms</title>
 <style>
-  body { font-family: 'Jersey 10', sans-serif; text-align:center; margin:20px; background:#fff; color:#000; }
-  .row { display:flex; justify-content:center; margin-bottom:10px; }
-  .cell { width:50px; height:50px; border:2px solid #ccc; display:flex; align-items:center; justify-content:center; font-size:32px; margin:2px; }
-  .green { background-color:#6aaa64; color:white; border-color:#6aaa64; }
-  .yellow { background-color:#c9b458; color:white; border-color:#c9b458; }
-  .gray { background-color:#787c7e; color:white; border-color:#787c7e; }
-  .keyboard { display:flex; justify-content:center; flex-wrap:wrap; margin-top:20px; }
-  .key { width:50px; height:50px; margin:2px; font-size:28px; cursor:pointer; display:flex; align-items:center; justify-content:center; border:1px solid #333; border-radius:4px; background:#eee; }
-  .key.used { background:#333; color:#fff; cursor:default; }
-  .key:hover { background:#ddd; }
-  h1, p { margin:0 0 10px; }
+  body { font-family: 'Jersey 10', sans-serif; background:#fff; color:#000; display:flex; flex-direction:column; align-items:center; margin:0; padding:0;}
+  h1 { color:#E82B38; }
+  .board { display:grid; grid-template-rows: repeat(6, 50px); grid-gap:5px; margin:20px 0; }
+  .row { display:flex; gap:5px; }
+  .cell { width:50px; height:50px; border:2px solid #333; display:flex; align-items:center; justify-content:center; font-size:24px; }
+  .keyboard { display:flex; flex-wrap:wrap; gap:5px; max-width:350px; margin-bottom:20px; }
+  .key { width:40px; height:40px; display:flex; align-items:center; justify-content:center; cursor:pointer; border-radius:5px; background:#eee; user-select:none; }
+  .key.disabled { background:#555; color:#aaa; cursor:not-allowed; }
+  .key.backspace { background:#E82B38; color:white; font-weight:bold; }
+  .feedback { margin-bottom:10px; }
+  .green { background: #6aaa64; color:white; }
+  .yellow { background: #c9b458; color:white; }
+  .gray { background: #787c7e; color:white; }
 </style>
 </head>
 <body>
 
-<h1>Randle - Random Wordle Clone</h1>
-<p id="day-label"></p>
-<div id="board"></div>
+<h1>Randle</h1>
+<div class="feedback" id="feedback"></div>
+<div class="board" id="board"></div>
 <div class="keyboard" id="keyboard"></div>
-<p id="message"></p>
 
 <script>
-// ----- Config -----
-const maxGuesses = 6;
-const sequenceLength = 5;
+// --- CONFIG ---
+const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+const emojis = ['😀','😂','🥰','😎','😡','🥳','🤯','😱','🤩','🤔','😴','🙃','😇','😈','🤖','👻','💀','🎃','🐶','🐱','🍎','🍕','⚽','🏀','🌞','⭐'];
+const symbols = ['!','@','#','$','%','^','&','*','(',')','-','_','=','+','[',']','{','}',';','?','<','>','/','|','~','`'];
+const numbers = ['0','1','2','3','4','5','6','7','8','9'];
+const boardRows = 6;
+const wordLength = 5;
 
-const days = [
-  { name:'Sunday', type:'letters', chars:'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('') },
-  { name:'Monday', type:'emojis', chars:['😀','😂','🥰','😎','🤯','🐶','🍎','⚽️','🌟','🍕','🍀','🌈','🔥','💎','🎉','🎵','🍔','🥳','💀','🐱','🌹','🌙','☀️','⭐','⚡','🥑'] },
-  { name:'Tuesday', type:'numbers', chars:['0','1','2','3','4','5','6','7','8','9'] },
-  { name:'Wednesday', type:'symbols', chars:['!','@','#','$','%','^','&','*','(',')','-','+','=','~','`','|','/','?','<','>','[',']','{','}',';'] },
-  { name:'Thursday', type:'letters', chars:'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('') },
-  { name:'Friday', type:'emojis', chars:['😀','😂','🥰','😎','🤯','🐶','🍎','⚽️','🌟','🍕','🍀','🌈','🔥','💎','🎉','🎵','🍔','🥳','💀','🐱','🌹','🌙','☀️','⭐','⚡','🥑'] },
-  { name:'Saturday', type:'numbers', chars:['0','1','2','3','4','5','6','7','8','9'] }
-];
+// --- HELPER ---
+function getDayMode() {
+  const day = new Date().getDay(); // 0=Sunday
+  switch(day){
+    case 0: return letters;     // Sunday
+    case 1: return emojis;      // Monday
+    case 2: return numbers;     // Tuesday
+    case 3: return symbols;     // Wednesday
+    case 4: return letters;     // Thursday
+    case 5: return emojis;      // Friday
+    case 6: return numbers;     // Saturday
+  }
+}
 
-// ----- State -----
-let currentGuess = [];
+const modeSet = getDayMode();
+const randomWord = Array.from({length: wordLength},()=>modeSet[Math.floor(Math.random()*modeSet.length)]);
+let boardState = Array.from({length:boardRows},()=>Array(wordLength).fill(''));
 let currentRow = 0;
-let target = [];
-let todayIndex = new Date().getDay();
-let today = days[todayIndex];
-document.getElementById('day-label').textContent = `Today is ${today.name} - ${today.type.toUpperCase()} day`;
+let currentCol = 0;
 
-// ----- Generate target -----
-target = Array.from({length:sequenceLength},()=>today.chars[Math.floor(Math.random()*today.chars.length)]);
-console.log("Target sequence:", target.join(''));
-
-// ----- Create board -----
-const board = document.getElementById('board');
-for(let i=0;i<maxGuesses;i++){
-  const row = document.createElement('div');
-  row.className='row';
-  for(let j=0;j<sequenceLength;j++){
+// --- BOARD ---
+const boardEl = document.getElementById('board');
+boardState.forEach(row=>{
+  const rowEl = document.createElement('div');
+  rowEl.className='row';
+  row.forEach(_=>{
     const cell = document.createElement('div');
     cell.className='cell';
-    row.appendChild(cell);
-  }
-  board.appendChild(row);
-}
+    rowEl.appendChild(cell);
+  });
+  boardEl.appendChild(rowEl);
+});
 
-// ----- Create keyboard -----
-const keyboardContainer = document.getElementById('keyboard');
-function renderKeyboard(){
-  keyboardContainer.innerHTML='';
-  today.chars.forEach(c=>{
+// --- KEYBOARD ---
+const keyboardEl = document.getElementById('keyboard');
+function createKeyboard(){
+  keyboardEl.innerHTML='';
+  modeSet.forEach(k=>{
     const key = document.createElement('div');
+    key.textContent=k;
     key.className='key';
-    key.textContent=c;
-    key.dataset.char=c;
-    key.addEventListener('click',()=>addChar(c));
-    keyboardContainer.appendChild(key);
+    key.addEventListener('click',()=>pressKey(k));
+    keyboardEl.appendChild(key);
   });
+  // Backspace
+  const back = document.createElement('div');
+  back.textContent='⌫';
+  back.className='key backspace';
+  back.addEventListener('click',backspace);
+  keyboardEl.appendChild(back);
 }
-renderKeyboard();
+createKeyboard();
 
-// ----- Game logic -----
-function addChar(c){
-  if(currentRow>=maxGuesses) return;
-  if(currentGuess.includes(c)) return; // Only use each char once
-  if(currentGuess.length < sequenceLength){
-    currentGuess.push(c);
-    updateBoard();
-    updateKeyboard();
-    if(currentGuess.length===sequenceLength) checkGuess();
-  }
-}
-
-function removeChar(){
-  if(currentGuess.length>0){
-    currentGuess.pop();
-    updateBoard();
-    updateKeyboard();
-  }
+// --- GAME LOGIC ---
+function pressKey(k){
+  if(currentCol>=wordLength || currentRow>=boardRows) return;
+  boardState[currentRow][currentCol] = k;
+  boardEl.children[currentRow].children[currentCol].textContent = k;
+  currentCol++;
 }
 
-function updateBoard(){
-  const row = board.children[currentRow];
-  for(let i=0;i<sequenceLength;i++){
-    row.children[i].textContent = currentGuess[i] || '';
+function backspace(){
+  if(currentCol>0){
+    currentCol--;
+    boardState[currentRow][currentCol]='';
+    boardEl.children[currentRow].children[currentCol].textContent='';
   }
 }
 
-function updateKeyboard(){
-  document.querySelectorAll('.key').forEach(key=>{
-    key.classList.toggle('used', currentGuess.includes(key.dataset.char));
-  });
-}
+function submitGuess(){
+  if(currentCol!==wordLength) return; // incomplete
+  const guess = boardState[currentRow];
+  const feedbackEl = document.getElementById('feedback');
+  
+  const targetCount = {};
+  randomWord.forEach(c=>targetCount[c]=(targetCount[c]||0)+1);
+  const guessCount = {};
 
-function checkGuess(){
-  const row = board.children[currentRow];
-  const guess = currentGuess.slice();
-  const feedback = Array(sequenceLength).fill('gray');
-
-  // Greens
-  for(let i=0;i<sequenceLength;i++){
-    if(guess[i]===target[i]) feedback[i]='green';
-  }
-  // Yellows
-  for(let i=0;i<sequenceLength;i++){
-    if(feedback[i]==='gray' && target.includes(guess[i])) feedback[i]='yellow';
-  }
-  // Apply classes
-  for(let i=0;i<sequenceLength;i++){
-    row.children[i].classList.add(feedback[i]);
-  }
-
-  if(feedback.every(f=>f==='green')){
-    document.getElementById('message').textContent='🎉 You guessed it!';
-  } else {
-    currentRow++;
-    currentGuess=[];
-    updateKeyboard();
-    if(currentRow>=maxGuesses){
-      document.getElementById('message').textContent='❌ Out of tries! Answer: ' + target.join('');
+  boardEl.children[currentRow].childNodes.forEach((cell,i)=>{
+    const g = guess[i];
+    guessCount[g]=(guessCount[g]||0)+1;
+    if(g===randomWord[i]){
+      cell.classList.add('green');
+    } else if(randomWord.includes(g)){
+      cell.classList.add('yellow');
+    } else {
+      cell.classList.add('gray');
     }
+  });
+
+  // Blackout keys if used more than in target
+  document.querySelectorAll('.key').forEach(k=>{
+    if(targetCount[k.textContent]){
+      if((guessCount[k.textContent]||0)>=targetCount[k.textContent]){
+        k.classList.add('disabled');
+      }
+    } else {
+      k.classList.add('disabled');
+    }
+  });
+
+  currentRow++;
+  currentCol=0;
+
+  if(guess.join('')===randomWord.join('')){
+    feedbackEl.textContent='You guessed it!';
+    return;
+  } else if(currentRow>=boardRows){
+    feedbackEl.textContent='Game Over! Word was: '+randomWord.join('');
   }
 }
 
-// ----- Keyboard input -----
+// --- KEYBOARD EVENTS ---
 document.addEventListener('keydown',(e)=>{
-  if(currentRow>=maxGuesses) return;
-  const key = e.key;
-  if(key==='Backspace') removeChar();
-  else if(today.chars.includes(key.toUpperCase())){
-    addChar(today.type==='letters' ? key.toUpperCase() : key);
-  }
+  if(currentRow>=boardRows) return;
+  const k = e.key.toUpperCase();
+  if(modeSet.includes(k)) pressKey(k);
+  else if(e.key==='Backspace') backspace();
+  else if(e.key==='Enter') submitGuess();
 });
 
 </script>
-
 </body>
 </html>
