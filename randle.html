@@ -1,149 +1,229 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#E82B38">
-  <title>Randle - THE Randoms</title>
-  <link rel="icon" type="image/png" href="./img/pfp.png">
-  <link rel="stylesheet" type="text/css" href="https://therandoms.pages.dev/css/styles.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Jersey 10', sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #fff;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="theme-color" content="#E82B38" />
+<title>Randle — THE Randoms</title>
+<link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --theme-bg:#333;
+    --theme-top:#f2f2f2;
+    --accent:#E82B38;
+  }
+  html,body{
+    height:100%;margin:0;
+    font-family:'Jersey 10',sans-serif;
+    background:#fff;color:#000;
+    display:flex;flex-direction:column;
+  }
+  .topnav{
+    height:60px;background:var(--theme-bg);color:var(--theme-top);
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 16px;box-sizing:border-box;z-index:20;
+  }
+  .topnav h1{margin:0;font-size:22px;}
+  .topnav .logo{color:var(--theme-top);text-decoration:none;}
+  .menu-icon{font-size:28px;cursor:pointer;user-select:none;color:var(--theme-top);}
+  .topnav-right{display:none;position:fixed;top:60px;left:0;right:0;bottom:0;background:var(--theme-bg);z-index:999;flex-direction:column;overflow-y:auto;}
+  .topnav.active .topnav-right{display:flex;}
+  .accordion-section{display:flex;flex-direction:column;border-top:1px solid #444;}
+  .accordion-toggle{background:none;color:var(--theme-top);padding:14px;text-align:left;font-size:20px;border:none;cursor:pointer;width:100%;font-family:'Jersey 10',sans-serif;}
+  .accordion-content{display:none;flex-direction:column;background:#444;}
+  .accordion-section.open .accordion-content{display:flex;}
+  .accordion-content a{padding:10px 28px;color:var(--theme-top);text-decoration:none;border-top:1px solid #555;font-size:18px;}
+  .clickable-section{background:var(--accent);color:#fff;padding:12px;text-align:center;font-weight:700;margin:8px;border-radius:6px;cursor:pointer;}
 
-    .container {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 20px;
-    }
+  /* page container */
+  .page {
+    flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:14px; box-sizing:border-box;
+    min-height:calc(100vh - 120px);
+  }
+  h2 {
+    margin:8px 0 20px 0;
+    font-size:40px; /* bigger */
+    text-align:center;
+  }
 
-    h1 {
-      font-size: 50px;
-      margin-bottom: 20px;
-      color: #E82B38;
-    }
+  /* Board */
+  #board { display:grid; grid-template-rows: repeat(6, 1fr); gap:6px; margin-top:6px; }
+  .row { display:flex; gap:6px; justify-content:center; }
+  .cell {
+    width:56px; height:56px; display:flex; align-items:center; justify-content:center;
+    border:2px solid #bdbdbd; font-size:28px; box-sizing:border-box; border-radius:6px;
+    font-family: 'Jersey 10','Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji',sans-serif;
+    word-break:keep-all;
+  }
+  .cell.correct{background:#6aaa64;border:none;color:#fff;}
+  .cell.present{background:#c9b458;border:none;color:#fff;}
+  .cell.wrong{background:#787c7e;border:none;color:#fff;}
 
-    #game-board {
-      margin-bottom: 20px;
-    }
+  /* keyboard */
+  #keyboard {
+    width:100%; max-width:640px;
+    display:flex; flex-wrap:wrap; justify-content:center; gap:8px;
+    margin-top:12px;
+  }
+  .key {
+    min-width:42px; padding:8px 10px; border-radius:6px;
+    background:#e6e6e6; text-align:center; cursor:pointer; user-select:none;
+    box-sizing:border-box; font-size:18px;
+    font-family:'Jersey 10','Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji',sans-serif;
+  }
+  .key.enter,.key.backspace{background:var(--accent);color:#fff;min-width:92px;}
+  .key.key-correct{background:#6aaa64;color:#fff;}
+  .key.key-present{background:#c9b458;color:#fff;}
+  .key.key-wrong{background:#787c7e;color:#fff;}
 
-    #keyboard {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
-      gap: 5px;
-      max-width: 500px;
-      margin: auto;
-    }
+  #answer-display { margin-top:12px;font-weight:700;text-align:center; }
 
-    .key {
-      padding: 10px;
-      border: none;
-      border-radius: 8px;
-      background: #ddd;
-      font-size: 20px;
-      cursor: pointer;
-    }
-
-    footer {
-      text-align: center;
-      padding: 10px;
-      background: #333;
-      color: #f2f2f2;
-      font-size: 16px;
-    }
-  </style>
+  @media (max-width:520px){
+    .cell { width:44px;height:44px;font-size:22px; }
+    .key { min-width:36px;font-size:16px;padding:6px 8px; }
+    .key.enter,.key.backspace { min-width:76px; }
+  }
+</style>
 </head>
 <body>
-  <header>
-    <div class="topnav">  
-      <h1><a class="logo" href="/">THE Randoms</a></h1>  
-      <span class="menu-icon" onclick="toggleMenu()">&#9776;</span>  
 
-      <div class="topnav-right">
-        <div class="accordion-section">
-          <button class="accordion-toggle">Jokes & Fun</button>
-          <div class="accordion-content">
-            <a href="jokes.html">Jokes</a>
-            <a href="memes.html">Memes</a>
-            <a href="nfl.html">NFL</a>
-            <a href="quizzes.html">Quizzes</a>
-            <a href="wouldyourather.html">Would You Rather</a>
-          </div>
-        </div>
-        <div class="accordion-section">
-          <button class="accordion-toggle">Knowledge & Facts</button>
-          <div class="accordion-content">
-            <a href="advice.html">Advice</a>
-            <a href="facts.html">Facts</a>
-            <a href="pages.html">Pages</a>
-            <a href="people.html">People</a>
-            <a href="quotes.html">Quotes</a>
-          </div>
-        </div>
-        <div class="accordion-section">
-          <button class="accordion-toggle">Music & Videos</button>
-          <div class="accordion-content">
-            <a href="songs.html">Songs</a>
-            <a href="videos.html">Videos</a>
-          </div>
-        </div>
-        <div class="accordion-section">
-          <button class="accordion-toggle">Words, Letters & Numbers</button>
-          <div class="accordion-content">
-            <a href="letters.html">Letters</a>
-            <a href="numbers.html">Numbers</a>
-            <a href="words.html">Words</a>
-            <a href="randle.html" class="active">Randle</a>
-          </div>
-        </div>
+<header class="topnav">
+  <h1><a class="logo" href="/">THE Randoms</a></h1>
+  <span class="menu-icon" onclick="toggleMenu()">&#9776;</span>
+  <div class="topnav-right">
+    <div class="accordion-section">
+      <button class="accordion-toggle">Jokes &amp; Fun</button>
+      <div class="accordion-content" hidden>
+        <a href="jokes.html">Jokes</a>
+        <a href="memes.html">Memes</a>
+        <a href="nfl.html">NFL</a>
+        <a href="quizzes.html">Quizzes</a>
+        <a href="wouldyourather.html">Would You Rather</a>
       </div>
-    </div>  
-  </header>
-
-  <div class="container">
-    <h1>Randle</h1>
-    <div id="game-board"></div>
-    <div id="keyboard"></div>
+    </div>
+    <div class="accordion-section">
+      <button class="accordion-toggle">Knowledge &amp; Facts</button>
+      <div class="accordion-content" hidden>
+        <a href="advice.html">Advice</a>
+        <a href="facts.html">Facts</a>
+        <a href="pages.html">Pages</a>
+        <a href="people.html">People</a>
+        <a href="quotes.html">Quotes</a>
+      </div>
+    </div>
+    <div class="accordion-section">
+      <button class="accordion-toggle">Music &amp; Videos</button>
+      <div class="accordion-content" hidden>
+        <a href="songs.html">Songs</a>
+        <a href="videos.html">Videos</a>
+      </div>
+    </div>
+    <div class="accordion-section">
+      <button class="accordion-toggle">Words, Letters &amp; Numbers</button>
+      <div class="accordion-content" hidden>
+        <a href="letters.html">Letters</a>
+        <a href="numbers.html">Numbers</a>
+        <a href="words.html">Words</a>
+      </div>
+    </div>
+    <div class="clickable-section" onclick="location.href='randomsoftheday.html'">Randoms Of The Day</div>
   </div>
+</header>
 
-  <footer>
-    <p>&copy; 2025 THE Randoms. All rights reserved.</p>
-  </footer>
+<main class="page">
+  <h2>Randle</h2>
+  <div id="board"></div>
+  <div id="keyboard"></div>
+  <div id="answer-display"></div>
+</main>
 
-  <script src="randle.js"></script>
-  <script>
-    function toggleMenu() {
-      const topnav = document.querySelector('.topnav');
-      const body = document.body;
-      topnav.classList.toggle('active');
-      body.classList.toggle('menu-open');
-    }
+<script>
+/* Menu */
+function toggleMenu(){
+  const topnav=document.querySelector('.topnav');
+  topnav.classList.toggle('active');
+  document.body.classList.toggle('menu-open');
+}
+document.querySelectorAll('.accordion-toggle').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const parent=btn.parentElement;
+    document.querySelectorAll('.accordion-section').forEach(s=>{if(s!==parent) s.classList.remove('open')});
+    parent.classList.toggle('open');
+    const content=parent.querySelector('.accordion-content');
+    if(content) content.hidden=!parent.classList.contains('open');
+  });
+});
 
-    document.querySelectorAll('.accordion-toggle').forEach(toggle => {
-      toggle.addEventListener('click', () => {
-        const parent = toggle.parentElement;
-        document.querySelectorAll('.accordion-section').forEach(section => {
-          if (section !== parent) {
-            section.classList.remove('open');
-          }
-        });
-        parent.classList.toggle('open');
-      });
-    });
-  </script>
+/* Game */
+const day=new Date().getDay();
+const MODE_BY_DAY=['letters','emojis','numbers','symbols','letters','emojis','numbers'];
+const mode=MODE_BY_DAY[day]||'letters';
+
+const KEYSETS={
+  letters:"ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""),
+  numbers:"0123456789".split(""),
+  symbols:["!","@","#","$","%","^","&","*","(",")","-","_","+","=","{","}","[","]","<",">","/","|","~","`"],
+  emojis:["😀","😎","🥳","🤖","👻","🐶","🐱","🐭","🦊","🐰","🍎","🍌","🍇","🍓","🍒","⚽","🏀","🏈","⚾","🎾","🚗","🚕","🚙","🚌","🚓"]
+};
+
+const splitChars=s=>Array.from(s);
+function getDaySeed(){const now=new Date();return Math.floor(new Date(now.getFullYear(),now.getMonth(),now.getDate()).getTime()/(1000*60*60*24));}
+function deterministicPick(arr,offset){return arr[(getDaySeed()+offset)%arr.length];}
+function makePuzzleForMode(m){const pool=KEYSETS[m];let out='';for(let i=0;i<5;i++) out+=deterministicPick(pool,i);return out;}
+
+let answer=makePuzzleForMode(mode),answerChars=splitChars(answer);
+let rows=6,currentRow=0,currentGuess='',gameOver=false;
+const boardEl=document.getElementById('board'),keyboardEl=document.getElementById('keyboard'),answerDisplay=document.getElementById('answer-display');
+
+function buildBoard(){
+  boardEl.innerHTML='';
+  for(let r=0;r<rows;r++){
+    const row=document.createElement('div');row.className='row';
+    for(let c=0;c<5;c++){const cell=document.createElement('div');cell.className='cell';row.appendChild(cell);}
+    boardEl.appendChild(row);
+  }
+}
+function buildKeyboard(){
+  keyboardEl.innerHTML='';
+  KEYSETS[mode].forEach(k=>{
+    const key=document.createElement('div');key.className='key';key.textContent=k;
+    key.onclick=()=>onKeyPress(k);keyboardEl.appendChild(key);
+  });
+  const enter=document.createElement('div');enter.className='key enter';enter.textContent='Enter';enter.onclick=submitGuess;keyboardEl.appendChild(enter);
+  const back=document.createElement('div');back.className='key backspace';back.textContent='⌫';back.onclick=onBackspace;keyboardEl.appendChild(back);
+}
+function renderCurrentGuess(){
+  const row=boardEl.children[currentRow],chars=splitChars(currentGuess);
+  for(let i=0;i<5;i++){const cell=row.children[i];cell.textContent=chars[i]||'';cell.classList.remove('correct','present','wrong');}
+}
+function onKeyPress(k){if(gameOver)return;if(splitChars(currentGuess).length>=5)return;currentGuess+=k;renderCurrentGuess();}
+function onBackspace(){if(gameOver)return;const arr=splitChars(currentGuess);arr.pop();currentGuess=arr.join('');renderCurrentGuess();}
+function submitGuess(){
+  if(gameOver)return;
+  const guessChars=splitChars(currentGuess);
+  if(guessChars.length!==5)return;
+  const counts={};answerChars.forEach(ch=>counts[ch]=(counts[ch]||0)+1);
+  const result=Array(5).fill('wrong');
+  for(let i=0;i<5;i++){if(guessChars[i]===answerChars[i]){result[i]='correct';counts[guessChars[i]]--;}}
+  for(let i=0;i<5;i++){if(result[i]==='correct')continue;const g=guessChars[i];if(counts[g]>0){result[i]='present';counts[g]--;}}
+  const row=boardEl.children[currentRow];
+  for(let i=0;i<5;i++){row.children[i].textContent=guessChars[i];row.children[i].classList.add(result[i]);}
+  guessChars.forEach((ch,idx)=>{const el=[...keyboardEl.querySelectorAll('.key')].find(k=>k.textContent===ch);if(el){el.classList.add('key-'+result[idx]);}});
+  if(guessChars.join('')===answerChars.join('')){answerDisplay.textContent='Correct! Answer: '+answer;gameOver=true;return;}
+  currentRow++;currentGuess='';if(currentRow>=rows){answerDisplay.textContent='Game over — answer: '+answer;gameOver=true;}
+}
+document.addEventListener('keydown',e=>{
+  if(gameOver||mode==='emojis')return;
+  if(e.key==='Enter'){submitGuess();return;}
+  if(e.key==='Backspace'){onBackspace();return;}
+  if(mode==='letters'&&/^[a-z]$/i.test(e.key))onKeyPress(e.key.toUpperCase());
+  else if(mode==='numbers'&&/[0-9]/.test(e.key))onKeyPress(e.key);
+  else if(mode==='symbols'&&KEYSETS.symbols.includes(e.key))onKeyPress(e.key);
+});
+
+buildBoard();buildKeyboard();
+</script>
+<script src="holiday-theme.js" defer></script>
 </body>
 </html>
