@@ -1,218 +1,389 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#E82B38">
-<title>Randle - THE Randoms</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="theme-color" content="#E82B38" />
+<title>Randle — THE Randoms</title>
 <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
-html, body { margin:0; padding:0; font-family:'Jersey 10', sans-serif; height:100%; }
-body { display:flex; flex-direction:column; min-height:100vh; background:#fff; color:#000; }
-.topnav { display:flex; align-items:center; justify-content:space-between; padding:0 16px; height:60px; background:#333; color:#f2f2f2; }
-.topnav h1 { margin:0; font-size:24px; }
-.topnav .logo { color:#f2f2f2; text-decoration:none; }
-.menu-icon { font-size:30px; cursor:pointer; }
-.topnav-right { display:none; position:fixed; top:60px; right:0; background:#333; width:100%; height:100vh; flex-direction:column; z-index:999; overflow-y:auto; }
-.topnav.active .topnav-right { display:flex; }
-body.menu-open { overflow:hidden; }
-.accordion-section { display:flex; flex-direction:column; border-top:1px solid #444; }
-.accordion-toggle { background:none; color:#f2f2f2; padding:14px; text-align:left; font-size:24px; border:none; cursor:pointer; width:100%; }
-.accordion-content { display:none; flex-direction:column; background:#444; }
-.accordion-content a { padding:10px 28px; font-size:20px; color:#f2f2f2; text-decoration:none; border-top:1px solid #555; }
-.accordion-section.open .accordion-content { display:flex; }
+  /* Basic layout / header (borrowed from your homepage style) */
+  :root{
+    --theme-bg:#333;
+    --theme-top:#f2f2f2;
+    --accent:#E82B38;
+  }
+  html,body{height:100%;margin:0;font-family:'Jersey 10',sans-serif;background:#fff;color:#000;display:flex;flex-direction:column;}
+  .topnav{height:60px;background:var(--theme-bg);color:var(--theme-top);display:flex;align-items:center;justify-content:space-between;padding:0 16px;box-sizing:border-box;z-index:20;}
+  .topnav h1{margin:0;font-size:22px;}
+  .topnav .logo{color:var(--theme-top);text-decoration:none;}
+  .menu-icon{font-size:28px;cursor:pointer;user-select:none;color:var(--theme-top);}
+  /* mobile nav */
+  .topnav-right{display:none;position:fixed;top:60px;left:0;right:0;bottom:0;background:var(--theme-bg);z-index:999;flex-direction:column;overflow-y:auto;}
+  .topnav.active .topnav-right{display:flex;}
+  .accordion-section{display:flex;flex-direction:column;border-top:1px solid #444;}
+  .accordion-toggle{background:none;color:var(--theme-top);padding:14px;text-align:left;font-size:20px;border:none;cursor:pointer;width:100%;font-family:'Jersey 10',sans-serif;}
+  .accordion-content{display:none;flex-direction:column;background:#444;}
+  .accordion-section.open .accordion-content{display:flex;}
+  .accordion-content a{padding:10px 28px;color:var(--theme-top);text-decoration:none;border-top:1px solid #555;font-size:18px;}
+  .clickable-section{background:var(--accent);color:#fff;padding:12px;text-align:center;font-weight:700;margin:8px;border-radius:6px;cursor:pointer;}
+  /* page container that avoids scroll where possible */
+  .page { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; padding:14px; box-sizing:border-box; min-height:calc(100vh - 120px); }
+  h2 { margin:8px 0 20px 0; font-size:28px; }
 
-.container { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; padding:10px 0 80px; box-sizing:border-box; }
+  /* Board */
+  #board { display:grid; grid-template-rows: repeat(6, 1fr); gap:6px; margin-top:6px; }
+  .row { display:flex; gap:6px; justify-content:center; }
+  .cell {
+    width:56px; height:56px; display:flex; align-items:center; justify-content:center;
+    border:2px solid #bdbdbd; font-size:28px; box-sizing:border-box; border-radius:6px;
+    /* allow emoji color fonts to render */
+    font-family: 'Jersey 10', 'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji', sans-serif;
+    word-break:keep-all;
+  }
+  .cell.correct{background:#6aaa64;border:none;color:#fff;}
+  .cell.present{background:#c9b458;border:none;color:#fff;}
+  .cell.wrong{background:#787c7e;border:none;color:#fff;}
 
-#board { display:grid; grid-template-rows:repeat(6,1fr); grid-gap:4px; margin-bottom:8px; }
-.row { display:grid; grid-template-columns:repeat(5,50px); grid-gap:4px; justify-content:center; }
-.cell { width:50px; height:50px; display:flex; align-items:center; justify-content:center; border:2px solid #999; font-size:28px; user-select:none; }
-.cell.correct { background:#6aaa64; color:#fff; border:none; }
-.cell.present { background:#c9b458; color:#fff; border:none; }
-.cell.wrong { background:#787c7e; color:#fff; border:none; }
+  /* keyboard */
+  #keyboard { width:100%; max-width:640px; display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin-top:12px; }
+  .key {
+    min-width:42px; padding:8px 10px; border-radius:6px; background:#e6e6e6; text-align:center; cursor:pointer; user-select:none;
+    box-sizing:border-box; font-size:18px;
+    font-family: 'Jersey 10', 'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji', sans-serif;
+  }
+  .key.enter, .key.backspace { background:var(--accent); color:#fff; min-width:92px; }
+  .key.key-correct { background:#6aaa64; color:#fff; }
+  .key.key-present { background:#c9b458; color:#fff; }
+  .key.key-wrong { background:#787c7e; color:#fff; }
 
-#keyboard { display:flex; flex-wrap:wrap; justify-content:center; max-width:420px; margin-top:6px; }
-.key { padding:8px; margin:2px; background:#ddd; border-radius:5px; font-size:20px; cursor:pointer; text-align:center; user-select:none; flex:1 0 18%; box-sizing:border-box; }
-.key.blackout { background:#000; color:#fff; }
-.key.enter, .key.backspace { flex:1 0 38%; background:#E82B38; color:#fff; }
+  /* status / answer */
+  #answer-display { margin-top:12px; font-weight:700; }
 
-#answer-display { margin-top:10px; font-size:20px; font-weight:700; text-align:center; }
-footer { height:60px; background:#333; color:#f2f2f2; display:flex; justify-content:space-between; align-items:center; padding:0 20px; flex-shrink:0; }
+  /* small screens */
+  @media (max-width:520px){
+    .cell { width:44px;height:44px;font-size:22px; }
+    .key { min-width:36px; font-size:16px; padding:6px 8px; }
+    .key.enter, .key.backspace { min-width:76px; }
+  }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="topnav">
-    <h1><a class="logo" href="/">THE Randoms</a></h1>
-    <span class="menu-icon" onclick="toggleMenu()">&#9776;</span>
-    <div class="topnav-right">
-      <div class="accordion-section">
-        <button class="accordion-toggle">Jokes & Fun</button>
-        <div class="accordion-content">
-          <a href="jokes.html">Jokes</a>
-          <a href="memes.html">Memes</a>
-          <a href="nfl.html">NFL</a>
-          <a href="quizzes.html">Quizzes</a>
-          <a href="wouldyourather.html">Would You Rather</a>
-        </div>
-      </div>
-      <div class="accordion-section">
-        <button class="accordion-toggle">Knowledge & Facts</button>
-        <div class="accordion-content">
-          <a href="advice.html">Advice</a>
-          <a href="facts.html">Facts</a>
-          <a href="pages.html">Pages</a>
-          <a href="people.html">People</a>
-          <a href="quotes.html">Quotes</a>
-        </div>
+<!-- Header + accordion (full content) -->
+<header class="topnav" role="banner">
+  <h1><a class="logo" href="/">THE Randoms</a></h1>
+  <span class="menu-icon" onclick="toggleMenu()" aria-label="Open menu" tabindex="0">&#9776;</span>
+
+  <div class="topnav-right" role="navigation" aria-label="Site Menu">
+    <div class="accordion-section">
+      <button class="accordion-toggle" aria-expanded="false">Jokes &amp; Fun</button>
+      <div class="accordion-content" hidden>
+        <a href="jokes.html">Jokes</a>
+        <a href="memes.html">Memes</a>
+        <a href="nfl.html">NFL</a>
+        <a href="quizzes.html">Quizzes</a>
+        <a href="wouldyourather.html">Would You Rather</a>
       </div>
     </div>
+
+    <div class="accordion-section">
+      <button class="accordion-toggle" aria-expanded="false">Knowledge &amp; Facts</button>
+      <div class="accordion-content" hidden>
+        <a href="advice.html">Advice</a>
+        <a href="facts.html">Facts</a>
+        <a href="pages.html">Pages</a>
+        <a href="people.html">People</a>
+        <a href="quotes.html">Quotes</a>
+      </div>
+    </div>
+
+    <div class="accordion-section">
+      <button class="accordion-toggle" aria-expanded="false">Music &amp; Videos</button>
+      <div class="accordion-content" hidden>
+        <a href="songs.html">Songs</a>
+        <a href="videos.html">Videos</a>
+      </div>
+    </div>
+
+    <div class="accordion-section">
+      <button class="accordion-toggle" aria-expanded="false">Words, Letters &amp; Numbers</button>
+      <div class="accordion-content" hidden>
+        <a href="letters.html">Letters</a>
+        <a href="numbers.html">Numbers</a>
+        <a href="words.html">Words</a>
+      </div>
+    </div>
+
+    <div class="clickable-section" onclick="location.href='randomsoftheday.html'">Randoms Of The Day</div>
   </div>
 </header>
 
-<div class="container">
-  <div id="board"></div>
-  <div id="keyboard"></div>
-  <div id="answer-display"></div>
-</div>
+<!-- Game area -->
+<main class="page" role="main" aria-live="polite">
+  <h2>Randle — daily 5-char puzzle</h2>
+  <div id="board" aria-label="Randle board" ></div>
+  <div id="keyboard" aria-hidden="false"></div>
+  <div id="answer-display" aria-live="polite"></div>
+</main>
 
-<footer>
-  <div>&copy; THE Randoms</div>
-  <div><img src="img/Mascot.png" alt="Randuino" style="height:50px"></div>
-</footer>
-
+<!-- footer is intentionally left to your holiday-theme.js to create (do not duplicate) -->
 <script>
-// HEADER MENU
+/* ------------- Header menu interactions (same style as your other pages) ------------- */
 function toggleMenu(){
-  document.querySelector('.topnav').classList.toggle('active');
+  const topnav = document.querySelector('.topnav');
+  topnav.classList.toggle('active');
   document.body.classList.toggle('menu-open');
 }
 document.querySelectorAll('.accordion-toggle').forEach(btn=>{
-  btn.addEventListener('click',()=>{
+  btn.addEventListener('click', ()=>{
     const parent = btn.parentElement;
+    const isOpen = parent.classList.contains('open');
     document.querySelectorAll('.accordion-section').forEach(s=>{
-      if(s!==parent)s.classList.remove('open');
+      if(s !== parent) s.classList.remove('open');
     });
     parent.classList.toggle('open');
+    const content = parent.querySelector('.accordion-content');
+    if(content) content.hidden = !parent.classList.contains('open');
+    btn.setAttribute('aria-expanded', parent.classList.contains('open'));
   });
 });
 
-// GAME LOGIC
-const modes=["letters","emojis","numbers","symbols","letters","emojis","numbers"];
-const currentMode=modes[new Date().getDay()];
+/* ------------- Game logic ------------- */
+/* Modes by weekday (Sunday = 0) - you can change day-to-mode mapping here */
+const day = new Date().getDay();
+const MODE_BY_DAY = ['letters','emojis','numbers','symbols','letters','emojis','numbers'];
+const mode = MODE_BY_DAY[day] || 'letters';
 
-// dynamic 5-character puzzle per day
-function generatePuzzle(){
-  const chars={
-    letters:"ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-    emojis:["😀","😎","🥳","🤖","👻","🐶","🐱","🐭","🦊","🐰","🍎","🍌","🍇","🍓","🍒","⚽","🏀","🏈","⚾","🎾","🚗","🚕","🚙","🚌","🚓"],
-    numbers:"0123456789",
-    symbols:"!@#$%^&*()[]{}<>~`|/-="
-  };
-  let result="";
-  const source=chars[currentMode];
+/* Key sets */
+const KEYSETS = {
+  letters: "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""),
+  numbers: "0123456789".split(""),
+  symbols: ["!","@","#","$","%","^","&","*","(",")","-","_","+","=","{","}","[","]","<",">","/","|","~","`"],
+  emojis: ["😀","😎","🥳","🤖","👻","🐶","🐱","🐭","🦊","🐰","🍎","🍌","🍇","🍓","🍒","⚽","🏀","🏈","⚾","🎾","🚗","🚕","🚙","🚌","🚓"]
+};
+
+/* Utility: split into array of graphemes (handles surrogate pairs) */
+const splitChars = s => Array.from(s);
+
+/* Create daily puzzle: for letters we might want a dictionary word, but per request we'll pick deterministic "random" 5-chars based on day seed */
+function getDaySeed(){
+  const now = new Date();
+  const localMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  return Math.floor(localMidnight.getTime()/(1000*60*60*24));
+}
+function deterministicPick(arr, seedOffset){
+  const seed = getDaySeed() + (seedOffset||0);
+  return arr[seed % arr.length];
+}
+function makePuzzleForMode(m){
+  const pool = KEYSETS[m];
+  // create deterministic 5-char string (allows repeats)
+  let out = '';
   for(let i=0;i<5;i++){
-    result+=Array.isArray(source)?source[Math.floor(Math.random()*source.length)]:source[Math.floor(Math.random()*source.length)];
+    out += deterministicPick(pool, i);
   }
-  return result;
+  return out;
 }
 
-let answer=generatePuzzle();
-let currentGuess="", currentRow=0, maxRows=6;
+/* Game state */
+let answer = makePuzzleForMode(mode);             // string of 5 characters (graphemes)
+let answerChars = splitChars(answer);
+let rows = 6;
+let currentRow = 0;
+let currentGuess = ''; // keep as string of graphemes appended from keyboard clicks
+let gameOver = false;
 
-// Board
-function createBoard(){
-  const board=document.getElementById("board");
-  board.innerHTML="";
-  for(let r=0;r<maxRows;r++){
-    const row=document.createElement("div");
-    row.className="row";
+/* DOM references */
+const boardEl = document.getElementById('board');
+const keyboardEl = document.getElementById('keyboard');
+const answerDisplay = document.getElementById('answer-display');
+
+/* Build board (6 rows x 5 cells) */
+function buildBoard(){
+  boardEl.innerHTML = '';
+  for(let r=0;r<rows;r++){
+    const row = document.createElement('div');
+    row.className = 'row';
     for(let c=0;c<5;c++){
-      const cell=document.createElement("div");
-      cell.className="cell";
+      const cell = document.createElement('div');
+      cell.className = 'cell';
+      cell.setAttribute('data-row', r);
+      cell.setAttribute('data-col', c);
       row.appendChild(cell);
     }
-    board.appendChild(row);
+    boardEl.appendChild(row);
   }
 }
 
-// Keyboard
-function createKeyboard(){
-  const kb=document.getElementById("keyboard");
-  kb.innerHTML="";
-  const keys={
-    letters:"ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""),
-    emojis:["😀","😎","🥳","🤖","👻","🐶","🐱","🐭","🦊","🐰","🍎","🍌","🍇","🍓","🍒","⚽","🏀","🏈","⚾","🎾","🚗","🚕","🚙","🚌","🚓"],
-    numbers:"0123456789".split(""),
-    symbols:["!","@","#","$","%","^","&","*","(",")","[","]","{","}","<",">","~","`","|","/","-","="]
-  };
-  keys[currentMode].forEach(k=>{
-    const key=document.createElement("div");
-    key.className="key";
-    key.textContent=k;
-    key.onclick=()=>pressKey(k);
-    kb.appendChild(key);
+/* Build keyboard for current mode */
+function buildKeyboard(){
+  keyboardEl.innerHTML = '';
+  const keys = KEYSETS[mode];
+  // We will display keys in provided order
+  keys.forEach(k=>{
+    const key = document.createElement('div');
+    key.className = 'key';
+    key.textContent = k;
+    key.addEventListener('click', ()=> onKeyPress(k));
+    keyboardEl.appendChild(key);
   });
-  const enter=document.createElement("div");
-  enter.className="key enter"; enter.textContent="Enter"; enter.onclick=submitGuess; kb.appendChild(enter);
-  const back=document.createElement("div");
-  back.className="key backspace"; back.textContent="⌫"; back.onclick=backspace; kb.appendChild(back);
+  // Enter & Backspace (larger)
+  const enter = document.createElement('div');
+  enter.className = 'key enter';
+  enter.textContent = 'Enter';
+  enter.addEventListener('click', submitGuess);
+  keyboardEl.appendChild(enter);
+
+  const back = document.createElement('div');
+  back.className = 'key backspace';
+  back.textContent = '⌫';
+  back.addEventListener('click', onBackspace);
+  keyboardEl.appendChild(back);
 }
 
-// Press/backspace
-function pressKey(k){
-  if(currentGuess.length<5){ currentGuess+=k; updateBoard(); }
-}
-function backspace(){ currentGuess=currentGuess.slice(0,-1); updateBoard(); }
-
-// Submit guess
-function submitGuess(){
-  if(currentGuess.length!==5)return;
-  const rowEl=document.getElementById("board").children[currentRow];
+/* Update board UI while typing */
+function renderCurrentGuess(){
+  const row = boardEl.children[currentRow];
+  const chars = splitChars(currentGuess);
   for(let i=0;i<5;i++){
-    const cell=rowEl.children[i];
-    if(currentGuess[i]===answer[i]){ cell.className="cell correct"; }
-    else if(answer.includes(currentGuess[i])){ cell.className="cell present"; }
-    else{ cell.className="cell wrong"; }
+    const cell = row.children[i];
+    cell.textContent = chars[i] || '';
+    cell.classList.remove('correct','present','wrong');
   }
-  // black out keys
-  document.querySelectorAll("#keyboard .key").forEach(key=>{
-    if(!answer.includes(key.textContent) && currentGuess.includes(key.textContent)){
-      key.classList.add("blackout");
-    }
-  });
-  if(currentGuess===answer){
-    document.getElementById("answer-display").textContent="Correct! The answer was "+answer;
-    disableKeyboard();
+}
+
+/* Key press from screen keyboard */
+function onKeyPress(k){
+  if(gameOver) return;
+  // only allow input when less than 5 graphemes
+  const chars = splitChars(currentGuess);
+  if(chars.length >= 5) return;
+  currentGuess = currentGuess + k;
+  renderCurrentGuess();
+}
+
+/* backspace */
+function onBackspace(){
+  if(gameOver) return;
+  const arr = splitChars(currentGuess);
+  arr.pop();
+  currentGuess = arr.join('');
+  renderCurrentGuess();
+}
+
+/* Evaluate guess using Wordle-like two-pass algorithm with counts (handles duplicates correctly) */
+function submitGuess(){
+  if(gameOver) return;
+  const guessChars = splitChars(currentGuess);
+  if(guessChars.length !== 5){
+    // could show a small toast; for now, ignore
     return;
   }
-  currentGuess="";
-  currentRow++;
-  if(currentRow>=maxRows){
-    document.getElementById("answer-display").textContent="Game Over! The answer was "+answer;
-    disableKeyboard();
-  }
-}
 
-// Update board while typing
-function updateBoard(){
-  const rowEl=document.getElementById("board").children[currentRow];
+  // Build counts of answer characters for second-pass
+  const counts = {};
+  answerChars.forEach(ch => counts[ch] = (counts[ch]||0)+1);
+
+  // Prepare result array
+  const result = Array(5).fill('wrong');
+
+  // First pass: correct positions
   for(let i=0;i<5;i++){
-    const cell=rowEl.children[i];
-    cell.textContent=currentGuess[i]||"";
+    if(guessChars[i] === answerChars[i]){
+      result[i] = 'correct';
+      counts[guessChars[i]]--;
+    }
+  }
+  // Second pass: present if remaining
+  for(let i=0;i<5;i++){
+    if(result[i] === 'correct') continue;
+    const g = guessChars[i];
+    if(counts[g] > 0){
+      result[i] = 'present';
+      counts[g]--;
+    } else {
+      result[i] = 'wrong';
+    }
+  }
+
+  // Update UI for the row
+  const row = boardEl.children[currentRow];
+  for(let i=0;i<5;i++){
+    const cell = row.children[i];
+    cell.textContent = guessChars[i];
+    cell.classList.add(result[i]);
+  }
+
+  // Update keyboard states: keep best-state priority (correct > present > wrong)
+  guessChars.forEach((ch, idx) => {
+    const keyEls = Array.from(keyboardEl.querySelectorAll('.key')).filter(k=>k.textContent === ch);
+    keyEls.forEach(el => {
+      // compute existing state priority
+      const prev = el.classList.contains('key-correct') ? 3 : el.classList.contains('key-present') ? 2 : el.classList.contains('key-wrong') ? 1 : 0;
+      const newState = result[idx] === 'correct' ? 3 : result[idx] === 'present' ? 2 : 1;
+      if(newState > prev){
+        el.classList.remove('key-correct','key-present','key-wrong');
+        el.classList.add(newState === 3 ? 'key-correct' : newState === 2 ? 'key-present' : 'key-wrong');
+      }
+    });
+  });
+
+  // Win or lose
+  if(guessChars.join('') === answerChars.join('')){
+    answerDisplay.textContent = 'Correct! Answer: ' + answerChars.join('');
+    gameOver = true;
+    return;
+  }
+
+  currentRow++;
+  currentGuess = '';
+  if(currentRow >= rows){
+    answerDisplay.textContent = 'Game over — answer: ' + answerChars.join('');
+    gameOver = true;
+    return;
   }
 }
 
-// disable keyboard at game end
-function disableKeyboard(){
-  document.querySelectorAll("#keyboard .key").forEach(k=>k.onclick=null);
-}
+/* allow physical keyboard for letters/numbers/symbols (emojis still use on-screen) */
+document.addEventListener('keydown', (e)=>{
+  if(gameOver) return;
+  if(mode === 'emojis') return; // only on-screen for emojis
+  // handle Enter and Backspace
+  if(e.key === 'Enter'){ submitGuess(); return; }
+  if(e.key === 'Backspace'){ onBackspace(); return; }
+  // normalize key for letters
+  let key = e.key;
+  if(key.length === 1){
+    // In letters mode accept letters only; in numbers/symbols accept accordingly
+    if(mode === 'letters'){
+      if(/[a-zA-Z]/.test(key)){ onKeyPress(key.toUpperCase()); }
+    } else if(mode === 'numbers'){
+      if(/[0-9]/.test(key)){ onKeyPress(key); }
+    } else if(mode === 'symbols'){
+      // accept common symbol keys (e.key already contains them)
+      const allowed = KEYSETS.symbols;
+      if(allowed.includes(key)) onKeyPress(key);
+    }
+  }
+});
 
-// Init
-createBoard();
-createKeyboard();
+/* Initialize display */
+function init(){
+  // rebuild answer to be deterministic every day
+  // (if you want to persist across reloads use localStorage)
+  buildBoard();
+  buildKeyboard();
+  renderCurrentGuess();
+  answerDisplay.textContent = ''; // hide until end
+  // Optional: for debugging, you can console.log the answer:
+  // console.log('DEBUG answer:', answerChars.join(''));
+}
+init();
+
 </script>
 
+<!-- Let holiday-theme.js create the footer & theme -->
+<script src="holiday-theme.js" defer></script>
 </body>
 </html>
