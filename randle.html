@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#E82B38">
 <title>Randle - THE Randoms</title>
 <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
@@ -20,8 +19,8 @@ body {
 
 h1 {
   color: #E82B38;
-  margin-bottom: 10px;
   font-size: 32px;
+  margin-bottom: 10px;
 }
 
 #board {
@@ -44,12 +43,13 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 700;
   text-transform: uppercase;
   border-radius: 6px;
   transition: all 0.2s ease;
   background: #f2f2f2;
+  font-family: 'Jersey 10', sans-serif;
 }
 
 .cell.correct { background: #4caf50; color: #fff; }
@@ -79,12 +79,12 @@ h1 {
   user-select: none;
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
   transition: all 0.15s ease;
+  font-family: 'Jersey 10', sans-serif;
 }
 
 .key:hover:not(.blackout) { transform: translateY(-1px); box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
 .key.blackout { background: #333; cursor: default; box-shadow: none; }
 .key.special { width: 70px; font-size: 16px; }
-
 </style>
 </head>
 <body>
@@ -115,7 +115,9 @@ while (puzzle.length < 5) {
   puzzle.push(candidate);
 }
 
+// Game state
 let board = Array.from({length:6}, () => Array(5).fill(''));
+let boardColors = Array.from({length:6}, () => Array(5).fill(''));
 let currentRow = 0;
 let currentCol = 0;
 
@@ -130,6 +132,8 @@ function renderBoard() {
     row.forEach((cell,colIndex) => {
       const cellDiv = document.createElement('div');
       cellDiv.classList.add('cell');
+      const color = boardColors[rowIndex][colIndex];
+      if(color) cellDiv.classList.add(color);
       cellDiv.textContent = cell;
       rowDiv.appendChild(cellDiv);
     });
@@ -161,68 +165,67 @@ function renderKeyboard() {
 }
 
 function pressKey(k) {
-  if (currentCol < 5) {
+  if(currentCol<5) {
     board[currentRow][currentCol] = k;
+    boardColors[currentRow][currentCol] = '';
     currentCol++;
     renderBoard();
   }
 }
 
 function backspaceKey() {
-  if (currentCol > 0) {
+  if(currentCol>0) {
     currentCol--;
     board[currentRow][currentCol] = '';
+    boardColors[currentRow][currentCol] = '';
     renderBoard();
   }
 }
 
 function submitGuess() {
-  if (currentCol < 5) return;
+  if(currentCol<5) return;
 
   const guess = board[currentRow].slice();
-
-  // Track key counts for blackouts
   let puzzleCopy = puzzle.slice();
-  board[currentRow].forEach((c,i) => {
-    const cell = boardDiv.children[currentRow].children[i];
-    if (c === puzzle[i]) {
-      cell.classList.add('correct');
-      puzzleCopy[i] = null;
+  
+  // First pass: correct spots
+  guess.forEach((c,i) => {
+    if(c===puzzle[i]) {
+      boardColors[currentRow][i]='correct';
+      puzzleCopy[i]=null;
     }
   });
 
-  // Present but wrong position
-  board[currentRow].forEach((c,i) => {
-    const cell = boardDiv.children[currentRow].children[i];
-    if (!cell.classList.contains('correct')) {
-      const index = puzzleCopy.indexOf(c);
-      if (index > -1) {
-        cell.classList.add('present');
-        puzzleCopy[index] = null;
+  // Second pass: present in puzzle but wrong spot
+  guess.forEach((c,i)=>{
+    if(!boardColors[currentRow][i]) {
+      const idx = puzzleCopy.indexOf(c);
+      if(idx>-1) {
+        boardColors[currentRow][i]='present';
+        puzzleCopy[idx]=null;
       } else {
-        cell.classList.add('wrong');
-        document.querySelectorAll('.key').forEach(kb => {
-          if (kb.textContent === c) kb.classList.add('blackout');
+        boardColors[currentRow][i]='wrong';
+        // black out keyboard key
+        document.querySelectorAll('.key').forEach(kb=>{
+          if(kb.textContent===c) kb.classList.add('blackout');
         });
       }
     }
   });
 
   currentRow++;
-  currentCol = 0;
-
-  if (guess.join('') === puzzle.join('')) {
-    setTimeout(()=> alert('You got it!'),100);
-  } else if (currentRow === 6) {
-    setTimeout(()=> alert('Out of tries! Answer: ' + puzzle.join('')),100);
-  }
-
+  currentCol=0;
   renderBoard();
+
+  if(guess.join('')===puzzle.join('')) {
+    setTimeout(()=>alert('You got it!'),100);
+  } else if(currentRow===6) {
+    setTimeout(()=>alert('Out of tries! Answer: '+puzzle.join('')),100);
+  }
 }
 
 renderBoard();
 renderKeyboard();
 </script>
-
 </body>
 </html>
