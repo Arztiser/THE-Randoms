@@ -138,7 +138,7 @@ body.menu-open{overflow:hidden;}
 </main>
 
 <script>
-const testingMode=false;
+const testingMode = false;
 
 // Hamburger menu toggle
 function toggleMenu() {
@@ -147,82 +147,83 @@ function toggleMenu() {
 }
 
 // Accordion
-document.querySelectorAll('.accordion-toggle').forEach(toggle=>{
-  toggle.addEventListener('click',()=>{
-    const parent=toggle.parentElement;
-    const isOpen=parent.classList.contains('open');
-    document.querySelectorAll('.accordion-section').forEach(section=>{
+document.querySelectorAll('.accordion-toggle').forEach(toggle => {
+  toggle.addEventListener('click', () => {
+    const parent = toggle.parentElement;
+    const isOpen = parent.classList.contains('open');
+    document.querySelectorAll('.accordion-section').forEach(section => {
       section.classList.remove('open');
-      section.querySelector('.accordion-toggle').setAttribute('aria-expanded','false');
-      section.querySelector('.accordion-content').hidden=true;
+      section.querySelector('.accordion-toggle').setAttribute('aria-expanded', 'false');
+      section.querySelector('.accordion-content').hidden = true;
     });
-    if(!isOpen){
+    if (!isOpen) {
       parent.classList.add('open');
-      toggle.setAttribute('aria-expanded','true');
-      parent.querySelector('.accordion-content').hidden=false;
+      toggle.setAttribute('aria-expanded', 'true');
+      parent.querySelector('.accordion-content').hidden = false;
     }
   });
 });
 
-function getDaySeed(){
-  const now=new Date();
-  const localMidnight=new Date(now.getFullYear(),now.getMonth(),now.getDate());
-  return Math.floor(localMidnight.getTime()/(1000*60*60*24));
+// Date utilities
+function getDaySeed() {
+  const now = new Date();
+  const localMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  return Math.floor(localMidnight.getTime() / (1000*60*60*24));
 }
 
-function getLocalDateString(){
-  const now=new Date();
-  const localMidnight=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+function getLocalDateString() {
+  const now = new Date();
+  const localMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   return localMidnight.toISOString().slice(0,10);
 }
 
-function renderCurrentDate(){
-  const container=document.getElementById('current-date');
-  if(!container)return;
-  container.textContent=new Date().toLocaleDateString('en-US',{month:'long',day:'numeric'});
+function renderCurrentDate() {
+  const container = document.getElementById('current-date');
+  if (!container) return;
+  container.textContent = new Date().toLocaleDateString('en-US',{month:'long',day:'numeric'});
 }
 
 // Generic cache fetch
-async function fetchCached(key, fetchFn, useCache=true){
-  const today=getLocalDateString();
-  const cacheKey=`daily_${key}`;
-  const cacheDateKey=`daily_${key}_date`;
-  if(useCache){
-    const cachedData=localStorage.getItem(cacheKey);
-    const cachedDate=localStorage.getItem(cacheDateKey);
-    if(cachedData && cachedDate===today) return cachedData;
+async function fetchCached(key, fetchFn, useCache=true) {
+  const today = getLocalDateString();
+  const cacheKey = `daily_${key}`;
+  const cacheDateKey = `daily_${key}_date`;
+  if (useCache) {
+    const cachedData = localStorage.getItem(cacheKey);
+    const cachedDate = localStorage.getItem(cacheDateKey);
+    if (cachedData && cachedDate === today) return cachedData;
   }
-  try{
-    const freshData=await fetchFn();
-    localStorage.setItem(cacheKey,freshData);
-    localStorage.setItem(cacheDateKey,today);
+  try {
+    const freshData = await fetchFn();
+    localStorage.setItem(cacheKey, freshData);
+    localStorage.setItem(cacheDateKey, today);
     return freshData;
-  }catch(err){
-    console.error(`Error fetching ${key}:`,err);
+  } catch (err) {
+    console.error(`Error fetching ${key}:`, err);
     return localStorage.getItem(cacheKey) || `Could not load ${key} today.`;
   }
 }
 
 // Letters & numbers (instant)
-function renderLetter(){
-  const container=document.querySelector('#random-letter .random-content');
-  if(!container)return;
-  const letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  const index=testingMode ? Math.floor(Math.random()*letters.length) : getDaySeed()%letters.length;
-  container.textContent=letters[index];
+function renderLetter() {
+  const container = document.querySelector('#random-letter .random-content');
+  if (!container) return;
+  const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const index = testingMode ? Math.floor(Math.random() * letters.length) : getDaySeed() % letters.length;
+  container.textContent = letters[index];
 }
 
-function renderNumber(){
-  const container=document.querySelector('#random-number .random-content');
-  if(!container)return;
-  const num=testingMode ? Math.floor(Math.random()*1000000)+1 : (getDaySeed()*9301+49297)%1000000+1;
-  container.textContent=num.toLocaleString();
+function renderNumber() {
+  const container = document.querySelector('#random-number .random-content');
+  if (!container) return;
+  const num = testingMode ? Math.floor(Math.random() * 1000000) + 1 : (getDaySeed() * 9301 + 49297) % 1000000 + 1;
+  container.textContent = num.toLocaleString();
 }
 
-// Simplified Word-of-the-Day
-function renderWord(){
-  const container=document.querySelector('#random-word .random-content');
-  if(!container)return;
+// Word of the Day with API
+async function renderWord() {
+  const container = document.querySelector('#random-word .random-content');
+  if (!container) return;
 
   const today = getLocalDateString();
   const cacheKey = 'daily_word';
@@ -230,19 +231,29 @@ function renderWord(){
 
   const cachedWord = localStorage.getItem(cacheKey);
   const cachedDate = localStorage.getItem(cacheDateKey);
-  if(cachedWord && cachedDate === today){
+  if (cachedWord && cachedDate === today) {
     container.textContent = cachedWord;
     return;
   }
 
-  const wordList = ["random","fun","color","code","web","page","day","fact","letter","test"];
-  const index = getDaySeed() % wordList.length;
-  const chosenWord = wordList[index];
+  try {
+    const res = await fetch('https://random-word-api.herokuapp.com/word?number=1');
+    if (!res.ok) throw new Error('Word fetch failed');
+    const data = await res.json();
+    const chosenWord = data[0];
 
-  localStorage.setItem(cacheKey, chosenWord);
-  localStorage.setItem(cacheDateKey, today);
+    localStorage.setItem(cacheKey, chosenWord);
+    localStorage.setItem(cacheDateKey, today);
 
-  container.textContent = chosenWord;
+    container.textContent = chosenWord;
+  } catch (err) {
+    console.error('Error fetching word:', err);
+    const fallbackWords = ["random","fun","color","code","web","page","day","fact","letter","test"];
+    const chosenWord = fallbackWords[getDaySeed() % fallbackWords.length];
+    container.textContent = chosenWord;
+    localStorage.setItem(cacheKey, chosenWord);
+    localStorage.setItem(cacheDateKey, today);
+  }
 }
 
 // Jokes, advice, facts, memes
@@ -278,7 +289,7 @@ async function renderMeme(useCache=true){
   }catch{return container.textContent='Failed to load meme.';}
 }
 
-// Instant render from cache
+// Render from cache only
 function renderFromCacheOnly(){
   const keys=[{id:'random-joke',key:'joke'},{id:'random-advice',key:'advice'},{id:'random-fact',key:'fact'},{id:'random-word',key:'word'},{id:'random-meme',key:'meme'}];
   keys.forEach(({id,key})=>{
@@ -297,7 +308,7 @@ function renderFromCacheOnly(){
 async function refreshAll(){
   renderLetter();
   renderNumber();
-  renderWord();
+  await renderWord();
   const useCache=!testingMode;
   await Promise.all([renderJoke(useCache), renderAdvice(useCache), renderFact(useCache), renderMeme(useCache)]);
 }
@@ -314,11 +325,11 @@ function scheduleMidnightRefresh(){
 }
 
 // DOM Ready
-  document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', async () => {
   renderCurrentDate();
   renderLetter();
   renderNumber();
-  renderWord();
+  await renderWord();
 
   const today = getLocalDateString();
   const keys = ['joke','advice','fact','meme'];
