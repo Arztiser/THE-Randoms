@@ -5,206 +5,215 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#E82B38">
 <title>Randle - THE Randoms</title>
-<link rel="icon" type="image/png" href="./img/pfp.png">
 <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
 body {
   font-family: 'Jersey 10', sans-serif;
   background: #fff;
   color: #000;
-  margin: 0;
-  padding: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 0;
+  padding: 20px;
 }
 
-h1 { margin-top: 20px; color:#E82B38; }
+h1 {
+  color: #E82B38;
+  margin-bottom: 20px;
+  font-size: 36px;
+}
 
-#grid {
+#board {
   display: grid;
-  grid-template-rows: repeat(6, 60px);
+  grid-template-rows: repeat(6, 70px);
   grid-gap: 8px;
-  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .row {
-  display: grid;
-  grid-template-columns: repeat(5, 60px);
-  grid-gap: 8px;
+  display: flex;
+  justify-content: center;
 }
 
 .cell {
-  border: 2px solid #E82B38;
-  font-size: 32px;
+  width: 70px;
+  height: 70px;
+  border: 2px solid #333;
+  margin: 3px;
   display: flex;
-  justify-content: center;
   align-items: center;
-  text-transform: uppercase;
-  font-family:'Jersey 10';
+  justify-content: center;
+  font-size: 32px;
   font-weight: 700;
+  text-transform: uppercase;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  background: #f2f2f2;
 }
 
-#keyboard-container {
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  margin-top:20px;
+.cell.correct { background: #4caf50; color: #fff; } /* Green */
+.cell.present { background: #ff9800; color: #fff; } /* Orange */
+.cell.wrong { background: #333; color: #fff; } /* Black */
+
+#keyboard {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 10px;
 }
 
 .key {
-  padding:10px 14px;
-  margin:4px;
-  background:#E82B38;
-  color:white;
-  font-family:"Jersey 10";
-  font-size:24px;
-  border-radius:6px;
-  cursor:pointer;
-  user-select:none;
-  text-align:center;
+  width: 60px;
+  height: 60px;
+  background: #E82B38;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 700;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: all 0.15s ease;
 }
 
-.key.blackout { background:#000; }
-
-.key.enter { background:#28a745; }
-.key.backspace { background:#ffc107; }
+.key:hover:not(.blackout) { transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0,0,0,0.3); }
+.key.blackout { background: #333; cursor: default; box-shadow: none; }
+.key.special { width: 90px; font-size: 18px; }
 
 </style>
 </head>
 <body>
-<h1>Randle - Today's Puzzle</h1>
-<div id="grid"></div>
-<div id="keyboard-container"></div>
+
+<h1>Randle</h1>
+<div id="board"></div>
+<div id="keyboard"></div>
 
 <script>
-// ---- Day & Key Sets ----
-const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-const dayIndex = new Date().getDay(); // 0=Sunday
-const today = days[dayIndex];
-
+// Keyboard sets by day
 const keySets = {
-  'Sunday': 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),
-  'Monday': ['😀','😂','🥰','😎','😢','🤔','😡','😱','🤪','😴','🙃','😇','😈','🤩','🥳','🤯','😷','😺','👻','💩','🎃','🌈','🍕','🎉','💎','⚡'],
-  'Tuesday': ['0','1','2','3','4','5','6','7','8','9'],
-  'Wednesday': ['!','@','#','$','%','^','&','*','(',')','-','_','=','+','[',']','{','}',';',':','<','>','/','?','~','|'],
-  'Thursday': 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),
-  'Friday': ['😀','😂','🥰','😎','😢','🤔','😡','😱','🤪','😴','🙃','😇','😈','🤩','🥳','🤯','😷','😺','👻','💩','🎃','🌈','🍕','🎉','💎','⚡'],
-  'Saturday': ['0','1','2','3','4','5','6','7','8','9']
+  0: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''), // Sunday
+  1: ['😀','😂','😍','😎','🥳','😡','😭','😴','😱','😇','🤯','🤔','😜','🤢','🤮','😳','🤫','🫣','😈','👻','💩','🦄','🐶','🐱','🍕','🍔'], // Monday
+  2: ['0','1','2','3','4','5','6','7','8','9'], // Tuesday
+  3: ['!','@','#','$','%','^','&','*','(',')','-','+','=','~','`','|','/','?','<','>','[',']','{','}',';',':'], // Wednesday
+  4: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''), // Thursday
+  5: ['😀','😂','😍','😎','🥳','😡','😭','😴','😱','😇','🤯','🤔','😜','🤢','🤮','😳','🤫','🫣','😈','👻','💩','🦄','🐶','🐱','🍕','🍔'], // Friday
+  6: ['0','1','2','3','4','5','6','7','8','9'], // Saturday
 };
 
-// ---- Generate today's puzzle ----
-let puzzle = Array.from({length:5}, ()=> keySets[today][Math.floor(Math.random()*keySets[today].length)]);
+const today = new Date().getDay();
+const keys = keySets[today];
 
-// ---- Build grid ----
-const grid = document.getElementById('grid');
-const totalRows = 6;
-let currentRow = 0;
-let currentGuess = [];
-
-for(let i=0;i<totalRows;i++){
-  const row = document.createElement('div');
-  row.className='row';
-  for(let j=0;j<5;j++){
-    const cell = document.createElement('div');
-    cell.className='cell';
-    row.appendChild(cell);
-  }
-  grid.appendChild(row);
+// Generate puzzle (5 characters)
+let puzzle = [];
+while (puzzle.length < 5) {
+  const candidate = keys[Math.floor(Math.random()*keys.length)];
+  puzzle.push(candidate);
 }
 
-// ---- Build keyboard ----
-const keyboardContainer = document.getElementById('keyboard-container');
-let keys = [...keySets[today]];
+let board = Array.from({length:6}, () => Array(5).fill(''));
+let currentRow = 0;
+let currentCol = 0;
 
-function createKeyboard(){
-  keyboardContainer.innerHTML='';
-  keys.forEach(k=>{
-    const key = document.createElement('div');
-    key.textContent = k;
-    key.className='key';
-    key.addEventListener('click',()=>handleKey(k));
-    keyboardContainer.appendChild(key);
+const boardDiv = document.getElementById('board');
+const keyboardDiv = document.getElementById('keyboard');
+
+function renderBoard() {
+  boardDiv.innerHTML = '';
+  board.forEach((row,rowIndex) => {
+    const rowDiv = document.createElement('div');
+    rowDiv.classList.add('row');
+    row.forEach((cell,colIndex) => {
+      const cellDiv = document.createElement('div');
+      cellDiv.classList.add('cell');
+      cellDiv.textContent = cell;
+      rowDiv.appendChild(cellDiv);
+    });
+    boardDiv.appendChild(rowDiv);
+  });
+}
+
+function renderKeyboard() {
+  keyboardDiv.innerHTML = '';
+  keys.forEach(k => {
+    const keyBtn = document.createElement('button');
+    keyBtn.classList.add('key');
+    keyBtn.textContent = k;
+    keyBtn.onclick = () => pressKey(k);
+    keyboardDiv.appendChild(keyBtn);
   });
 
   // Backspace
-  const back = document.createElement('div');
-  back.textContent='⌫';
-  back.className='key backspace';
-  back.addEventListener('click',backspace);
-  keyboardContainer.appendChild(back);
+  const backspace = document.createElement('button');
+  backspace.classList.add('key','special');
+  backspace.textContent = '⌫';
+  backspace.onclick = backspaceKey;
+  keyboardDiv.appendChild(backspace);
 
   // Enter
-  const enter = document.createElement('div');
-  enter.textContent='ENTER';
-  enter.className='key enter';
-  enter.addEventListener('click',submitGuess);
-  keyboardContainer.appendChild(enter);
+  const enter = document.createElement('button');
+  enter.classList.add('key','special');
+  enter.textContent = 'Enter';
+  enter.onclick = submitGuess;
+  keyboardDiv.appendChild(enter);
 }
-createKeyboard();
 
-// ---- Handle input ----
-function handleKey(char){
-  if(currentGuess.length < 5){
-    currentGuess.push(char);
-    updateGrid();
+function pressKey(k) {
+  if (currentCol < 5) {
+    board[currentRow][currentCol] = k;
+    currentCol++;
+    renderBoard();
   }
 }
 
-function backspace(){
-  currentGuess.pop();
-  updateGrid();
-}
-
-function updateGrid(){
-  const row = grid.children[currentRow];
-  for(let i=0;i<5;i++){
-    row.children[i].textContent = currentGuess[i] || '';
-    row.children[i].style.background=''; // reset color before submit
+function backspaceKey() {
+  if (currentCol > 0) {
+    currentCol--;
+    board[currentRow][currentCol] = '';
+    renderBoard();
   }
 }
 
-function submitGuess(){
-  if(currentGuess.length !==5){ alert('Guess must be 5 characters!'); return;}
-  const row = grid.children[currentRow];
+function submitGuess() {
+  if (currentCol < 5) return;
 
-  // Wordle-style coloring
-  for(let i=0;i<5;i++){
-    if(currentGuess[i] === puzzle[i]){
-      row.children[i].style.background='green';
-    } else if(puzzle.includes(currentGuess[i])){
-      row.children[i].style.background='yellow';
+  const guess = board[currentRow].join('');
+
+  board[currentRow].forEach((c,i) => {
+    const cell = boardDiv.children[currentRow].children[i];
+    if (c === puzzle[i]) {
+      cell.classList.add('correct');
+    } else if (puzzle.includes(c)) {
+      cell.classList.add('present');
     } else {
-      row.children[i].style.background='gray';
+      cell.classList.add('wrong');
+      // Blackout key
+      document.querySelectorAll('.key').forEach(kb => {
+        if (kb.textContent === c) kb.classList.add('blackout');
+      });
     }
-  }
-
-  // Blackout keys not in puzzle
-  document.querySelectorAll('.key').forEach(k=>{
-    const keyChar = k.textContent;
-    if(!puzzle.includes(keyChar) && keys.includes(keyChar)) k.classList.add('blackout');
   });
 
-  if(currentGuess.join('') === puzzle.join('')){
-    alert('You got it!');
-    return;
+  currentRow++;
+  currentCol = 0;
+
+  if (guess === puzzle.join('')) {
+    setTimeout(()=> alert('You got it!'),100);
+  } else if (currentRow === 6) {
+    setTimeout(()=> alert('Out of tries! Answer: ' + puzzle.join('')),100);
   }
 
-  currentRow++;
-  currentGuess=[];
-  if(currentRow>=totalRows){
-    alert('Out of guesses! The word was: '+puzzle.join(''));
-  }
+  renderBoard();
 }
 
-// ---- Optional: Keyboard typing via physical keyboard ----
-document.addEventListener('keydown',e=>{
-  const key = e.key;
-  if(key==='Enter') submitGuess();
-  else if(key==='Backspace') backspace();
-  else if(keys.includes(key)) handleKey(key);
-});
-
+renderBoard();
+renderKeyboard();
 </script>
+
 </body>
 </html>
