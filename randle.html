@@ -4,237 +4,226 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#E82B38">
-<meta name="description" content="THE Randoms Is A Website That Lets You Play Randle, A Daily Puzzle Game With Letters, Numbers, And Emojis.">
+<meta name="description" content="THE Randoms Is A Website That Lets You Play A Random 5-Character Puzzle Game. Letters, Numbers, Emojis, Symbols Depending On The Day.">
 <title>Randle - THE Randoms</title>
 <link rel="icon" type="image/png" href="./img/pfp.png">
+<link rel="stylesheet" href="https://therandoms.pages.dev/css/styles.css">
 <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
-body { margin:0; font-family:'Jersey 10', sans-serif; font-size:28px; display:flex; flex-direction:column; height:100vh; background:#fff; overflow:hidden;}
-main.content { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; }
-.container { width:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; }
-
-/* Topnav */
-.topnav { display:flex; justify-content:space-between; align-items:center; height:60px; background:#333; color:#f2f2f2; padding:0 16px; }
-.topnav h1 { margin:0; font-size:24px; }
-.topnav .logo { color:#f2f2f2; text-decoration:none; }
-.menu-icon { font-size:30px; cursor:pointer; }
-
-/* Accordion */
-.topnav-right { display:none; position:fixed; top:60px; right:0; width:100%; height:100vh; background:#333; flex-direction:column; overflow-y:auto; z-index:999; }
-.topnav.active .topnav-right { display:flex; }
-.accordion-section { display:flex; flex-direction:column; border-top:1px solid #444; }
-.accordion-toggle { background:none; color:#f2f2f2; padding:14px; font-size:24px; border:none; text-align:left; cursor:pointer; }
-.accordion-toggle:hover { background:rgba(255,255,255,0.1); }
-.accordion-content { display:none; flex-direction:column; background:#444; }
-.accordion-section.open .accordion-content { display:flex; }
-.accordion-content a { padding:10px 28px; color:#f2f2f2; text-decoration:none; border-top:1px solid #555; font-size:20px; }
-.accordion-content a:hover { background:rgba(255,255,255,0.1); }
-
-/* Footer */
-footer.site-footer { background:#333; color:#f2f2f2; display:flex; justify-content:space-between; align-items:center; padding:5px 20px; font-size:20px; }
-#footer-mascot { height:50px; cursor:pointer; transition:transform 0.2s; }
-#footer-mascot:hover { transform:scale(1.1) rotate(-5deg); }
-
-/* Game Board */
-#board { display:grid; grid-template-rows:repeat(6,50px); grid-gap:5px; margin-bottom:10px; }
-.row { display:flex; justify-content:center; }
-.cell { width:50px; height:50px; margin:2px; display:flex; align-items:center; justify-content:center; font-size:28px; font-weight:700; border:2px solid #333; border-radius:6px; background:#f2f2f2; }
-.cell.correct { background:#4caf50; color:#fff; }
-.cell.present { background:#ff9800; color:#fff; }
-.cell.wrong { background:#333; color:#fff; }
-
-/* Keyboard */
-#keyboard { display:flex; flex-wrap:wrap; justify-content:center; gap:5px; margin-bottom:10px; max-width:480px; }
-.key { width:40px; height:40px; background:#E82B38; color:#fff; font-size:18px; font-weight:700; border:none; border-radius:8px; cursor:pointer; display:flex; align-items:center; justify-content:center; user-select:none; }
-.key:hover:not(.blackout) { transform:translateY(-1px); box-shadow:0 4px 8px rgba(0,0,0,0.3); }
-.key.blackout { background:#333; cursor:default; }
-.key.special { width:70px; font-size:16px; }
-
-/* Answer display */
-#answer-display { margin-top:10px; font-size:24px; font-weight:700; color:#E82B38; word-break:break-word; }
+  html, body { margin:0; padding:0; font-family:'Jersey 10',sans-serif; height:100%; }
+  body { display:flex; flex-direction:column; min-height:100vh; background:#fff; color:#000; overflow:hidden; }
+  .topnav { display:flex; align-items:center; justify-content:space-between; padding:0 16px; height:60px; background:#333; color:#f2f2f2; }
+  .topnav h1 { margin:0; font-size:24px; }
+  .topnav .logo { color:#f2f2f2; text-decoration:none; }
+  .menu-icon { font-size:30px; cursor:pointer; }
+  .topnav-right { display:none; position:fixed; top:60px; right:0; background:#333; width:100%; height:100vh; flex-direction:column; z-index:999; overflow-y:auto; }
+  .topnav.active .topnav-right { display:flex; }
+  body.menu-open { overflow:hidden; }
+  .accordion-section { display:flex; flex-direction:column; border-top:1px solid #444; }
+  .accordion-toggle { background:none; color:#f2f2f2; padding:14px; text-align:left; font-size:24px; border:none; cursor:pointer; width:100%; font-family:'Jersey 10'; }
+  .accordion-content { display:none; flex-direction:column; background:#444; }
+  .accordion-content a { padding:10px 28px; font-size:20px; color:#f2f2f2; text-decoration:none; border-top:1px solid #555; }
+  .accordion-section.open .accordion-content { display:flex; }
+  .container { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; overflow:hidden; }
+  #board { display:grid; grid-template-rows:repeat(6,1fr); grid-gap:5px; margin-bottom:10px; }
+  .row { display:grid; grid-template-columns:repeat(5,60px); grid-gap:5px; justify-content:center; }
+  .cell { width:60px; height:60px; display:flex; align-items:center; justify-content:center; border:2px solid #999; font-size:32px; font-family:'Jersey 10'; user-select:none; }
+  .cell.correct { background:#6aaa64; color:#fff; border:none; }
+  .cell.present { background:#c9b458; color:#fff; border:none; }
+  .cell.wrong { background:#787c7e; color:#fff; border:none; }
+  #keyboard { display:grid; grid-template-columns:repeat(10,1fr); grid-gap:5px; justify-content:center; }
+  .key { padding:10px; background:#ddd; border-radius:5px; font-size:22px; cursor:pointer; user-select:none; text-align:center; }
+  .key.blackout { background:#000; color:#fff; }
+  .key.enter { grid-column:span 2; background:#E82B38; color:#fff; }
+  .key.backspace { grid-column:span 2; }
+  #answer-display { margin-top:10px; font-size:24px; font-weight:700; }
+  footer { height:60px; background:#333; color:#f2f2f2; display:flex; justify-content:space-between; align-items:center; padding:0 20px; }
 </style>
 </head>
-
 <body>
+
 <header>
-<div class="topnav">
-<h1><a class="logo" href="/">THE Randoms</a></h1>
-<span class="menu-icon" onclick="toggleMenu()">&#9776;</span>
-<div class="topnav-right">
-<div class="accordion-section">
-<button class="accordion-toggle">Jokes & Fun</button>
-<div class="accordion-content">
-<a href="jokes.html">Jokes</a>
-<a href="memes.html">Memes</a>
-<a href="nfl.html">NFL</a>
-<a href="quizzes.html">Quizzes</a>
-<a href="wouldyourather.html">Would You Rather</a>
-</div>
-</div>
-<div class="accordion-section">
-<button class="accordion-toggle">Knowledge & Facts</button>
-<div class="accordion-content">
-<a href="advice.html">Advice</a>
-<a href="facts.html">Facts</a>
-<a href="pages.html">Pages</a>
-<a href="people.html">People</a>
-<a href="quotes.html">Quotes</a>
-</div>
-</div>
-<div class="accordion-section">
-<button class="accordion-toggle">Music & Videos</button>
-<div class="accordion-content">
-<a href="songs.html">Songs</a>
-<a href="videos.html">Videos</a>
-</div>
-</div>
-<div class="accordion-section">
-<button class="accordion-toggle">Words, Letters & Numbers</button>
-<div class="accordion-content">
-<a href="letters.html">Letters</a>
-<a href="numbers.html">Numbers</a>
-<a href="words.html">Words</a>
-</div>
-</div>
-</div>
-</div>
+  <div class="topnav">
+    <h1><a class="logo" href="/">THE Randoms</a></h1>
+    <span class="menu-icon" onclick="toggleMenu()">&#9776;</span>
+    <div class="topnav-right">
+      <div class="accordion-section">
+        <button class="accordion-toggle">Jokes & Fun</button>
+        <div class="accordion-content">
+          <a href="jokes.html">Jokes</a>
+          <a href="memes.html">Memes</a>
+          <a href="nfl.html">NFL</a>
+          <a href="quizzes.html">Quizzes</a>
+          <a href="wouldyourather.html">Would You Rather</a>
+        </div>
+      </div>
+      <div class="accordion-section">
+        <button class="accordion-toggle">Knowledge & Facts</button>
+        <div class="accordion-content">
+          <a href="advice.html">Advice</a>
+          <a href="facts.html">Facts</a>
+          <a href="pages.html">Pages</a>
+          <a href="people.html">People</a>
+          <a href="quotes.html">Quotes</a>
+        </div>
+      </div>
+      <div class="accordion-section">
+        <button class="accordion-toggle">Music & Videos</button>
+        <div class="accordion-content">
+          <a href="songs.html">Songs</a>
+          <a href="videos.html">Videos</a>
+        </div>
+      </div>
+      <div class="accordion-section">
+        <button class="accordion-toggle">Words, Letters & Numbers</button>
+        <div class="accordion-content">
+          <a href="letters.html">Letters</a>
+          <a href="numbers.html">Numbers</a>
+          <a href="words.html">Words</a>
+        </div>
+      </div>
+    </div>
+  </div>
 </header>
 
-<main class="content">
 <div class="container">
-<h1>Randle</h1>
-<div id="board"></div>
-<div id="keyboard"></div>
-<div id="answer-display"></div>
+  <div id="board"></div>
+  <div id="keyboard"></div>
+  <div id="answer-display"></div>
 </div>
-</main>
 
-<footer class="site-footer">
-<div class="footer-left">
-<p>&copy; <span id="year"></span> THE Randoms</p>
-</div>
-<div class="footer-right">
-<a href="randuino.html">
-<img id="footer-mascot" src="img/Mascot.png" alt="Randuino">
-</a>
-</div>
+<footer>
+  <div>&copy; THE Randoms</div>
+  <div><img src="img/Mascot.png" alt="Randuino" style="height:50px"></div>
 </footer>
 
 <script>
-// --- Topnav ---
-function toggleMenu(){ document.querySelector('.topnav-right').classList.toggle('active'); document.body.classList.toggle('menu-open'); }
-document.querySelectorAll('.accordion-toggle').forEach(btn=>btn.addEventListener('click',()=>{
-  const section=btn.parentElement;
-  const isOpen=section.classList.contains('open');
-  document.querySelectorAll('.accordion-section').forEach(s=>{ s.classList.remove('open'); s.querySelector('.accordion-content').style.display='none'; });
-  if(!isOpen){ section.classList.add('open'); section.querySelector('.accordion-content').style.display='flex'; }
-}));
-document.getElementById("year").textContent=new Date().getFullYear();
-
-// --- Randle Setup ---
-const KEYS='ABCDEFGHIJKLMNOPQRSTUVWXYZ😀😂😍😎🥳😡😭😴😱😇🤯🤔😜🤢🤮😳🤫🫣😈👻💩🦄🐶🐱🍕🍔0123456789!@#$%^&*()-+=~`|/<>[]{};:'.split('');
-let PUZZLE=[]; while(PUZZLE.length<5){ PUZZLE.push(KEYS[Math.floor(Math.random()*KEYS.length)]); }
-
-let BOARD=Array.from({length:6},()=>Array(5).fill(''));
-let COLORS=Array.from({length:6},()=>Array(5).fill(''));
-let CUR_ROW=0, CUR_COL=0;
-
-const boardDiv=document.getElementById('board');
-const keyboardDiv=document.getElementById('keyboard');
-const answerDisplay=document.getElementById('answer-display');
-
-function renderBoard(){
-  boardDiv.innerHTML='';
-  BOARD.forEach((row,rowIndex)=>{
-    const rowDiv=document.createElement('div'); rowDiv.className='row';
-    row.forEach((cell,colIndex)=>{
-      const cellDiv=document.createElement('div'); cellDiv.className='cell';
-      if(COLORS[rowIndex][colIndex]) cellDiv.classList.add(COLORS[rowIndex][colIndex]);
-      cellDiv.textContent=cell;
-      rowDiv.appendChild(cellDiv);
+/* HEADER MENU */
+function toggleMenu() {
+  document.querySelector('.topnav').classList.toggle('active');
+  document.body.classList.toggle('menu-open');
+}
+document.querySelectorAll('.accordion-toggle').forEach(toggle => {
+  toggle.addEventListener('click', () => {
+    const parent = toggle.parentElement;
+    document.querySelectorAll('.accordion-section').forEach(section => {
+      if (section !== parent) section.classList.remove('open');
     });
-    boardDiv.appendChild(rowDiv);
+    parent.classList.toggle('open');
   });
-}
+});
 
-function renderKeyboard(){
-  keyboardDiv.innerHTML='';
-  KEYS.forEach(key=>{
-    const keyBtn=document.createElement('button'); keyBtn.textContent=key; keyBtn.className='key';
-    keyBtn.onclick=()=>pressKey(key);
-    keyboardDiv.appendChild(keyBtn);
-  });
-  const enterBtn=document.createElement('button'); enterBtn.textContent='Enter'; enterBtn.className='key special'; enterBtn.onclick=submitRow;
-  const backBtn=document.createElement('button'); backBtn.textContent='⌫'; backBtn.className='key special'; backBtn.onclick=backspace;
-  keyboardDiv.appendChild(enterBtn); keyboardDiv.appendChild(backBtn);
-}
-// --- Randle Game Logic ---
-function pressKey(key){
-    if(CUR_COL<5){
-        BOARD[CUR_ROW][CUR_COL]=key;
-        CUR_COL++;
-        renderBoard();
+/* GAME LOGIC */
+const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+const today = new Date().getDay(); // 0=Sunday
+const dayMode = today; // 0-6
+
+const puzzles = {
+  letters:["APPLE","HOUSE","BRAVE","LIGHT","TRAIN","WORLD","SWEET"],
+  emojis:["😀😎🥳🤖👻","🐶🐱🐭🦊🐰","🍎🍌🍇🍓🍒","⚽🏀🏈⚾🎾","🚗🚕🚙🚌🚓"],
+  numbers:["12345","67890","13579","24680","11223"],
+  symbols:["!@#$%","^&*()","[]{}<>","~`|/"]
+};
+const keyboardSets = {
+  letters:"ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""),
+  emojis:["😀","😎","🥳","🤖","👻","🐶","🐱","🐭","🦊","🐰","🍎","🍌","🍇","🍓","🍒","⚽","🏀","🏈","⚾","🎾","🚗","🚕","🚙","🚌","🚓","🌞","🌙","⭐","🔥"],
+  numbers:"0123456789".split(""),
+  symbols:["!","@","#","$","%","^","&","*","(",")","[","]","{","}","<",">","~","`","|","/","-","="]
+};
+
+const modes=["letters","emojis","numbers","symbols","letters","emojis","numbers"];
+const currentMode=modes[dayMode];
+const puzzleList = puzzles[currentMode];
+const keyboardList = keyboardSets[currentMode];
+
+let answer = puzzleList[Math.floor(Math.random()*puzzleList.length)];
+let board=[];
+let currentRow=0;
+let currentGuess="";
+
+const maxRows=6;
+
+function createBoard(){
+  const boardEl=document.getElementById("board");
+  boardEl.innerHTML="";
+  for(let i=0;i<maxRows;i++){
+    let row=document.createElement("div");
+    row.className="row";
+    for(let j=0;j<5;j++){
+      let cell=document.createElement("div");
+      cell.className="cell";
+      row.appendChild(cell);
     }
+    boardEl.appendChild(row);
+  }
 }
-
+function createKeyboard(){
+  const kb=document.getElementById("keyboard");
+  kb.innerHTML="";
+  keyboardList.forEach(k=>{
+    let key=document.createElement("div");
+    key.className="key";
+    key.textContent=k;
+    key.onclick=()=>pressKey(k);
+    kb.appendChild(key);
+  });
+  let enter=document.createElement("div");
+  enter.className="key enter";
+  enter.textContent="Enter";
+  enter.onclick=submitGuess;
+  kb.appendChild(enter);
+  let back=document.createElement("div");
+  back.className="key backspace";
+  back.textContent="⌫";
+  back.onclick=backspace;
+  kb.appendChild(back);
+}
+function pressKey(k){
+  if(currentGuess.length<5) {
+    currentGuess+=k;
+    updateBoard();
+  }
+}
 function backspace(){
-    if(CUR_COL>0){
-        CUR_COL--;
-        BOARD[CUR_ROW][CUR_COL]='';
-        renderBoard();
+  currentGuess=currentGuess.slice(0,-1);
+  updateBoard();
+}
+function submitGuess(){
+  if(currentGuess.length!==5)return;
+  const row=document.getElementById("board").children[currentRow];
+  let guessArray=currentGuess.split("");
+  let answerArray=answer.split("");
+  let keyEls=document.querySelectorAll("#keyboard .key");
+  for(let i=0;i<5;i++){
+    let cell=row.children[i];
+    cell.textContent=guessArray[i];
+    if(guessArray[i]===answerArray[i]){
+      cell.classList.add("correct");
+    } else if(answerArray.includes(guessArray[i])){
+      cell.classList.add("present");
+    } else{
+      cell.classList.add("wrong");
+      keyEls.forEach(k=>{if(k.textContent===guessArray[i])k.classList.add("blackout");});
     }
+  }
+  currentRow++;
+  currentGuess="";
+  if(currentRow>=maxRows||guessArray.join("")===answer){
+    document.getElementById("answer-display").textContent="Answer: "+answer;
+  }
+  updateBoard();
+}
+function updateBoard(){
+  const row=document.getElementById("board").children[currentRow];
+  for(let i=0;i<5;i++){
+    row.children[i].textContent=currentGuess[i]||"";
+  }
 }
 
-function submitRow(){
-    if(CUR_COL!==5) return; // row not full
-    const guess=BOARD[CUR_ROW].slice();
-    const usedKeys={};
-    // First pass: correct place
-    for(let i=0;i<5;i++){
-        if(guess[i]===PUZZLE[i]){
-            COLORS[CUR_ROW][i]='correct';
-            usedKeys[guess[i]]=(usedKeys[guess[i]]||0)+1;
-        }
-    }
-    // Second pass: present but wrong place
-    for(let i=0;i<5;i++){
-        if(COLORS[CUR_ROW][i]) continue;
-        const index=PUZZLE.indexOf(guess[i]);
-        const countInPuzzle=PUZZLE.filter(x=>x===guess[i]).length;
-        if(index!==-1 && (usedKeys[guess[i]]||0)<countInPuzzle){
-            COLORS[CUR_ROW][i]='present';
-            usedKeys[guess[i]]=(usedKeys[guess[i]]||0)+1;
-        } else {
-            COLORS[CUR_ROW][i]='wrong';
-        }
-    }
-    CUR_ROW++; CUR_COL=0;
-    renderBoard();
-    updateKeyboard(guess);
-    if(CUR_ROW===6 || guess.join('')===PUZZLE.join('')){
-        answerDisplay.textContent='Answer: '+PUZZLE.join('');
-        disableKeyboard();
-    }
-}
-
-function updateKeyboard(guess){
-    const keyButtons=document.querySelectorAll('#keyboard .key');
-    keyButtons.forEach(btn=>{
-        if(guess.includes(btn.textContent) && !PUZZLE.includes(btn.textContent)){
-            btn.classList.add('blackout');
-        }
-    });
-}
-
-function disableKeyboard(){
-    document.querySelectorAll('#keyboard .key').forEach(btn=>{
-        btn.disabled=true;
-    });
-}
-
-// Initialize
-renderBoard();
-renderKeyboard();
+createBoard();
+createKeyboard();
 </script>
+
+<script src="holiday-theme.js" defer></script>
 </body>
 </html>
