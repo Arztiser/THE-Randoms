@@ -45,7 +45,7 @@ for(let i=0;i<WORD_LENGTH*MAX_GUESSES;i++){
 // -- Fetch synonyms from Datamuse
 async function fetchSynonyms(word){
   try {
-    const res = await fetch(`https://api.datamuse.com/words?rel_syn=${word}&max=20`);
+    const res = await fetch(`https://api.datamuse.com/words?rel_syn=${random}&max=20`);
     const data = await res.json();
     return data.map(d => d.word.toUpperCase()).filter(w => w.length===WORD_LENGTH);
   } catch { return []; }
