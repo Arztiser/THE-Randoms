@@ -237,7 +237,8 @@ async function renderWord() {
   }
 
   try {
-    const res = await fetch('https://random-word-api.herokuapp.com/word?number=1');
+    // ✅ switched to Vercel endpoint
+    const res = await fetch('https://random-word-api.vercel.app/api?words=1');
     if (!res.ok) throw new Error('Word fetch failed');
     const data = await res.json();
     const chosenWord = data[0];
@@ -248,7 +249,9 @@ async function renderWord() {
     container.textContent = chosenWord;
   } catch (err) {
     console.error('Error fetching word:', err);
-    const fallbackWords = ["random","fun","color","code","web","page","day","fact","letter","test"];
+    const fallbackWords = [
+      "random","fun","color","code","web","page","day","fact","letter","test"
+    ];
     const chosenWord = fallbackWords[getDaySeed() % fallbackWords.length];
     container.textContent = chosenWord;
     localStorage.setItem(cacheKey, chosenWord);
