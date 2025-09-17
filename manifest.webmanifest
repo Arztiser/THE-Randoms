@@ -3,8 +3,6 @@
 "description": "THE Randoms is a website that lets you view and do random things such as random quizzes, facts, quotes, numbers, and letters.",
 "dir": "ltr",
 "display": "standalone",
-"manifest_version": 3,
-"version":"1.0.0",
 "name": "THE Randoms",
 "orientation": "any",
 "scope": "/",
