@@ -1,18 +1,19 @@
+
 {
   "manifest_version": 3,
   "name": "THE Randoms",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "THE Randoms is a website that lets you view and do random things such as random quizzes, facts, quotes, numbers, and letters.",
+  "action": {
+    "default_title": "Open THE Randoms"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
   "icons": {
     "16": "/img/prfp.png",
     "48": "/img/prfp.png",
     "128": "/img/pofp.png"
   },
-  "action": {
-    "default_icon": "/img/prfp.png"
-  },
-  "background": {
-    "service_worker": "background.js"
-  },
-  "permissions": ["tabs", "windows"]
+  "permissions": ["scripting"]
 }
