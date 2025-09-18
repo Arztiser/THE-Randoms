@@ -10,6 +10,7 @@
   },
   "action": {
     "default_popup": "index.html",
-    "default_icon": "/img/prfp.png"
+    "default_icon": "/img/prfp.png",
+    "display": "minimal-ui"
   }
 }
