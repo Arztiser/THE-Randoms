@@ -2,7 +2,8 @@
   "manifest_version": 3,
   "name": "THE Randoms",
   "version": "1.0.4",
-  "description": "THE Randoms is a website that lets you view and do random things such as random quizzes, facts, quotes, numbers, and letters.",
+  "description": "THE Randoms is a simple Chrome extension that opens a popup version of the website THE Randoms. From the popup, you can instantly explore random quizzes, jokes, facts, quotes, numbers, letters, and more. You can also expand the popup into a full-page view for a bigger experience.
+This extension does not modify your browsing, inject ads, or collect personal data. It simply gives you a faster, convenient way to explore fun and random content.",
   "action": {
     "default_title": "Open THE Randoms"
   },
