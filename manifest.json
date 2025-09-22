@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "THE Randoms",
-  "version": "1.0.6",
-  "description": "Open THE Randoms website in a quick popup or full page for easy access to fun, random content in your browser.",
+  "version": "1.0.7",
+  "description": "Open THE Randoms website in a quick popup or full page access in your browser.",
   "action": {
     "default_title": "Open THE Randoms"
   },
