@@ -76,7 +76,7 @@ function setHolidayTheme() {
   let styles = '';
   let mascotFile = 'Mascot.png'; // default mascot
 
-  if ((month === 12 && day >= 1) || (month === 1 && day <= 5)) {
+  if ((month === 10 && day >= 25) || (month === 1 && day <= 5)) {
     holidayClass = 'holiday-christmas';
     mascotFile = 'christmasmascot.png';
     styles = `
@@ -87,7 +87,7 @@ function setHolidayTheme() {
       body.holiday-christmas .topnav a,
       body.holiday-christmas .site-footer { color: white; }
     `;
-  } else if (month === 10 && day >= 25 && day <= 31) {
+  } else if (month === 1 && day >= 25 && day <= 31) {
     holidayClass = 'holiday-halloween';
     mascotFile = 'halloweenmascot.png';
     styles = `
