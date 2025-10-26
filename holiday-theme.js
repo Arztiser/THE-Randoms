@@ -76,7 +76,7 @@ function setHolidayTheme() {
   let styles = '';
   let mascotFile = 'Mascot.png'; // default mascot
 
-  if ((month === 10 && day >= 25) || (month === 1 && day <= 5)) {
+  if ((month === 10 && day >= 25) || (month === 10 && day <= 26)) {
     holidayClass = 'holiday-christmas';
     mascotFile = 'christmasmascot.png';
     styles = `
