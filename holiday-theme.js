@@ -6,6 +6,22 @@ document.addEventListener("DOMContentLoaded", () => {
   let mascotFile = "Mascot.png";
   let styles = "";
 
+  function ensureFooter() {
+  let footer = document.querySelector('.site-footer');
+  if (!footer) {
+    footer = document.createElement('footer');
+    footer.className = 'site-footer';
+    footer.innerHTML = `
+      <div class="footer-left">
+        <p>&copy; <span id="year"></span> THE Randoms</p>
+      </div>
+      <div class="footer-right">
+        <a href="randuino.html" title="Randuino">
+          <img id="footer-mascot" src="img/Mascot.png" alt="Randuino">
+        </a>
+      </div>
+    `;
+
   // 🎄 CHRISTMAS
   if (month === 12 && day >= 18 && day <= 26) {
     holidayClass = "holiday-christmas";
