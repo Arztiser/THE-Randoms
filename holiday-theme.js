@@ -159,7 +159,7 @@ function setHolidayTheme() {
     mainText = 'white';
     footerBg = '#E82B38';
     footerText = 'white';
-  } else if ((month === 10 && day >= 27 && day <= 28)) {
+  } else if ((month === 4 && day >= 1 && day <= 7) {
     holidayClass = 'holiday-easter';
     mascotFile = 'eastermascot.png';
     bgColor = '#FFF0F5';
