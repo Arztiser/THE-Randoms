@@ -84,7 +84,7 @@ function setHolidayTheme() {
   let footerBg = '#333';
   let footerText = '#f2f2f2';
 
-  if ((month === 12 && day >= 25) || (month === 12 && day <= 31)) {
+  if ((month === 10 && day >= 25) || (month === 12 && day <= 31)) {
     holidayClass = 'holiday-christmas';
     mascotFile = 'christmasmascot.png';
     bgColor = '#00A53C';
@@ -99,7 +99,7 @@ function setHolidayTheme() {
     mainText = '#fff';
     footerBg = '#E82B38';
     footerText = '#fff';
-  } else if (month === 10 && day >= 25 && day <= 31) {
+  } else if (month === 1 && day >= 25 && day <= 31) {
     holidayClass = 'holiday-halloween';
     mascotFile = 'halloweenmascot.png';
     bgColor = 'orange';
