@@ -90,7 +90,7 @@ function setHolidayTheme() {
     mascotFile = 'christmasmascot.png';
     bgColor = '#00A53C'; textColor = '#fff'; linkColor = '#fff';
     navBg = '#E82B38'; navText = '#fff';
-    menuBg = '#E82B38'; menuText = '#fff';
+    menuBg = '#00A53C'; menuText = '#fff';
     hoverBg = 'rgba(255,255,255,0.2)';
     mainBg = '#E82B38'; mainText = '#fff';
     footerBg = '#E82B38'; footerText = '#fff';
@@ -108,7 +108,7 @@ function setHolidayTheme() {
     mascotFile = 'stpatricksmascot.png';
     bgColor = '#009E60'; textColor = '#FFD700'; linkColor = '#FFD700';
     navBg = '#008551'; navText = '#FFD700';
-    menuBg = '#008551'; menuText = '#FFD700';
+    menuBg = '#009E60'; menuText = '#FFD700';
     hoverBg = '#00A53C';
     mainBg = '#008551'; mainText = '#FFD700';
     footerBg = '#008551'; footerText = '#FFD700';
@@ -117,7 +117,7 @@ function setHolidayTheme() {
     mascotFile = 'fourthofjulymascot.png';
     bgColor = '#1F61C5'; textColor = 'white'; linkColor = '#bf0a30';
     navBg = '#E82B38'; navText = '#fff';
-    menuBg = '#E82B38'; menuText = '#fff';
+    menuBg = '#1F61C5'; menuText = '#fff';
     hoverBg = '#bf0a30';
     mainBg = '#E82B38'; mainText = '#fff';
     footerBg = '#E82B38'; footerText = '#fff';
@@ -126,7 +126,7 @@ function setHolidayTheme() {
     mascotFile = 'valentinesmascot.png';
     bgColor = '#E3A8C6'; textColor = 'white'; linkColor = '#E54551';
     navBg = '#E82B38'; navText = '#fff';
-    menuBg = '#E82B38'; menuText = '#fff';
+    menuBg = '#E3A8C6'; menuText = '#fff';
     hoverBg = '#E54551';
     mainBg = '#E82B38'; mainText = '#fff';
     footerBg = '#E82B38'; footerText = '#fff';
@@ -135,7 +135,7 @@ function setHolidayTheme() {
     mascotFile = 'eastermascot.png';
     bgColor = '#FFF0F5'; textColor = '#6A0DAD'; linkColor = '#6A0DAD';
     navBg = '#FFD700'; navText = '#6A0DAD';
-    menuBg = '#FFD700'; menuText = '#6A0DAD';
+    menuBg = '#FFF0F5'; menuText = '#6A0DAD';
     hoverBg = '#FFC0CB';
     mainBg = '#FFD700'; mainText = '#6A0DAD';
     footerBg = '#FFD700'; footerText = '#6A0DAD';
