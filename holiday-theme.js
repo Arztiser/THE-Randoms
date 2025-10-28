@@ -84,7 +84,7 @@ function setHolidayTheme() {
   let footerBg = '#333';
   let footerText = '#f2f2f2';
 
-  if ((month === 10 && day >= 25) || (month === 12 && day <= 31)) {
+  if ((month === 12 && day >= 25) || (month === 12 && day <= 31)) {
     holidayClass = 'holiday-christmas';
     mascotFile = 'christmasmascot.png';
     bgColor = '#00A53C';
@@ -114,7 +114,7 @@ function setHolidayTheme() {
     mainText = 'black';
     footerBg = 'black';
     footerText = 'white';
-  } else if (month === 3 && day === 17) {
+  } else if (month === 10 && day === 27) {
     holidayClass = 'holiday-stpatricks';
     mascotFile = 'stpatricksmascot.png';
     bgColor = '#009E60';
