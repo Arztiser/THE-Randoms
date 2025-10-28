@@ -144,7 +144,7 @@ function setHolidayTheme() {
     mainText = '#fff';
     footerBg = '#E82B38';
     footerText = 'white';
-  } else if (month === 10 && day === 27) {
+  } else if (month === 2 && day === 14) {
     holidayClass = 'holiday-valentinesday';
     mascotFile = 'valentinesmascot.png';
     bgColor = '#E3A8C6';
@@ -159,7 +159,7 @@ function setHolidayTheme() {
     mainText = 'white';
     footerBg = '#E82B38';
     footerText = 'white';
-  } else if ((month === 4 && day >= 1 && day <= 7)) {
+  } else if ((month === 10 && day >= 27 && day <= 28)) {
     holidayClass = 'holiday-easter';
     mascotFile = 'eastermascot.png';
     bgColor = '#FFF0F5';
