@@ -64,7 +64,6 @@ function ensureFooter() {
 function setHolidayTheme() {
   const footer = ensureFooter();
   const mascotImg = footer.querySelector('#footer-mascot');
-
   const now = new Date();
   const month = now.getMonth() + 1;
   const day = now.getDate();
@@ -81,9 +80,21 @@ function setHolidayTheme() {
       body.holiday-christmas a,
       body.holiday-christmas .topnav a { color: white !important; }
       body.holiday-christmas .topnav,
-      body.holiday-christmas .site-footer,
-      body.holiday-christmas .accordion-button { background-color: #E82B38 !important; color: white !important; }
-      body.holiday-christmas .accordion-content { background-color: #f35a68 !important; color: white !important; }
+      body.holiday-christmas .site-footer { background-color: #E82B38 !important; color: white !important; }
+      body.holiday-christmas .accordion-button,
+      body.holiday-christmas .accordion-button:not(.collapsed) {
+        background-color: #E82B38 !important;
+        color: white !important;
+        border-color: #b91c25 !important;
+      }
+      body.holiday-christmas .accordion-button:hover {
+        background-color: #f35a68 !important;
+        color: white !important;
+      }
+      body.holiday-christmas .accordion-content {
+        background-color: #f35a68 !important;
+        color: white !important;
+      }
     `;
   } else if (month === 10 && day >= 25 && day <= 31) {
     holidayClass = 'holiday-halloween';
@@ -91,11 +102,34 @@ function setHolidayTheme() {
     styles = `
       body.holiday-halloween { background-color: orange; color: black; }
       body.holiday-halloween .topnav,
-      body.holiday-halloween .site-footer,
-      body.holiday-halloween .accordion-button { background-color: black !important; color: orange !important; }
+      body.holiday-halloween .site-footer { background-color: black !important; color: orange !important; }
       body.holiday-halloween .topnav a,
       body.holiday-halloween a { color: orange !important; }
-      body.holiday-halloween .accordion-content { background-color: #222 !important; color: orange !important; }
+
+      /* Accordion toggle + dropdowns */
+      body.holiday-halloween .accordion-button,
+      body.holiday-halloween .accordion-button:not(.collapsed) {
+        background-color: black !important;
+        color: orange !important;
+        border-color: #ff8c00 !important;
+      }
+      body.holiday-halloween .accordion-button:hover {
+        background-color: #222 !important;
+        color: orange !important;
+      }
+      body.holiday-halloween .accordion-content {
+        background-color: #222 !important;
+        color: orange !important;
+      }
+      body.holiday-halloween .accordion-content button {
+        background-color: black !important;
+        color: orange !important;
+        border: 1px solid orange !important;
+      }
+      body.holiday-halloween .accordion-content button:hover {
+        background-color: orange !important;
+        color: black !important;
+      }
     `;
   } else if (month === 3 && day === 17) {
     holidayClass = 'holiday-stpatricks';
@@ -103,11 +137,23 @@ function setHolidayTheme() {
     styles = `
       body.holiday-stpatricks { background-color: #009E60; color: #FFD700; }
       body.holiday-stpatricks .topnav,
-      body.holiday-stpatricks .site-footer,
-      body.holiday-stpatricks .accordion-button { background-color: #008551 !important; color: #FFD700 !important; }
-      body.holiday-stpatricks .accordion-content { background-color: #00B272 !important; color: #FFD700 !important; }
+      body.holiday-stpatricks .site-footer { background-color: #008551 !important; color: #FFD700 !important; }
       body.holiday-stpatricks a,
       body.holiday-stpatricks .topnav a { color: #FFD700 !important; }
+      body.holiday-stpatricks .accordion-button,
+      body.holiday-stpatricks .accordion-button:not(.collapsed) {
+        background-color: #008551 !important;
+        color: #FFD700 !important;
+        border-color: #00b272 !important;
+      }
+      body.holiday-stpatricks .accordion-button:hover {
+        background-color: #00b272 !important;
+        color: #FFD700 !important;
+      }
+      body.holiday-stpatricks .accordion-content {
+        background-color: #00b272 !important;
+        color: #FFD700 !important;
+      }
     `;
   } else if (month === 7 && day === 4) {
     holidayClass = 'holiday-fourthofjuly';
@@ -115,11 +161,21 @@ function setHolidayTheme() {
     styles = `
       body.holiday-fourthofjuly { background-color: #1F61C5; color: white; }
       body.holiday-fourthofjuly .topnav,
-      body.holiday-fourthofjuly .site-footer,
-      body.holiday-fourthofjuly .accordion-button { background-color: #E82B38 !important; color: white !important; }
-      body.holiday-fourthofjuly .accordion-content { background-color: #bf0a30 !important; color: white !important; }
-      body.holiday-fourthofjuly a,
+      body.holiday-fourthofjuly .site-footer { background-color: #E82B38 !important; color: white !important; }
       body.holiday-fourthofjuly .topnav a { color: white !important; }
+      body.holiday-fourthofjuly .accordion-button,
+      body.holiday-fourthofjuly .accordion-button:not(.collapsed) {
+        background-color: #E82B38 !important;
+        color: white !important;
+        border-color: #bf0a30 !important;
+      }
+      body.holiday-fourthofjuly .accordion-button:hover {
+        background-color: #bf0a30 !important;
+      }
+      body.holiday-fourthofjuly .accordion-content {
+        background-color: #bf0a30 !important;
+        color: white !important;
+      }
     `;
   } else if (month === 2 && day === 14) {
     holidayClass = 'holiday-valentinesday';
@@ -127,17 +183,27 @@ function setHolidayTheme() {
     styles = `
       body.holiday-valentinesday { background-color: #E3A8C6; color: white; }
       body.holiday-valentinesday .topnav,
-      body.holiday-valentinesday .site-footer,
-      body.holiday-valentinesday .accordion-button { background-color: #E82B38 !important; color: white !important; }
-      body.holiday-valentinesday .accordion-content { background-color: #f19db2 !important; color: white !important; }
-      body.holiday-valentinesday a,
+      body.holiday-valentinesday .site-footer { background-color: #E82B38 !important; color: white !important; }
       body.holiday-valentinesday .topnav a { color: white !important; }
+      body.holiday-valentinesday .accordion-button,
+      body.holiday-valentinesday .accordion-button:not(.collapsed) {
+        background-color: #E82B38 !important;
+        color: white !important;
+        border-color: #b91c25 !important;
+      }
+      body.holiday-valentinesday .accordion-button:hover {
+        background-color: #f35a68 !important;
+      }
+      body.holiday-valentinesday .accordion-content {
+        background-color: #f19db2 !important;
+        color: white !important;
+      }
     `;
   }
 
   if (holidayClass) {
     document.body.classList.add(holidayClass);
-    const styleSheet = document.createElement('style');
+    const styleSheet = document.createElement("style");
     styleSheet.innerText = styles;
     document.head.appendChild(styleSheet);
     mascotImg.src = `img/${mascotFile}`;
