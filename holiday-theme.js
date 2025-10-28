@@ -114,7 +114,7 @@ function setHolidayTheme() {
     mainText = 'black';
     footerBg = 'black';
     footerText = 'white';
-  } else if (month === 10 && day === 27) {
+  } else if (month === 3 && day === 17) {
     holidayClass = 'holiday-stpatricks';
     mascotFile = 'stpatricksmascot.png';
     bgColor = '#009E60';
@@ -129,7 +129,7 @@ function setHolidayTheme() {
     mainText = '#FFD700';
     footerBg = '#008551';
     footerText = '#FFD700';
-  } else if (month === 7 && day === 4) {
+  } else if (month === 10 && day === 27) {
     holidayClass = 'holiday-fourthofjuly';
     mascotFile = 'fourthofjulymascot.png';
     bgColor = '#1F61C5';
