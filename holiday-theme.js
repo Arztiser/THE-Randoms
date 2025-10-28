@@ -83,9 +83,9 @@ function setHolidayTheme() {
       body.holiday-christmas { background-color: #00A53C; color: white; }
       body.holiday-christmas a { color: #ffffff; }
       body.holiday-christmas .topnav,
-      body.holiday-christmas .site-footer { background-color: #E82B38; }
-      body.holiday-christmas .topnav a,
-      body.holiday-christmas .site-footer { color: white; }
+      body.holiday-christmas .site-footer,
+      body.holiday-christmas .accordion-header { background-color: #E82B38; color: white; }
+      body.holiday-christmas .accordion-content { background-color: #00A53C; color: white; }
     `;
   } else if (month === 10 && day >= 25 && day <= 31) {
     holidayClass = 'holiday-halloween';
@@ -94,9 +94,9 @@ function setHolidayTheme() {
       body.holiday-halloween { background-color: orange; color: black; }
       body.holiday-halloween a { color: black; }
       body.holiday-halloween .topnav,
-      body.holiday-halloween .site-footer { background-color: black; }
-      body.holiday-halloween .topnav a,
-      body.holiday-halloween .site-footer { color: white; }
+      body.holiday-halloween .site-footer,
+      body.holiday-halloween .accordion-header { background-color: black; color: white; }
+      body.holiday-halloween .accordion-content { background-color: orange; color: black; }
     `;
   } else if (month === 3 && day === 17) {
     holidayClass = 'holiday-stpatricks';
@@ -105,9 +105,9 @@ function setHolidayTheme() {
       body.holiday-stpatricks { background-color: #009E60; color: #FFD700; }
       body.holiday-stpatricks a { color: #FFD700; }
       body.holiday-stpatricks .topnav,
-      body.holiday-stpatricks .site-footer { background-color: #008551; }
-      body.holiday-stpatricks .topnav a,
-      body.holiday-stpatricks .site-footer { color: #FFD700; }
+      body.holiday-stpatricks .site-footer,
+      body.holiday-stpatricks .accordion-header { background-color: #008551; color: #FFD700; }
+      body.holiday-stpatricks .accordion-content { background-color: #009E60; color: #FFD700; }
     `;
   } else if (month === 7 && day === 4) {
     holidayClass = 'holiday-fourthofjuly';
@@ -116,9 +116,9 @@ function setHolidayTheme() {
       body.holiday-fourthofjuly { background-color: #1F61C5; color: white; }
       body.holiday-fourthofjuly a { color: #bf0a30; }
       body.holiday-fourthofjuly .topnav,
-      body.holiday-fourthofjuly .site-footer { background-color: #E82B38; }
-      body.holiday-fourthofjuly .topnav a,
-      body.holiday-fourthofjuly .site-footer { color: white; }
+      body.holiday-fourthofjuly .site-footer,
+      body.holiday-fourthofjuly .accordion-header { background-color: #E82B38; color: white; }
+      body.holiday-fourthofjuly .accordion-content { background-color: #1F61C5; color: white; }
     `;
   } else if (month === 2 && day === 14) {
     holidayClass = 'holiday-valentinesday';
@@ -127,9 +127,9 @@ function setHolidayTheme() {
       body.holiday-valentinesday { background-color: #E3A8C6; color: white; }
       body.holiday-valentinesday a { color: #E54551; }
       body.holiday-valentinesday .topnav,
-      body.holiday-valentinesday .site-footer { background-color: #E82B38; }
-      body.holiday-valentinesday .topnav a,
-      body.holiday-valentinesday .site-footer { color: white; }
+      body.holiday-valentinesday .site-footer,
+      body.holiday-valentinesday .accordion-header { background-color: #E82B38; color: white; }
+      body.holiday-valentinesday .accordion-content { background-color: #E3A8C6; color: white; }
     `;
   }
 
