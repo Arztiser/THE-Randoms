@@ -30,7 +30,7 @@ function ensureFooter() {
       }
 
       body > .container {
-        flex: 1; /* pushes footer down if page is short */
+        flex: 1;
       }
 
       footer.site-footer {
@@ -45,7 +45,7 @@ function ensureFooter() {
         font-size: 20px;
         box-sizing: border-box;
         z-index: 1000;
-        margin-top: auto; /* keeps it at bottom */
+        margin-top: auto;
       }
 
       #footer-mascot {
@@ -76,6 +76,7 @@ function setHolidayTheme() {
   let styles = '';
   let mascotFile = 'Mascot.png'; // default mascot
 
+  // 🎄 CHRISTMAS
   if ((month === 12 && day >= 25) || (month === 12 && day <= 31)) {
     holidayClass = 'holiday-christmas';
     mascotFile = 'christmasmascot.png';
@@ -84,10 +85,18 @@ function setHolidayTheme() {
       body.holiday-christmas a { color: #ffffff; }
       body.holiday-christmas .topnav,
       body.holiday-christmas .site-footer,
-      body.holiday-christmas .accordion-header { background-color: #E82B38; color: white; }
+      body.holiday-christmas .accordion-header,
+      body.holiday-christmas .accordion-button {
+        background-color: #E82B38; color: white;
+      }
       body.holiday-christmas .accordion-content { background-color: #00A53C; color: white; }
+      body.holiday-christmas .accordion-button:hover { background-color: #c21f2f; }
+      body.holiday-christmas .accordion-button.active { background-color: #b11b2a; }
     `;
-  } else if (month === 10 && day >= 25 && day <= 31) {
+  }
+
+  // 🎃 HALLOWEEN
+  else if (month === 10 && day >= 25 && day <= 31) {
     holidayClass = 'holiday-halloween';
     mascotFile = 'halloweenmascot.png';
     styles = `
@@ -95,10 +104,18 @@ function setHolidayTheme() {
       body.holiday-halloween a { color: black; }
       body.holiday-halloween .topnav,
       body.holiday-halloween .site-footer,
-      body.holiday-halloween .accordion-header { background-color: black; color: white; }
+      body.holiday-halloween .accordion-header,
+      body.holiday-halloween .accordion-button {
+        background-color: black; color: white;
+      }
       body.holiday-halloween .accordion-content { background-color: orange; color: black; }
+      body.holiday-halloween .accordion-button:hover { background-color: #222; }
+      body.holiday-halloween .accordion-button.active { background-color: #444; }
     `;
-  } else if (month === 3 && day === 17) {
+  }
+
+  // 🍀 ST. PATRICK'S DAY
+  else if (month === 3 && day === 17) {
     holidayClass = 'holiday-stpatricks';
     mascotFile = 'stpatricksmascot.png';
     styles = `
@@ -106,10 +123,18 @@ function setHolidayTheme() {
       body.holiday-stpatricks a { color: #FFD700; }
       body.holiday-stpatricks .topnav,
       body.holiday-stpatricks .site-footer,
-      body.holiday-stpatricks .accordion-header { background-color: #008551; color: #FFD700; }
+      body.holiday-stpatricks .accordion-header,
+      body.holiday-stpatricks .accordion-button {
+        background-color: #008551; color: #FFD700;
+      }
       body.holiday-stpatricks .accordion-content { background-color: #009E60; color: #FFD700; }
+      body.holiday-stpatricks .accordion-button:hover { background-color: #007645; }
+      body.holiday-stpatricks .accordion-button.active { background-color: #006838; }
     `;
-  } else if (month === 7 && day === 4) {
+  }
+
+  // 🇺🇸 4TH OF JULY
+  else if (month === 7 && day === 4) {
     holidayClass = 'holiday-fourthofjuly';
     mascotFile = 'fourthofjulymascot.png';
     styles = `
@@ -117,10 +142,18 @@ function setHolidayTheme() {
       body.holiday-fourthofjuly a { color: #bf0a30; }
       body.holiday-fourthofjuly .topnav,
       body.holiday-fourthofjuly .site-footer,
-      body.holiday-fourthofjuly .accordion-header { background-color: #E82B38; color: white; }
+      body.holiday-fourthofjuly .accordion-header,
+      body.holiday-fourthofjuly .accordion-button {
+        background-color: #E82B38; color: white;
+      }
       body.holiday-fourthofjuly .accordion-content { background-color: #1F61C5; color: white; }
+      body.holiday-fourthofjuly .accordion-button:hover { background-color: #bf0a30; }
+      body.holiday-fourthofjuly .accordion-button.active { background-color: #a20d1e; }
     `;
-  } else if (month === 2 && day === 14) {
+  }
+
+  // 💘 VALENTINE’S DAY
+  else if (month === 2 && day === 14) {
     holidayClass = 'holiday-valentinesday';
     mascotFile = 'valentinesmascot.png';
     styles = `
@@ -128,8 +161,13 @@ function setHolidayTheme() {
       body.holiday-valentinesday a { color: #E54551; }
       body.holiday-valentinesday .topnav,
       body.holiday-valentinesday .site-footer,
-      body.holiday-valentinesday .accordion-header { background-color: #E82B38; color: white; }
+      body.holiday-valentinesday .accordion-header,
+      body.holiday-valentinesday .accordion-button {
+        background-color: #E82B38; color: white;
+      }
       body.holiday-valentinesday .accordion-content { background-color: #E3A8C6; color: white; }
+      body.holiday-valentinesday .accordion-button:hover { background-color: #c22732; }
+      body.holiday-valentinesday .accordion-button.active { background-color: #a91e28; }
     `;
   }
 
@@ -141,7 +179,6 @@ function setHolidayTheme() {
     styleSheet.innerText = styles;
     document.head.appendChild(styleSheet);
 
-    // Swap mascot image
     mascotImg.src = `img/${mascotFile}`;
   }
 }
