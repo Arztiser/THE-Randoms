@@ -99,7 +99,7 @@ function setHolidayTheme() {
     mainText = '#fff';
     footerBg = '#E82B38';
     footerText = '#fff';
-  } else if (month === 1 && day >= 25 && day <= 31) {
+  } else if (month === 10 && day >= 25 && day <= 31) {
     holidayClass = 'holiday-halloween';
     mascotFile = 'halloweenmascot.png';
     bgColor = 'orange';
