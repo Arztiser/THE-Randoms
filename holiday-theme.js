@@ -19,7 +19,6 @@ function ensureFooter() {
     document.body.appendChild(footer);
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    // Base footer + layout CSS
     const style = document.createElement('style');
     style.innerHTML = `
       html, body {
@@ -57,6 +56,14 @@ function ensureFooter() {
       #footer-mascot:hover {
         transform: scale(1.1) rotate(-5deg);
       }
+
+      /* 🧩 Universal protection: always keep footer + accordion readable */
+      .site-footer *,
+      .accordion-button,
+      .accordion-header,
+      .accordion-content {
+        color: inherit;
+      }
     `;
     document.head.appendChild(style);
   }
@@ -85,8 +92,8 @@ function setHolidayTheme() {
       body.holiday-christmas a { color: #ffffff; }
       body.holiday-christmas .topnav,
       body.holiday-christmas .site-footer,
-      body.holiday-christmas .accordion-header,
-      body.holiday-christmas .accordion-button {
+      body.holiday-christmas .accordion-button,
+      body.holiday-christmas .accordion-header {
         background-color: #E82B38; color: white;
       }
       body.holiday-christmas .accordion-content { background-color: #00A53C; color: white; }
@@ -102,19 +109,42 @@ function setHolidayTheme() {
     styles = `
       body.holiday-halloween { background-color: orange; color: black; }
       body.holiday-halloween a { color: black; }
+
       body.holiday-halloween .topnav,
-      body.holiday-halloween .site-footer,
+      body.holiday-halloween .site-footer {
+        background-color: black;
+        color: white !important;
+      }
+
+      body.holiday-halloween .site-footer *,
+      body.holiday-halloween .footer-left p {
+        color: white !important;
+      }
+
       body.holiday-halloween .accordion-header,
       body.holiday-halloween .accordion-button {
-        background-color: black; color: white;
+        background-color: orange !important;
+        color: black !important;
+        border: 2px solid black;
+        transition: background-color 0.3s ease, color 0.3s ease;
       }
-      body.holiday-halloween .accordion-content { background-color: orange; color: black; }
-      body.holiday-halloween .accordion-button:hover { background-color: #222; }
-      body.holiday-halloween .accordion-button.active { background-color: #444; }
+
+      body.holiday-halloween .accordion-button:hover {
+        background-color: #ffb347 !important;
+      }
+
+      body.holiday-halloween .accordion-button.active {
+        background-color: #ff9100 !important;
+      }
+
+      body.holiday-halloween .accordion-content {
+        background-color: #222 !important;
+        color: white !important;
+      }
     `;
   }
 
-  // 🍀 ST. PATRICK'S DAY
+  // 🍀 ST. PATRICK’S DAY
   else if (month === 3 && day === 17) {
     holidayClass = 'holiday-stpatricks';
     mascotFile = 'stpatricksmascot.png';
@@ -173,12 +203,9 @@ function setHolidayTheme() {
 
   if (holidayClass) {
     document.body.classList.add(holidayClass);
-
     const styleSheet = document.createElement("style");
-    styleSheet.type = "text/css";
     styleSheet.innerText = styles;
     document.head.appendChild(styleSheet);
-
     mascotImg.src = `img/${mascotFile}`;
   }
 }
