@@ -187,8 +187,8 @@
 <body>
   <header>
     <div class="topnav">
-      <h1><a class="logo" href="/">THE Randoms</a></h1>
-      <span class="menu-icon" onclick="toggleMenu()" tabindex="0" role="button" aria-label="Toggle menu">&#9776;</span>
+      <h1><a class="logo" href="index.html">THE Randoms</a></h1>
+      <span class="menu-icon" tabindex="0" role="button" arial-label="Toggle menu">&#9776;</span>  
     </div>
 
     <nav class="topnav-right" role="navigation" aria-label="Main Menu">
@@ -247,102 +247,8 @@
     <p>Redirecting You To A Random Page</p>
   </main>
 
-  <script>
-    function toggleMenu() {
-      const topnav = document.querySelector('.topnav');
-      const menu = document.querySelector('.topnav-right');
-      const body = document.body;
-
-      topnav.classList.toggle('active');
-      menu.classList.toggle('active');
-      body.classList.toggle('menu-open');
-    }
-
-    document.querySelectorAll('.accordion-toggle').forEach(button => {
-      button.addEventListener('click', () => {
-        const section = button.parentElement;
-        const isOpen = section.classList.contains('open');
-
-        document.querySelectorAll('.accordion-section').forEach(s => {
-          if (s !== section) {
-            s.classList.remove('open');
-            s.querySelector('.accordion-toggle').setAttribute('aria-expanded', 'false');
-            s.querySelector('.accordion-content').hidden = true;
-          }
-        });
-
-        if (!isOpen) {
-          section.classList.add('open');
-          button.setAttribute('aria-expanded', 'true');
-          section.querySelector('.accordion-content').hidden = false;
-        } else {
-          section.classList.remove('open');
-          button.setAttribute('aria-expanded', 'false');
-          section.querySelector('.accordion-content').hidden = true;
-        }
-      });
-    });
-
-    const clickableSection = document.querySelector('.clickable-section');
-    clickableSection.addEventListener('click', () => {
-      window.location.href = 'randomsoftheday.html';
-    });
-
-    clickableSection.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        clickableSection.click();
-      }
-    });
-
-    document.querySelector('.menu-icon').addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        toggleMenu();
-      }
-    });
-
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/service-worker.js')
-        .then(reg => console.log('Service Worker registered:', reg.scope))
-        .catch(err => console.error('Service Worker registration failed:', err));
-    }
-  </script>
-
-  <!-- Just this one line to load your holiday-theme.js -->
+  <script src="pages.js" defer></script>
   <script src="holiday-theme.js" defer></script>
-
-  <script src="/holiday-theme.js"></script>
-
-<script>
-    // List all pages you want to randomly redirect to
-    const pages = [
-      "jokes.html",
-      "memes.html",
-      "nfl.html",
-      "quizzes.html",
-      "advice.html",
-      "facts.html",
-      "people.html",
-      "quotes.html",
-      "songs.html",
-      "videos.html",
-      "letters.html",
-      "numbers.html",
-      "words.html",
-      "wouldyourather.html"
-    ];
-
-    // Pick a random page
-    const randomPage = pages[Math.floor(Math.random() * pages.length)];
-
-    // Redirect after 1.5 seconds
-    setTimeout(() => {
-      window.location.href = randomPage;
-    }, 1500);
-</script>
-
-<script src="/holiday-theme.js"></script>
-  
+  <script src="accordion.js" defer></script>
 </body>
 </html>
