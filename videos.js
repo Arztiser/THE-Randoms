@@ -46,7 +46,7 @@ const apiKey = 'AIzaSyA7B_YMNe5T-rrVRuEbcZKcY9w50EWCeVk'; // Replace with your Y
       videoCaches[query].splice(randomIndex, 1);
       const videoUrl = `https://www.youtube.com/embed/${videoId}`;
       document.getElementById('video-container').innerHTML = `
-        <iframe width="560" height="315" src="${videoUrl}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <iframe width="360" height="315" src="${videoUrl}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       `;
     }
 
