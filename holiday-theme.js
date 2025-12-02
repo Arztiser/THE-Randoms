@@ -17,32 +17,50 @@ function ensureFooter() {
     document.body.appendChild(footer);
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    // Base footer + layout CSS
+    // Base footer + layout CSS (FIXED VERSION)
     const style = document.createElement('style');
     style.innerHTML = `
-  footer.site-footer {
-    position: relative;
-    width: 100%;
-    background-color: var(--theme-bg-color, #333);
-    color: var(--theme-topnav-color, #f2f2f2);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 5px 20px;
-    font-size: 20px;
-    box-sizing: border-box;
-    z-index: 1000;
-    margin-top: auto;
-  }
-  #footer-mascot {
-    height: 50px;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-  }
-  #footer-mascot:hover {
-    transform: scale(1.1) rotate(-5deg);
-  }
-`;
+      /* --- Layout Fix: Footer sticks to bottom on short pages --- */
+      html, body {
+        height: 100%;
+      }
+
+      body {
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* whichever wrapper exists will stretch */
+      main, .container, .page-content {
+        flex: 1;
+      }
+
+      /* --- Footer Styling --- */
+      footer.site-footer {
+        position: relative;
+        width: 100%;
+        background-color: var(--theme-bg-color, #333);
+        color: var(--theme-topnav-color, #f2f2f2);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 5px 20px;
+        font-size: 20px;
+        box-sizing: border-box;
+        z-index: 1000;
+        margin-top: auto;
+      }
+
+      #footer-mascot {
+        height: 50px;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+      }
+
+      #footer-mascot:hover {
+        transform: scale(1.1) rotate(-5deg);
+      }
+    `;
     document.head.appendChild(style);
   }
   return footer;
