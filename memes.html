@@ -36,13 +36,12 @@
       flex: 1 0 auto;
       padding: 20px;
       display: flex;
-      justify-content: center;
+      justify-content: flex-start;
       flex-direction: column;
       align-items: center;
-      overflow: auto;
       box-sizing: border-box;
       text-align: center;
-      min-height: calc(100vh - 60px); /* footer height = 60px */
+      min-height: calc(100vh - 60px - 60px);
     }
 
     .topnav {
@@ -183,29 +182,30 @@
       outline: none;
     }
 
-    /* Meme container adjustments */
+    /* Meme container */
     .meme-container {
       border: 4px solid #E82B38;
-      padding: 15px;
       border-radius: 12px;
-      max-width: 400px;
+      padding: 15px;
       width: 90%;
+      max-width: 500px;
+      height: 500px; /* taller container for readability */
       display: flex;
       flex-direction: column;
+      justify-content: space-between;
       align-items: center;
-      justify-content: center;
       margin-top: 20px;
-      max-height: 70vh; /* container won't overflow viewport */
-      overflow: auto;
+      box-sizing: border-box;
+      background-color: #fff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
 
     .meme-container img {
-      max-width: 100%;
-      max-height: 60vh; /* prevents huge memes from breaking layout */
+      width: 100%;
+      height: 350px; /* fixed height for consistency */
+      object-fit: cover;
       border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
       margin-bottom: 15px;
-      object-fit: contain; /* preserves aspect ratio */
     }
 
     .generate-btn {
@@ -213,11 +213,11 @@
       color: white;
       border: none;
       font-family: 'Jersey 10', sans-serif;
-      font-size: 18px;
-      padding: 8px 16px;
+      font-size: 20px;
+      padding: 10px 20px;
       cursor: pointer;
       border-radius: 8px;
-      transition: background-color 0.3s ease;
+      transition: background-color 0.3s ease, transform 0.2s ease;
     }
 
     .generate-btn:hover {
@@ -226,7 +226,9 @@
     }
 
     footer.site-footer {
-      position: relative;
+      position: fixed;
+      bottom: 0;
+      left: 0;
       width: 100%;
       height: 60px;
       background-color: var(--theme-bg-color);
@@ -238,7 +240,6 @@
       font-size: 20px;
       box-sizing: border-box;
       z-index: 1000;
-      margin-top: auto;
     }
 
     #footer-mascot {
@@ -306,14 +307,28 @@
   </header>
 
   <main class="content">
-    <h1 style="color: black;">Random Memes</h1>
+    <h1 style="color: black; margin-bottom: 20px;">Random Memes</h1>
     <div class="meme-container">
       <img id="meme-img" src="" alt="Random Meme" />
       <button id="generate-meme" class="generate-btn">Generate Meme</button>
     </div>
   </main>
 
-  <!-- External JS files -->
+  <footer class="site-footer">
+    <div class="footer-left">
+      <p>&copy; <span id="year"></span> THE Randoms</p>
+    </div>
+    <div class="footer-right">
+      <a href="randuino.html" title="Randuino">
+        <img id="footer-mascot" src="img/Mascot.png" alt="Randuino">
+      </a>
+    </div>
+  </footer>
+
+  <!-- JS -->
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
   <script src="holiday-theme.js" defer></script>
   <script src="accordion.js" defer></script>
   <script src="memes.js" defer></script>
