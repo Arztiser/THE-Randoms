@@ -20,38 +20,29 @@ function ensureFooter() {
     // Base footer + layout CSS
     const style = document.createElement('style');
     style.innerHTML = `
-      html, body {
-        height: 100%;
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-      }
-      body > .container {
-        flex: 1;
-      }
-      footer.site-footer {
-        position: relative;
-        width: 100%;
-        background-color: var(--theme-bg-color, #333);
-        color: var(--theme-topnav-color, #f2f2f2);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 5px 20px;
-        font-size: 20px;
-        box-sizing: border-box;
-        z-index: 1000;
-        margin-top: auto;
-      }
-      #footer-mascot {
-        height: 50px;
-        cursor: pointer;
-        transition: transform 0.2s ease;
-      }
-      #footer-mascot:hover {
-        transform: scale(1.1) rotate(-5deg);
-      }
-    `;
+  footer.site-footer {
+    position: relative;
+    width: 100%;
+    background-color: var(--theme-bg-color, #333);
+    color: var(--theme-topnav-color, #f2f2f2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 20px;
+    font-size: 20px;
+    box-sizing: border-box;
+    z-index: 1000;
+    margin-top: auto;
+  }
+  #footer-mascot {
+    height: 50px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+  #footer-mascot:hover {
+    transform: scale(1.1) rotate(-5deg);
+  }
+`;
     document.head.appendChild(style);
   }
   return footer;
