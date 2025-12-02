@@ -17,33 +17,31 @@ function ensureFooter() {
     document.body.appendChild(footer);
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    // Base footer + layout CSS (FINAL FIXED VERSION)
+    // Base footer + layout CSS
     const style = document.createElement('style');
     style.innerHTML = `
-      /* --- Layout Fix: Footer sticks to bottom on ALL pages --- */
       html, body {
         height: 100%;
+        margin: 0;
       }
 
       body {
         display: flex;
         flex-direction: column;
         min-height: 100vh;
+        font-family: 'Jersey 10', sans-serif;
       }
 
-      /* Preferred wrappers */
-      main, .container, .page-content {
-        flex: 1;
+      main.content, .container, .page-content {
+        flex: 1 0 auto;
+        box-sizing: border-box;
       }
 
-      /* Fallback: ANY content before footer expands */
-      body > *:not(footer.site-footer):not(style):not(script) {
-        flex: 1;
-      }
-
-      /* --- Footer Styling --- */
       footer.site-footer {
+        position: relative; /* participate in normal flow */
+        margin-top: auto;   /* pushes footer to bottom if short page */
         width: 100%;
+        height: 60px;
         background-color: var(--theme-bg-color, #333);
         color: var(--theme-topnav-color, #f2f2f2);
         display: flex;
@@ -51,9 +49,6 @@ function ensureFooter() {
         align-items: center;
         padding: 5px 20px;
         font-size: 20px;
-        box-sizing: border-box;
-        margin-top: auto;
-        position: relative;
         z-index: 1000;
       }
 
@@ -72,7 +67,7 @@ function ensureFooter() {
   return footer;
 }
 
-    // Apply holiday theme + mascot (REPLACEMENT - paste this over your current setHolidayTheme)
+// Apply holiday theme + mascot
 function setHolidayTheme() {
   const footer = ensureFooter();
   const mascotImg = footer.querySelector('#footer-mascot');
@@ -84,21 +79,15 @@ function setHolidayTheme() {
   let holidayClass = '';
   let mascotFile = 'Mascot.png';
 
-  // Theme color variables (defaults)
-  let bgColor = '#fff';
-  let textColor = '#000';
-  let linkColor = '#000';
-  let navBg = '#333';
-  let navText = '#f2f2f2';
-  let menuBg = '#333';
-  let menuText = '#f2f2f2';
-  let hoverBg = 'rgba(255,255,255,0.1)';
-  let hoverText = '#fff';
-  let mainBg = '#E82B38';
-  let mainText = '#fff';
-  let footerBg = '#333';
-  let footerText = '#f2f2f2';
+  // Theme defaults
+  let bgColor = '#fff', textColor = '#000', linkColor = '#000';
+  let navBg = '#333', navText = '#f2f2f2';
+  let menuBg = '#333', menuText = '#f2f2f2';
+  let hoverBg = 'rgba(255,255,255,0.1)', hoverText = '#fff';
+  let mainBg = '#E82B38', mainText = '#fff';
+  let footerBg = '#333', footerText = '#f2f2f2';
 
+  // Holiday checks
   if ((month === 12 && day >= 25) || (month === 12 && day <= 31)) {
     holidayClass = 'holiday-christmas';
     mascotFile = 'christmasmascot.png';
@@ -156,10 +145,8 @@ function setHolidayTheme() {
   }
 
   if (holidayClass) {
-    // Add class to body for specificity if needed
     document.body.classList.add(holidayClass);
 
-    // Inject CSS rules for themed elements (colors only - not layout)
     const styleSheet = document.createElement('style');
     styleSheet.type = 'text/css';
     styleSheet.innerText = `
@@ -180,46 +167,33 @@ function setHolidayTheme() {
     `;
     document.head.appendChild(styleSheet);
 
-    // Set root + body background explicitly (ensures html/background doesn't remain white)
-    try {
-      document.documentElement.style.backgroundColor = bgColor;
-      document.body.style.backgroundColor = bgColor;
-      document.body.style.color = textColor;
-    } catch (e) {
-      // ignore in environments where style setting fails
-      console.warn('Could not set inline background color:', e);
-    }
+    // Background
+    document.documentElement.style.backgroundColor = bgColor;
+    document.body.style.backgroundColor = bgColor;
+    document.body.style.color = textColor;
 
-    // Update CSS variables used elsewhere so other components react
+    // Update CSS variables
     document.body.style.setProperty('--theme-bg-color', navBg);
     document.body.style.setProperty('--theme-topnav-color', navText);
     document.body.style.setProperty('--theme-accent-color', mainBg);
 
-    // Ensure footer uses fixed positioning to match quizzes stylesheet and prevent layout gaps
-    footer.style.position = 'fixed';
-    footer.style.bottom = '0';
-    footer.style.left = '0';
-    footer.style.width = '100%';
-    footer.style.height = '60px';
-    footer.style.zIndex = '1000';
-    footer.style.backgroundColor = footerBg;
-    footer.style.color = footerText;
-
-    // Prevent footer from covering quiz content: add bottom padding to main.content
-    const mainContent = document.querySelector('main.content');
-    if (mainContent) {
-      // keep any existing padding, ensure at least 80px bottom padding
-      const computed = window.getComputedStyle(mainContent);
-      const existingPB = parseFloat(computed.paddingBottom) || 0;
-      if (existingPB < 80) {
-        mainContent.style.paddingBottom = (existingPB + 80) + 'px';
-      }
-    }
-
-    // Swap mascot if available
+    // Set mascot
     if (mascotImg) {
       mascotImg.src = `img/${mascotFile}`;
     }
   }
-      }
-document.addEventListener('DOMContentLoaded', setHolidayTheme);
+}
+
+// Dynamic adjustment for pages with content that loads later (e.g., quizzes)
+function adjustFooterForDynamicContent() {
+  const mainContent = document.querySelector('main.content');
+  if (mainContent) {
+    mainContent.style.minHeight = `calc(100vh - 60px)`; // footer height = 60px
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  setHolidayTheme();
+  adjustFooterForDynamicContent();
+});
+window.addEventListener('resize', adjustFooterForDynamicContent);
