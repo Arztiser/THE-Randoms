@@ -48,7 +48,7 @@ function ensureFooter() {
   return footer;
 }
 
-// Apply holiday theme + mascot
+    // Apply holiday theme + mascot (REPLACEMENT - paste this over your current setHolidayTheme)
 function setHolidayTheme() {
   const footer = ensureFooter();
   const mascotImg = footer.querySelector('#footer-mascot');
@@ -60,7 +60,7 @@ function setHolidayTheme() {
   let holidayClass = '';
   let mascotFile = 'Mascot.png';
 
-  // Theme color variables
+  // Theme color variables (defaults)
   let bgColor = '#fff';
   let textColor = '#000';
   let linkColor = '#000';
@@ -75,7 +75,6 @@ function setHolidayTheme() {
   let footerBg = '#333';
   let footerText = '#f2f2f2';
 
-  // Set holiday-specific colors
   if ((month === 12 && day >= 25) || (month === 12 && day <= 31)) {
     holidayClass = 'holiday-christmas';
     mascotFile = 'christmasmascot.png';
@@ -132,14 +131,15 @@ function setHolidayTheme() {
     footerBg = '#FFD700'; footerText = '#6A0DAD';
   }
 
-  // Apply holiday theme
   if (holidayClass) {
+    // Add class to body for specificity if needed
     document.body.classList.add(holidayClass);
 
+    // Inject CSS rules for themed elements (colors only - not layout)
     const styleSheet = document.createElement('style');
     styleSheet.type = 'text/css';
     styleSheet.innerText = `
-      body.${holidayClass} { background-color: ${bgColor}; color: ${textColor}; }
+      body.${holidayClass} { color: ${textColor}; }
       body.${holidayClass} a { color: ${linkColor}; }
       body.${holidayClass} .topnav { background-color: ${navBg}; color: ${navText}; }
       body.${holidayClass} .topnav a.logo { color: ${navText}; }
@@ -156,8 +156,46 @@ function setHolidayTheme() {
     `;
     document.head.appendChild(styleSheet);
 
-    mascotImg.src = `img/${mascotFile}`;
-  }
-}
+    // Set root + body background explicitly (ensures html/background doesn't remain white)
+    try {
+      document.documentElement.style.backgroundColor = bgColor;
+      document.body.style.backgroundColor = bgColor;
+      document.body.style.color = textColor;
+    } catch (e) {
+      // ignore in environments where style setting fails
+      console.warn('Could not set inline background color:', e);
+    }
 
+    // Update CSS variables used elsewhere so other components react
+    document.body.style.setProperty('--theme-bg-color', navBg);
+    document.body.style.setProperty('--theme-topnav-color', navText);
+    document.body.style.setProperty('--theme-accent-color', mainBg);
+
+    // Ensure footer uses fixed positioning to match quizzes stylesheet and prevent layout gaps
+    footer.style.position = 'fixed';
+    footer.style.bottom = '0';
+    footer.style.left = '0';
+    footer.style.width = '100%';
+    footer.style.height = '60px';
+    footer.style.zIndex = '1000';
+    footer.style.backgroundColor = footerBg;
+    footer.style.color = footerText;
+
+    // Prevent footer from covering quiz content: add bottom padding to main.content
+    const mainContent = document.querySelector('main.content');
+    if (mainContent) {
+      // keep any existing padding, ensure at least 80px bottom padding
+      const computed = window.getComputedStyle(mainContent);
+      const existingPB = parseFloat(computed.paddingBottom) || 0;
+      if (existingPB < 80) {
+        mainContent.style.paddingBottom = (existingPB + 80) + 'px';
+      }
+    }
+
+    // Swap mascot if available
+    if (mascotImg) {
+      mascotImg.src = `img/${mascotFile}`;
+    }
+  }
+      }
 document.addEventListener('DOMContentLoaded', setHolidayTheme);
