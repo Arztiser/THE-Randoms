@@ -17,10 +17,10 @@ function ensureFooter() {
     document.body.appendChild(footer);
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    // Base footer + layout CSS (FIXED VERSION)
+    // Base footer + layout CSS (FINAL FIXED VERSION)
     const style = document.createElement('style');
     style.innerHTML = `
-      /* --- Layout Fix: Footer sticks to bottom on short pages --- */
+      /* --- Layout Fix: Footer sticks to bottom on ALL pages --- */
       html, body {
         height: 100%;
       }
@@ -28,16 +28,21 @@ function ensureFooter() {
       body {
         display: flex;
         flex-direction: column;
+        min-height: 100vh;
       }
 
-      /* whichever wrapper exists will stretch */
+      /* Preferred wrappers */
       main, .container, .page-content {
+        flex: 1;
+      }
+
+      /* Fallback: ANY content before footer expands */
+      body > *:not(footer.site-footer):not(style):not(script) {
         flex: 1;
       }
 
       /* --- Footer Styling --- */
       footer.site-footer {
-        position: relative;
         width: 100%;
         background-color: var(--theme-bg-color, #333);
         color: var(--theme-topnav-color, #f2f2f2);
@@ -47,8 +52,9 @@ function ensureFooter() {
         padding: 5px 20px;
         font-size: 20px;
         box-sizing: border-box;
-        z-index: 1000;
         margin-top: auto;
+        position: relative;
+        z-index: 1000;
       }
 
       #footer-mascot {
