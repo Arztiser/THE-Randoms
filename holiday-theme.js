@@ -91,12 +91,12 @@ function setHolidayTheme() {
   if ((month === 12 && day >= 25) || (month === 12 && day <= 31)) {
     holidayClass = 'holiday-christmas';
     mascotFile = 'christmasmascot.png';
-    bgColor = '#00A53C'; textColor = '#fff'; linkColor = '#fff';
-    navBg = '#E82B38'; navText = '#fff';
-    menuBg = '#00A53C'; menuText = '#fff';
+    bgColor = '#00A53C'; textColor = '#ffffff'; linkColor = '#ffffff';
+    navBg = '#E82B38'; navText = '#ffffff';
+    menuBg = '#00A53C'; menuText = '#ffffff';
     hoverBg = 'rgba(255,255,255,0.2)';
-    mainBg = '#E82B38'; mainText = '#fff';
-    footerBg = '#E82B38'; footerText = '#fff';
+    mainBg = '#E82B38'; mainText = '#ffffff';
+    footerBg = '#E82B38'; footerText = '#ffffff';
   } else if (month === 10 && day >= 25 && day <= 31) {
     holidayClass = 'holiday-halloween';
     mascotFile = 'halloweenmascot.png';
