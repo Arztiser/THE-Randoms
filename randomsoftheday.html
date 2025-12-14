@@ -178,6 +178,35 @@
     .random-section {
   color: #000;
     }
+
+    /* ---------- FOOTER FIX ---------- */
+.site-footer {
+  background-color: var(--theme-bg-color);
+  color: var(--theme-topnav-color);
+  padding: 40px 20px 20px;
+  overflow: visible;
+  flex-shrink: 0;
+}
+
+.site-footer * {
+  overflow: visible;
+}
+
+.footer-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.footer-mascot {
+  max-width: 180px;
+  width: 100%;
+  height: auto;
+  display: block;
+}
   </style>
 </head>
 <body>
@@ -269,5 +298,14 @@
   <script src="randomsoftheday.js" defer></script>
   <script src="holiday-theme.js" defer></script>
     <script src="accordion.js" defer></script>
+  <footer class="site-footer">
+  <div class="footer-inner">
+    <img
+      src="./img/mascot.png"
+      alt="THE Randoms Mascot"
+      class="footer-mascot"
+    >
+  </div>
+  </footer>
 </body>
 </html>
