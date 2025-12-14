@@ -224,6 +224,29 @@
     a.back-home:hover {
       text-decoration: underline;
     }
+
+    /* Footer Styles */
+    footer.site-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 20px;
+      height: 50px;
+      background-color: var(--theme-bg-color);
+      color: var(--theme-topnav-color);
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    #footer-mascot {
+      height: 40px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    #footer-mascot:hover {
+      transform: scale(1.1) rotate(-5deg);
+    }
   </style>
 </head>
 <body>
@@ -308,7 +331,18 @@
     </div>
   </main>
 
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div>&copy; <span id="year"></span> THE Randoms</div>
+    <a href="randuino.html" title="Randuino">
+      <img id="footer-mascot" src="img/Mascot.png" alt="Randuino">
+    </a>
+  </footer>
+
   <!-- Scripts must be external for Chrome Extension -->
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
   <script src="holiday-theme.js" defer></script>
   <script src="accordion.js" defer></script>
 </body>
