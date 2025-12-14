@@ -179,33 +179,36 @@
   color: #000;
     }
 
-    /* ---------- FOOTER FIX ---------- */
+    /* ---------- STANDARD FOOTER ---------- */
 .site-footer {
-  background-color: var(--theme-bg-color);
-  color: var(--theme-topnav-color);
-  padding: 40px 20px 20px;
-  overflow: visible;
-  flex-shrink: 0;
-}
-
-.site-footer * {
-  overflow: visible;
-}
-
-.footer-inner {
-  max-width: 900px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-}
-
-.footer-mascot {
-  max-width: 180px;
+  position: relative;      /* stays in normal flow */
+  margin-top: auto;        /* pushes footer to bottom if page is short */
   width: 100%;
-  height: auto;
-  display: block;
+  height: 60px;            /* standard footer height */
+  background-color: var(--theme-bg-color, #333);
+  color: var(--theme-topnav-color, #f2f2f2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  font-size: 20px;
+  box-sizing: border-box;
+  z-index: 1000;
+}
+
+.site-footer p {
+  margin: 0;
+}
+
+#footer-mascot {
+  height: 50px;            /* matches other pages */
+  width: auto;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+#footer-mascot:hover {
+  transform: scale(1.1) rotate(-5deg);
 }
   </style>
 </head>
@@ -299,13 +302,18 @@
   <script src="holiday-theme.js" defer></script>
     <script src="accordion.js" defer></script>
   <footer class="site-footer">
-  <div class="footer-inner">
-    <img
-      src="./img/mascot.png"
-      alt="THE Randoms Mascot"
-      class="footer-mascot"
-    >
+  <div class="footer-left">
+    <p>&copy; <span id="year"></span> THE Randoms</p>
   </div>
-  </footer>
+  <div class="footer-right">
+    <a href="randuino.html" title="Randuino">
+      <img id="footer-mascot" src="img/mascot.png" alt="Randuino">
+    </a>
+  </div>
+</footer>
+<script>
+  // Set current year
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
 </body>
 </html>
