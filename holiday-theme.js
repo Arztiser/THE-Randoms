@@ -1,6 +1,7 @@
 // Ensure footer exists
 function ensureFooter() {
   let footer = document.querySelector('.site-footer');
+
   if (!footer) {
     footer = document.createElement('footer');
     footer.className = 'site-footer';
@@ -15,6 +16,7 @@ function ensureFooter() {
       </div>
     `;
     document.body.appendChild(footer);
+
     document.getElementById("year").textContent = new Date().getFullYear();
 
     // Base footer + layout CSS
@@ -38,22 +40,25 @@ function ensureFooter() {
       }
 
       footer.site-footer {
-        position: relative; /* participate in normal flow */
-        margin-top: auto;   /* pushes footer to bottom if short page */
+        position: relative;
+        margin-top: auto;
         width: 100%;
-        height: 60px;
+        min-height: 60px;
         background-color: var(--theme-bg-color, #333);
         color: var(--theme-topnav-color, #f2f2f2);
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 5px 20px;
+        padding: 8px 20px;
         font-size: 20px;
         z-index: 1000;
+        overflow: visible;
       }
 
       #footer-mascot {
         height: 50px;
+        max-height: 100%;
+        object-fit: contain;
         cursor: pointer;
         transition: transform 0.2s ease;
       }
@@ -64,6 +69,7 @@ function ensureFooter() {
     `;
     document.head.appendChild(style);
   }
+
   return footer;
 }
 
@@ -97,6 +103,7 @@ function setHolidayTheme() {
     hoverBg = 'rgba(255,255,255,0.2)';
     mainBg = '#E82B38'; mainText = '#ffffff';
     footerBg = '#E82B38'; footerText = '#ffffff';
+
   } else if (month === 10 && day >= 25 && day <= 31) {
     holidayClass = 'holiday-halloween';
     mascotFile = 'halloweenmascot.png';
@@ -106,6 +113,7 @@ function setHolidayTheme() {
     hoverBg = 'orange';
     mainBg = 'orange'; mainText = 'black';
     footerBg = 'black'; footerText = 'white';
+
   } else if (month === 3 && day === 17) {
     holidayClass = 'holiday-stpatricks';
     mascotFile = 'stpatricksmascot.png';
@@ -115,6 +123,7 @@ function setHolidayTheme() {
     hoverBg = '#00A53C';
     mainBg = '#008551'; mainText = '#FFD700';
     footerBg = '#008551'; footerText = '#FFD700';
+
   } else if (month === 7 && day === 4) {
     holidayClass = 'holiday-fourthofjuly';
     mascotFile = 'fourthofjulymascot.png';
@@ -124,6 +133,7 @@ function setHolidayTheme() {
     hoverBg = '#bf0a30';
     mainBg = '#E82B38'; mainText = '#fff';
     footerBg = '#E82B38'; footerText = '#fff';
+
   } else if (month === 2 && day === 14) {
     holidayClass = 'holiday-valentinesday';
     mascotFile = 'valentinesmascot.png';
@@ -133,6 +143,7 @@ function setHolidayTheme() {
     hoverBg = '#E54551';
     mainBg = '#E82B38'; mainText = '#fff';
     footerBg = '#E82B38'; footerText = '#fff';
+
   } else if (month === 4 && day >= 1 && day <= 7) {
     holidayClass = 'holiday-easter';
     mascotFile = 'eastermascot.png';
@@ -148,7 +159,6 @@ function setHolidayTheme() {
     document.body.classList.add(holidayClass);
 
     const styleSheet = document.createElement('style');
-    styleSheet.type = 'text/css';
     styleSheet.innerText = `
       body.${holidayClass} { color: ${textColor}; }
       body.${holidayClass} a { color: ${linkColor}; }
@@ -158,42 +168,40 @@ function setHolidayTheme() {
       body.${holidayClass} .topnav-right { background-color: ${menuBg}; color: ${menuText}; }
       body.${holidayClass} .accordion-toggle { background-color: ${menuBg}; color: ${menuText}; }
       body.${holidayClass} .accordion-toggle:hover,
-      body.${holidayClass} .accordion-content a:hover { background-color: ${hoverBg}; color: ${hoverText}; }
-      body.${holidayClass} .accordion-content a { background-color: ${menuBg}; color: ${menuText}; }
-      body.${holidayClass} .clickable-section { background-color: ${mainBg}; color: ${mainText}; }
-      body.${holidayClass} .clickable-section:hover { background-color: ${hoverBg}; color: ${hoverText}; }
-      body.${holidayClass} .site-footer { background-color: ${footerBg}; color: ${footerText}; }
-      body.${holidayClass} .site-footer a { color: ${footerText}; }
+      body.${holidayClass} .accordion-content a:hover {
+        background-color: ${hoverBg};
+        color: ${hoverText};
+      }
+      body.${holidayClass} .accordion-content a {
+        background-color: ${menuBg};
+        color: ${menuText};
+      }
+      body.${holidayClass} .clickable-section {
+        background-color: ${mainBg};
+        color: ${mainText};
+      }
+      body.${holidayClass} .site-footer {
+        background-color: ${footerBg};
+        color: ${footerText};
+      }
+      body.${holidayClass} .site-footer a {
+        color: ${footerText};
+      }
     `;
     document.head.appendChild(styleSheet);
 
-    // Background
     document.documentElement.style.backgroundColor = bgColor;
     document.body.style.backgroundColor = bgColor;
     document.body.style.color = textColor;
 
-    // Update CSS variables
     document.body.style.setProperty('--theme-bg-color', navBg);
     document.body.style.setProperty('--theme-topnav-color', navText);
     document.body.style.setProperty('--theme-accent-color', mainBg);
 
-    // Set mascot
     if (mascotImg) {
       mascotImg.src = `img/${mascotFile}`;
     }
   }
 }
 
-// Dynamic adjustment for pages with content that loads later (e.g., quizzes)
-function adjustFooterForDynamicContent() {
-  const mainContent = document.querySelector('main.content');
-  if (mainContent) {
-    mainContent.style.minHeight = `calc(100vh - 60px)`; // footer height = 60px
-  }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  setHolidayTheme();
-  adjustFooterForDynamicContent();
-});
-window.addEventListener('resize', adjustFooterForDynamicContent);
+document.addEventListener('DOMContentLoaded', setHolidayTheme);
