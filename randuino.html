@@ -226,27 +226,37 @@
     }
 
     /* Footer Styles */
-    footer.site-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 5px 20px;
-      height: 50px;
-      background-color: var(--theme-bg-color);
-      color: var(--theme-topnav-color);
-      font-size: 18px;
-      flex-shrink: 0;
-    }
+    /* ---------- STANDARD FOOTER ---------- */
+.site-footer {
+  position: relative;      /* stays in normal flow */
+  margin-top: auto;        /* pushes footer to bottom if page is short */
+  width: 100%;
+  height: 60px;            /* standard footer height */
+  background-color: var(--theme-bg-color, #333);
+  color: var(--theme-topnav-color, #f2f2f2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  font-size: 20px;
+  box-sizing: border-box;
+  z-index: 1000;
+}
 
-    #footer-mascot {
-      height: 40px;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    }
+.site-footer p {
+  margin: 0;
+}
 
-    #footer-mascot:hover {
-      transform: scale(1.1) rotate(-5deg);
-    }
+#footer-mascot {
+  height: 50px;            /* matches other pages */
+  width: auto;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+#footer-mascot:hover {
+  transform: scale(1.1) rotate(-5deg);
+}
   </style>
 </head>
 <body>
