@@ -124,7 +124,7 @@
     .clickable-section:hover, .clickable-section:focus { background-color: #c52430; outline: none; }
 
     /* ===== MEME CONTAINER ===== */
-    /* Desktop: your working version */
+   /* Desktop: your working version */
 .meme-container {
   border: 4px solid var(--theme-accent-color);
   border-radius: 12px;
@@ -159,12 +159,29 @@
 
 /* Mobile fix */
 @media (max-width: 768px) {
+  body {
+    overflow-x: hidden; /* prevent horizontal scrolling */
+  }
+
+  .meme-container {
+    display: flex;          /* force container to wrap content */
+    flex-direction: column;
+    align-items: center;    /* center image and button horizontally */
+    width: auto;            /* container shrinks to fit image */
+    padding: 0;             /* no extra padding */
+  }
+
   .meme-container img {
-    max-width: calc(100vw - 16px); /* full viewport width minus borders/margin */
-    max-height: 60vh;              /* slightly reduce height on mobile */
+    width: 100%;           /* image fills container */
+    max-width: calc(100vw - 8px); /* leave room for borders */
+    max-height: 60vh;      /* fit on screen */
+    height: auto;
+  }
+
+  .generate-btn {
+    width: 100%;           /* button matches container width */
   }
 }
-
 
     .generate-btn:hover { background-color: #c52430; transform: scale(1.05); }
 
