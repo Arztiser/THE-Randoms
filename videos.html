@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#E82B38">
-  <meta name="description" content="THE Randoms Is A Website That Lets You View And Do Random Things Such As Random Quizzes, Facts, Quotes, Numbers, And Letters.">
+  <meta name="description" content="Watch random videos on THE Randoms.">
   <title>Videos - THE Randoms</title>
 
   <link rel="icon" type="image/png" href="./img/pfp.png">
@@ -16,7 +16,7 @@
       margin: 0;
       overflow-x: hidden;
       font-family: 'Jersey 10', sans-serif;
-      font-size: 28px; /* SAME AS JOKES */
+      font-size: 28px;
       background-color: #fff;
       color: #000;
     }
@@ -36,11 +36,11 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      box-sizing: border-box;
       text-align: center;
+      box-sizing: border-box;
     }
 
-    /* ===== TOP NAV (UNCHANGED) ===== */
+    /* ===== TOP NAV ===== */
     .topnav {
       background-color: var(--theme-bg-color);
       color: var(--theme-topnav-color);
@@ -66,25 +66,106 @@
       font-size: 30px;
       color: var(--theme-topnav-color);
       cursor: pointer;
+      user-select: none;
+    }
+
+    /* ===== ACCORDION MENU ===== */
+    .topnav-right {
+      display: none;
+      position: fixed;
+      top: 60px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--theme-bg-color);
+      overflow-y: auto;
+      flex-direction: column;
+      z-index: 999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      padding-bottom: 60px;
+      box-sizing: border-box;
+    }
+
+    .topnav-right.active {
+      display: flex;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    body.menu-open {
+      overflow: hidden;
+    }
+
+    .accordion-section {
+      display: flex;
+      flex-direction: column;
+      border-top: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .accordion-toggle {
+      background: none;
+      color: var(--theme-topnav-color);
+      padding: 14px;
+      text-align: left;
+      font-size: 24px;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      font-family: inherit;
+    }
+
+    .accordion-content {
+      display: none;
+      flex-direction: column;
+      background-color: var(--theme-bg-color);
+    }
+
+    .accordion-section.open .accordion-content {
+      display: flex;
+    }
+
+    .accordion-content a {
+      padding: 10px 28px;
+      border-top: 1px solid rgba(255,255,255,0.2);
+      font-size: 20px;
+      color: var(--theme-topnav-color);
+      text-decoration: none;
+    }
+
+    .accordion-content a:hover {
+      background-color: rgba(255,255,255,0.15);
+    }
+
+    .clickable-section {
+      background-color: var(--theme-accent-color);
+      color: white;
+      font-weight: 700;
+      font-size: 24px;
+      padding: 14px;
+      text-align: center;
+      cursor: pointer;
+      border-bottom: 1px solid #b22731;
     }
 
     /* ===== VIDEO CONTENT ===== */
     .container {
+      width: 100%;
+      max-width: 500px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      width: 100%;
-      max-width: 500px;
     }
 
     .container h1 {
-      font-size: 32px; /* MATCHES JOKES PAGE HEADING SCALE */
+      font-size: 32px;
       margin-bottom: 20px;
     }
 
     #generate-button {
       font-family: inherit;
-      font-size: 24px; /* MATCHES CLICKABLE SECTION SIZE */
+      font-size: 24px;
       font-weight: 700;
       padding: 14px 28px;
       background-color: var(--theme-accent-color);
@@ -103,8 +184,8 @@
 
     .video-wrapper {
       width: 100%;
-      aspect-ratio: 16 / 9;
       max-width: 1100px;
+      aspect-ratio: 16 / 9;
     }
 
     .video-wrapper iframe {
@@ -113,7 +194,7 @@
       border: none;
     }
 
-    /* ===== FOOTER (MATCHES JOKES) ===== */
+    /* ===== FOOTER ===== */
     footer.site-footer {
       position: fixed;
       bottom: 0;
@@ -128,11 +209,17 @@
       padding: 5px 20px;
       font-size: 20px;
       box-sizing: border-box;
+      z-index: 1000;
     }
 
     #footer-mascot {
       height: 50px;
       cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    #footer-mascot:hover {
+      transform: scale(1.1) rotate(-5deg);
     }
 
     @media (max-width: 768px) {
@@ -144,56 +231,55 @@
 </head>
 
 <body>
+
 <header>
   <div class="topnav">
     <h1><a class="logo" href="index.html">THE Randoms</a></h1>
-    <span class="menu-icon">&#9776;</span>
+    <span class="menu-icon" tabindex="0">&#9776;</span>
   </div>
 
-  <nav class="topnav-right" role="navigation" aria-label="Main Menu">
-      <div class="accordion-section">
-        <button class="accordion-toggle" aria-expanded="false">Jokes & Fun</button>
-        <div class="accordion-content" hidden>
-          <a href="jokes.html">Jokes</a>
-          <a href="memes.html">Memes</a>
-          <a href="quizzes.html">Quizzes</a>
-          <a href="wouldyourather.html">Would You Rather</a>
-        </div>
+  <nav class="topnav-right">
+    <div class="accordion-section">
+      <button class="accordion-toggle">Jokes & Fun</button>
+      <div class="accordion-content">
+        <a href="jokes.html">Jokes</a>
+        <a href="memes.html">Memes</a>
+        <a href="quizzes.html">Quizzes</a>
+        <a href="wouldyourather.html">Would You Rather</a>
       </div>
+    </div>
 
-      <div class="accordion-section">
-        <button class="accordion-toggle" aria-expanded="false">Knowledge & Facts</button>
-        <div class="accordion-content" hidden>
-          <a href="advice.html">Advice</a>
-          <a href="facts.html">Facts</a>
-          <a href="pages.html">Pages</a>
-          <a href="people.html">People</a>
-          <a href="quotes.html">Quotes</a>
-        </div>
+    <div class="accordion-section">
+      <button class="accordion-toggle">Knowledge & Facts</button>
+      <div class="accordion-content">
+        <a href="advice.html">Advice</a>
+        <a href="facts.html">Facts</a>
+        <a href="pages.html">Pages</a>
+        <a href="people.html">People</a>
+        <a href="quotes.html">Quotes</a>
       </div>
+    </div>
 
-      <div class="accordion-section">
-        <button class="accordion-toggle" aria-expanded="false">Music & Videos</button>
-        <div class="accordion-content" hidden>
-          <a href="songs.html">Songs</a>
-          <a href="videos.html">Videos</a>
-        </div>
+    <div class="accordion-section">
+      <button class="accordion-toggle">Music & Videos</button>
+      <div class="accordion-content">
+        <a href="songs.html">Songs</a>
+        <a href="videos.html">Videos</a>
       </div>
+    </div>
 
-      <div class="accordion-section">
-        <button class="accordion-toggle" aria-expanded="false">Words, Letters & Numbers</button>
-        <div class="accordion-content" hidden>
-          <a href="letters.html">Letters</a>
-          <a href="numbers.html">Numbers</a>
-          <a href="words.html">Words</a>
-        </div>
+    <div class="accordion-section">
+      <button class="accordion-toggle">Words, Letters & Numbers</button>
+      <div class="accordion-content">
+        <a href="letters.html">Letters</a>
+        <a href="numbers.html">Numbers</a>
+        <a href="words.html">Words</a>
       </div>
+    </div>
 
-      <div class="clickable-section" tabindex="0" role="link" title="Go to Randoms Of The Day">
-        Randoms Of The Day
-      </div>
-    </nav>
-  </header>
+    <div class="clickable-section">Randoms Of The Day</div>
+  </nav>
+</header>
 
 <main class="content">
   <div class="container">
@@ -204,14 +290,17 @@
 </main>
 
 <footer class="site-footer">
-  <p>&copy; THE Randoms</p>
+  <p>&copy; <span id="year"></span> THE Randoms</p>
   <a href="randuino.html">
     <img id="footer-mascot" src="img/Mascot.png" alt="Randuino">
   </a>
 </footer>
 
 <script src="videos.js" defer></script>
-<script src="holiday-theme.js" defer></script>
 <script src="accordion.js" defer></script>
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
 </body>
 </html>
