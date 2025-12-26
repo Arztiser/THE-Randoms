@@ -29,6 +29,7 @@
       display: flex;
       flex-direction: column;
       min-height: 100vh;
+      justify-content: flex-start;
     }
 
     main.content {
@@ -78,12 +79,7 @@
       font-family: 'Jersey 10', sans-serif;
     }
 
-    .topnav-right.active {
-      display: flex;
-      opacity: 1;
-      pointer-events: auto;
-    }
-
+    .topnav-right.active { display: flex; opacity: 1; pointer-events: auto; }
     body.menu-open { overflow: hidden; }
 
     .accordion-section { display: flex; flex-direction: column; border-top: 1px solid rgba(255,255,255,0.15); }
@@ -121,7 +117,6 @@
     }
 
     .accordion-content a:hover, .accordion-content a:focus { background-color: rgba(255,255,255,0.15); outline: none; }
-
     .accordion-section.open .accordion-content { display: flex; }
 
     .clickable-section {
@@ -146,19 +141,19 @@
       border-radius: 12px;
       padding: 16px;
       width: 100%;
-      max-width: 900px;
+      max-width: 800px;
       margin-top: 20px;
       background-color: #fff;
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
+      justify-content: center;
     }
 
     .meme-container img {
-      width: 100%;
-      height: auto;
+      max-width: 100%;
+      max-height: 60vh;
       object-fit: contain;
       border-radius: 8px;
       margin-bottom: 16px;
