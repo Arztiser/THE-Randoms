@@ -159,31 +159,49 @@
 
 /* Mobile fix */
 @media (max-width: 768px) {
-  body {
+  html, body {
     margin: 0;
     padding: 0;
-    overflow-x: hidden; /* prevent horizontal scrolling */
+    overflow: hidden; /* prevents horizontal and vertical scroll */
+    height: 100vh;    /* full viewport height */
+    display: flex;
+    justify-content: center;
+    align-items: center; /* vertically centers content */
+  }
+
+  main.content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* centers meme container */
+    flex-direction: column;
+    text-align: center;
+    box-sizing: border-box;
   }
 
   .meme-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 80vw;        
-    max-width: 100vw;    
-    box-sizing: border-box; 
+    width: 90vw;
+    max-width: 100vw;
+    max-height: 90vh;  /* ensures container fits vertically */
+    box-sizing: border-box;
     padding: 0;
+    margin: 0 auto;     /* horizontally center */
+  }
 
   .meme-container img {
-    width: 80%;           /* fill container */
-    height: auto;          
-    max-height: 70vh;      
+    width: 100%;
+    height: auto;
+    max-height: 80vh;  /* ensures image doesn’t overflow vertically */
     display: block;
-    border-radius: 0;      
+    border-radius: 0;
   }
 
   .generate-btn {
-    width: 100%;           
+    width: 100%;
     box-sizing: border-box;
   }
 }
