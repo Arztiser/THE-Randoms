@@ -203,11 +203,18 @@
 
     /* ===== MOBILE REFINEMENT ===== */
     @media (max-width: 768px) {
-      .meme-container img {
-        max-width: calc(100vw - 16px);
-        max-height: 65vh;
-      }
-    }
+  .meme-container {
+    max-width: calc(100vw - 16px); /* viewport minus breathing room */
+    box-sizing: border-box;
+  }
+
+  .meme-container img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+}
   </style>
 </head>
 
