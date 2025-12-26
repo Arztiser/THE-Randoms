@@ -20,7 +20,6 @@
       font-size: 28px;
       background-color: #fff;
       color: #000;
-      overflow-x: hidden; /* Prevent horizontal scroll */
     }
 
     body {
@@ -55,13 +54,7 @@
 
     .topnav h1 { margin: 0; font-size: 24px; color: var(--theme-topnav-color); }
     .topnav .logo { color: var(--theme-topnav-color); text-decoration: none; }
-
-    .menu-icon {
-      font-size: 30px;
-      color: var(--theme-topnav-color);
-      cursor: pointer;
-      user-select: none;
-    }
+    .menu-icon { font-size: 30px; color: var(--theme-topnav-color); cursor: pointer; user-select: none; }
 
     .topnav-right {
       display: none;
@@ -105,7 +98,6 @@
       max-height: 50vh;
       font-family: 'Jersey 10', sans-serif;
     }
-
     .accordion-content a {
       padding: 10px 28px;
       border-top: 1px solid rgba(255,255,255,0.2);
@@ -113,7 +105,6 @@
       color: var(--theme-topnav-color);
       text-decoration: none;
     }
-
     .accordion-content a:hover, .accordion-content a:focus { background-color: rgba(255,255,255,0.15); outline: none; }
     .accordion-section.open .accordion-content { display: flex; }
 
@@ -134,40 +125,36 @@
 
     /* ===== MEME CONTAINER ===== */
     .meme-container {
-      display: inline-flex;       /* Hug content width */
-      flex-direction: column;
-      align-items: center;
       border: 4px solid var(--theme-accent-color);
       border-radius: 12px;
-      padding: 8px;
+      padding: 0;
+      display: inline-block;
       background-color: #fff;
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      max-width: 95vw;           /* Ensure it fits on mobile */
-      box-sizing: border-box;
+      text-align: center;
     }
 
     .meme-container img {
-      max-width: 100%;           /* Scale down on mobile */
-      height: auto;
       display: block;
-      border-radius: 8px;
+      max-width: 90vw;
+      max-height: 70vh;
+      width: auto;
+      height: auto;
     }
 
     .generate-btn {
       font-family: 'Jersey 10', sans-serif;
       font-weight: 700;
-      width: 100%;               /* Match image width */
       background-color: var(--theme-accent-color);
       color: white;
       border: none;
       font-size: 20px;
-      padding: 10px;
+      padding: 10px 0;
       cursor: pointer;
-      border-radius: 8px;
-      margin-top: 8px;
-      transition: background-color 0.3s ease, transform 0.2s ease;
+      border-radius: 0 0 8px 8px;
+      width: 100%;
+      box-sizing: border-box;
     }
-
     .generate-btn:hover { background-color: #c52430; transform: scale(1.05); }
 
     /* ===== FOOTER ===== */
@@ -184,7 +171,6 @@
       margin-top: 40px;
       width: 100%;
     }
-
     #footer-mascot { height: 50px; cursor: pointer; transition: transform 0.2s ease; }
     #footer-mascot:hover { transform: scale(1.1) rotate(-5deg); }
   </style>
