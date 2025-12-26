@@ -1,256 +1,88 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#E82B38" />
-  <meta name="description" content="Generate and view random memes on THE Randoms." />
-  <title>Memes - THE Randoms</title>
+// memes.js
+const memeImg = document.getElementById("meme-img");
+const generateBtn = document.getElementById("generate-meme");
+const memeContainer = document.querySelector(".meme-container");
 
-  <link rel="icon" type="image/png" href="./img/pfp.png" />
-  <link rel="manifest" href="/manifest.json" />
-  <link rel="apple-touch-icon" sizes="192x192" href="/img/prfp.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet" />
+async function getRandomMeme() {
+  try {
+    const subreddits = ["memes", "dankmemes", "funny"];
+    const randomSub = subreddits[Math.floor(Math.random() * subreddits.length)];
+    const url = `https://www.reddit.com/r/${randomSub}/hot.json?limit=100`;
 
-  <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      font-family: 'Jersey 10', sans-serif;
-      font-size: 28px;
-      background-color: #fff;
-      color: #000;
-    }
+    // Use CORS proxy
+    const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(url)}`;
+    const response = await fetch(proxyUrl);
+    const data = await response.json();
 
-    body {
-      --theme-bg-color: #333;
-      --theme-topnav-color: #f2f2f2;
-      --theme-accent-color: #E82B38;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
+    const memes = data.data.children.filter(post =>
+      post.data.url &&
+      (post.data.url.endsWith(".jpg") ||
+       post.data.url.endsWith(".png") ||
+       post.data.url.endsWith(".jpeg"))
+    );
 
-    main.content {
-      flex: 1 0 auto;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      width: 100%;
-    }
+    if (!memes.length) throw new Error("No memes found");
 
-    /* ===== TOP NAV ===== */
-    .topnav {
-      background-color: var(--theme-bg-color);
-      color: var(--theme-topnav-color);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 16px;
-      height: 60px;
-    }
+    const randomMeme = memes[Math.floor(Math.random() * memes.length)].data;
+    const imgURL = randomMeme.url;
 
-    .topnav h1 { margin: 0; font-size: 24px; color: var(--theme-topnav-color); }
-    .topnav .logo { color: var(--theme-topnav-color); text-decoration: none; }
-    .menu-icon { font-size: 30px; color: var(--theme-topnav-color); cursor: pointer; user-select: none; }
+    // Load image to get natural dimensions
+    const img = new Image();
+    img.src = imgURL;
+    img.onload = () => {
+      let displayWidth = img.naturalWidth;
+      let displayHeight = img.naturalHeight;
 
-    .topnav-right {
-      display: none;
-      position: fixed;
-      top: 60px; left: 0; right: 0; bottom: 0;
-      background-color: var(--theme-bg-color);
-      overflow-y: auto;
-      flex-direction: column;
-      z-index: 999;
-      transition: opacity 0.3s ease;
-      opacity: 0;
-      pointer-events: none;
-      padding-bottom: 60px;
-      box-sizing: border-box;
-      font-family: 'Jersey 10', sans-serif;
-    }
+      // Max dimensions relative to viewport
+      const maxHeight = window.innerHeight * 0.7;
+      const maxWidth = window.innerWidth * 0.9;
 
-    .topnav-right.active { display: flex; opacity: 1; pointer-events: auto; }
-    body.menu-open { overflow: hidden; }
+      const heightRatio = displayHeight / maxHeight;
+      const widthRatio = displayWidth / maxWidth;
+      const maxRatio = Math.max(heightRatio, widthRatio, 1);
 
-    .accordion-section { display: flex; flex-direction: column; border-top: 1px solid rgba(255,255,255,0.15); }
-    .accordion-toggle {
-      background: none;
-      color: var(--theme-topnav-color);
-      padding: 14px;
-      text-align: left;
-      font-size: 24px;
-      border: none;
-      cursor: pointer;
-      width: 100%;
-      font-family: 'Jersey 10', sans-serif;
-      transition: background-color 0.3s ease;
-    }
-    .accordion-toggle:hover, .accordion-toggle:focus { background-color: rgba(255,255,255,0.1); outline: none; }
+      displayWidth = displayWidth / maxRatio;
+      displayHeight = displayHeight / maxRatio;
 
-    .accordion-content {
-      display: none;
-      flex-direction: column;
-      background-color: var(--theme-bg-color);
-      overflow-y: auto;
-      max-height: 50vh;
-      font-family: 'Jersey 10', sans-serif;
-    }
-    .accordion-content a {
-      padding: 10px 28px;
-      border-top: 1px solid rgba(255,255,255,0.2);
-      font-size: 20px;
-      color: var(--theme-topnav-color);
-      text-decoration: none;
-    }
-    .accordion-content a:hover, .accordion-content a:focus { background-color: rgba(255,255,255,0.15); outline: none; }
-    .accordion-section.open .accordion-content { display: flex; }
+      // Set image size
+      memeImg.src = imgURL;
+      memeImg.alt = randomMeme.title;
+      memeImg.style.width = `${displayWidth}px`;
+      memeImg.style.height = `${displayHeight}px`;
 
-    .clickable-section {
-      background-color: var(--theme-accent-color);
-      color: white;
-      font-weight: 700;
-      font-size: 24px;
-      padding: 14px;
-      cursor: pointer;
-      text-align: center;
-      border-bottom: 1px solid #b22731;
-      transition: background-color 0.3s ease;
-      margin-bottom: 4px;
-      font-family: 'Jersey 10', sans-serif;
-    }
-    .clickable-section:hover, .clickable-section:focus { background-color: #c52430; outline: none; }
+      // Container wraps exactly around image + button
+      memeContainer.style.width = `${displayWidth}px`;
+      memeContainer.style.height = `${displayHeight + generateBtn.offsetHeight}px`;
+    };
+  } catch (err) {
+    console.error("Error fetching meme:", err);
+    memeImg.src = "";
+    memeImg.alt = "Failed to load meme. Try again!";
+    memeContainer.style.width = "auto";
+    memeContainer.style.height = "auto";
+  }
+}
 
-    /* ===== MEME CONTAINER ===== */
-    .meme-container {
-      border: 4px solid var(--theme-accent-color);
-      border-radius: 12px;
-      padding: 0;
-      display: inline-block;
-      background-color: #fff;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      text-align: center;
-    }
+// Generate meme on button click
+generateBtn.addEventListener("click", getRandomMeme);
 
-    .meme-container img {
-      display: block;
-      max-width: 90vw;
-      max-height: 70vh;
-      width: auto;
-      height: auto;
-    }
+// Generate initial meme
+getRandomMeme();
 
-    .generate-btn {
-      font-family: 'Jersey 10', sans-serif;
-      font-weight: 700;
-      background-color: var(--theme-accent-color);
-      color: white;
-      border: none;
-      font-size: 20px;
-      padding: 10px 0;
-      cursor: pointer;
-      border-radius: 0 0 8px 8px;
-      width: 100%;
-      box-sizing: border-box;
-    }
-    .generate-btn:hover { background-color: #c52430; transform: scale(1.05); }
+// Adjust container on window resize
+window.addEventListener("resize", () => {
+  if (memeImg.src) {
+    const displayWidth = memeImg.naturalWidth;
+    const displayHeight = memeImg.naturalHeight;
+    const maxHeight = window.innerHeight * 0.7;
+    const maxWidth = window.innerWidth * 0.9;
+    const heightRatio = displayHeight / maxHeight;
+    const widthRatio = displayWidth / maxWidth;
+    const maxRatio = Math.max(heightRatio, widthRatio, 1);
 
-    /* ===== FOOTER ===== */
-    footer.site-footer {
-      background-color: var(--theme-bg-color);
-      color: var(--theme-topnav-color);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 5px 20px;
-      font-size: 20px;
-      box-sizing: border-box;
-      position: relative;
-      margin-top: 40px;
-      width: 100%;
-    }
-    #footer-mascot { height: 50px; cursor: pointer; transition: transform 0.2s ease; }
-    #footer-mascot:hover { transform: scale(1.1) rotate(-5deg); }
-  </style>
-</head>
-
-<body>
-  <header>
-    <div class="topnav">
-      <h1><a class="logo" href="index.html">THE Randoms</a></h1>
-      <span class="menu-icon" tabindex="0" role="button" aria-label="Toggle menu">&#9776;</span>
-    </div>
-
-    <nav class="topnav-right">
-      <div class="accordion-section">
-        <button class="accordion-toggle">Jokes & Fun</button>
-        <div class="accordion-content">
-          <a href="jokes.html">Jokes</a>
-          <a href="memes.html">Memes</a>
-          <a href="quizzes.html">Quizzes</a>
-          <a href="wouldyourather.html">Would You Rather</a>
-        </div>
-      </div>
-
-      <div class="accordion-section">
-        <button class="accordion-toggle">Knowledge & Facts</button>
-        <div class="accordion-content">
-          <a href="advice.html">Advice</a>
-          <a href="facts.html">Facts</a>
-          <a href="pages.html">Pages</a>
-          <a href="people.html">People</a>
-          <a href="quotes.html">Quotes</a>
-        </div>
-      </div>
-
-      <div class="accordion-section">
-        <button class="accordion-toggle">Music & Videos</button>
-        <div class="accordion-content">
-          <a href="songs.html">Songs</a>
-          <a href="videos.html">Videos</a>
-        </div>
-      </div>
-
-      <div class="accordion-section">
-        <button class="accordion-toggle">Words, Letters & Numbers</button>
-        <div class="accordion-content">
-          <a href="letters.html">Letters</a>
-          <a href="numbers.html">Numbers</a>
-          <a href="words.html">Words</a>
-        </div>
-      </div>
-
-      <div class="clickable-section" tabindex="0">Randoms Of The Day</div>
-    </nav>
-  </header>
-
-  <main class="content">
-    <h1 style="color: black; margin-bottom: 20px;">Random Memes</h1>
-    <div class="meme-container">
-      <img id="meme-img" src="" alt="Random Meme" />
-      <button id="generate-meme" class="generate-btn">Generate Meme</button>
-    </div>
-  </main>
-
-  <footer class="site-footer">
-    <div class="footer-left">
-      <p>&copy; <span id="year"></span> THE Randoms</p>
-    </div>
-    <div class="footer-right">
-      <a href="randuino.html">
-        <img id="footer-mascot" src="img/Mascot.png" alt="Randuino">
-      </a>
-    </div>
-  </footer>
-
-  <!-- JS -->
-  <script src="memes.js" defer></script>
-  <script src="accordion.js" defer></script>
-  <script src="holiday-theme.js" defer></script>
-  <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
-</body>
-</html>
+    memeImg.style.width = `${displayWidth / maxRatio}px`;
+    memeImg.style.height = `${displayHeight / maxRatio}px`;
+    memeContainer.style.width = `${displayWidth / maxRatio}px`;
+    memeContainer.style.height = `${displayHeight / maxRatio + generateBtn.offsetHeight}px`;
+  }
+});
