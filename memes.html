@@ -53,7 +53,7 @@
       height: 60px;
     }
 
-    .topnav h1 { margin: 0; font-size: 24px; color: var(--theme-topnav-color); }
+    .topnav h1 { margin: 0; font-size: 24px; line-height: 60px; color: var(--theme-topnav-color); }
     .topnav .logo { color: var(--theme-topnav-color); text-decoration: none; }
     .menu-icon { font-size: 30px; color: var(--theme-topnav-color); cursor: pointer; user-select: none; }
 
@@ -75,6 +75,11 @@
 
     .topnav-right.active { display: flex; opacity: 1; pointer-events: auto; }
     body.menu-open { overflow: hidden; }
+
+    .topnav {
+  height: 60px;
+  padding: 0 16px;
+}
 
     .accordion-section { display: flex; flex-direction: column; border-top: 1px solid rgba(255,255,255,0.15); }
     .accordion-toggle {
