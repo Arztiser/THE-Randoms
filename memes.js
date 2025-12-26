@@ -1,14 +1,13 @@
 window.addEventListener("DOMContentLoaded", () => {
   const memeImg = document.getElementById('meme-img');
   const generateBtn = document.getElementById('generate-meme');
+  const container = document.querySelector('.meme-container');
 
   async function getRandomMeme() {
     try {
       const subreddits = ["memes", "dankmemes", "funny"];
       const randomSub = subreddits[Math.floor(Math.random() * subreddits.length)];
       const url = `https://www.reddit.com/r/${randomSub}/hot.json?limit=100`;
-
-      // Use CORS proxy
       const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(url)}`;
       const response = await fetch(proxyUrl);
       const data = await response.json();
@@ -27,12 +26,8 @@ window.addEventListener("DOMContentLoaded", () => {
       memeImg.src = randomMeme.url;
       memeImg.alt = randomMeme.title;
 
-      // Remove forced cropping and fixed height
-      memeImg.style.objectFit = "contain"; // ensures entire meme is visible
-      memeImg.style.width = "100%";
-      memeImg.style.height = "auto"; // allow height to scale with image
-      memeImg.style.maxHeight = "70vh"; // reasonable max height on desktops
-      memeImg.style.borderRadius = "8px";
+      // Make container automatically fit meme
+      container.style.height = "auto";
 
     } catch (err) {
       console.error("Error fetching meme:", err);
@@ -41,7 +36,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Generate meme on page load
+  // Load first meme on page load
   getRandomMeme();
 
   // Generate meme on button click
