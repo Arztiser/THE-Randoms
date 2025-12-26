@@ -1,54 +1,79 @@
-const apiKey = 'AIzaSyA7B_YMNe5T-rrVRuEbcZKcY9w50EWCeVk'; // Replace with your YouTube API key
-    const queries = ["funny", "football", "memes", "sports", "cooking", "technology", "news", "baseball", "horror", "video games", "reviews", "random", "reaction", "cartoon", "space", "history", "science", "gaming", "humor", "animations", "basketball", "baseball", "chess", "sandbox", "facts", "south park", "family guy", "the simpsons", "american dad", "futurama", "hockey", "games", "religion", "math", "ai", "coding", "minecraft", "stardew valley", "terraria", "danganronpa", "ace attorney", "devlog", "reaction", "college football"];
+const apiKey = 'AIzaSyA7B_YMNe5T-rrVRuEbcZKcY9w50EWCeVk';
 
-    let lastRequestTime = 0;
-    let videoCaches = {};
+const queries = [
+  "funny","football","memes","sports","cooking","technology","news",
+  "baseball","horror","video games","reviews","reaction","space",
+  "history","science","gaming","animations","basketball","chess",
+  "facts","south park","family guy","futurama","minecraft",
+  "stardew valley","terraria","devlog","college football"
+];
 
-    function getRandomYouTubeVideo() {
-      const currentTime = Date.now();
+let lastRequestTime = 0;
+let videoCaches = {};
 
-      if (currentTime - lastRequestTime < 5000) {
-        alert('Nuh Uh, Not Getting Away With That! Just Wait A Couple Of Seconds.');
+function getRandomYouTubeVideo() {
+  const now = Date.now();
+  if (now - lastRequestTime < 5000) {
+    alert("Relax, the YouTube gods need a moment 😤");
+    return;
+  }
+  lastRequestTime = now;
+
+  const query = queries[Math.floor(Math.random() * queries.length)];
+
+  if (!videoCaches[query] || videoCaches[query].length === 0) {
+    fetchVideos(query);
+  } else {
+    displayRandomVideo(query);
+  }
+}
+
+function fetchVideos(query) {
+  const url =
+    `https://www.googleapis.com/youtube/v3/search?` +
+    `part=snippet&type=video&maxResults=50` +
+    `&safeSearch=moderate` +
+    `&q=${encodeURIComponent(query)}` +
+    `&key=${apiKey}`;
+
+  fetch(url)
+    .then(res => res.json())
+    .then(data => {
+      if (!data.items || data.items.length === 0) {
+        document.getElementById('video-container').innerHTML =
+          '<p>No videos found.</p>';
         return;
       }
+      videoCaches[query] = data.items.map(v => v.id.videoId);
+      displayRandomVideo(query);
+    })
+    .catch(err => {
+      console.error(err);
+      document.getElementById('video-container').innerHTML =
+        '<p>Error loading video.</p>';
+    });
+}
 
-      lastRequestTime = currentTime;
+function displayRandomVideo(query) {
+  const index = Math.floor(Math.random() * videoCaches[query].length);
+  const videoId = videoCaches[query].splice(index, 1)[0];
 
-      const randomQuery = queries[Math.floor(Math.random() * queries.length)];
+  const embedUrl =
+    `https://www.youtube.com/embed/${videoId}` +
+    `?rel=0&modestbranding=1&playsinline=1` +
+    `&enablejsapi=1&origin=${location.origin}`;
 
-      if (!videoCaches[randomQuery] || videoCaches[randomQuery].length === 0) {
-        fetchVideos(randomQuery);
-      } else {
-        displayRandomVideo(randomQuery);
-      }
-    }
+  document.getElementById('video-container').innerHTML = `
+    <div class="video-wrapper">
+      <iframe
+        src="${embedUrl}"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </div>
+  `;
+}
 
-    function fetchVideos(query) {
-      fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&q=${query}&key=${apiKey}&type=video`)
-        .then(response => response.json())
-        .then(data => {
-          if (data.items && data.items.length > 0) {
-            videoCaches[query] = data.items.map(item => item.id.videoId);
-            displayRandomVideo(query);
-          } else {
-            document.getElementById('video-container').innerHTML = '<p>No videos found.</p>';
-          }
-        })
-        .catch(error => {
-          console.error('Error fetching YouTube data:', error);
-          document.getElementById('video-container').innerHTML = '<p>Error loading video. Please try again later.</p>';
-        });
-    }
-
-    function displayRandomVideo(query) {
-      const randomIndex = Math.floor(Math.random() * videoCaches[query].length);
-      const videoId = videoCaches[query][randomIndex];
-      videoCaches[query].splice(randomIndex, 1);
-      const videoUrl = `https://www.youtube.com/embed/${videoId}`;
-      document.getElementById('video-container').innerHTML = `
-        <iframe width="360" height="315" src="${videoUrl}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-      `;
-    }
-
-    window.onload = getRandomYouTubeVideo;
-    document.getElementById('generate-button').addEventListener('click', getRandomYouTubeVideo);
+window.onload = getRandomYouTubeVideo;
+document.getElementById('generate-button')
+  .addEventListener('click', getRandomYouTubeVideo);
