@@ -33,8 +33,9 @@ async function getRandomMeme() {
       let displayWidth = img.naturalWidth;
       let displayHeight = img.naturalHeight;
 
+      // Max dimensions
       const maxHeight = window.innerHeight * 0.7;
-      const maxWidth = window.innerWidth * 0.9;
+      const maxWidth = window.innerWidth * 0.95;
 
       const heightRatio = displayHeight / maxHeight;
       const widthRatio = displayWidth / maxWidth;
@@ -43,13 +44,16 @@ async function getRandomMeme() {
       displayWidth = displayWidth / maxRatio;
       displayHeight = displayHeight / maxRatio;
 
+      // Apply sizes
       memeImg.src = imgURL;
       memeImg.alt = randomMeme.title;
       memeImg.style.width = `${displayWidth}px`;
       memeImg.style.height = `${displayHeight}px`;
 
-      memeContainer.style.width = `${displayWidth + 32}px`; // + padding
-      memeContainer.style.height = `${displayHeight + 64}px`; // + padding + button spacing
+      // Container wraps image + button perfectly
+      memeContainer.style.width = `${displayWidth}px`;
+      memeContainer.style.height = "auto"; // height auto so button fits below
+      generateBtn.style.width = `${displayWidth}px`;
     };
   } catch (err) {
     console.error("Error fetching meme:", err);
@@ -57,6 +61,7 @@ async function getRandomMeme() {
     memeImg.alt = "Failed to load meme. Try again!";
     memeContainer.style.width = "auto";
     memeContainer.style.height = "auto";
+    generateBtn.style.width = "100%";
   }
 }
 
@@ -65,3 +70,8 @@ generateBtn.addEventListener("click", getRandomMeme);
 
 // Generate initial meme
 getRandomMeme();
+
+// Resize dynamically on window resize
+window.addEventListener("resize", () => {
+  if (memeImg.src) getRandomMeme();
+});
