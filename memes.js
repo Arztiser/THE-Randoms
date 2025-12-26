@@ -1,7 +1,6 @@
 window.addEventListener("DOMContentLoaded", () => {
   const memeImg = document.getElementById('meme-img');
   const generateBtn = document.getElementById('generate-meme');
-  const container = document.querySelector('.meme-container');
 
   async function getRandomMeme() {
     try {
@@ -24,13 +23,15 @@ window.addEventListener("DOMContentLoaded", () => {
       if (!memes.length) throw new Error("No memes found");
 
       const randomMeme = memes[Math.floor(Math.random() * memes.length)].data;
+
       memeImg.src = randomMeme.url;
       memeImg.alt = randomMeme.title;
 
-      // Apply exact container sizing for consistency
-      memeImg.style.objectFit = "cover"; // crops if needed, keeps aspect ratio
+      // Remove forced cropping and fixed height
+      memeImg.style.objectFit = "contain"; // ensures entire meme is visible
       memeImg.style.width = "100%";
-      memeImg.style.height = "300px"; // exact fixed height (matches container design)
+      memeImg.style.height = "auto"; // allow height to scale with image
+      memeImg.style.maxHeight = "70vh"; // reasonable max height on desktops
       memeImg.style.borderRadius = "8px";
 
     } catch (err) {
