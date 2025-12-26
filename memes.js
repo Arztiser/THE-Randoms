@@ -28,30 +28,33 @@ async function getRandomMeme() {
     const img = new Image();
     img.src = imgURL;
     img.onload = () => {
+      // Determine available width
+      const maxContainerWidth = Math.min(window.innerWidth - 20, 900); // 10px margin on each side
+      const maxContainerHeight = window.innerHeight * 0.7;
+
       let displayWidth = img.naturalWidth;
       let displayHeight = img.naturalHeight;
 
-      const isMobile = window.innerWidth <= 768;
-      let maxWidth = isMobile ? window.innerWidth - 20 : window.innerWidth * 0.9; // 20px padding on mobile
-      let maxHeight = window.innerHeight * 0.7;
-
-      // Scale proportionally to fit max width and max height
-      const widthRatio = displayWidth / maxWidth;
-      const heightRatio = displayHeight / maxHeight;
+      // Scale proportionally
+      const widthRatio = displayWidth / maxContainerWidth;
+      const heightRatio = displayHeight / maxContainerHeight;
       const maxRatio = Math.max(widthRatio, heightRatio, 1);
 
-      displayWidth = displayWidth / maxRatio;
-      displayHeight = displayHeight / maxRatio;
+      displayWidth /= maxRatio;
+      displayHeight /= maxRatio;
 
+      // Apply image size
       memeImg.src = imgURL;
       memeImg.alt = randomMeme.title;
       memeImg.style.width = `${displayWidth}px`;
       memeImg.style.height = `${displayHeight}px`;
 
-      // Container wraps exactly around the image + button
-      memeContainer.style.width = `${displayWidth + 32}px`; // 16px padding each side
-      memeContainer.style.height = "auto";
+      // Container fits exactly around the image + padding
+      const containerPadding = 32; // 16px each side
+      memeContainer.style.width = `${displayWidth + containerPadding}px`;
+      memeContainer.style.height = "auto"; // height wraps image + button
 
+      // Button width matches image
       generateBtn.style.width = `${displayWidth}px`;
     };
   } catch (err) {
@@ -64,9 +67,8 @@ async function getRandomMeme() {
   }
 }
 
+// Generate meme on button click
 generateBtn.addEventListener("click", getRandomMeme);
-getRandomMeme();
 
-window.addEventListener("resize", () => {
-  if (memeImg.src) getRandomMeme();
-});
+// Generate first meme
+getRandomMeme();
