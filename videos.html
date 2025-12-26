@@ -11,13 +11,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 
   <style>
-    /* ===== BASE ===== */
     html, body {
       height: 100%;
       margin: 0;
       overflow-x: hidden;
       font-family: 'Jersey 10', sans-serif;
-      font-size: 28px;
+      font-size: 28px; /* SAME AS JOKES */
       background-color: #fff;
       color: #000;
     }
@@ -31,24 +30,6 @@
       min-height: 100vh;
     }
 
-    /* ===== TYPOGRAPHY SCALE ===== */
-    h1 { font-size: 1.4em; }
-    h2 { font-size: 1.2em; }
-
-    button,
-    .clickable-section {
-      font-size: 1.1em;
-    }
-
-    .accordion-toggle {
-      font-size: 1.1em;
-    }
-
-    .accordion-content a {
-      font-size: 1em;
-    }
-
-    /* ===== MAIN CONTENT ===== */
     main.content {
       flex: 1 0 auto;
       padding: 20px;
@@ -59,16 +40,7 @@
       text-align: center;
     }
 
-    .container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 100%;
-      max-width: 500px;
-      margin: 0 auto;
-    }
-
-    /* ===== TOP NAV ===== */
+    /* ===== TOP NAV (UNCHANGED) ===== */
     .topnav {
       background-color: var(--theme-bg-color);
       color: var(--theme-topnav-color);
@@ -81,7 +53,8 @@
 
     .topnav h1 {
       margin: 0;
-      font-size: 1em;
+      font-size: 24px;
+      color: var(--theme-topnav-color);
     }
 
     .topnav .logo {
@@ -90,98 +63,48 @@
     }
 
     .menu-icon {
-      font-size: 1.2em;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    /* ===== MOBILE MENU ===== */
-    .topnav-right {
-      display: none;
-      position: fixed;
-      top: 60px;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: var(--theme-bg-color);
-      overflow-y: auto;
-      flex-direction: column;
-      z-index: 999;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-      padding-bottom: 60px;
-    }
-
-    .topnav-right.active {
-      display: flex;
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    body.menu-open {
-      overflow: hidden;
-    }
-
-    .accordion-section {
-      border-top: 1px solid rgba(255,255,255,0.15);
-    }
-
-    .accordion-toggle {
-      background: none;
+      font-size: 30px;
       color: var(--theme-topnav-color);
-      padding: 14px;
-      text-align: left;
-      border: none;
+      cursor: pointer;
+    }
+
+    /* ===== VIDEO CONTENT ===== */
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       width: 100%;
-      cursor: pointer;
+      max-width: 500px;
+    }
+
+    .container h1 {
+      font-size: 32px; /* MATCHES JOKES PAGE HEADING SCALE */
+      margin-bottom: 20px;
+    }
+
+    #generate-button {
       font-family: inherit;
-    }
-
-    .accordion-content {
-      display: none;
-      flex-direction: column;
-      background-color: var(--theme-bg-color);
-    }
-
-    .accordion-content a {
-      padding: 10px 28px;
-      border-top: 1px solid rgba(255,255,255,0.2);
-      color: var(--theme-topnav-color);
-      text-decoration: none;
-    }
-
-    .accordion-section.open .accordion-content {
-      display: flex;
-    }
-
-    .clickable-section {
+      font-size: 24px; /* MATCHES CLICKABLE SECTION SIZE */
+      font-weight: 700;
+      padding: 14px 28px;
       background-color: var(--theme-accent-color);
       color: white;
-      font-weight: 700;
-      padding: 14px;
+      border: none;
+      border-radius: 10px;
       cursor: pointer;
-      text-align: center;
-      border-bottom: 1px solid #b22731;
+      margin-bottom: 20px;
     }
 
-    /* ===== VIDEO ===== */
     #video-container {
-      margin-top: 20px;
       width: 100%;
+      display: flex;
+      justify-content: center;
     }
 
     .video-wrapper {
       width: 100%;
       aspect-ratio: 16 / 9;
       max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    @media (min-width: 768px) {
-      .video-wrapper {
-        aspect-ratio: 16 / 10;
-      }
     }
 
     .video-wrapper iframe {
@@ -190,28 +113,21 @@
       border: none;
     }
 
-    #generate-button {
-      margin-top: 15px;
-      padding: 14px 26px;
-      font-family: inherit;
-      font-size: 1.05em;
-      font-weight: 700;
-      background-color: var(--theme-accent-color);
-      color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-
-    /* ===== FOOTER ===== */
+    /* ===== FOOTER (MATCHES JOKES) ===== */
     footer.site-footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
       background-color: var(--theme-bg-color);
       color: var(--theme-topnav-color);
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 5px 20px;
-      font-size: 0.9em;
+      font-size: 20px;
+      box-sizing: border-box;
     }
 
     #footer-mascot {
@@ -219,19 +135,9 @@
       cursor: pointer;
     }
 
-    /* ===== MOBILE BOOST ===== */
     @media (max-width: 768px) {
-      html, body {
-        font-size: 30px;
-      }
-
-      h1 {
-        font-size: 1.5em;
-      }
-
-      button,
-      .clickable-section {
-        font-size: 1.15em;
+      main.content {
+        padding-bottom: 70px;
       }
     }
   </style>
@@ -243,39 +149,6 @@
     <h1><a class="logo" href="index.html">THE Randoms</a></h1>
     <span class="menu-icon">&#9776;</span>
   </div>
-
-  <nav class="topnav-right">
-    <div class="accordion-section">
-      <button class="accordion-toggle">Jokes & Fun</button>
-      <div class="accordion-content">
-        <a href="jokes.html">Jokes</a>
-        <a href="memes.html">Memes</a>
-        <a href="quizzes.html">Quizzes</a>
-        <a href="wouldyourather.html">Would You Rather</a>
-      </div>
-    </div>
-
-    <div class="accordion-section">
-      <button class="accordion-toggle">Knowledge & Facts</button>
-      <div class="accordion-content">
-        <a href="advice.html">Advice</a>
-        <a href="facts.html">Facts</a>
-        <a href="pages.html">Pages</a>
-        <a href="people.html">People</a>
-        <a href="quotes.html">Quotes</a>
-      </div>
-    </div>
-
-    <div class="accordion-section">
-      <button class="accordion-toggle">Music & Videos</button>
-      <div class="accordion-content">
-        <a href="songs.html">Songs</a>
-        <a href="videos.html">Videos</a>
-      </div>
-    </div>
-
-    <div class="clickable-section">Randoms Of The Day</div>
-  </nav>
 </header>
 
 <main class="content">
