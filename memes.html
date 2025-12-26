@@ -20,6 +20,7 @@
       font-size: 28px;
       background-color: #fff;
       color: #000;
+      overflow-x: hidden; /* prevent horizontal scroll */
     }
 
     body {
@@ -29,7 +30,6 @@
       display: flex;
       flex-direction: column;
       min-height: 100vh;
-      overflow-x: hidden; /* prevent horizontal scroll */
     }
 
     main.content {
@@ -142,22 +142,17 @@
       border: 4px solid var(--theme-accent-color);
       border-radius: 12px;
       padding: 16px;
-      width: 95%;
-      max-width: 500px; /* smaller max-width to prevent horizontal scroll */
-      margin-top: 20px;
       background-color: #fff;
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      box-sizing: border-box;
+      display: inline-block; /* shrink to fit image */
+      text-align: center;
     }
 
     .meme-container img {
-      width: 100%;
+      display: block;
+      width: auto;   /* natural width */
+      max-width: 100%; /* do not exceed container / viewport */
       height: auto;
-      object-fit: contain;
       border-radius: 8px;
       margin-bottom: 16px;
     }
@@ -200,9 +195,9 @@
 
     #footer-mascot:hover { transform: scale(1.1) rotate(-5deg); }
 
-    /* ===== MOBILE ADJUSTMENTS ===== */
+    /* ===== MOBILE FIX ===== */
     @media (max-width: 600px) {
-      .meme-container { width: 95%; max-width: 95vw; }
+      .meme-container { width: 90%; } /* reduce horizontal overflow */
     }
   </style>
 </head>
