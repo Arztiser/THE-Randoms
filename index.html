@@ -289,59 +289,8 @@
     </div>
   </footer>
 
-  <script>
-    function toggleMenu() {
-      const menu = document.querySelector('.topnav-right');
-      document.body.classList.toggle('menu-open');
-      menu.classList.toggle('active');
-    }
-
-    document.querySelectorAll('.accordion-toggle').forEach(button => {
-      button.addEventListener('click', () => {
-        const section = button.parentElement;
-        const isOpen = section.classList.contains('open');
-
-        document.querySelectorAll('.accordion-section').forEach(s => {
-          if (s !== section) {
-            s.classList.remove('open');
-            s.querySelector('.accordion-toggle').setAttribute('aria-expanded', 'false');
-            s.querySelector('.accordion-content').hidden = true;
-          }
-        });
-
-        if (!isOpen) {
-          section.classList.add('open');
-          button.setAttribute('aria-expanded', 'true');
-          section.querySelector('.accordion-content').hidden = false;
-        } else {
-          section.classList.remove('open');
-          button.setAttribute('aria-expanded', 'false');
-          section.querySelector('.accordion-content').hidden = true;
-        }
-      });
-    });
-
-    const clickableSection = document.querySelector('.clickable-section');
-    clickableSection.addEventListener('click', () => {
-      window.location.href = 'randomsoftheday.html';
-    });
-    clickableSection.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        clickableSection.click();
-      }
-    });
-
-    document.querySelector('.menu-icon').addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        toggleMenu();
-      }
-    });
-
-    document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
-
+  
+  <script src="accordion.js" defer></script>
   <script src="rainbow-flash.js" defer></script>
   <script src="holiday-theme.js" defer></script>
 </body>
