@@ -20,7 +20,6 @@
       font-size: 28px;
       background-color: #fff;
       color: #000;
-      overflow-x: hidden; /* Prevent horizontal scroll */
     }
 
     body {
@@ -55,13 +54,7 @@
 
     .topnav h1 { margin: 0; font-size: 24px; color: var(--theme-topnav-color); }
     .topnav .logo { color: var(--theme-topnav-color); text-decoration: none; }
-
-    .menu-icon {
-      font-size: 30px;
-      color: var(--theme-topnav-color);
-      cursor: pointer;
-      user-select: none;
-    }
+    .menu-icon { font-size: 30px; color: var(--theme-topnav-color); cursor: pointer; user-select: none; }
 
     .topnav-right {
       display: none;
@@ -83,7 +76,6 @@
     body.menu-open { overflow: hidden; }
 
     .accordion-section { display: flex; flex-direction: column; border-top: 1px solid rgba(255,255,255,0.15); }
-
     .accordion-toggle {
       background: none;
       color: var(--theme-topnav-color);
@@ -96,7 +88,6 @@
       font-family: 'Jersey 10', sans-serif;
       transition: background-color 0.3s ease;
     }
-
     .accordion-toggle:hover, .accordion-toggle:focus { background-color: rgba(255,255,255,0.1); outline: none; }
 
     .accordion-content {
@@ -107,7 +98,6 @@
       max-height: 50vh;
       font-family: 'Jersey 10', sans-serif;
     }
-
     .accordion-content a {
       padding: 10px 28px;
       border-top: 1px solid rgba(255,255,255,0.2);
@@ -115,9 +105,7 @@
       color: var(--theme-topnav-color);
       text-decoration: none;
     }
-
     .accordion-content a:hover, .accordion-content a:focus { background-color: rgba(255,255,255,0.15); outline: none; }
-
     .accordion-section.open .accordion-content { display: flex; }
 
     .clickable-section {
@@ -133,49 +121,41 @@
       margin-bottom: 4px;
       font-family: 'Jersey 10', sans-serif;
     }
-
     .clickable-section:hover, .clickable-section:focus { background-color: #c52430; outline: none; }
 
     /* ===== MEME CONTAINER ===== */
     .meme-container {
-      display: inline-block;               /* Shrinks to content */
       border: 4px solid var(--theme-accent-color);
       border-radius: 12px;
+      padding: 0;
+      display: inline-block;
       background-color: #fff;
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
       text-align: center;
-      padding: 0;                          /* Remove padding for perfect fit */
-      max-width: 95vw;                     /* Mobile safety */
     }
 
     .meme-container img {
-      display: block;                       /* Remove inline spacing */
+      display: block;
+      max-width: 90vw;
+      max-height: 70vh;
       width: auto;
-      max-width: 95vw;                      /* Fit viewport */
       height: auto;
-      border-radius: 8px 8px 0 0;
-      margin: 0;                            /* Remove bottom margin */
     }
 
     .generate-btn {
-      width: 100%;                          /* Matches image width */
-      box-sizing: border-box;
       font-family: 'Jersey 10', sans-serif;
       font-weight: 700;
       background-color: var(--theme-accent-color);
       color: white;
       border: none;
       font-size: 20px;
-      padding: 10px;
+      padding: 10px 0;
       cursor: pointer;
       border-radius: 0 0 8px 8px;
-      transition: background-color 0.3s ease, transform 0.2s ease;
+      width: 100%;
+      box-sizing: border-box;
     }
-
-    .generate-btn:hover {
-      background-color: #c52430;
-      transform: scale(1.05);
-    }
+    .generate-btn:hover { background-color: #c52430; transform: scale(1.05); }
 
     /* ===== FOOTER ===== */
     footer.site-footer {
@@ -191,13 +171,7 @@
       margin-top: 40px;
       width: 100%;
     }
-
-    #footer-mascot {
-      height: 50px;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    }
-
+    #footer-mascot { height: 50px; cursor: pointer; transition: transform 0.2s ease; }
     #footer-mascot:hover { transform: scale(1.1) rotate(-5deg); }
   </style>
 </head>
