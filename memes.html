@@ -20,7 +20,7 @@
       font-size: 28px;
       background-color: #fff;
       color: #000;
-      overflow-x: hidden; /* Prevent horizontal scrolling */
+      overflow-x: hidden; /* Prevent horizontal scroll */
     }
 
     body {
@@ -80,16 +80,10 @@
       font-family: 'Jersey 10', sans-serif;
     }
 
-    .topnav-right.active {
-      display: flex;
-      opacity: 1;
-      pointer-events: auto;
-    }
-
+    .topnav-right.active { display: flex; opacity: 1; pointer-events: auto; }
     body.menu-open { overflow: hidden; }
 
     .accordion-section { display: flex; flex-direction: column; border-top: 1px solid rgba(255,255,255,0.15); }
-
     .accordion-toggle {
       background: none;
       color: var(--theme-topnav-color);
@@ -102,7 +96,6 @@
       font-family: 'Jersey 10', sans-serif;
       transition: background-color 0.3s ease;
     }
-
     .accordion-toggle:hover, .accordion-toggle:focus { background-color: rgba(255,255,255,0.1); outline: none; }
 
     .accordion-content {
@@ -139,30 +132,26 @@
       margin-bottom: 4px;
       font-family: 'Jersey 10', sans-serif;
     }
-
     .clickable-section:hover, .clickable-section:focus { background-color: #c52430; outline: none; }
 
     /* ===== MEME CONTAINER ===== */
     .meme-container {
-      display: inline-block; /* Shrinks to fit the image */
+      display: inline-block; /* Shrinks perfectly around image */
       border: 4px solid var(--theme-accent-color);
       border-radius: 12px;
-      padding: 16px;
+      padding: 0; /* Remove extra padding */
       background-color: #fff;
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
       text-align: center;
-      max-width: 95vw; /* Prevent overflow on mobile */
+      max-width: 95vw; /* Prevent overflow */
     }
 
     .meme-container img {
       display: block;
-      width: auto;
+      width: 100%; /* Image controls container width */
       height: auto;
-      max-width: 90vw; /* Scales to fit viewport */
-      max-height: 80vh;
-      border-radius: 8px;
-      margin-bottom: 16px;
-      transition: all 0.4s ease;
+      max-width: 100%; 
+      border-radius: 8px 8px 0 0;
     }
 
     .generate-btn {
@@ -174,10 +163,11 @@
       font-size: 20px;
       padding: 10px 20px;
       cursor: pointer;
-      border-radius: 8px;
+      border-radius: 0 0 8px 8px;
+      width: 100%; /* Button same width as container */
+      box-sizing: border-box;
       transition: background-color 0.3s ease, transform 0.2s ease;
     }
-
     .generate-btn:hover { background-color: #c52430; transform: scale(1.05); }
 
     /* ===== FOOTER ===== */
@@ -200,8 +190,13 @@
       cursor: pointer;
       transition: transform 0.2s ease;
     }
-
     #footer-mascot:hover { transform: scale(1.1) rotate(-5deg); }
+
+    /* Prevent horizontal scroll on small devices */
+    @media (max-width: 600px) {
+      .meme-container { max-width: 95vw; }
+      .meme-container img { max-width: 100%; }
+    }
   </style>
 </head>
 
@@ -274,7 +269,6 @@
     </div>
   </footer>
 
-  <!-- JS -->
   <script src="memes.js" defer></script>
   <script src="accordion.js" defer></script>
   <script src="holiday-theme.js" defer></script>
