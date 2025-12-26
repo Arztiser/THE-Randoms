@@ -9,6 +9,7 @@ window.addEventListener("DOMContentLoaded", () => {
       const randomSub = subreddits[Math.floor(Math.random() * subreddits.length)];
       const url = `https://www.reddit.com/r/${randomSub}/hot.json?limit=100`;
       const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(url)}`;
+
       const response = await fetch(proxyUrl);
       const data = await response.json();
 
@@ -23,20 +24,27 @@ window.addEventListener("DOMContentLoaded", () => {
 
       const randomMeme = memes[Math.floor(Math.random() * memes.length)].data;
 
-      memeImg.src = randomMeme.url;
-      memeImg.alt = randomMeme.title;
+      // Preload image to get natural dimensions
+      const img = new Image();
+      img.src = randomMeme.url;
+      img.onload = () => {
+        memeImg.src = img.src;
+        memeImg.alt = randomMeme.title;
 
-      // Make container automatically fit meme
-      container.style.height = "auto";
-
+        // Resize container to match image
+        memeImg.style.width = '100%';
+        memeImg.style.height = 'auto';
+        container.style.height = `${img.height}px`;
+      };
     } catch (err) {
       console.error("Error fetching meme:", err);
       memeImg.src = "";
       memeImg.alt = "Failed to load meme. Try again!";
+      container.style.height = 'auto';
     }
   }
 
-  // Load first meme on page load
+  // Generate meme on page load
   getRandomMeme();
 
   // Generate meme on button click
