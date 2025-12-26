@@ -9,7 +9,6 @@ async function getRandomMeme() {
     const randomSub = subreddits[Math.floor(Math.random() * subreddits.length)];
     const url = `https://www.reddit.com/r/${randomSub}/hot.json?limit=100`;
 
-    // Use CORS proxy
     const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(url)}`;
     const response = await fetch(proxyUrl);
     const data = await response.json();
@@ -33,20 +32,13 @@ async function getRandomMeme() {
       let displayHeight = img.naturalHeight;
 
       const isMobile = window.innerWidth <= 768;
+      let maxWidth = isMobile ? window.innerWidth - 20 : window.innerWidth * 0.9; // 20px padding on mobile
       let maxHeight = window.innerHeight * 0.7;
-      let maxWidth = isMobile ? window.innerWidth * 0.9 : window.innerWidth * 0.95;
 
-      // On mobile, squish image to fit width
-      if (isMobile) {
-        displayWidth = Math.min(displayWidth, maxWidth);
-        displayHeight = displayHeight * (displayWidth / img.naturalWidth); // scale proportionally
-        maxHeight = displayHeight;
-      }
-
-      // Scale if exceeds max
-      const heightRatio = displayHeight / maxHeight;
+      // Scale proportionally to fit max width and max height
       const widthRatio = displayWidth / maxWidth;
-      const maxRatio = Math.max(heightRatio, widthRatio, 1);
+      const heightRatio = displayHeight / maxHeight;
+      const maxRatio = Math.max(widthRatio, heightRatio, 1);
 
       displayWidth = displayWidth / maxRatio;
       displayHeight = displayHeight / maxRatio;
@@ -56,8 +48,10 @@ async function getRandomMeme() {
       memeImg.style.width = `${displayWidth}px`;
       memeImg.style.height = `${displayHeight}px`;
 
-      memeContainer.style.width = `${displayWidth}px`;
+      // Container wraps exactly around the image + button
+      memeContainer.style.width = `${displayWidth + 32}px`; // 16px padding each side
       memeContainer.style.height = "auto";
+
       generateBtn.style.width = `${displayWidth}px`;
     };
   } catch (err) {
