@@ -56,6 +56,13 @@
     .topnav h1 { margin: 0; font-size: 24px; color: var(--theme-topnav-color); }
     .topnav .logo { color: var(--theme-topnav-color); text-decoration: none; }
 
+    .menu-icon {
+      font-size: 30px;
+      color: var(--theme-topnav-color);
+      cursor: pointer;
+      user-select: none;
+    }
+
     .topnav-right {
       display: none;
       position: fixed;
@@ -145,8 +152,6 @@
       align-items: center;
       justify-content: flex-start;
       height: auto;
-      max-height: 85vh;
-      overflow: hidden;
     }
 
     .meme-container img {
@@ -268,7 +273,10 @@
     </div>
   </footer>
 
+  <!-- JS -->
   <script src="memes.js" defer></script>
+  <script src="accordion.js" defer></script>
+  <script src="holiday-theme.js" defer></script>
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
