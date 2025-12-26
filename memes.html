@@ -16,7 +16,6 @@
     html, body {
       height: 100%;
       margin: 0;
-      overflow-x: hidden;
       font-family: 'Jersey 10', sans-serif;
       font-size: 28px;
       background-color: #fff;
@@ -41,7 +40,7 @@
       align-items: center;
       box-sizing: border-box;
       text-align: center;
-      min-height: calc(100vh - 60px - 60px);
+      width: 100%;
     }
 
     /* ===== TOP NAV ===== */
@@ -60,9 +59,6 @@
       margin: 0;
       font-size: 24px;
       color: var(--theme-topnav-color);
-      display: flex;
-      align-items: center;
-      font-family: 'Jersey 10', sans-serif;
     }
 
     .topnav .logo {
@@ -93,7 +89,6 @@
       pointer-events: none;
       padding-bottom: 60px;
       box-sizing: border-box;
-      font-family: 'Jersey 10', sans-serif;
     }
 
     .topnav-right.active {
@@ -122,7 +117,6 @@
       outline: none;
       cursor: pointer;
       width: 100%;
-      font-family: 'Jersey 10', sans-serif;
       transition: background-color 0.3s ease;
     }
 
@@ -138,7 +132,6 @@
       background-color: var(--theme-bg-color);
       overflow-y: auto;
       max-height: 50vh;
-      font-family: 'Jersey 10', sans-serif;
     }
 
     .accordion-content a {
@@ -202,33 +195,22 @@
 
       /* Height adapts to meme image */
       height: auto;
-      transition: height 0.4s ease; /* smooth resize when image changes */
+      transition: all 0.4s ease;
     }
 
     .meme-container img {
       width: 100%;
       height: auto;
-      max-height: 70vh;
       object-fit: contain;
       border-radius: 8px;
       margin-bottom: 16px;
-      transition: all 0.4s ease; /* smooth image transition */
-    }
-
-    @media (min-width: 1024px) {
-      .meme-container {
-        max-width: 1000px;
-      }
-      .meme-container img {
-        max-height: 70vh;
-      }
+      transition: all 0.4s ease;
     }
 
     .generate-btn {
       background-color: var(--theme-accent-color);
       color: white;
       border: none;
-      font-family: 'Jersey 10', sans-serif;
       font-size: 20px;
       padding: 10px 20px;
       cursor: pointer;
@@ -241,12 +223,8 @@
       transform: scale(1.05);
     }
 
+    /* ===== FOOTER ===== */
     footer.site-footer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 60px;
       background-color: var(--theme-bg-color);
       color: var(--theme-topnav-color);
       display: flex;
@@ -255,7 +233,9 @@
       padding: 5px 20px;
       font-size: 20px;
       box-sizing: border-box;
-      z-index: 1000;
+      position: relative; /* no longer fixed to allow scrolling */
+      margin-top: 40px;
+      width: 100%;
     }
 
     #footer-mascot {
@@ -273,13 +253,13 @@
 <body>
   <header>
     <div class="topnav">
-      <h1><a class="logo" href="index.html" id="homepage-logo">THE Randoms</a></h1>
+      <h1><a class="logo" href="index.html">THE Randoms</a></h1>
       <span class="menu-icon" tabindex="0" role="button" aria-label="Toggle menu">&#9776;</span>
     </div>
 
-    <nav class="topnav-right" role="navigation" aria-label="Main Menu">
+    <nav class="topnav-right">
       <div class="accordion-section">
-        <button class="accordion-toggle" aria-expanded="false">Jokes & Fun</button>
+        <button class="accordion-toggle">Jokes & Fun</button>
         <div class="accordion-content">
           <a href="jokes.html">Jokes</a>
           <a href="memes.html">Memes</a>
@@ -289,7 +269,7 @@
       </div>
 
       <div class="accordion-section">
-        <button class="accordion-toggle" aria-expanded="false">Knowledge & Facts</button>
+        <button class="accordion-toggle">Knowledge & Facts</button>
         <div class="accordion-content">
           <a href="advice.html">Advice</a>
           <a href="facts.html">Facts</a>
@@ -300,7 +280,7 @@
       </div>
 
       <div class="accordion-section">
-        <button class="accordion-toggle" aria-expanded="false">Music & Videos</button>
+        <button class="accordion-toggle">Music & Videos</button>
         <div class="accordion-content">
           <a href="songs.html">Songs</a>
           <a href="videos.html">Videos</a>
@@ -308,7 +288,7 @@
       </div>
 
       <div class="accordion-section">
-        <button class="accordion-toggle" aria-expanded="false">Words, Letters & Numbers</button>
+        <button class="accordion-toggle">Words, Letters & Numbers</button>
         <div class="accordion-content">
           <a href="letters.html">Letters</a>
           <a href="numbers.html">Numbers</a>
@@ -316,9 +296,7 @@
         </div>
       </div>
 
-      <div class="clickable-section" tabindex="0" role="link" title="Go to Randoms Of The Day">
-        Randoms Of The Day
-      </div>
+      <div class="clickable-section" tabindex="0">Randoms Of The Day</div>
     </nav>
   </header>
 
@@ -335,7 +313,7 @@
       <p>&copy; <span id="year"></span> THE Randoms</p>
     </div>
     <div class="footer-right">
-      <a href="randuino.html" title="Randuino">
+      <a href="randuino.html">
         <img id="footer-mascot" src="img/Mascot.png" alt="Randuino">
       </a>
     </div>
