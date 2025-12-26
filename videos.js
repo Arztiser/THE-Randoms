@@ -14,7 +14,7 @@ let videoCaches = {};
 function getRandomYouTubeVideo() {
   const now = Date.now();
   if (now - lastRequestTime < 5000) {
-    alert("Relax, the YouTube gods need a moment 😤");
+    alert("Just Wait A Few More Seconds Before The Next Motion Picture");
     return;
   }
   lastRequestTime = now;
