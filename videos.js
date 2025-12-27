@@ -29,12 +29,10 @@ function getRandomYouTubeVideo() {
 }
 
 function fetchVideos(query) {
-  const url =
-    `https://www.googleapis.com/youtube/v3/search?` +
-    `part=snippet&type=video&maxResults=50` +
-    `&safeSearch=moderate` +
-    `&q=${encodeURIComponent(query)}` +
-    `&key=${apiKey}`;
+  const embedUrl =
+  `https://www.youtube.com/embed/${videoId}` +
+  `?rel=0&modestbranding=1&playsinline=1` +
+  `&enablejsapi=1&origin=${location.origin}`;
 
   fetch(url)
     .then(res => res.json())
