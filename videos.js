@@ -1,7 +1,5 @@
-// Your API key (optional if running only cached)
 const apiKey = 'AIzaSyA7B_YMNe5T-rrVRuEbcZKcY9w50EWCeVk';
 
-// List of categories
 const categories = [
   "funny","football","memes","sports","cooking","technology","news",
   "baseball","horror","video games","reviews","reaction","space",
@@ -10,11 +8,10 @@ const categories = [
   "stardew valley","terraria","devlog","college football"
 ];
 
-// Object to store cached videos per category
 let videoCaches = {};
 let lastRequestTime = 0;
 
-// Shuffle helper function
+// Shuffle helper
 function shuffleArray(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -23,38 +20,28 @@ function shuffleArray(arr) {
   return arr;
 }
 
-// Generate a random video
-function getRandomVideo() {
-  const now = Date.now();
-  if (now - lastRequestTime < 5000) {
-    alert("Please Wait A Few Seconds Before Viewing The Next Motion Picture");
-    return;
-  }
-  lastRequestTime = now;
+// Display a random video from a given category
+function displayRandomVideoFromCategory(category) {
+  const videos = videoCaches[category];
+  if (!videos || videos.length === 0) return;
 
-  // Shuffle categories and pick one
-  const shuffledCategories = shuffleArray([...categories]);
-  for (let i = 0; i < shuffledCategories.length; i++) {
-    const cat = shuffledCategories[i];
-    // If cache exists, pick from it
-    if (videoCaches[cat] && videoCaches[cat].length > 0) {
-      displayRandomVideo(cat);
-      return;
-    }
-  }
+  const index = Math.floor(Math.random() * videos.length);
+  const videoId = videos.splice(index, 1)[0];
 
-  // If no cache yet, pick first category and fetch
-  fetchVideos(shuffledCategories[0]);
+  const embedUrl = `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&playsinline=1`;
+
+  document.getElementById('video-container').innerHTML = `
+    <div class="video-wrapper">
+      <iframe src="${embedUrl}" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </div>
+  `;
 }
 
-// Fetch videos from YouTube API
-function fetchVideos(category) {
-  if (!apiKey) {
-    // If no API key, cannot fetch
-    document.getElementById('video-container').innerHTML = `<p>API key missing. Using cache only.</p>`;
-    return;
-  }
-
+// Fetch videos from YouTube for a category
+function fetchVideos(category, callback) {
   const url = `https://www.googleapis.com/youtube/v3/search?` +
               `part=snippet&type=video&maxResults=50&safeSearch=moderate` +
               `&q=${encodeURIComponent(category)}&key=${apiKey}` +
@@ -63,43 +50,45 @@ function fetchVideos(category) {
   fetch(url)
     .then(res => res.json())
     .then(data => {
-      if (!data.items || data.items.length === 0) {
-        document.getElementById('video-container').innerHTML = '<p>No videos found.</p>';
+      if (!data.items) {
+        alert('No videos found for category: ' + category);
         return;
       }
-      // Cache video IDs, remove any falsy
-      videoCaches[category] = shuffleArray(
-        data.items.map(v => v.id.videoId).filter(Boolean)
-      );
-      displayRandomVideo(category);
+      videoCaches[category] = shuffleArray(data.items.map(v => v.id.videoId).filter(Boolean));
+      callback();
     })
     .catch(err => {
       console.error(err);
-      document.getElementById('video-container').innerHTML = '<p>Error loading videos. Using cached ones if available.</p>';
+      alert('Error fetching videos: ' + err.message);
     });
 }
 
-// Display a video from a category
-function displayRandomVideo(category) {
-  const videos = videoCaches[category];
-  if (!videos || videos.length === 0) {
-    document.getElementById('video-container').innerHTML = '<p>No cached videos.</p>';
+// Main function to get a random video
+function getRandomVideo() {
+  const now = Date.now();
+  if (now - lastRequestTime < 3000) {
+    alert('Please wait a few seconds before generating another video.');
     return;
   }
+  lastRequestTime = now;
 
-  const index = Math.floor(Math.random() * videos.length);
-  const videoId = videos.splice(index, 1)[0]; // Remove from cache so no repeats
+  const shuffledCategories = shuffleArray([...categories]);
 
-  const embedUrl = `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&playsinline=1`;
+  for (let i = 0; i < shuffledCategories.length; i++) {
+    const cat = shuffledCategories[i];
+    if (videoCaches[cat] && videoCaches[cat].length > 0) {
+      displayRandomVideoFromCategory(cat);
+      return;
+    }
+  }
 
-  document.getElementById('video-container').innerHTML = `
-    <div class="video-wrapper">
-      <iframe src="${embedUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-    </div>
-  `;
+  // If no cached videos, fetch the first category
+  fetchVideos(shuffledCategories[0], () => {
+    displayRandomVideoFromCategory(shuffledCategories[0]);
+  });
 }
 
-// Initialize
+// Init
 window.addEventListener('load', () => {
   getRandomVideo();
   const button = document.getElementById('generate-button');
