@@ -57,9 +57,7 @@ function displayRandomVideo(query) {
   const videoId = videoCaches[query].splice(index, 1)[0];
 
   const embedUrl =
-    `https://www.youtube.com/embed/${videoId}` +
-    `?rel=0&modestbranding=1&playsinline=1` +
-    `&enablejsapi=1&origin=${location.origin}`;
+    const embedUrl = https://www.youtube.com/embed/${videoId} + ?rel=0&modestbranding=1&playsinline=1 + &enablejsapi=1&origin=${location.origin};
 
   document.getElementById('video-container').innerHTML = `
     <div class="video-wrapper">
