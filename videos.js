@@ -13,10 +13,12 @@ let videoCaches = {};
 
 function getRandomYouTubeVideo() {
   const now = Date.now();
+
   if (now - lastRequestTime < 5000) {
     alert("Just Wait A Few More Seconds Before The Next Motion Picture");
     return;
   }
+
   lastRequestTime = now;
 
   const query = queries[Math.floor(Math.random() * queries.length)];
@@ -29,10 +31,12 @@ function getRandomYouTubeVideo() {
 }
 
 function fetchVideos(query) {
-  const embedUrl =
-  `https://www.youtube.com/embed/${videoId}` +
-  `?rel=0&modestbranding=1&playsinline=1` +
-  `&enablejsapi=1&origin=${location.origin}`;
+  const url =
+    `https://www.googleapis.com/youtube/v3/search?` +
+    `part=snippet&type=video&maxResults=50` +
+    `&safeSearch=moderate` +
+    `&q=${encodeURIComponent(query)}` +
+    `&key=${apiKey}`;
 
   fetch(url)
     .then(res => res.json())
@@ -42,7 +46,11 @@ function fetchVideos(query) {
           '<p>No videos found.</p>';
         return;
       }
-      videoCaches[query] = data.items.map(v => v.id.videoId);
+
+      videoCaches[query] = data.items
+        .map(v => v.id.videoId)
+        .filter(Boolean);
+
       displayRandomVideo(query);
     })
     .catch(err => {
@@ -57,12 +65,14 @@ function displayRandomVideo(query) {
   const videoId = videoCaches[query].splice(index, 1)[0];
 
   const embedUrl =
-    const embedUrl = https://www.youtube.com/embed/${videoId} + ?rel=0&modestbranding=1&playsinline=1 + &enablejsapi=1&origin=${location.origin};
+    `https://www.youtube.com/embed/${videoId}` +
+    `?rel=0&modestbranding=1&playsinline=1`;
 
   document.getElementById('video-container').innerHTML = `
     <div class="video-wrapper">
       <iframe
         src="${embedUrl}"
+        frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen>
       </iframe>
@@ -70,6 +80,11 @@ function displayRandomVideo(query) {
   `;
 }
 
-window.onload = getRandomYouTubeVideo;
-document.getElementById('generate-button')
-  .addEventListener('click', getRandomYouTubeVideo);
+window.addEventListener('load', () => {
+  getRandomYouTubeVideo();
+
+  const button = document.getElementById('generate-button');
+  if (button) {
+    button.addEventListener('click', getRandomYouTubeVideo);
+  }
+});
