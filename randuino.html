@@ -35,6 +35,7 @@
     main.content {
       flex: 1 0 auto;
       padding: 20px;
+      padding-bottom: 70px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -222,16 +223,17 @@
     /* Footer Styles */
     /* ---------- STANDARD FOOTER ---------- */
 .site-footer {
-  position: relative;      /* stays in normal flow */
-  margin-top: auto;        /* pushes footer to bottom if page is short */
+  position: fixed;
+  bottom: 0;
+  left: 0;
   width: 100%;
-  height: 60px;            /* standard footer height */
+  height: 60px;
   background-color: var(--theme-bg-color, #333);
   color: var(--theme-topnav-color, #f2f2f2);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 20px;
+  padding: 5px 20px;
   font-size: 20px;
   box-sizing: border-box;
   z-index: 1000;
