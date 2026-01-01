@@ -35,7 +35,6 @@
     main.content {
       flex: 1 0 auto;
       padding: 20px;
-      padding-bottom: 70px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -45,7 +44,6 @@
     }
 
     .topnav {
-      overflow: hidden;
       background-color: var(--theme-bg-color);
       color: var(--theme-topnav-color);
       display: flex;
@@ -220,39 +218,37 @@
       text-decoration: underline;
     }
 
-    /* Footer Styles */
-    /* ---------- STANDARD FOOTER ---------- */
-.site-footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 60px;
-  background-color: var(--theme-bg-color, #333);
-  color: var(--theme-topnav-color, #f2f2f2);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 5px 20px;
-  font-size: 20px;
-  box-sizing: border-box;
-  z-index: 1000;
-}
+    /* ---------- FIXED FOOTER PUSH-DOWN ---------- */
+    .site-footer {
+      position: relative; /* push-down footer */
+      margin-top: auto;
+      width: 100%;
+      height: 60px;
+      background-color: var(--theme-bg-color);
+      color: var(--theme-topnav-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+      box-sizing: border-box;
+      font-size: 20px;
+      z-index: 1000;
+    }
 
-.site-footer p {
-  margin: 0;
-}
+    .site-footer p {
+      margin: 0;
+    }
 
-#footer-mascot {
-  height: 50px;            /* matches other pages */
-  width: auto;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
+    #footer-mascot {
+      height: 50px;
+      width: auto;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
 
-#footer-mascot:hover {
-  transform: scale(1.1) rotate(-5deg);
-}
+    #footer-mascot:hover {
+      transform: scale(1.1) rotate(-5deg);
+    }
   </style>
 </head>
 <body>
@@ -310,7 +306,7 @@
 
   <main class="content">
     <h1>Randuino</h1>
-    <img src="img/Mascot.png" alt="Randuino">
+    <img src="img/mascot.png" alt="Randuino">
 
     <p>Meet Randuino, the quirky and playful mascot of THE Randoms! He loves random adventures, exploring fun facts, and making your experience on the site more lively.</p>
 
@@ -339,17 +335,16 @@
   </main>
 
   <footer class="site-footer">
-  <div class="footer-left">
-    <p>&copy; <span id="year"></span> THE Randoms</p>
-  </div>
-  <div class="footer-right">
-    <a href="randuino.html" title="Randuino">
-      <img id="footer-mascot" src="img/Mascot.png" alt="Randuino">
-    </a>
-  </div>
+    <div class="footer-left">
+      <p>&copy; <span id="year"></span> THE Randoms</p>
+    </div>
+    <div class="footer-right">
+      <a href="randuino.html" title="Randuino">
+        <img id="footer-mascot" src="img/Mascot.png" alt="Randuino">
+      </a>
+    </div>
   </footer>
 
-  <!-- Scripts must be external for Chrome Extension -->
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
