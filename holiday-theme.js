@@ -144,6 +144,22 @@ function setHolidayTheme() {
     mainBg = '#E82B38'; mainText = '#fff';
     footerBg = '#E82B38'; footerText = '#fff';
 
+  } else if (month === 3 && day === 10) {
+    holidayClass = 'holiday-birthday';
+    mascotFile = 'birthday-mascot.png';
+    mainBg = '#F3E5AB';
+    mainText = '#5A3E2B';
+    navBg = '#ADCFE9';
+    navText = '#fff';
+    footerBg = '#ADCFE9';
+    footerText = '#fff';
+    menuBg = '#ADCFE9';
+    menuText = '#fff';
+    hoverBg = '#8CC4E0';
+    linkColor = '#E54551';
+    hoverLink = '#FF6F61';
+
+    
   } else if (month === 4 && day >= 1 && day <= 7) {
     holidayClass = 'holiday-easter';
     mascotFile = 'eastermascot.png';
