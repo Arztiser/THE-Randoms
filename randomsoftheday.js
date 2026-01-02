@@ -1,4 +1,4 @@
-const testingMode = false;
+const testingMode = true;
 
 // ===== DATE + SEED =====
 function getGlobalDayId() {
