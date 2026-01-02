@@ -158,8 +158,7 @@ function setHolidayTheme() {
     hoverBg = '#8CC4E0';
     linkColor = '#E54551';
     hoverLink = '#FF6F61';
-
-    
+   
   } else if (month === 4 && day >= 1 && day <= 7) {
     holidayClass = 'holiday-easter';
     mascotFile = 'eastermascot.png';
