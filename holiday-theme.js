@@ -148,7 +148,7 @@ function setHolidayTheme() {
     holidayClass = 'holiday-birthday';
     mascotFile = 'birthday-mascot.png';
     mainBg = '#F3E5AB';
-    mainText = '#5A3E2B';
+    mainText = '#F5E5D5';
     navBg = '#ADCFE9';
     navText = '#fff';
     footerBg = '#ADCFE9';
