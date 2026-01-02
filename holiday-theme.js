@@ -146,7 +146,7 @@ function setHolidayTheme() {
 
   } else if (month === 3 && day === 10) {
     holidayClass = 'holiday-birthday';
-    mascotFile = 'birthday-mascot.png';
+    mascotFile = 'birthdaymascot.png';
     mainBg = '#F3E5AB';
     mainText = '#F5E5D5';
     navBg = '#ADCFE9';
