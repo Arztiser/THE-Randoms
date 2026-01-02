@@ -17,15 +17,22 @@ function getDaySeed() {
   return hashStringToSeed(getGlobalDayId());
 }
 
+// Render the current date
+function renderCurrentDate() {
+  const container = document.getElementById('current-date');
+  if (!container) return;
+  const today = new Date();
+  container.textContent = today.toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
+}
+
 // ===== CACHE UTILITY =====
-function fetchCached(key, generateFn) {
+async function fetchCached(key, generateFn) {
   const today = getGlobalDayId();
   const cached = localStorage.getItem(`daily_${key}`);
   const cachedDate = localStorage.getItem(`daily_${key}_date`);
-
   if (cached && cachedDate === today) return cached;
 
-  const value = generateFn();
+  const value = await generateFn();
   localStorage.setItem(`daily_${key}`, value);
   localStorage.setItem(`daily_${key}_date`, today);
   return value;
@@ -34,7 +41,7 @@ function fetchCached(key, generateFn) {
 // ===== BIRTHDAY CHECK =====
 function isBirthday() {
   const today = new Date();
-  return today.getUTCMonth() === 2 && today.getUTCDate() === 10; // March 10
+  return today.getUTCMonth() === 2 && today.getUTCDate() === 10;
 }
 
 // ===== SEED PICK =====
@@ -47,28 +54,23 @@ function pickFromArray(arr, seedOffset = 0) {
 function renderLetter() {
   const c = document.querySelector('#random-letter .random-content');
   if (!c) return;
-
-  const letter = isBirthday()
+  c.textContent = isBirthday()
     ? "M"
     : fetchCached('letter', () => pickFromArray('ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')));
-  c.textContent = letter;
 }
 
 function renderNumber() {
   const c = document.querySelector('#random-number .random-content');
   if (!c) return;
-
-  const num = isBirthday()
+  c.textContent = isBirthday()
     ? "10"
     : fetchCached('number', () => ((getDaySeed() * 9301 + 49297) % 1000000 + 1).toLocaleString());
-  c.textContent = num;
 }
 
 function renderPassword() {
   const c = document.querySelector('#random-password .random-content');
   if (!c) return;
-
-  const pw = isBirthday()
+  c.textContent = isBirthday()
     ? "B1RTHD4YR4ND0MN3SS"
     : fetchCached('password', () => {
         const seed = getDaySeed();
@@ -77,94 +79,120 @@ function renderPassword() {
         const numbers = "0123456789";
         const symbols = "!@#$%^&*()-_=+[]{};:,.<>?";
         const all = upper + lower + numbers + symbols;
-        let p = "";
-        p += upper[seed % upper.length];
-        p += lower[(seed * 3) % lower.length];
-        p += numbers[(seed * 7) % numbers.length];
-        p += symbols[(seed * 11) % symbols.length];
-        for (let i = 4; i < 12; i++) p += all[(seed * (i + 1) * 17) % all.length];
-        return p;
+        let pw = "";
+        pw += upper[seed % upper.length];
+        pw += lower[(seed * 3) % lower.length];
+        pw += numbers[(seed * 7) % numbers.length];
+        pw += symbols[(seed * 11) % symbols.length];
+        for (let i = 4; i < 12; i++) pw += all[(seed * (i + 1) * 17) % all.length];
+        return pw;
       });
-  c.textContent = pw;
 }
 
-function renderWord() {
+async function renderWord() {
   const c = document.querySelector('#random-word .random-content');
   if (!c) return;
-
   const word = isBirthday()
     ? "Celebration"
-    : fetchCached('word', () => {
+    : await fetchCached('word', async () => {
         try {
-          // fallback deterministic word if API fails
-          const fallback = ["random","future","signal","pattern","system","chaos","order","logic","web","code"];
-          return pickFromArray(fallback);
-        } catch { return "random"; }
+          const res = await fetch('https://random-word-api.vercel.app/api?words=100');
+          const words = await res.json();
+          return pickFromArray(words);
+        } catch {
+          return pickFromArray(["random","future","signal","pattern","system","chaos","order","logic","web","code"]);
+        }
       });
   c.textContent = word;
 }
 
-function renderJoke() {
+async function renderJoke() {
   const c = document.querySelector('#random-joke .random-content');
   if (!c) return;
-
   const joke = isBirthday()
     ? "Why did Randuino throw a party on THE Randoms? Because it was Arztiser's birthday!"
-    : fetchCached('joke', () => "Here's a seeded joke for the day.");
+    : await fetchCached('joke', async () => {
+        try {
+          const res = await fetch('https://official-joke-api.appspot.com/jokes/ten');
+          const jokes = await res.json();
+          return pickFromArray(jokes.map(j => `${j.setup} ${j.punchline}`));
+        } catch {
+          return "Here's a seeded joke for the day.";
+        }
+      });
   c.textContent = joke;
 }
 
-function renderAdvice() {
+async function renderAdvice() {
   const c = document.querySelector('#random-advice .random-content');
   if (!c) return;
-
   const advice = isBirthday()
     ? "Be proud of how far you have gone, even if there is more to come."
-    : fetchCached('advice', () => "Seeded advice of the day.");
+    : await fetchCached('advice', async () => {
+        try {
+          const res = await fetch('https://api.adviceslip.com/advice/search/a');
+          const data = await res.json();
+          if (!data.slips) throw 0;
+          return pickFromArray(data.slips.map(s => s.advice));
+        } catch {
+          return "Seeded advice of the day.";
+        }
+      });
   c.textContent = advice;
 }
 
-function renderFact() {
+async function renderFact() {
   const c = document.querySelector('#random-fact .random-content');
   if (!c) return;
-
   const fact = isBirthday()
     ? "Arztiser's birthday is today."
-    : fetchCached('fact', () => "Seeded fact of the day.");
+    : await fetchCached('fact', async () => {
+        try {
+          const res = await fetch('https://uselessfacts.jsph.pl/random.json?language=en');
+          const data = await res.json();
+          return data.text;
+        } catch {
+          return "Seeded fact of the day.";
+        }
+      });
   c.textContent = fact;
 }
 
-function renderMeme() {
+async function renderMeme() {
   const c = document.querySelector('#random-meme .random-content');
   if (!c) return;
-
-  const meme = isBirthday()
-    ? "Today's meme got a free vacation!"
-    : fetchCached('meme', () => "Seeded meme URL for the day.");
-  c.textContent = meme;
+  if (isBirthday()) {
+    c.textContent = "Today's meme got a free vacation!";
+    return;
+  }
+  const url = await fetchCached('meme', async () => {
+    try {
+      const subs = ['memes','dankmemes','funny'];
+      const sub = pickFromArray(subs);
+      const res = await fetch(`https://corsproxy.io/?https://www.reddit.com/r/${sub}/hot.json?limit=50`);
+      const json = await res.json();
+      const imgs = json.data.children.filter(p => p.data.url.match(/\.(jpg|png)$/));
+      return pickFromArray(imgs.map(p => p.data.url));
+    } catch {
+      return '';
+    }
+  });
+  c.innerHTML = url ? `<img src="${url}" style="max-width:100%;border-radius:8px;">` : "No meme today.";
 }
 
 // ===== REFRESH ALL =====
-function refreshAll() {
+async function refreshAll() {
+  renderCurrentDate();
   renderLetter();
   renderNumber();
   renderPassword();
-  renderWord();
-  renderJoke();
-  renderAdvice();
-  renderFact();
-  renderMeme();
+  await Promise.all([renderWord(), renderJoke(), renderAdvice(), renderFact(), renderMeme()]);
 }
 
 // ===== LOCAL MIDNIGHT REFRESH =====
 function scheduleLocalMidnightRefresh() {
   const now = new Date();
-  const nextMidnight = new Date(
-    now.getFullYear(),
-    now.getMonth(),
-    now.getDate() + 1,
-    0, 0, 0, 0
-  );
+  const nextMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate()+1,0,0,0,0);
   setTimeout(() => location.reload(), nextMidnight - now);
 }
 
