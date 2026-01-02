@@ -17,12 +17,12 @@ function getDaySeed() {
   return hashStringToSeed(getGlobalDayId());
 }
 
-// Render the current date
+// ===== RENDER DATE =====
 function renderCurrentDate() {
-  const container = document.getElementById('current-date');
-  if (!container) return;
+  const c = document.getElementById('current-date');
+  if (!c) return;
   const today = new Date();
-  container.textContent = today.toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
+  c.textContent = today.toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
 }
 
 // ===== CACHE UTILITY =====
@@ -54,9 +54,10 @@ function pickFromArray(arr, seedOffset = 0) {
 function renderLetter() {
   const c = document.querySelector('#random-letter .random-content');
   if (!c) return;
-  c.textContent = isBirthday()
+  const letter = isBirthday()
     ? "M"
-    : fetchCached('letter', () => pickFromArray('ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')));
+    : pickFromArray('ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''));
+  c.textContent = letter;
 }
 
 function renderNumber() {
@@ -64,29 +65,27 @@ function renderNumber() {
   if (!c) return;
   c.textContent = isBirthday()
     ? "10"
-    : fetchCached('number', () => ((getDaySeed() * 9301 + 49297) % 1000000 + 1).toLocaleString());
+    : ((getDaySeed() * 9301 + 49297) % 1000000 + 1).toLocaleString();
 }
 
 function renderPassword() {
   const c = document.querySelector('#random-password .random-content');
   if (!c) return;
-  c.textContent = isBirthday()
-    ? "B1RTHD4YR4ND0MN3SS"
-    : fetchCached('password', () => {
-        const seed = getDaySeed();
-        const upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        const lower = "abcdefghijklmnopqrstuvwxyz";
-        const numbers = "0123456789";
-        const symbols = "!@#$%^&*()-_=+[]{};:,.<>?";
-        const all = upper + lower + numbers + symbols;
-        let pw = "";
-        pw += upper[seed % upper.length];
-        pw += lower[(seed * 3) % lower.length];
-        pw += numbers[(seed * 7) % numbers.length];
-        pw += symbols[(seed * 11) % symbols.length];
-        for (let i = 4; i < 12; i++) pw += all[(seed * (i + 1) * 17) % all.length];
-        return pw;
-      });
+  if (isBirthday()) { c.textContent = "B1RTHD4YR4ND0MN3SS"; return; }
+
+  const seed = getDaySeed();
+  const upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const lower = "abcdefghijklmnopqrstuvwxyz";
+  const numbers = "0123456789";
+  const symbols = "!@#$%^&*()-_=+[]{};:,.<>?";
+  const all = upper + lower + numbers + symbols;
+  let pw = "";
+  pw += upper[seed % upper.length];
+  pw += lower[(seed * 3) % lower.length];
+  pw += numbers[(seed * 7) % numbers.length];
+  pw += symbols[(seed * 11) % symbols.length];
+  for (let i = 4; i < 12; i++) pw += all[(seed * (i + 1) * 17) % all.length];
+  c.textContent = pw;
 }
 
 async function renderWord() {
@@ -116,9 +115,7 @@ async function renderJoke() {
           const res = await fetch('https://official-joke-api.appspot.com/jokes/ten');
           const jokes = await res.json();
           return pickFromArray(jokes.map(j => `${j.setup} ${j.punchline}`));
-        } catch {
-          return "Here's a seeded joke for the day.";
-        }
+        } catch { return "Here's a seeded joke for the day."; }
       });
   c.textContent = joke;
 }
@@ -134,9 +131,7 @@ async function renderAdvice() {
           const data = await res.json();
           if (!data.slips) throw 0;
           return pickFromArray(data.slips.map(s => s.advice));
-        } catch {
-          return "Seeded advice of the day.";
-        }
+        } catch { return "Seeded advice of the day."; }
       });
   c.textContent = advice;
 }
@@ -151,9 +146,7 @@ async function renderFact() {
           const res = await fetch('https://uselessfacts.jsph.pl/random.json?language=en');
           const data = await res.json();
           return data.text;
-        } catch {
-          return "Seeded fact of the day.";
-        }
+        } catch { return "Seeded fact of the day."; }
       });
   c.textContent = fact;
 }
@@ -161,10 +154,8 @@ async function renderFact() {
 async function renderMeme() {
   const c = document.querySelector('#random-meme .random-content');
   if (!c) return;
-  if (isBirthday()) {
-    c.textContent = "Today's meme got a free vacation!";
-    return;
-  }
+  if (isBirthday()) { c.textContent = "Today's meme got a free vacation!"; return; }
+
   const url = await fetchCached('meme', async () => {
     try {
       const subs = ['memes','dankmemes','funny'];
@@ -173,10 +164,9 @@ async function renderMeme() {
       const json = await res.json();
       const imgs = json.data.children.filter(p => p.data.url.match(/\.(jpg|png)$/));
       return pickFromArray(imgs.map(p => p.data.url));
-    } catch {
-      return '';
-    }
+    } catch { return ''; }
   });
+
   c.innerHTML = url ? `<img src="${url}" style="max-width:100%;border-radius:8px;">` : "No meme today.";
 }
 
