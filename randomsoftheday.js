@@ -49,11 +49,12 @@ async function getDailyAsyncValue(key, generator) {
 
   const cached = localStorage.getItem(valueKey);
   const cachedDate = localStorage.getItem(dateKey);
-
   if (cached && cachedDate === today) return cached;
 
+  // Await generator first
   const value = await generator();
-  localStorage.setItem(valueKey, value);
+  // Store as string
+  localStorage.setItem(valueKey, value.toString());
   localStorage.setItem(dateKey, today);
   return value;
 }
@@ -226,8 +227,7 @@ async function renderMeme() {
       const data = await res.json();
       const imgs = data.data.children.filter(p => p.data.url.match(/\.(jpg|png)$/));
       if (!imgs.length) return null;
-      const img = imgs[Math.floor(Math.random()*imgs.length)].data.url;
-      return img;
+      return imgs[Math.floor(Math.random()*imgs.length)].data.url;
     } catch {
       return null;
     }
