@@ -21,7 +21,7 @@ function renderCurrentDate() {
 }
 
 /* ======================
-   LOCALSTORAGE HELPER
+   SYNC LOCALSTORAGE HELPER
 ====================== */
 function getDailyValue(key, generator) {
   const today = getLocalDayId();
@@ -34,6 +34,25 @@ function getDailyValue(key, generator) {
   if (cached && cachedDate === today) return cached;
 
   const value = generator();
+  localStorage.setItem(valueKey, value);
+  localStorage.setItem(dateKey, today);
+  return value;
+}
+
+/* ======================
+   ASYNC LOCALSTORAGE HELPER
+====================== */
+async function getDailyAsyncValue(key, generator) {
+  const today = getLocalDayId();
+  const valueKey = `daily_${key}`;
+  const dateKey = `daily_${key}_date`;
+
+  const cached = localStorage.getItem(valueKey);
+  const cachedDate = localStorage.getItem(dateKey);
+
+  if (cached && cachedDate === today) return cached;
+
+  const value = await generator();
   localStorage.setItem(valueKey, value);
   localStorage.setItem(dateKey, today);
   return value;
@@ -105,17 +124,15 @@ async function renderWord() {
 
   if (isBirthday()) { c.textContent = "Celebration"; return; }
 
-  const word = await (async () => {
-    return getDailyValue('word', async () => {
-      try {
-        const res = await fetch('https://random-word-api.vercel.app/api?words=1');
-        const data = await res.json();
-        return data[0];
-      } catch {
-        return "random";
-      }
-    });
-  })();
+  const word = await getDailyAsyncValue('word', async () => {
+    try {
+      const res = await fetch('https://random-word-api.vercel.app/api?words=1');
+      const data = await res.json();
+      return data[0];
+    } catch {
+      return "random";
+    }
+  });
 
   c.textContent = word;
 }
@@ -127,9 +144,12 @@ async function renderJoke() {
   const c = document.querySelector('#random-joke .random-content');
   if (!c) return;
 
-  if (isBirthday()) { c.textContent = "Why did Randuino throw a party on THE Randoms? Because it was Arztiser's birthday!"; return; }
+  if (isBirthday()) { 
+    c.textContent = "Why did Randuino throw a party on THE Randoms? Because it was Arztiser's birthday!"; 
+    return; 
+  }
 
-  const joke = await getDailyValue('joke', async () => {
+  const joke = await getDailyAsyncValue('joke', async () => {
     try {
       const res = await fetch('https://official-joke-api.appspot.com/jokes/random');
       const data = await res.json();
@@ -146,9 +166,12 @@ async function renderAdvice() {
   const c = document.querySelector('#random-advice .random-content');
   if (!c) return;
 
-  if (isBirthday()) { c.textContent = "Be proud of how far you have gone, even if there is more to come."; return; }
+  if (isBirthday()) { 
+    c.textContent = "Be proud of how far you have gone, even if there is more to come."; 
+    return; 
+  }
 
-  const advice = await getDailyValue('advice', async () => {
+  const advice = await getDailyAsyncValue('advice', async () => {
     try {
       const res = await fetch('https://api.adviceslip.com/advice');
       const data = await res.json();
@@ -165,9 +188,12 @@ async function renderFact() {
   const c = document.querySelector('#random-fact .random-content');
   if (!c) return;
 
-  if (isBirthday()) { c.textContent = "Arztiser's birthday is today."; return; }
+  if (isBirthday()) { 
+    c.textContent = "Arztiser's birthday is today."; 
+    return; 
+  }
 
-  const fact = await getDailyValue('fact', async () => {
+  const fact = await getDailyAsyncValue('fact', async () => {
     try {
       const res = await fetch('https://uselessfacts.jsph.pl/random.json?language=en');
       const data = await res.json();
@@ -187,15 +213,19 @@ async function renderMeme() {
   const c = document.querySelector('#random-meme .random-content');
   if (!c) return;
 
-  if (isBirthday()) { c.textContent = "Today's meme got a free vacation!"; return; }
+  if (isBirthday()) { 
+    c.textContent = "Today's meme got a free vacation!"; 
+    return; 
+  }
 
-  const meme = await getDailyValue('meme', async () => {
+  const meme = await getDailyAsyncValue('meme', async () => {
     try {
       const subs = ['memes','dankmemes','funny'];
       const sub = subs[Math.floor(Math.random()*subs.length)];
       const res = await fetch(`https://corsproxy.io/?https://www.reddit.com/r/${sub}/hot.json?limit=50`);
       const data = await res.json();
       const imgs = data.data.children.filter(p => p.data.url.match(/\.(jpg|png)$/));
+      if (!imgs.length) return null;
       const img = imgs[Math.floor(Math.random()*imgs.length)].data.url;
       return img;
     } catch {
