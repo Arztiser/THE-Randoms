@@ -54,7 +54,35 @@ function renderNumber() {
 function renderPassword() {
   const c = document.querySelector('#random-password .random-content');
   if (!c) return;
-  c.textContent = isBirthday() ? "B1RTHD4YR4ND0MN3SS" : "R4ND0MD4ILY";
+
+  if (isBirthday()) {
+    c.textContent = "B1RTHD4YR4ND0MN3SS";
+    return;
+  }
+
+  const seed = getDaySeed();
+  const upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const lower = "abcdefghijklmnopqrstuvwxyz";
+  const numbers = "0123456789";
+  const symbols = "!@#$%^&*()-_=+[]{};:,.<>?";
+  const all = upper + lower + numbers + symbols;
+
+  // Build deterministic password
+  let pw = "";
+  pw += upper[seed % upper.length];           // 1st char: uppercase
+  pw += lower[(seed * 3) % lower.length];     // 2nd char: lowercase
+  pw += numbers[(seed * 7) % numbers.length]; // 3rd char: number
+  pw += symbols[(seed * 11) % symbols.length]; // 4th char: symbol
+
+  // Fill remaining 8 chars deterministically
+  for (let i = 4; i < 12; i++) {
+    pw += all[(seed * (i + 1) * 17) % all.length];
+  }
+
+  // Optional: shuffle slightly based on seed
+  pw = pw.split('').sort(() => ((seed % 3) - 1)).join('');
+
+  c.textContent = pw;
 }
 
 async function renderWord() {
