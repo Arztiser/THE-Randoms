@@ -72,7 +72,7 @@ function renderLetter() {
     container.textContent = "M";
   } else {
     const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    const index = testingMode ? Math.floor(Math.random() * letters.length) : getDaySeed() % letters.length;
+    const index = (getDaySeed() * 7) % letters.length; // different seed multiplier
     container.textContent = letters[index];
   }
 }
@@ -84,7 +84,7 @@ function renderNumber() {
   if (isBirthday()) {
     container.textContent = "10";
   } else {
-    const num = testingMode ? Math.floor(Math.random() * 1000000) + 1 : (getDaySeed() * 9301 + 49297) % 1000000 + 1;
+    const num = ((getDaySeed() * 13 + 7) % 1000000) + 1; // offset to avoid collision with password
     container.textContent = num.toLocaleString();
   }
 }
@@ -110,8 +110,8 @@ function renderPassword() {
   const all = upper + lower + numbers + symbols;
 
   let password = "";
-  password += upper[seed % upper.length];
-  password += lower[(seed * 3) % lower.length];
+  password += upper[(seed * 3) % upper.length]; // different offsets
+  password += lower[(seed * 5) % lower.length];
   password += numbers[(seed * 7) % numbers.length];
   password += symbols[(seed * 11) % symbols.length];
 
@@ -119,7 +119,7 @@ function renderPassword() {
     password += all[(seed * (i + 1) * 17) % all.length];
   }
 
-  password = password.split('').sort(() => (seed % 3) - 1).join('');
+  password = password.split('').sort(() => ((seed + 1) % 3) - 1).join('');
   container.textContent = password;
 }
 
