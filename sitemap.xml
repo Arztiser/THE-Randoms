@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <url>
+    <loc>https://therandoms.pages.dev/</loc>
+    <priority>1.0</priority>
+  </url>
+
+  <url>
+    <loc>https://therandoms.pages.dev/jokes</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://therandoms.pages.dev/memes</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://therandoms.pages.dev/quizzes</loc>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://therandoms.pages.dev/wouldyourather</loc>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://therandoms.pages.dev/advice</loc>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://therandoms.pages.dev/facts</loc>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://therandoms.pages.dev/pages</loc>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://therandoms.pages.dev/people</loc>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://therandoms.pages.dev/quotes</loc>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://therandoms.pages.dev/songs</loc>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://therandoms.pages.dev/videos</loc>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://therandoms.pages.dev/letters</loc>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>https://therandoms.pages.dev/numbers</loc>
+    <priority>0.5</priority>
+  </url>
+
+<url>
+  <loc>https://therandoms.pages.dev/passwords</loc>
+  <priority>0.5</priority>
+</url>
+
+<url>
+    <loc>https://therandoms.pages.dev/words</loc>
+    <priority>0.5</priority>
+  </url>
+
+ <url>
+    <loc>https://therandoms.pages.dev/randomsoftheday</loc>
+    <priority>0.4</priority>
+  </url>
+  
+</urlset>
