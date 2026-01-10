@@ -7,3 +7,4 @@ Disallow: /code.html
 Disallow: /passcode.html
 Disallow: /groove.html
 Disallow: /spooky.html
+Sitemap: https://therandoms.pages.dev/sitemap.xml
