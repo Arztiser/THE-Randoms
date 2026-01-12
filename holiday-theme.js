@@ -230,7 +230,7 @@ document.addEventListener('DOMContentLoaded', setHolidayTheme);
   splash.id = "daily-splash";
   splash.style.position = "fixed";
   splash.style.inset = "0";
-  splash.style.background = "linear-gradient(135deg, #E82B38, #FF5E57)";
+  splash.style.background = "linear-gradient(135deg, #E82B38, #731919)";
   splash.style.display = "flex";
   splash.style.alignItems = "center";
   splash.style.justifyContent = "center";
