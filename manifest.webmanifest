@@ -13,12 +13,14 @@
 {
 "src": "/img/prfp.png",
 "sizes": "192x192",
-"type": "image/png"
+"type": "image/png",
+"purpose": "maskable"
 },
 {
 "src": "/img/pofp.png",
 "sizes": "512x512",
-"type": "image/png"
+"type": "image/png",
+"purpose": "maskable"
 },
 {
 "src": "/img/pofp-maskable.png",
