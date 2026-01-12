@@ -226,7 +226,6 @@ document.addEventListener('DOMContentLoaded', setHolidayTheme);
   if (!window.location.pathname.endsWith("/") && !window.location.pathname.endsWith("index.html")) return;
 
   const today = new Date().toISOString().split("T")[0];
-  const lastSplash = localStorage.getItem("lastSplashDate");
   if (lastSplash === today) return; // Already seen today
 
   localStorage.setItem("lastSplashDate", today);
