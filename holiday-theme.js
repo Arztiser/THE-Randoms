@@ -225,11 +225,6 @@ document.addEventListener('DOMContentLoaded', setHolidayTheme);
 (function() {
   if (!window.location.pathname.endsWith("/") && !window.location.pathname.endsWith("index.html")) return;
 
-  const today = new Date().toISOString().split("T")[0];
-  if (lastSplash === today) return; // Already seen today
-
-  localStorage.setItem("lastSplashDate", today);
-
   // Create splash element
   const splash = document.createElement("div");
   splash.id = "daily-splash";
