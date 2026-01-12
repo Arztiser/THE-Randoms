@@ -220,3 +220,47 @@ function setHolidayTheme() {
 }
 
 document.addEventListener('DOMContentLoaded', setHolidayTheme);
+
+// Daily home page splash screen
+(function() {
+  if (!window.location.pathname.endsWith("/") && !window.location.pathname.endsWith("index.html")) return;
+
+  const today = new Date().toISOString().split("T")[0];
+  const lastSplash = localStorage.getItem("lastSplashDate");
+  if (lastSplash === today) return; // Already seen today
+
+  localStorage.setItem("lastSplashDate", today);
+
+  // Create splash element
+  const splash = document.createElement("div");
+  splash.id = "daily-splash";
+  splash.style.position = "fixed";
+  splash.style.inset = "0";
+  splash.style.background = "linear-gradient(135deg, #E82B38, #FF5E57)";
+  splash.style.display = "flex";
+  splash.style.alignItems = "center";
+  splash.style.justifyContent = "center";
+  splash.style.zIndex = "9999";
+  splash.style.opacity = "1";
+  splash.style.transition = "opacity 0.5s ease";
+
+  // Add circular logo
+  const logo = document.createElement("img");
+  logo.src = "img/pofp-circle.png"; // Replace with your circle logo
+  logo.alt = "THE Randoms Logo";
+  logo.style.width = "150px";
+  logo.style.borderRadius = "50%";
+  splash.appendChild(logo);
+
+  document.body.appendChild(splash);
+
+  // Start fade after 500ms
+  setTimeout(() => {
+    splash.style.opacity = "0";
+  }, 500);
+
+  // Remove splash after 5900ms
+  setTimeout(() => {
+    splash.remove();
+  }, 5900);
+})();
