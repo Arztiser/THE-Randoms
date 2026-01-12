@@ -246,8 +246,8 @@ document.addEventListener('DOMContentLoaded', setHolidayTheme);
 
   // Add circular logo
   const logo = document.createElement("img");
-  logo.src = "img/pofp-circle.png"; // Replace with your circle logo
-  logo.alt = "THE Randoms Logo";
+  logo.src = "img/pofp.png"; // Replace with your circle logo
+  logo.alt = "THE Randoms";
   logo.style.width = "150px";
   logo.style.borderRadius = "50%";
   splash.appendChild(logo);
