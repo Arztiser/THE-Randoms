@@ -242,7 +242,7 @@ document.addEventListener('DOMContentLoaded', setHolidayTheme);
   splash.style.justifyContent = "center";
   splash.style.zIndex = "9999";
   splash.style.opacity = "1";
-  splash.style.transition = "opacity 0.5s ease";
+  splash.style.transition = "opacity 5.9s ease";
 
   // Add circular logo
   const logo = document.createElement("img");
