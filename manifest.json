@@ -10,8 +10,8 @@
     "service_worker": "background.js"
   },
   "icons": {
-    "16": "/img/prfp.png",
-    "48": "/img/prfp.png",
-    "128": "/img/pofp.png"
+    "16": "/img/prfp-square.png",
+    "48": "/img/prfp-squarr.png",
+    "128": "/img/pofp-square.png"
   }
 }
