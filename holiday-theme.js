@@ -23,20 +23,14 @@ function ensureFooter() {
 
         const style = document.createElement('style');
         style.innerHTML = `
-            html, body {
-                height: 100%;
-                margin: 0;
-            }
+            html, body { height: 100%; margin: 0; }
             body {
                 display: flex;
                 flex-direction: column;
                 min-height: 100vh;
                 font-family: 'Jersey 10', sans-serif;
             }
-            main.content, .container, .page-content {
-                flex: 1 0 auto;
-                box-sizing: border-box;
-            }
+            main.content, .container, .page-content { flex: 1 0 auto; box-sizing: border-box; }
             footer.site-footer {
                 position: relative;
                 margin-top: auto;
@@ -70,7 +64,7 @@ function ensureFooter() {
 }
 
 // =======================
-// Apply Holiday Theme & Cursor
+// Apply Holiday Theme & Cursors
 // =======================
 function setHolidayTheme() {
     const footer = ensureFooter();
@@ -105,124 +99,77 @@ function setHolidayTheme() {
     // Holiday Checks
     // =======================
     if ((month === 12 && day >= 25) || (month === 12 && day <= 31)) {
-        // Christmas
         holidayClass = 'holiday-christmas';
         mascotFile = 'christmasmascot.png';
-        bgColor = '#00A53C';
-        textColor = '#ffffff';
-        linkColor = '#ffffff';
-        navBg = '#E82B38';
-        navText = '#ffffff';
-        menuBg = '#00A53C';
-        menuText = '#ffffff';
+        bgColor = '#00A53C'; textColor = '#fff'; linkColor = '#fff';
+        navBg = '#E82B38'; navText = '#fff';
+        menuBg = '#00A53C'; menuText = '#fff';
         hoverBg = 'rgba(255,255,255,0.2)';
-        mainBg = '#E82B38';
-        mainText = '#ffffff';
-        footerBg = '#E82B38';
-        footerText = '#ffffff';
-        cursorDefault = 'img/christmas_cursor.png'; // optional themed cursor
+        mainBg = '#E82B38'; mainText = '#fff';
+        footerBg = '#E82B38'; footerText = '#fff';
+        cursorDefault = 'img/christmas_cursor.png';
     } else if (month === 10 && day >= 25 && day <= 31) {
-        // Halloween
         holidayClass = 'holiday-halloween';
         mascotFile = 'halloweenmascot.png';
-        bgColor = 'orange';
-        textColor = 'black';
-        linkColor = 'black';
-        navBg = 'black';
-        navText = 'white';
-        menuBg = 'black';
-        menuText = 'white';
+        bgColor = 'orange'; textColor = 'black'; linkColor = 'black';
+        navBg = 'black'; navText = 'white';
+        menuBg = 'black'; menuText = 'white';
         hoverBg = 'orange';
-        mainBg = 'orange';
-        mainText = 'black';
-        footerBg = 'black';
-        footerText = 'white';
+        mainBg = 'orange'; mainText = 'black';
+        footerBg = 'black'; footerText = 'white';
         cursorDefault = 'img/halloween_cursor.png';
     } else if (month === 3 && day === 17) {
-        // St. Patrick's Day
         holidayClass = 'holiday-stpatricks';
         mascotFile = 'stpatricksmascot.png';
-        bgColor = '#009E60';
-        textColor = '#FFD700';
-        linkColor = '#FFD700';
-        navBg = '#008551';
-        navText = '#FFD700';
-        menuBg = '#009E60';
-        menuText = '#FFD700';
+        bgColor = '#009E60'; textColor = '#FFD700'; linkColor = '#FFD700';
+        navBg = '#008551'; navText = '#FFD700';
+        menuBg = '#009E60'; menuText = '#FFD700';
         hoverBg = '#00A53C';
-        mainBg = '#008551';
-        mainText = '#FFD700';
-        footerBg = '#008551';
-        footerText = '#FFD700';
+        mainBg = '#008551'; mainText = '#FFD700';
+        footerBg = '#008551'; footerText = '#FFD700';
         cursorDefault = 'img/stpatrick_cursor.png';
     } else if (month === 7 && day === 4) {
-        // Fourth of July
         holidayClass = 'holiday-fourthofjuly';
         mascotFile = 'fourthofjulymascot.png';
-        bgColor = '#1F61C5';
-        textColor = 'white';
-        linkColor = '#bf0a30';
-        navBg = '#E82B38';
-        navText = '#fff';
-        menuBg = '#1F61C5';
-        menuText = '#fff';
+        bgColor = '#1F61C5'; textColor = 'white'; linkColor = '#bf0a30';
+        navBg = '#E82B38'; navText = '#fff';
+        menuBg = '#1F61C5'; menuText = '#fff';
         hoverBg = '#bf0a30';
-        mainBg = '#E82B38';
-        mainText = '#fff';
-        footerBg = '#E82B38';
-        footerText = '#fff';
+        mainBg = '#E82B38'; mainText = '#fff';
+        footerBg = '#E82B38'; footerText = '#fff';
         cursorDefault = 'img/fourth_cursor.png';
     } else if (month === 2 && day === 14) {
-        // Valentine's Day
         holidayClass = 'holiday-valentinesday';
         mascotFile = 'valentinesmascot.png';
-        bgColor = '#E3A8C6';
-        textColor = 'white';
-        linkColor = '#E54551';
-        navBg = '#E82B38';
-        navText = '#fff';
-        menuBg = '#E3A8C6';
-        menuText = '#fff';
+        bgColor = '#E3A8C6'; textColor = 'white'; linkColor = '#E54551';
+        navBg = '#E82B38'; navText = '#fff';
+        menuBg = '#E3A8C6'; menuText = '#fff';
         hoverBg = '#E54551';
-        mainBg = '#E82B38';
-        mainText = '#fff';
-        footerBg = '#E82B38';
-        footerText = '#fff';
+        mainBg = '#E82B38'; mainText = '#fff';
+        footerBg = '#E82B38'; footerText = '#fff';
         cursorDefault = 'img/valentine_cursor.png';
     } else if (month === 3 && day === 10) {
-        // Birthday
         holidayClass = 'holiday-birthday';
         mascotFile = 'birthdaymascot.png';
-        mainBg = '#F3E5AB';
-        mainText = '#F5E5D5';
-        navBg = '#ADCFE9';
-        navText = '#fff';
-        menuBg = '#ADCFE9';
-        menuText = '#fff';
+        mainBg = '#F3E5AB'; mainText = '#F5E5D5';
+        navBg = '#ADCFE9'; navText = '#fff';
+        menuBg = '#ADCFE9'; menuText = '#fff';
         hoverBg = '#8CC4E0';
         linkColor = '#E54551';
-        footerBg = '#ADCFE9';
-        footerText = '#fff';
+        footerBg = '#ADCFE9'; footerText = '#fff';
     } else if (month === 4 && day >= 1 && day <= 7) {
-        // Easter
         holidayClass = 'holiday-easter';
         mascotFile = 'eastermascot.png';
-        bgColor = '#FFF0F5';
-        textColor = '#6A0DAD';
-        linkColor = '#6A0DAD';
-        navBg = '#FFD700';
-        navText = '#6A0DAD';
-        menuBg = '#FFF0F5';
-        menuText = '#6A0DAD';
+        bgColor = '#FFF0F5'; textColor = '#6A0DAD'; linkColor = '#6A0DAD';
+        navBg = '#FFD700'; navText = '#6A0DAD';
+        menuBg = '#FFF0F5'; menuText = '#6A0DAD';
         hoverBg = '#FFC0CB';
-        mainBg = '#FFD700';
-        mainText = '#6A0DAD';
-        footerBg = '#FFD700';
-        footerText = '#6A0DAD';
+        mainBg = '#FFD700'; mainText = '#6A0DAD';
+        footerBg = '#FFD700'; footerText = '#6A0DAD';
     }
 
     // =======================
-    // Apply theme
+    // Apply Theme Colors & Mascot
     // =======================
     if (holidayClass) {
         document.body.classList.add(holidayClass);
@@ -253,19 +200,32 @@ function setHolidayTheme() {
     }
 
     // =======================
-    // Apply Custom Cursor
+    // Apply Robust Custom Cursors
     // =======================
-    document.body.style.cursor = `url("${cursorDefault}") 1 1, auto`;
+    (function applyCursor() {
+        const styleEl = document.createElement('style');
+        styleEl.innerHTML = `
+            /* Default cursor */
+            body, body *:not(input):not(textarea):not([contenteditable]) {
+                cursor: url("${cursorDefault}") 1 1, auto !important;
+            }
 
-    const pointerElements = document.querySelectorAll('a, button, [role="button"], .clickable');
-    pointerElements.forEach(el => {
-        el.style.cursor = `url("${cursorPointer}") 10 4, pointer`;
-        el.addEventListener('mousedown', () => el.style.cursor = `url("${cursorGrab}") 8 8, grabbing`);
-        el.addEventListener('mouseup', () => el.style.cursor = `url("${cursorPointer}") 10 4, pointer`);
-    });
+            /* Pointer cursor */
+            a, button, [role="button"], .clickable, .accordion-toggle, .accordion-content a {
+                cursor: url("${cursorPointer}") 10 4, pointer !important;
+            }
 
-    const textElements = document.querySelectorAll('input, textarea, [contenteditable]');
-    textElements.forEach(el => el.style.cursor = 'text');
+            /* Active/grabbing */
+            a:active, button:active, [role="button"]:active, .clickable:active,
+            .accordion-toggle:active, .accordion-content a:active {
+                cursor: url("${cursorGrab}") 8 8, grabbing !important;
+            }
+
+            /* Text cursor */
+            input, textarea, [contenteditable] { cursor: text !important; }
+        `;
+        document.head.appendChild(styleEl);
+    })();
 }
 
 // =======================
