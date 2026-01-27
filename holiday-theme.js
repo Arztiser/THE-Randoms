@@ -27,19 +27,16 @@ function ensureFooter() {
                 height: 100%;
                 margin: 0;
             }
-
             body {
                 display: flex;
                 flex-direction: column;
                 min-height: 100vh;
                 font-family: 'Jersey 10', sans-serif;
             }
-
             main.content, .container, .page-content {
                 flex: 1 0 auto;
                 box-sizing: border-box;
             }
-
             footer.site-footer {
                 position: relative;
                 margin-top: auto;
@@ -55,7 +52,6 @@ function ensureFooter() {
                 z-index: 1000;
                 overflow: visible;
             }
-
             #footer-mascot {
                 height: 50px;
                 max-height: 100%;
@@ -63,7 +59,6 @@ function ensureFooter() {
                 cursor: pointer;
                 transition: transform 0.2s ease;
             }
-
             #footer-mascot:hover {
                 transform: scale(1.1) rotate(-5deg);
             }
@@ -75,7 +70,7 @@ function ensureFooter() {
 }
 
 // =======================
-// Apply Holiday Theme
+// Apply Holiday Theme & Cursor
 // =======================
 function setHolidayTheme() {
     const footer = ensureFooter();
@@ -101,7 +96,10 @@ function setHolidayTheme() {
         mainBg = '#E82B38',
         mainText = '#fff',
         footerBg = '#333',
-        footerText = '#f2f2f2';
+        footerText = '#f2f2f2',
+        cursorDefault = 'img/cursor.png',
+        cursorPointer = 'img/hand.png',
+        cursorGrab = 'img/handgrab.png';
 
     // =======================
     // Holiday Checks
@@ -122,6 +120,7 @@ function setHolidayTheme() {
         mainText = '#ffffff';
         footerBg = '#E82B38';
         footerText = '#ffffff';
+        cursorDefault = 'img/christmas_cursor.png'; // optional themed cursor
     } else if (month === 10 && day >= 25 && day <= 31) {
         // Halloween
         holidayClass = 'holiday-halloween';
@@ -138,6 +137,7 @@ function setHolidayTheme() {
         mainText = 'black';
         footerBg = 'black';
         footerText = 'white';
+        cursorDefault = 'img/halloween_cursor.png';
     } else if (month === 3 && day === 17) {
         // St. Patrick's Day
         holidayClass = 'holiday-stpatricks';
@@ -154,6 +154,7 @@ function setHolidayTheme() {
         mainText = '#FFD700';
         footerBg = '#008551';
         footerText = '#FFD700';
+        cursorDefault = 'img/stpatrick_cursor.png';
     } else if (month === 7 && day === 4) {
         // Fourth of July
         holidayClass = 'holiday-fourthofjuly';
@@ -170,6 +171,7 @@ function setHolidayTheme() {
         mainText = '#fff';
         footerBg = '#E82B38';
         footerText = '#fff';
+        cursorDefault = 'img/fourth_cursor.png';
     } else if (month === 2 && day === 14) {
         // Valentine's Day
         holidayClass = 'holiday-valentinesday';
@@ -186,6 +188,7 @@ function setHolidayTheme() {
         mainText = '#fff';
         footerBg = '#E82B38';
         footerText = '#fff';
+        cursorDefault = 'img/valentine_cursor.png';
     } else if (month === 3 && day === 10) {
         // Birthday
         holidayClass = 'holiday-birthday';
@@ -218,12 +221,12 @@ function setHolidayTheme() {
         footerText = '#6A0DAD';
     }
 
+    // =======================
+    // Apply theme
+    // =======================
     if (holidayClass) {
         document.body.classList.add(holidayClass);
-
-        if (mascotImg) {
-            mascotImg.src = `img/${mascotFile}`;
-        }
+        if (mascotImg) mascotImg.src = `img/${mascotFile}`;
 
         document.documentElement.style.backgroundColor = bgColor;
         document.body.style.backgroundColor = bgColor;
@@ -245,17 +248,25 @@ function setHolidayTheme() {
             body.${holidayClass} .clickable-section { background-color: ${mainBg}; color: ${mainText}; }
             body.${holidayClass} .site-footer { background-color: ${footerBg}; color: ${footerText}; }
             body.${holidayClass} .site-footer a { color: ${footerText}; }
+        `;
+        document.head.appendChild(styleSheet);
+    }
 
-            (function() {
-    const cursorStyle = document.createElement('style');
-    cursorStyle.innerHTML = `
-        body { cursor: url("img/cursor.png") 1 1, auto; }
-        a, button, [role="button"], .clickable { cursor: url("img/hand.png") 10 4, pointer; }
-        a:active, button:active, [role="button"]:active, .clickable:active { cursor: url("img/handgrab.png") 8 8, grabbing; }
-        input, textarea, [contenteditable] { cursor: text; }
-    `;
-    document.head.appendChild(cursorStyle);
-})();
+    // =======================
+    // Apply Custom Cursor
+    // =======================
+    document.body.style.cursor = `url("${cursorDefault}") 1 1, auto`;
+
+    const pointerElements = document.querySelectorAll('a, button, [role="button"], .clickable');
+    pointerElements.forEach(el => {
+        el.style.cursor = `url("${cursorPointer}") 10 4, pointer`;
+        el.addEventListener('mousedown', () => el.style.cursor = `url("${cursorGrab}") 8 8, grabbing`);
+        el.addEventListener('mouseup', () => el.style.cursor = `url("${cursorPointer}") 10 4, pointer`);
+    });
+
+    const textElements = document.querySelectorAll('input, textarea, [contenteditable]');
+    textElements.forEach(el => el.style.cursor = 'text');
+}
 
 // =======================
 // Daily Splash Screen
