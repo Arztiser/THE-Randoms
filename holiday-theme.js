@@ -78,7 +78,6 @@ function setHolidayTheme() {
     // =======================
     // Holiday Checks
     // =======================
-    // Christmas Dec 25-31
     if ((month===12 && day>=25) || (month===12 && day<=31)){
         holidayClass='holiday-christmas'; mascotFile='christmasmascot.png';
         bgColor='#00A53C'; textColor='#fff'; linkColor='#fff';
@@ -86,7 +85,6 @@ function setHolidayTheme() {
         hoverBg='rgba(255,255,255,0.2)'; mainBg='#E82B38'; mainText='#fff';
         footerBg='#E82B38'; footerText='#fff';
     }
-    // Halloween Oct 25-31
     else if(month===10 && day>=25 && day<=31){
         holidayClass='holiday-halloween'; mascotFile='halloweenmascot.png';
         bgColor='orange'; textColor='black'; linkColor='black';
@@ -94,7 +92,6 @@ function setHolidayTheme() {
         hoverBg='orange'; mainBg='orange'; mainText='black';
         footerBg='black'; footerText='white';
     }
-    // St. Patrick's Day Mar 17
     else if(month===3 && day===17){
         holidayClass='holiday-stpatricks'; mascotFile='stpatricksmascot.png';
         bgColor='#009E60'; textColor='#FFD700'; linkColor='#FFD700';
@@ -102,7 +99,6 @@ function setHolidayTheme() {
         hoverBg='#00A53C'; mainBg='#008551'; mainText='#FFD700';
         footerBg='#008551'; footerText='#FFD700';
     }
-    // Fourth of July Jul 4
     else if(month===7 && day===4){
         holidayClass='holiday-fourthofjuly'; mascotFile='fourthofjulymascot.png';
         bgColor='#1F61C5'; textColor='white'; linkColor='#bf0a30';
@@ -110,7 +106,6 @@ function setHolidayTheme() {
         hoverBg='#bf0a30'; mainBg='#E82B38'; mainText='#fff';
         footerBg='#E82B38'; footerText='#fff';
     }
-    // Valentine's Day Feb 14
     else if(month===2 && day===14){
         holidayClass='holiday-valentinesday'; mascotFile='valentinesmascot.png';
         bgColor='#E3A8C6'; textColor='white'; linkColor='#E54551';
@@ -118,7 +113,6 @@ function setHolidayTheme() {
         hoverBg='#E54551'; mainBg='#E82B38'; mainText='#fff';
         footerBg='#E82B38'; footerText='#fff';
     }
-    // Birthday Mar 10
     else if(month===3 && day===10){
         holidayClass='holiday-birthday'; mascotFile='birthdaymascot.png';
         bgColor='#F3E5AB'; textColor='#F5E5D5'; linkColor='#E54551';
@@ -126,7 +120,6 @@ function setHolidayTheme() {
         hoverBg='#8CC4E0'; mainBg='#ADCFE9'; mainText='#fff';
         footerBg='#ADCFE9'; footerText='#fff';
     }
-    // Easter Apr 1-7
     else if(month===4 && day>=1 && day<=7){
         holidayClass='holiday-easter'; mascotFile='eastermascot.png';
         bgColor='#FFF0F5'; textColor='#6A0DAD'; linkColor='#6A0DAD';
@@ -135,7 +128,6 @@ function setHolidayTheme() {
         footerBg='#FFD700'; footerText='#6A0DAD';
     }
 
-    // Apply holiday theme
     if(holidayClass){
         document.body.classList.add(holidayClass);
         if(mascotImg) mascotImg.src=`img/${mascotFile}`;
@@ -163,7 +155,7 @@ function setHolidayTheme() {
     }
 
     // =======================
-    // Custom Cursor
+    // Custom Cursor (Fully Fixed)
     // =======================
     (function createCursor(){
         const style=document.createElement('style');
@@ -174,9 +166,13 @@ function setHolidayTheme() {
         cursor.id='custom-cursor';
         cursor.src='img/cursor.png';
         cursor.style.cssText=`
-            position:fixed;top:0;left:0;width:32px;height:32px;
-            pointer-events:none;transform:translate(-50%,-50%);
-            z-index:99999;display:block;
+            position:fixed;
+            top:0; left:0;
+            width:32px; height:32px;
+            pointer-events:none;
+            transform:translate(-50%,-50%);
+            z-index:99999;
+            display:block;
         `;
         document.body.appendChild(cursor);
 
@@ -184,9 +180,13 @@ function setHolidayTheme() {
             cursor.style.transform=`translate(${e.clientX}px,${e.clientY}px)`;
             const el=document.elementFromPoint(e.clientX,e.clientY);
             if(!el) return;
-            if(el.matches('a,button,[role="button"],.clickable,.accordion-toggle,.accordion-content a')) cursor.src='img/hand.png';
-            else if(el.matches('input,textarea,[contenteditable]')) cursor.src='';
-            else cursor.src='img/cursor.png';
+            if(el.matches('a, button, [role="button"], .clickable, .accordion-toggle, .accordion-content a')){
+                cursor.src='img/hand.png';
+            } else if(el.matches('input, textarea, [contenteditable]')){
+                cursor.src='';
+            } else {
+                cursor.src='img/cursor.png';
+            }
         }
 
         document.addEventListener('mousemove',updateCursor);
