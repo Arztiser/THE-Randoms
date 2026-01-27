@@ -64,7 +64,7 @@ function ensureFooter() {
 }
 
 // =======================
-// Apply Holiday Theme & Setup Cursors
+// Apply Holiday Theme
 // =======================
 function setHolidayTheme() {
     const footer = ensureFooter();
@@ -184,50 +184,59 @@ function setHolidayTheme() {
     }
 
     // =======================
-    // Pointer-Follow Custom Cursor
+    // Full Interactive Custom Cursor
     // =======================
-    (function createFollowCursor() {
-        const cursor = document.createElement("img");
-        cursor.id = "follow-cursor";
-        cursor.src = "img/cursor.png"; // default
+    (function createCustomCursor() {
+        // Hide default system cursor
+        const style = document.createElement('style');
+        style.innerHTML = `body, body * { cursor: none !important; }`;
+        document.head.appendChild(style);
+
+        // Create cursor element
+        const cursor = document.createElement('img');
+        cursor.id = 'custom-cursor';
+        cursor.src = 'img/cursor.png'; // default
         cursor.style.cssText = `
             position: fixed;
             top: 0;
             left: 0;
-            width: 24px;
-            height: 24px;
-            pointer-events: none; /* ensures clickable elements work */
+            width: 32px;
+            height: 32px;
+            pointer-events: none;
             transform: translate(-50%, -50%);
             z-index: 99999;
-            transition: transform 0.05s ease;
+            transition: transform 0.05s linear;
         `;
         document.body.appendChild(cursor);
 
-        document.addEventListener("mousemove", e => {
+        // Track mouse
+        document.addEventListener('mousemove', e => {
             cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
         });
 
-        // Hover/click effects for interactive elements
-        function updateCursorEvents() {
-            const pointerElements = document.querySelectorAll('a, button, [role="button"], .clickable, .accordion-toggle, .accordion-content a');
-            pointerElements.forEach(el => {
-                el.addEventListener('mouseenter', () => cursor.src = "img/hand.png");
-                el.addEventListener('mouseleave', () => cursor.src = "img/cursor.png");
-                el.addEventListener('mousedown', () => cursor.src = "img/handgrab.png");
-                el.addEventListener('mouseup', () => cursor.src = "img/hand.png");
+        // Update cursor on hover/click
+        function updateCursor() {
+            const interactives = document.querySelectorAll(
+                'a, button, [role="button"], .clickable, .accordion-toggle, .accordion-content a'
+            );
+            interactives.forEach(el => {
+                el.addEventListener('mouseenter', () => cursor.src = 'img/hand.png');
+                el.addEventListener('mouseleave', () => cursor.src = 'img/cursor.png');
+                el.addEventListener('mousedown', () => cursor.src = 'img/handgrab.png');
+                el.addEventListener('mouseup', () => cursor.src = 'img/hand.png');
             });
 
-            const textElements = document.querySelectorAll('input, textarea, [contenteditable]');
-            textElements.forEach(el => {
-                el.addEventListener('mouseenter', () => cursor.src = "");
-                el.addEventListener('mouseleave', () => cursor.src = "img/cursor.png");
+            const textInputs = document.querySelectorAll('input, textarea, [contenteditable]');
+            textInputs.forEach(el => {
+                el.addEventListener('mouseenter', () => cursor.src = '');
+                el.addEventListener('mouseleave', () => cursor.src = 'img/cursor.png');
             });
         }
 
-        updateCursorEvents();
+        updateCursor();
 
-        // Optional: observe new elements dynamically
-        const observer = new MutationObserver(updateCursorEvents);
+        // Observe dynamically added elements
+        const observer = new MutationObserver(updateCursor);
         observer.observe(document.body, { childList: true, subtree: true });
     })();
 }
