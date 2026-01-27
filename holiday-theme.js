@@ -247,9 +247,9 @@ function setHolidayTheme() {
             body.${holidayClass} .site-footer a { color: ${footerText}; }
 
             /* Cursors */
-            body.${holidayClass} { cursor: url("/img/cursor.png") 1 1, auto; }
-            body.${holidayClass} a, body.${holidayClass} button, body.${holidayClass} [role="button"], body.${holidayClass} .clickable { cursor: url("/img/hand.png") 10 4, pointer; }
-            body.${holidayClass} a:active, body.${holidayClass} button:active, body.${holidayClass} [role="button"]:active, body.${holidayClass} .clickable:active { cursor: url("/img/handgrab.png") 8 8, grabbing; }
+            body.${holidayClass} { cursor: url("img/cursor.png") 1 1, auto; }
+            body.${holidayClass} a, body.${holidayClass} button, body.${holidayClass} [role="button"], body.${holidayClass} .clickable { cursor: url("img/hand.png") 10 4, pointer; }
+            body.${holidayClass} a:active, body.${holidayClass} button:active, body.${holidayClass} [role="button"]:active, body.${holidayClass} .clickable:active { cursor: url("img/handgrab.png") 8 8, grabbing; }
             body.${holidayClass} input, body.${holidayClass} textarea, body.${holidayClass} [contenteditable] { cursor: text; }
         `;
         document.head.appendChild(styleSheet);
