@@ -64,7 +64,7 @@ function ensureFooter() {
 }
 
 // =======================
-// Apply Holiday Theme & Cursors
+// Apply Holiday Theme & Setup Cursors
 // =======================
 function setHolidayTheme() {
     const footer = ensureFooter();
@@ -78,22 +78,11 @@ function setHolidayTheme() {
     let mascotFile = 'Mascot.png';
 
     // Default theme
-    let bgColor = '#fff',
-        textColor = '#000',
-        linkColor = '#000',
-        navBg = '#333',
-        navText = '#f2f2f2',
-        menuBg = '#333',
-        menuText = '#f2f2f2',
-        hoverBg = 'rgba(255,255,255,0.1)',
-        hoverText = '#fff',
-        mainBg = '#E82B38',
-        mainText = '#fff',
-        footerBg = '#333',
-        footerText = '#f2f2f2',
-        cursorDefault = 'img/cursor.png',
-        cursorPointer = 'img/hand.png',
-        cursorGrab = 'img/handgrab.png';
+    let bgColor = '#fff', textColor = '#000', linkColor = '#000',
+        navBg = '#333', navText = '#f2f2f2', menuBg = '#333', menuText = '#f2f2f2',
+        hoverBg = 'rgba(255,255,255,0.1)', hoverText = '#fff',
+        mainBg = '#E82B38', mainText = '#fff',
+        footerBg = '#333', footerText = '#f2f2f2';
 
     // =======================
     // Holiday Checks
@@ -107,7 +96,6 @@ function setHolidayTheme() {
         hoverBg = 'rgba(255,255,255,0.2)';
         mainBg = '#E82B38'; mainText = '#fff';
         footerBg = '#E82B38'; footerText = '#fff';
-        cursorDefault = 'img/christmas_cursor.png';
     } else if (month === 10 && day >= 25 && day <= 31) {
         holidayClass = 'holiday-halloween';
         mascotFile = 'halloweenmascot.png';
@@ -117,7 +105,6 @@ function setHolidayTheme() {
         hoverBg = 'orange';
         mainBg = 'orange'; mainText = 'black';
         footerBg = 'black'; footerText = 'white';
-        cursorDefault = 'img/halloween_cursor.png';
     } else if (month === 3 && day === 17) {
         holidayClass = 'holiday-stpatricks';
         mascotFile = 'stpatricksmascot.png';
@@ -127,7 +114,6 @@ function setHolidayTheme() {
         hoverBg = '#00A53C';
         mainBg = '#008551'; mainText = '#FFD700';
         footerBg = '#008551'; footerText = '#FFD700';
-        cursorDefault = 'img/stpatrick_cursor.png';
     } else if (month === 7 && day === 4) {
         holidayClass = 'holiday-fourthofjuly';
         mascotFile = 'fourthofjulymascot.png';
@@ -137,7 +123,6 @@ function setHolidayTheme() {
         hoverBg = '#bf0a30';
         mainBg = '#E82B38'; mainText = '#fff';
         footerBg = '#E82B38'; footerText = '#fff';
-        cursorDefault = 'img/fourth_cursor.png';
     } else if (month === 2 && day === 14) {
         holidayClass = 'holiday-valentinesday';
         mascotFile = 'valentinesmascot.png';
@@ -147,7 +132,6 @@ function setHolidayTheme() {
         hoverBg = '#E54551';
         mainBg = '#E82B38'; mainText = '#fff';
         footerBg = '#E82B38'; footerText = '#fff';
-        cursorDefault = 'img/valentine_cursor.png';
     } else if (month === 3 && day === 10) {
         holidayClass = 'holiday-birthday';
         mascotFile = 'birthdaymascot.png';
@@ -200,31 +184,51 @@ function setHolidayTheme() {
     }
 
     // =======================
-    // Apply Robust Custom Cursors
+    // Pointer-Follow Custom Cursor
     // =======================
-    (function applyCursor() {
-        const styleEl = document.createElement('style');
-        styleEl.innerHTML = `
-            /* Default cursor */
-            body, body *:not(input):not(textarea):not([contenteditable]) {
-                cursor: url("${cursorDefault}") 1 1, auto !important;
-            }
-
-            /* Pointer cursor */
-            a, button, [role="button"], .clickable, .accordion-toggle, .accordion-content a {
-                cursor: url("${cursorPointer}") 10 4, pointer !important;
-            }
-
-            /* Active/grabbing */
-            a:active, button:active, [role="button"]:active, .clickable:active,
-            .accordion-toggle:active, .accordion-content a:active {
-                cursor: url("${cursorGrab}") 8 8, grabbing !important;
-            }
-
-            /* Text cursor */
-            input, textarea, [contenteditable] { cursor: text !important; }
+    (function createFollowCursor() {
+        const cursor = document.createElement("img");
+        cursor.id = "follow-cursor";
+        cursor.src = "img/cursor.png"; // default
+        cursor.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 24px;
+            height: 24px;
+            pointer-events: none; /* ensures clickable elements work */
+            transform: translate(-50%, -50%);
+            z-index: 99999;
+            transition: transform 0.05s ease;
         `;
-        document.head.appendChild(styleEl);
+        document.body.appendChild(cursor);
+
+        document.addEventListener("mousemove", e => {
+            cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+        });
+
+        // Hover/click effects for interactive elements
+        function updateCursorEvents() {
+            const pointerElements = document.querySelectorAll('a, button, [role="button"], .clickable, .accordion-toggle, .accordion-content a');
+            pointerElements.forEach(el => {
+                el.addEventListener('mouseenter', () => cursor.src = "img/hand.png");
+                el.addEventListener('mouseleave', () => cursor.src = "img/cursor.png");
+                el.addEventListener('mousedown', () => cursor.src = "img/handgrab.png");
+                el.addEventListener('mouseup', () => cursor.src = "img/hand.png");
+            });
+
+            const textElements = document.querySelectorAll('input, textarea, [contenteditable]');
+            textElements.forEach(el => {
+                el.addEventListener('mouseenter', () => cursor.src = "");
+                el.addEventListener('mouseleave', () => cursor.src = "img/cursor.png");
+            });
+        }
+
+        updateCursorEvents();
+
+        // Optional: observe new elements dynamically
+        const observer = new MutationObserver(updateCursorEvents);
+        observer.observe(document.body, { childList: true, subtree: true });
     })();
 }
 
