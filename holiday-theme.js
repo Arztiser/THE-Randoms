@@ -88,8 +88,7 @@ function setHolidayTheme() {
     // Holiday Checks
     // =======================
     if ((month === 12 && day >= 25) || (month === 12 && day <= 31)) {
-        holidayClass = 'holiday-christmas';
-        mascotFile = 'christmasmascot.png';
+        holidayClass = 'holiday-christmas'; mascotFile = 'christmasmascot.png';
         bgColor = '#00A53C'; textColor = '#fff'; linkColor = '#fff';
         navBg = '#E82B38'; navText = '#fff';
         menuBg = '#00A53C'; menuText = '#fff';
@@ -97,8 +96,7 @@ function setHolidayTheme() {
         mainBg = '#E82B38'; mainText = '#fff';
         footerBg = '#E82B38'; footerText = '#fff';
     } else if (month === 10 && day >= 25 && day <= 31) {
-        holidayClass = 'holiday-halloween';
-        mascotFile = 'halloweenmascot.png';
+        holidayClass = 'holiday-halloween'; mascotFile = 'halloweenmascot.png';
         bgColor = 'orange'; textColor = 'black'; linkColor = 'black';
         navBg = 'black'; navText = 'white';
         menuBg = 'black'; menuText = 'white';
@@ -106,8 +104,7 @@ function setHolidayTheme() {
         mainBg = 'orange'; mainText = 'black';
         footerBg = 'black'; footerText = 'white';
     } else if (month === 3 && day === 17) {
-        holidayClass = 'holiday-stpatricks';
-        mascotFile = 'stpatricksmascot.png';
+        holidayClass = 'holiday-stpatricks'; mascotFile = 'stpatricksmascot.png';
         bgColor = '#009E60'; textColor = '#FFD700'; linkColor = '#FFD700';
         navBg = '#008551'; navText = '#FFD700';
         menuBg = '#009E60'; menuText = '#FFD700';
@@ -115,8 +112,7 @@ function setHolidayTheme() {
         mainBg = '#008551'; mainText = '#FFD700';
         footerBg = '#008551'; footerText = '#FFD700';
     } else if (month === 7 && day === 4) {
-        holidayClass = 'holiday-fourthofjuly';
-        mascotFile = 'fourthofjulymascot.png';
+        holidayClass = 'holiday-fourthofjuly'; mascotFile = 'fourthofjulymascot.png';
         bgColor = '#1F61C5'; textColor = 'white'; linkColor = '#bf0a30';
         navBg = '#E82B38'; navText = '#fff';
         menuBg = '#1F61C5'; menuText = '#fff';
@@ -124,8 +120,7 @@ function setHolidayTheme() {
         mainBg = '#E82B38'; mainText = '#fff';
         footerBg = '#E82B38'; footerText = '#fff';
     } else if (month === 2 && day === 14) {
-        holidayClass = 'holiday-valentinesday';
-        mascotFile = 'valentinesmascot.png';
+        holidayClass = 'holiday-valentinesday'; mascotFile = 'valentinesmascot.png';
         bgColor = '#E3A8C6'; textColor = 'white'; linkColor = '#E54551';
         navBg = '#E82B38'; navText = '#fff';
         menuBg = '#E3A8C6'; menuText = '#fff';
@@ -133,8 +128,7 @@ function setHolidayTheme() {
         mainBg = '#E82B38'; mainText = '#fff';
         footerBg = '#E82B38'; footerText = '#fff';
     } else if (month === 3 && day === 10) {
-        holidayClass = 'holiday-birthday';
-        mascotFile = 'birthdaymascot.png';
+        holidayClass = 'holiday-birthday'; mascotFile = 'birthdaymascot.png';
         mainBg = '#F3E5AB'; mainText = '#F5E5D5';
         navBg = '#ADCFE9'; navText = '#fff';
         menuBg = '#ADCFE9'; menuText = '#fff';
@@ -142,8 +136,7 @@ function setHolidayTheme() {
         linkColor = '#E54551';
         footerBg = '#ADCFE9'; footerText = '#fff';
     } else if (month === 4 && day >= 1 && day <= 7) {
-        holidayClass = 'holiday-easter';
-        mascotFile = 'eastermascot.png';
+        holidayClass = 'holiday-easter'; mascotFile = 'eastermascot.png';
         bgColor = '#FFF0F5'; textColor = '#6A0DAD'; linkColor = '#6A0DAD';
         navBg = '#FFD700'; navText = '#6A0DAD';
         menuBg = '#FFF0F5'; menuText = '#6A0DAD';
@@ -153,12 +146,11 @@ function setHolidayTheme() {
     }
 
     // =======================
-    // Apply Theme Colors & Mascot
+    // Apply Theme
     // =======================
     if (holidayClass) {
         document.body.classList.add(holidayClass);
         if (mascotImg) mascotImg.src = `img/${mascotFile}`;
-
         document.documentElement.style.backgroundColor = bgColor;
         document.body.style.backgroundColor = bgColor;
         document.body.style.color = textColor;
@@ -184,18 +176,17 @@ function setHolidayTheme() {
     }
 
     // =======================
-    // Full Interactive Custom Cursor
+    // Custom Cursor (no hyper-specific spots)
     // =======================
-    (function createCustomCursor() {
-        // Hide default system cursor
+    (function createCursor() {
+        // Hide default cursor
         const style = document.createElement('style');
         style.innerHTML = `body, body * { cursor: none !important; }`;
         document.head.appendChild(style);
 
-        // Create cursor element
         const cursor = document.createElement('img');
         cursor.id = 'custom-cursor';
-        cursor.src = 'img/cursor.png'; // default
+        cursor.src = 'img/cursor.png';
         cursor.style.cssText = `
             position: fixed;
             top: 0;
@@ -205,39 +196,26 @@ function setHolidayTheme() {
             pointer-events: none;
             transform: translate(-50%, -50%);
             z-index: 99999;
-            transition: transform 0.05s linear;
         `;
         document.body.appendChild(cursor);
 
-        // Track mouse
         document.addEventListener('mousemove', e => {
             cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+
+            const el = document.elementFromPoint(e.clientX, e.clientY);
+            if (!el) return;
+
+            if (el.matches('a, button, [role="button"], .clickable, .accordion-toggle, .accordion-content a')) {
+                cursor.src = 'img/hand.png';
+            } else if (el.matches('input, textarea, [contenteditable]')) {
+                cursor.src = '';
+            } else {
+                cursor.src = 'img/cursor.png';
+            }
         });
 
-        // Update cursor on hover/click
-        function updateCursor() {
-            const interactives = document.querySelectorAll(
-                'a, button, [role="button"], .clickable, .accordion-toggle, .accordion-content a'
-            );
-            interactives.forEach(el => {
-                el.addEventListener('mouseenter', () => cursor.src = 'img/hand.png');
-                el.addEventListener('mouseleave', () => cursor.src = 'img/cursor.png');
-                el.addEventListener('mousedown', () => cursor.src = 'img/handgrab.png');
-                el.addEventListener('mouseup', () => cursor.src = 'img/hand.png');
-            });
-
-            const textInputs = document.querySelectorAll('input, textarea, [contenteditable]');
-            textInputs.forEach(el => {
-                el.addEventListener('mouseenter', () => cursor.src = '');
-                el.addEventListener('mouseleave', () => cursor.src = 'img/cursor.png');
-            });
-        }
-
-        updateCursor();
-
-        // Observe dynamically added elements
-        const observer = new MutationObserver(updateCursor);
-        observer.observe(document.body, { childList: true, subtree: true });
+        document.addEventListener('mousedown', () => cursor.src = 'img/handgrab.png');
+        document.addEventListener('mouseup', () => cursor.src = 'img/cursor.png');
     })();
 }
 
