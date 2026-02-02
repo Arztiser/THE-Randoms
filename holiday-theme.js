@@ -265,6 +265,30 @@ function initDarkMode() {
     html.dark-mode .site-footer a { color: #fff !important; }
   `;
 
+html.dark-mode .accordion-toggle {
+    background-color: #e82b38 !important;
+    color: #fff !important;
+  }
+
+  html.dark-mode .accordion-toggle:hover {
+    background-color: #bf1f2c !important;
+  }
+
+  html.dark-mode .accordion-content {
+    background-color: #1a1a1a !important;
+  }
+
+  html.dark-mode .accordion-content a {
+    color: #8cc8ff !important;
+    background-color: transparent !important;
+  }
+
+  html.dark-mode .accordion-content a:hover {
+    background-color: #bf1f2c !important;
+    color: #fff !important;
+  }
+`;
+  
   function apply(e) {
     document.documentElement.classList.toggle("dark-mode", e.matches);
   }
