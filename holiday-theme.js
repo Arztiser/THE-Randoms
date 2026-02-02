@@ -1,10 +1,12 @@
-// Ensure footer exists
+// =======================
+// Footer Creation
+// =======================
 function ensureFooter() {
-  let footer = document.querySelector('.site-footer');
+  let footer = document.querySelector(".site-footer");
 
   if (!footer) {
-    footer = document.createElement('footer');
-    footer.className = 'site-footer';
+    footer = document.createElement("footer");
+    footer.className = "site-footer";
     footer.innerHTML = `
       <div class="footer-left">
         <p>&copy; <span id="year"></span> THE Randoms</p>
@@ -16,49 +18,43 @@ function ensureFooter() {
       </div>
     `;
     document.body.appendChild(footer);
-
     document.getElementById("year").textContent = new Date().getFullYear();
+  }
 
-    // Base footer + layout CSS
-    const style = document.createElement('style');
-    style.innerHTML = `
+  // Base footer styles (only once)
+  if (!document.getElementById("base-footer-style")) {
+    const style = document.createElement("style");
+    style.id = "base-footer-style";
+    style.textContent = `
       html, body {
-        height: 100%;
         margin: 0;
+        min-height: 100%;
       }
 
       body {
         display: flex;
         flex-direction: column;
-        min-height: 100vh;
         font-family: 'Jersey 10', sans-serif;
       }
 
-      main.content, .container, .page-content {
+      main, .container, .page-content {
         flex: 1 0 auto;
-        box-sizing: border-box;
       }
 
-      footer.site-footer {
-        position: relative;
+      .site-footer {
         margin-top: auto;
-        width: 100%;
         min-height: 60px;
-        background-color: var(--theme-bg-color, #333);
-        color: var(--theme-topnav-color, #f2f2f2);
+        background: var(--theme-footer-bg, #333);
+        color: var(--theme-footer-text, #f2f2f2);
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 8px 20px;
         font-size: 20px;
-        z-index: 1000;
-        overflow: visible;
       }
 
       #footer-mascot {
         height: 50px;
-        max-height: 100%;
-        object-fit: contain;
         cursor: pointer;
         transition: transform 0.2s ease;
       }
@@ -73,234 +69,246 @@ function ensureFooter() {
   return footer;
 }
 
-// Apply holiday theme + mascot
-function setHolidayTheme() {
+// =======================
+// Holiday Theme Engine
+// =======================
+function applyHolidayTheme() {
   const footer = ensureFooter();
-  const mascotImg = footer.querySelector('#footer-mascot');
+  const mascot = footer.querySelector("#footer-mascot");
 
   const now = new Date();
-  const month = now.getMonth() + 1;
-  const day = now.getDate();
+  const m = now.getMonth() + 1;
+  const d = now.getDate();
 
-  let holidayClass = '';
-  let mascotFile = 'Mascot.png';
+  let theme = {
+    class: "",
+    mascot: "Mascot.png",
+    bgColor: "#fff",
+    textColor: "#000",
+    linkColor: "#000",
+    navBg: "#333",
+    navText: "#f2f2f2",
+    menuBg: "#333",
+    menuText: "#f2f2f2",
+    hoverBg: "rgba(255,255,255,0.1)",
+    hoverText: "#fff",
+    mainBg: "#E82B38",
+    mainText: "#fff",
+    footerBg: "#333",
+    footerText: "#f2f2f2"
+  };
 
-  // Theme defaults
-  let bgColor = '#fff', textColor = '#000', linkColor = '#000';
-  let navBg = '#333', navText = '#f2f2f2';
-  let menuBg = '#333', menuText = '#f2f2f2';
-  let hoverBg = 'rgba(255,255,255,0.1)', hoverText = '#fff';
-  let mainBg = '#E82B38', mainText = '#fff';
-  let footerBg = '#333', footerText = '#f2f2f2';
+  // =======================
+  // Holiday Overrides
+  // =======================
+  if ((m === 12 && d >= 25) || (m === 12 && d <= 31)) { // Christmas
+    theme.class = "holiday-christmas";
+    theme.mascot = "christmasmascot.png";
+    theme.bgColor = "#00A53C";
+    theme.textColor = "#ffffff";
+    theme.linkColor = "#ffffff";
+    theme.navBg = "#E82B38";
+    theme.navText = "#ffffff";
+    theme.menuBg = "#00A53C";
+    theme.menuText = "#ffffff";
+    theme.hoverBg = "rgba(255,255,255,0.2)";
+    theme.mainBg = "#E82B38";
+    theme.mainText = "#ffffff";
+    theme.footerBg = "#E82B38";
+    theme.footerText = "#ffffff";
 
-  // Holiday checks
-  if ((month === 12 && day >= 25) || (month === 12 && day <= 31)) {
-    holidayClass = 'holiday-christmas';
-    mascotFile = 'christmasmascot.png';
-    bgColor = '#00A53C'; textColor = '#ffffff'; linkColor = '#ffffff';
-    navBg = '#E82B38'; navText = '#ffffff';
-    menuBg = '#00A53C'; menuText = '#ffffff';
-    hoverBg = 'rgba(255,255,255,0.2)';
-    mainBg = '#E82B38'; mainText = '#ffffff';
-    footerBg = '#E82B38'; footerText = '#ffffff';
+  } else if (m === 10 && d >= 25 && d <= 31) { // Halloween
+    theme.class = "holiday-halloween";
+    theme.mascot = "halloweenmascot.png";
+    theme.bgColor = "orange";
+    theme.textColor = "black";
+    theme.linkColor = "black";
+    theme.navBg = "black";
+    theme.navText = "white";
+    theme.menuBg = "black";
+    theme.menuText = "white";
+    theme.hoverBg = "orange";
+    theme.mainBg = "orange";
+    theme.mainText = "black";
+    theme.footerBg = "black";
+    theme.footerText = "white";
 
-  } else if (month === 10 && day >= 25 && day <= 31) {
-    holidayClass = 'holiday-halloween';
-    mascotFile = 'halloweenmascot.png';
-    bgColor = 'orange'; textColor = 'black'; linkColor = 'black';
-    navBg = 'black'; navText = 'white';
-    menuBg = 'black'; menuText = 'white';
-    hoverBg = 'orange';
-    mainBg = 'orange'; mainText = 'black';
-    footerBg = 'black'; footerText = 'white';
+  } else if (m === 3 && d === 17) { // St. Patrick's
+    theme.class = "holiday-stpatricks";
+    theme.mascot = "stpatricksmascot.png";
+    theme.bgColor = "#009E60";
+    theme.textColor = "#FFD700";
+    theme.linkColor = "#FFD700";
+    theme.navBg = "#008551";
+    theme.navText = "#FFD700";
+    theme.menuBg = "#009E60";
+    theme.menuText = "#FFD700";
+    theme.hoverBg = "#00A53C";
+    theme.mainBg = "#008551";
+    theme.mainText = "#FFD700";
+    theme.footerBg = "#008551";
+    theme.footerText = "#FFD700";
 
-  } else if (month === 3 && day === 17) {
-    holidayClass = 'holiday-stpatricks';
-    mascotFile = 'stpatricksmascot.png';
-    bgColor = '#009E60'; textColor = '#FFD700'; linkColor = '#FFD700';
-    navBg = '#008551'; navText = '#FFD700';
-    menuBg = '#009E60'; menuText = '#FFD700';
-    hoverBg = '#00A53C';
-    mainBg = '#008551'; mainText = '#FFD700';
-    footerBg = '#008551'; footerText = '#FFD700';
+  } else if (m === 7 && d === 4) { // Fourth of July
+    theme.class = "holiday-fourthofjuly";
+    theme.mascot = "fourthofjulymascot.png";
+    theme.bgColor = "#1F61C5";
+    theme.textColor = "white";
+    theme.linkColor = "#bf0a30";
+    theme.navBg = "#E82B38";
+    theme.navText = "#fff";
+    theme.menuBg = "#1F61C5";
+    theme.menuText = "#fff";
+    theme.hoverBg = "#bf0a30";
+    theme.mainBg = "#E82B38";
+    theme.mainText = "#fff";
+    theme.footerBg = "#E82B38";
+    theme.footerText = "#fff";
 
-  } else if (month === 7 && day === 4) {
-    holidayClass = 'holiday-fourthofjuly';
-    mascotFile = 'fourthofjulymascot.png';
-    bgColor = '#1F61C5'; textColor = 'white'; linkColor = '#bf0a30';
-    navBg = '#E82B38'; navText = '#fff';
-    menuBg = '#1F61C5'; menuText = '#fff';
-    hoverBg = '#bf0a30';
-    mainBg = '#E82B38'; mainText = '#fff';
-    footerBg = '#E82B38'; footerText = '#fff';
+  } else if (m === 2 && d === 14) { // Valentine's
+    theme.class = "holiday-valentinesday";
+    theme.mascot = "valentinesmascot.png";
+    theme.bgColor = "#E3A8C6";
+    theme.textColor = "white";
+    theme.linkColor = "#E54551";
+    theme.navBg = "#E82B38";
+    theme.navText = "#fff";
+    theme.menuBg = "#E3A8C6";
+    theme.menuText = "#fff";
+    theme.hoverBg = "#E54551";
+    theme.mainBg = "#E82B38";
+    theme.mainText = "#fff";
+    theme.footerBg = "#E82B38";
+    theme.footerText = "#fff";
 
-  } else if (month === 2 && day === 14) {
-    holidayClass = 'holiday-valentinesday';
-    mascotFile = 'valentinesmascot.png';
-    bgColor = '#E3A8C6'; textColor = 'white'; linkColor = '#E54551';
-    navBg = '#E82B38'; navText = '#fff';
-    menuBg = '#E3A8C6'; menuText = '#fff';
-    hoverBg = '#E54551';
-    mainBg = '#E82B38'; mainText = '#fff';
-    footerBg = '#E82B38'; footerText = '#fff';
+  } else if (m === 3 && d === 10) { // Birthday
+    theme.class = "holiday-birthday";
+    theme.mascot = "birthdaymascot.png";
+    theme.mainBg = "#F3E5AB";
+    theme.mainText = "#F5E5D5";
+    theme.navBg = "#ADCFE9";
+    theme.navText = "#fff";
+    theme.footerBg = "#ADCFE9";
+    theme.footerText = "#fff";
+    theme.menuBg = "#ADCFE9";
+    theme.menuText = "#fff";
+    theme.hoverBg = "#8CC4E0";
+    theme.linkColor = "#E54551";
 
-  } else if (month === 3 && day === 10) {
-    holidayClass = 'holiday-birthday';
-    mascotFile = 'birthdaymascot.png';
-    mainBg = '#F3E5AB';
-    mainText = '#F5E5D5';
-    navBg = '#ADCFE9';
-    navText = '#fff';
-    footerBg = '#ADCFE9';
-    footerText = '#fff';
-    menuBg = '#ADCFE9';
-    menuText = '#fff';
-    hoverBg = '#8CC4E0';
-    linkColor = '#E54551';
-    hoverLink = '#FF6F61';
-   
-  } else if (month === 4 && day >= 1 && day <= 7) {
-    holidayClass = 'holiday-easter';
-    mascotFile = 'eastermascot.png';
-    bgColor = '#FFF0F5'; textColor = '#6A0DAD'; linkColor = '#6A0DAD';
-    navBg = '#FFD700'; navText = '#6A0DAD';
-    menuBg = '#FFF0F5'; menuText = '#6A0DAD';
-    hoverBg = '#FFC0CB';
-    mainBg = '#FFD700'; mainText = '#6A0DAD';
-    footerBg = '#FFD700'; footerText = '#6A0DAD';
+  } else if (m === 4 && d >= 1 && d <= 7) { // Easter
+    theme.class = "holiday-easter";
+    theme.mascot = "eastermascot.png";
+    theme.bgColor = "#FFF0F5";
+    theme.textColor = "#6A0DAD";
+    theme.linkColor = "#6A0DAD";
+    theme.navBg = "#FFD700";
+    theme.navText = "#6A0DAD";
+    theme.menuBg = "#FFF0F5";
+    theme.menuText = "#6A0DAD";
+    theme.hoverBg = "#FFC0CB";
+    theme.mainBg = "#FFD700";
+    theme.mainText = "#6A0DAD";
+    theme.footerBg = "#FFD700";
+    theme.footerText = "#6A0DAD";
   }
 
-  if (holidayClass) {
-    document.body.classList.add(holidayClass);
+  // Apply theme
+  if (theme.class) {
+    document.body.classList.add(theme.class);
 
-    const styleSheet = document.createElement('style');
-    styleSheet.innerText = `
-      body.${holidayClass} { color: ${textColor}; }
-      body.${holidayClass} a { color: ${linkColor}; }
-      body.${holidayClass} .topnav { background-color: ${navBg}; color: ${navText}; }
-      body.${holidayClass} .topnav a.logo { color: ${navText}; }
-      body.${holidayClass} .topnav .menu-icon { color: ${navText}; }
-      body.${holidayClass} .topnav-right { background-color: ${menuBg}; color: ${menuText}; }
-      body.${holidayClass} .accordion-toggle { background-color: ${menuBg}; color: ${menuText}; }
-      body.${holidayClass} .accordion-toggle:hover,
-      body.${holidayClass} .accordion-content a:hover {
-        background-color: ${hoverBg};
-        color: ${hoverText};
-      }
-      body.${holidayClass} .accordion-content a {
-        background-color: ${menuBg};
-        color: ${menuText};
-      }
-      body.${holidayClass} .clickable-section {
-        background-color: ${mainBg};
-        color: ${mainText};
-      }
-      body.${holidayClass} .site-footer {
-        background-color: ${footerBg};
-        color: ${footerText};
-      }
-      body.${holidayClass} .site-footer a {
-        color: ${footerText};
-      }
+    const styleSheet = document.getElementById("holiday-style") || document.createElement("style");
+    styleSheet.id = "holiday-style";
+    styleSheet.textContent = `
+      body.${theme.class} { color: ${theme.textColor}; }
+      body.${theme.class} a { color: ${theme.linkColor}; }
+      body.${theme.class} .topnav { background-color: ${theme.navBg}; color: ${theme.navText}; }
+      body.${theme.class} .topnav a.logo { color: ${theme.navText}; }
+      body.${theme.class} .topnav .menu-icon { color: ${theme.navText}; }
+      body.${theme.class} .topnav-right { background-color: ${theme.menuBg}; color: ${theme.menuText}; }
+      body.${theme.class} .accordion-toggle { background-color: ${theme.menuBg}; color: ${theme.menuText}; }
+      body.${theme.class} .accordion-toggle:hover,
+      body.${theme.class} .accordion-content a:hover { background-color: ${theme.hoverBg}; color: ${theme.hoverText}; }
+      body.${theme.class} .accordion-content a { background-color: ${theme.menuBg}; color: ${theme.menuText}; }
+      body.${theme.class} .clickable-section { background-color: ${theme.mainBg}; color: ${theme.mainText}; }
+      body.${theme.class} .site-footer { background-color: ${theme.footerBg}; color: ${theme.footerText}; }
+      body.${theme.class} .site-footer a { color: ${theme.footerText}; }
     `;
-    document.head.appendChild(styleSheet);
+    if (!document.head.contains(styleSheet)) document.head.appendChild(styleSheet);
 
-    document.documentElement.style.backgroundColor = bgColor;
-    document.body.style.backgroundColor = bgColor;
-    document.body.style.color = textColor;
-
-    document.body.style.setProperty('--theme-bg-color', navBg);
-    document.body.style.setProperty('--theme-topnav-color', navText);
-    document.body.style.setProperty('--theme-accent-color', mainBg);
-
-    if (mascotImg) {
-      mascotImg.src = `img/${mascotFile}`;
-    }
+    if (mascot) mascot.src = `img/${theme.mascot}`;
   }
 }
 
-document.addEventListener('DOMContentLoaded', setHolidayTheme);
+// =======================
+// Dark Mode (System-Based)
+// =======================
+function initDarkMode() {
+  const query = window.matchMedia("(prefers-color-scheme: dark)");
 
-// Daily home page splash screen
-(function() {
-  if (!window.location.pathname.endsWith("/") && !window.location.pathname.endsWith("index.html")) return;
-const lastSplash = localStorage.getItem("lastSplashDate");
+  let style = document.getElementById("dark-mode-style");
+  if (!style) {
+    style = document.createElement("style");
+    style.id = "dark-mode-style";
+    document.head.appendChild(style);
+  }
+
+  style.textContent = `
+    html.dark-mode body {
+      background: #0f0f0f !important;
+      color: #e5e5e5 !important;
+    }
+
+    html.dark-mode a { color: #8cc8ff !important; }
+    html.dark-mode .topnav,
+    html.dark-mode .site-footer { background: #e82b38 !important; color: #fff !important; }
+    html.dark-mode .topnav a,
+    html.dark-mode .site-footer a { color: #fff !important; }
+  `;
+
+  function apply(e) {
+    document.documentElement.classList.toggle("dark-mode", e.matches);
+  }
+
+  apply(query);
+  query.addEventListener("change", apply);
+}
+
+// =======================
+// Daily Home Splash
+// =======================
+function showDailySplash() {
+  if (!location.pathname.endsWith("/") && !location.pathname.endsWith("index.html")) return;
+
   const today = new Date().toLocaleDateString();
-  if (lastSplash === today) return; // Already seen today
+  if (localStorage.getItem("lastSplashDate") === today) return;
   localStorage.setItem("lastSplashDate", today);
- 
-  // Create splash element
-  const splash = document.createElement("div");
-  splash.id = "daily-splash";
-  splash.style.position = "fixed";
-  splash.style.inset = "0";
-  splash.style.background = "linear-gradient(135deg, #E82B38, #731919)";
-  splash.style.display = "flex";
-  splash.style.alignItems = "center";
-  splash.style.justifyContent = "center";
-  splash.style.zIndex = "9999";
-  splash.style.opacity = "1";
-  splash.style.transition = "opacity 4.5s ease";
 
-  // Add circular logo
+  const splash = document.createElement("div");
+  splash.style.cssText = `
+    position: fixed; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg,#E82B38,#731919);
+    z-index: 9999; transition: opacity 3s ease;
+  `;
+
   const logo = document.createElement("img");
-  logo.src = "img/pofp.png"; // Replace with your circle logo
-  logo.alt = "THE Randoms";
+  logo.src = "img/pofp.png";
   logo.style.width = "150px";
   logo.style.borderRadius = "50%";
-  splash.appendChild(logo);
 
+  splash.appendChild(logo);
   document.body.appendChild(splash);
 
-  // Start fade after 500ms
-  setTimeout(() => {
-    splash.style.opacity = "0";
-  }, 500);
+  setTimeout(() => splash.style.opacity = "0", 500);
+  setTimeout(() => splash.remove(), 3500);
+}
 
-  // Remove splash after 5900ms
-  setTimeout(() => {
-    splash.remove();
-  }, 4500);
-
-darkStyleTag.textContent = `
-    /* =======================
-       Force Dark Mode Override
-    ======================= */
-     html.dark-mode body {
-        background-color: #0f0f0f !important;
-        color: #e5e5e5 !important;
-    }
-
-    html.dark-mode a {
-        color: #8cc8ff !important;
-    }
-
-    /* =======================
-       Navbar & Footer (Randoms Red)
-    ======================= */
-    html.dark-mode .topnav,
-    html.dark-mode .site-footer {
-        background-color: #e82b38 !important;
-        color: #ffffff !important;
-    }
-
-    html.dark-mode .topnav a,
-    html.dark-mode .site-footer a {
-        color: #ffffff !important;
-    }
-
-    html.dark-mode .topnav a:hover,
-    html.dark-mode .site-footer a:hover {
-        opacity: 0.85;
-    }
-
-    /* =======================
-       Smooth Transitions
-    ======================= */
-    html.dark-mode body,
-    html.dark-mode .topnav,
-    html.dark-mode .site-footer {
-        transition: background-color 0.25s ease, color 0.25s ease;
-    }
-`;
-})();
+// =======================
+// INIT
+// =======================
+document.addEventListener("DOMContentLoaded", () => {
+  ensureFooter();
+  applyHolidayTheme();
+  initDarkMode();
+  showDailySplash();
+});
