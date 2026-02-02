@@ -288,23 +288,27 @@ function initDarkMode() {
       background-color: #333333 !important;
     }
     html.dark-mode .accordion-content {
-      background-color: #121212 !important;  /* Matches body background */
-      padding: 0 !important;
-      margin: 0 !important;
-      border: none !important;
-    }
-    html.dark-mode .accordion-content a {
-      display: block;
-      width: 100%;
-      padding: 10px 20px;
-      background-color: transparent !important;
-      color: #ffffff !important;
-      text-decoration: none;
-    }
-    html.dark-mode .accordion-content a:hover {
-      background-color: #333333 !important;
-      color: #fff !important;
-    }
+    background-color: #121212 !important;  /* Dark body color */
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    min-height: 100%;          /* Force the container to fill its parent */
+    box-sizing: border-box;
+}
+
+html.dark-mode .accordion-content a {
+    display: block;
+    width: 100%;
+    padding: 10px 20px;
+    background-color: #121212 !important;  /* Match container */
+    color: #ffffff !important;
+    text-decoration: none;
+}
+
+html.dark-mode .accordion-content a:hover {
+    background-color: #333333 !important;
+    color: #fff !important;
+}
   `;
 
   function apply(e) {
