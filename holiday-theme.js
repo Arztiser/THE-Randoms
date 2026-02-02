@@ -245,26 +245,41 @@ function applyHolidayTheme() {
 function initDarkMode() {
   const query = window.matchMedia("(prefers-color-scheme: dark)");
   let style = document.getElementById("dark-mode-style");
+
   if (!style) {
     style = document.createElement("style");
     style.id = "dark-mode-style";
     document.head.appendChild(style);
   }
 
-  // Entire dark mode CSS as ONE string
   style.textContent = `
+    /* =======================
+       Core Dark Mode
+    ======================= */
     html.dark-mode body {
       background: #121212 !important;
       color: #e5e5e5 !important;
     }
-    html.dark-mode a { color: #ffffff !important; }
+    html.dark-mode a {
+      color: #ffffff !important;
+    }
 
+    /* =======================
+       Navbar & Footer
+    ======================= */
     html.dark-mode .topnav,
-    html.dark-mode .site-footer { background: #e82b38 !important; color: #fff !important; }
+    html.dark-mode .site-footer {
+      background: #e82b38 !important;
+      color: #fff !important;
+    }
     html.dark-mode .topnav a,
-    html.dark-mode .site-footer a { color: #fff !important; }
+    html.dark-mode .site-footer a {
+      color: #fff !important;
+    }
 
-    /* Accordion Fix */
+    /* =======================
+       Accordion Dark Mode Fix
+    ======================= */
     html.dark-mode .accordion-toggle {
       background-color: #121212 !important;
       color: #fff !important;
@@ -273,11 +288,18 @@ function initDarkMode() {
       background-color: #333333 !important;
     }
     html.dark-mode .accordion-content {
-      background-color: #1a1a1a !important;
+      background-color: #121212 !important;  /* Matches body background */
+      padding: 0 !important;
+      margin: 0 !important;
+      border: none !important;
     }
     html.dark-mode .accordion-content a {
-      color: #ffffff !important;
+      display: block;
+      width: 100%;
+      padding: 10px 20px;
       background-color: transparent !important;
+      color: #ffffff !important;
+      text-decoration: none;
     }
     html.dark-mode .accordion-content a:hover {
       background-color: #333333 !important;
@@ -292,7 +314,6 @@ function initDarkMode() {
   apply(query);
   query.addEventListener("change", apply);
 }
-
 // =======================
 // Daily Home Splash
 // =======================
