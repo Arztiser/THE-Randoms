@@ -266,21 +266,21 @@ function initDarkMode() {
 
     /* Accordion Fix */
     html.dark-mode .accordion-toggle {
-      background-color: #e82b38 !important;
+      background-color: #121212 !important;
       color: #fff !important;
     }
     html.dark-mode .accordion-toggle:hover {
-      background-color: #bf1f2c !important;
+      background-color: #333333 !important;
     }
     html.dark-mode .accordion-content {
       background-color: #1a1a1a !important;
     }
     html.dark-mode .accordion-content a {
-      color: #8cc8ff !important;
+      color: #ffffff !important;
       background-color: transparent !important;
     }
     html.dark-mode .accordion-content a:hover {
-      background-color: #bf1f2c !important;
+      background-color: #333333 !important;
       color: #fff !important;
     }
   `;
