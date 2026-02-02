@@ -262,71 +262,45 @@ const lastSplash = localStorage.getItem("lastSplashDate");
     splash.remove();
   }, 4500);
 
-// =======================
-// Dark Mode (System-Based)
-// Injected CSS + Nav/Footer Styling
-// =======================
+darkStyleTag.textContent = `
+    /* =======================
+       Force Dark Mode Override
+    ======================= */
+     html.dark-mode body {
+        background-color: #0f0f0f !important;
+        color: #e5e5e5 !important;
+    }
 
-const darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
-let darkStyleTag = null;
+    html.dark-mode a {
+        color: #8cc8ff !important;
+    }
 
-function injectDarkCSS() {
-    if (darkStyleTag) return;
+    /* =======================
+       Navbar & Footer (Randoms Red)
+    ======================= */
+    html.dark-mode .topnav,
+    html.dark-mode .site-footer {
+        background-color: #e82b38 !important;
+        color: #ffffff !important;
+    }
 
-    darkStyleTag = document.createElement("style");
-    darkStyleTag.id = "randoms-dark-mode";
+    html.dark-mode .topnav a,
+    html.dark-mode .site-footer a {
+        color: #ffffff !important;
+    }
 
-    darkStyleTag.textContent = `
-        /* =======================
-           Core Dark Mode
-        ======================= */
-        .dark-mode {
-            background-color: #0f0f0f;
-            color: #e5e5e5;
-        }
+    html.dark-mode .topnav a:hover,
+    html.dark-mode .site-footer a:hover {
+        opacity: 0.85;
+    }
 
-        /* =======================
-           Navbar & Footer (Randoms Red)
-        ======================= */
-        .dark-mode .topnav,
-        .dark-mode .site-footer {
-            background-color: #e82b38;
-            color: #ffffff;
-        }
-
-        .dark-mode .topnav a,
-        .dark-mode .site-footer a {
-            color: #ffffff;
-        }
-
-        .dark-mode .topnav a:hover,
-        .dark-mode .site-footer a:hover {
-            opacity: 0.85;
-        }
-
-        /* =======================
-           Smooth Transitions
-        ======================= */
-        .dark-mode,
-        .dark-mode .topnav,
-        .dark-mode .site-footer {
-            transition: background-color 0.25s ease, color 0.25s ease;
-        }
-    `;
-
-    document.head.appendChild(darkStyleTag);
-}
-
-function applyDarkMode(enabled) {
-    injectDarkCSS();
-    document.documentElement.classList.toggle("dark-mode", enabled);
-}
-
-// Initial load
-applyDarkMode(darkQuery.matches);
-
-// React to system theme changes
-darkQuery.addEventListener("change", e => {
-    applyDarkMode(e.matches);
-})  
+    /* =======================
+       Smooth Transitions
+    ======================= */
+    html.dark-mode body,
+    html.dark-mode .topnav,
+    html.dark-mode .site-footer {
+        transition: background-color 0.25s ease, color 0.25s ease;
+    }
+`;
 })();
