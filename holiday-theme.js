@@ -254,11 +254,11 @@ function initDarkMode() {
 
   style.textContent = `
     html.dark-mode body {
-      background: #0f0f0f !important;
+      background: #121212 !important;
       color: #e5e5e5 !important;
     }
 
-    html.dark-mode a { color: #8cc8ff !important; }
+    html.dark-mode a { color: #ffffff !important; }
     html.dark-mode .topnav,
     html.dark-mode .site-footer { background: #e82b38 !important; color: #fff !important; }
     html.dark-mode .topnav a,
