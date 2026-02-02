@@ -244,7 +244,6 @@ function applyHolidayTheme() {
 // =======================
 function initDarkMode() {
   const query = window.matchMedia("(prefers-color-scheme: dark)");
-
   let style = document.getElementById("dark-mode-style");
   if (!style) {
     style = document.createElement("style");
@@ -252,43 +251,40 @@ function initDarkMode() {
     document.head.appendChild(style);
   }
 
+  // Entire dark mode CSS as ONE string
   style.textContent = `
     html.dark-mode body {
       background: #121212 !important;
       color: #e5e5e5 !important;
     }
-
     html.dark-mode a { color: #ffffff !important; }
+
     html.dark-mode .topnav,
     html.dark-mode .site-footer { background: #e82b38 !important; color: #fff !important; }
     html.dark-mode .topnav a,
     html.dark-mode .site-footer a { color: #fff !important; }
+
+    /* Accordion Fix */
+    html.dark-mode .accordion-toggle {
+      background-color: #e82b38 !important;
+      color: #fff !important;
+    }
+    html.dark-mode .accordion-toggle:hover {
+      background-color: #bf1f2c !important;
+    }
+    html.dark-mode .accordion-content {
+      background-color: #1a1a1a !important;
+    }
+    html.dark-mode .accordion-content a {
+      color: #8cc8ff !important;
+      background-color: transparent !important;
+    }
+    html.dark-mode .accordion-content a:hover {
+      background-color: #bf1f2c !important;
+      color: #fff !important;
+    }
   `;
 
-html.dark-mode .accordion-toggle {
-    background-color: #e82b38 !important;
-    color: #fff !important;
-  }
-
-  html.dark-mode .accordion-toggle:hover {
-    background-color: #bf1f2c !important;
-  }
-
-  html.dark-mode .accordion-content {
-    background-color: #1a1a1a !important;
-  }
-
-  html.dark-mode .accordion-content a {
-    color: #8cc8ff !important;
-    background-color: transparent !important;
-  }
-
-  html.dark-mode .accordion-content a:hover {
-    background-color: #bf1f2c !important;
-    color: #fff !important;
-  }
-`;
-  
   function apply(e) {
     document.documentElement.classList.toggle("dark-mode", e.matches);
   }
