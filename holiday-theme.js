@@ -278,36 +278,53 @@ function initDarkMode() {
     }
 
     /* =======================
-       Accordion Dark Mode Fix
-    ======================= */
-    html.dark-mode .accordion-toggle {
-      background-color: #121212 !important;
-      color: #fff !important;
-    }
-    html.dark-mode .accordion-toggle:hover {
-      background-color: #333333 !important;
-    }
-    html.dark-mode .accordion-content {
-    background-color: #121212 !important;  /* Dark body color */
-    padding: 0 !important;
-    margin: 0 !important;
-    border: none !important;
-    min-height: 100%;          /* Force the container to fill its parent */
-    box-sizing: border-box;
+   Accordion Dark Mode Full Fix
+======================= */
+
+/* Accordion toggle button */
+html.dark-mode .accordion-toggle {
+  background-color: #121212 !important;
+  color: #fff !important;
+}
+html.dark-mode .accordion-toggle:hover {
+  background-color: #333333 !important;
 }
 
+/* Accordion content container */
+html.dark-mode .accordion-content {
+  background-color: #121212 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  width: 100% !important;
+  box-sizing: border-box;
+}
+
+/* All children inside accordion content */
+html.dark-mode .accordion-content * {
+  background-color: #121212 !important;
+  color: #ffffff !important;
+}
+
+/* Accordion links */
 html.dark-mode .accordion-content a {
-    display: block;
-    width: 100%;
-    padding: 10px 20px;
-    background-color: #121212 !important;  /* Match container */
-    color: #ffffff !important;
-    text-decoration: none;
+  display: block;
+  width: 100%;
+  padding: 10px 20px;
+  text-decoration: none;
+  background-color: #121212 !important; /* Matches container */
+  color: #ffffff !important;
 }
 
+/* Hover state for links */
 html.dark-mode .accordion-content a:hover {
-    background-color: #333333 !important;
-    color: #fff !important;
+  background-color: #333333 !important;
+  color: #fff !important;
+}
+
+/* Force container height to fit content, no leftover space */
+html.dark-mode .topnav-right {
+  background-color: #121212 !important;
 }
   `;
 
