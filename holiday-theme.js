@@ -261,4 +261,72 @@ const lastSplash = localStorage.getItem("lastSplashDate");
   setTimeout(() => {
     splash.remove();
   }, 4500);
+
+// =======================
+// Dark Mode (System-Based)
+// Injected CSS + Nav/Footer Styling
+// =======================
+
+const darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+let darkStyleTag = null;
+
+function injectDarkCSS() {
+    if (darkStyleTag) return;
+
+    darkStyleTag = document.createElement("style");
+    darkStyleTag.id = "randoms-dark-mode";
+
+    darkStyleTag.textContent = `
+        /* =======================
+           Core Dark Mode
+        ======================= */
+        .dark-mode {
+            background-color: #0f0f0f;
+            color: #e5e5e5;
+        }
+
+        /* =======================
+           Navbar & Footer (Randoms Red)
+        ======================= */
+        .dark-mode .topnav,
+        .dark-mode .site-footer {
+            background-color: #e82b38;
+            color: #ffffff;
+        }
+
+        .dark-mode .topnav a,
+        .dark-mode .site-footer a {
+            color: #ffffff;
+        }
+
+        .dark-mode .topnav a:hover,
+        .dark-mode .site-footer a:hover {
+            opacity: 0.85;
+        }
+
+        /* =======================
+           Smooth Transitions
+        ======================= */
+        .dark-mode,
+        .dark-mode .topnav,
+        .dark-mode .site-footer {
+            transition: background-color 0.25s ease, color 0.25s ease;
+        }
+    `;
+
+    document.head.appendChild(darkStyleTag);
+}
+
+function applyDarkMode(enabled) {
+    injectDarkCSS();
+    document.documentElement.classList.toggle("dark-mode", enabled);
+}
+
+// Initial load
+applyDarkMode(darkQuery.matches);
+
+// React to system theme changes
+darkQuery.addEventListener("change", e => {
+    applyDarkMode(e.matches);
+})  
 })();
