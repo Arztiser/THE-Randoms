@@ -1,4 +1,20 @@
 // =======================
+// Pre-Paint Theme Fix (NO FLASH)
+// =======================
+(function () {
+  try {
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+    if (prefersDark) {
+      document.documentElement.classList.add("dark-mode");
+      document.documentElement.style.backgroundColor = "#121212";
+    } else {
+      document.documentElement.style.backgroundColor = "#ffffff";
+    }
+  } catch (e) {}
+})();
+
+// =======================
 // Footer Creation
 // =======================
 function ensureFooter() {
