@@ -100,7 +100,7 @@ body.menu-open { overflow: hidden; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 40px 20px;
+  padding: 25px 20px;
   text-align: center;
 }
 
@@ -108,7 +108,8 @@ body.menu-open { overflow: hidden; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 15px;
+  gap: 10px;
+  margin-top: 10px;
 }
 
 input[type="text"] {
@@ -173,14 +174,13 @@ input[type="text"] {
   <h1>Code</h1>
   <p>Use This Code To Get A Secret Message. The Passcode Is HTE-RNA-ODSM.</p>
 
-  <h1 style="margin-top:60px;">Passcode</h1>
+  <h1 style="margin-top:15px;">Keypad</h1>
 
   <div class="code-container">
     <input type="text" id="codeInput" placeholder="Enter Code" />
     <button id="submit-button" onclick="checkCode()">Submit</button>
     <p id="response" class="hidden"></p>
 
-    <!-- Audio -->
     <audio id="success-sound" src="audio/Correct.mp3"></audio>
     <audio id="failure-sound" src="audio/Incorrect.mp3"></audio>
     <audio id="groove-sound" src="audio/Groove.mp3"></audio>
@@ -190,7 +190,7 @@ input[type="text"] {
   </div>
 </div>
 
-<script>
+  <script>
 
 function toggleMenu() {
   document.querySelector('.topnav').classList.toggle('active');
