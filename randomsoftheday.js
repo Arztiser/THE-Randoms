@@ -128,11 +128,11 @@ async function renderWord() {
   if (!c) return;
 
   const today = getLocalDayKey();
-  const word = localStorage.getItem('daily_word');
-  const date = localStorage.getItem('daily_word_date');
+  const cachedWord = localStorage.getItem('daily_word');
+  const cachedDate = localStorage.getItem('daily_word_date');
 
-  if (word && date === today) {
-    c.textContent = word;
+  if (cachedWord && cachedDate === today) {
+    c.textContent = cachedWord;
     return;
   }
 
@@ -141,18 +141,41 @@ async function renderWord() {
     return;
   }
 
-  try {
-    const res = await fetch('https://random-word-api.vercel.app/api?words=1');
+  async function tryFetch(url) {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("API failed");
     const data = await res.json();
-    localStorage.setItem('daily_word', data[0]);
+    return Array.isArray(data) ? data[0] : data.word || data;
+  }
+
+  try {
+    // API 1 (Primary)
+    const word = await tryFetch(
+      'https://random-word-api.vercel.app/api?words=1'
+    );
+
+    localStorage.setItem('daily_word', word);
     localStorage.setItem('daily_word_date', today);
-    c.textContent = data[0];
+    c.textContent = word;
   } catch {
-    const fallback = ["random","fun","code","site","day"];
-    const w = fallback[getUserDaySeed() % fallback.length];
-    localStorage.setItem('daily_word', w);
-    localStorage.setItem('daily_word_date', today);
-    c.textContent = w;
+    try {
+      // API 2 (Backup)
+      const word = await tryFetch(
+        'https://random-word-api.herokuapp.com/word'
+      );
+
+      localStorage.setItem('daily_word', word);
+      localStorage.setItem('daily_word_date', today);
+      c.textContent = word;
+    } catch {
+      // Final Local Fallback (Seeded)
+      const fallback = ["random","fun","code","site","day"];
+      const word = fallback[getUserDaySeed() % fallback.length];
+
+      localStorage.setItem('daily_word', word);
+      localStorage.setItem('daily_word_date', today);
+      c.textContent = word;
+    }
   }
 }
 
