@@ -240,26 +240,48 @@ async function renderFact() {
 async function fetchMeme() {
   if (isBirthday()) return "Today's meme took the day off.";
 
-  const subs = ['memes','dankmemes','funny'];
   const seed = getUserDaySeed();
-  const sub = subs[seed % subs.length];
 
-  const url = `https://www.reddit.com/r/${sub}/hot.json?limit=50`;
-  const res = await fetch(`https://corsproxy.io/?${encodeURIComponent(url)}`);
-  const json = await res.json();
-  const imgs = json.data.children.filter(p => p.data.url.match(/\.(jpg|png)$/));
-  return imgs[seed % imgs.length].data.url;
-}
+  // ---------- PRIMARY: Reddit ----------
+  try {
+    const subs = ['memes','dankmemes','funny'];
+    const sub = subs[seed % subs.length];
 
-async function renderMeme() {
-  const c = document.querySelector('#random-meme .random-content');
-  if (!c) return;
+    const url = `https://www.reddit.com/r/${sub}/hot.json?limit=50`;
+    const res = await fetch(`https://corsproxy.io/?${encodeURIComponent(url)}`);
+    if (!res.ok) throw new Error("Reddit failed");
 
-  const url = await fetchCached('meme', fetchMeme);
-  if (url.startsWith('http')) {
-    c.innerHTML = `<img src="${url}" style="max-width:100%;border-radius:8px;">`;
-  } else {
-    c.textContent = url;
+    const json = await res.json();
+    const imgs = json.data.children
+      .map(p => p.data.url)
+      .filter(url => url.match(/\.(jpg|png)$/));
+
+    if (!imgs.length) throw new Error("No images found");
+
+    return imgs[seed % imgs.length];
+
+  } catch {
+
+    // ---------- BACKUP: meme-api ----------
+    try {
+      const res = await fetch('https://meme-api.com/gimme');
+      if (!res.ok) throw new Error("Meme API failed");
+
+      const data = await res.json();
+
+      // Only return image
+      if (data.url && data.url.match(/\.(jpg|png|jpeg)$/)) {
+        return data.url;
+      }
+
+      throw new Error("Invalid image");
+
+    } catch {
+
+      // ---------- FINAL LOCAL FALLBACK ----------
+      return "/img/default-meme.jpg"; 
+      // (Optional: add a local meme image in your project)
+    }
   }
 }
 
