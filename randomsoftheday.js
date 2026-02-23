@@ -239,7 +239,7 @@ async function fetchMeme() {
     const json = await res.json();
     const imgs = json.data.children
       .map(p => p.data.url)
-      .filter(url => url.match(/\.(jpg|png)$/));
+      .filter(url => url.match(/\.(jpg|png|jpeg)$/));
 
     if (!imgs.length) throw new Error("No images found");
 
@@ -265,13 +265,32 @@ async function renderMeme() {
 }
 
 /* ======================
+   HELPER: SAFE SET VAULT CONTENT
+====================== */
+function safeSetVault(key, value) {
+  const section = document.getElementById(`vault-${key}`);
+  if (!section) return;
+  const content = section.querySelector('.vault-content');
+  if (!content) return;
+
+  if (key === 'meme') {
+    content.innerHTML = `<img src="${value}" style="max-width:100%; border-radius:8px;">`;
+  } else {
+    content.textContent = value;
+  }
+}
+
+/* ======================
    VAULT ARCHIVE
 ====================== */
 function archiveTodayToVault() {
   const keys = ["word", "joke", "advice", "fact", "meme", "letter", "number", "password"];
   keys.forEach(key => {
     const val = localStorage.getItem(`daily_${key}`);
-    if (val) localStorage.setItem(`vault_${key}`, val);
+    if (val) {
+      localStorage.setItem(`vault_${key}`, val);
+      safeSetVault(key, val);
+    }
   });
   localStorage.setItem("vault_date", getLocalDayKey());
 }
@@ -282,6 +301,7 @@ function archiveTodayToVault() {
 function loadVaultPage() {
   if (!document.body.classList.contains('vault-page')) return;
 
+  // Change button text
   const button = document.querySelector('.clickable-section');
   if (button) {
     button.textContent = 'Randoms Of The Day';
@@ -290,6 +310,7 @@ function loadVaultPage() {
     });
   }
 
+  // Show yesterday's date
   const vaultDateEl = document.getElementById("vault-date");
   if (vaultDateEl) {
     const yesterday = new Date();
@@ -300,23 +321,11 @@ function loadVaultPage() {
     });
   }
 
+  // Load all vault content immediately
   const vaultKeys = ['joke','advice','fact','meme','word','password','letter','number'];
   vaultKeys.forEach(key => {
     const val = localStorage.getItem(`vault_${key}`);
-    const section = document.getElementById(`vault-${key}`);
-    if (!section) return;
-    const content = section.querySelector('.vault-content');
-    if (!content) return;
-
-    if (val) {
-      if (key === 'meme') {
-        content.innerHTML = `<img src="${val}" style="max-width:100%; border-radius:8px;">`;
-      } else {
-        content.textContent = val;
-      }
-    } else {
-      content.textContent = 'Not available';
-    }
+    if (val) safeSetVault(key, val);
   });
 }
 
