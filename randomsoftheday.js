@@ -302,6 +302,39 @@ function archiveTodayToVault() {
 }
 
 /* ======================
+   VAULT BUTTON
+====================== */
+document.addEventListener('DOMContentLoaded', () => {
+  const vaultButton = document.createElement('button');
+  vaultButton.id = "vault-button";
+  vaultButton.textContent = "THE Vault";
+  vaultButton.style.cssText = `
+    margin-top: 30px;
+    padding: 16px 32px;
+    font-size: 24px;
+    font-weight: bold;
+    background: linear-gradient(45deg,#FFD700,#FFC107);
+    color: #000;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+    transition: transform 0.2s ease;
+  `;
+
+  // Add hover effect
+  vaultButton.addEventListener('mouseenter', () => vaultButton.style.transform = 'scale(1.05)');
+  vaultButton.addEventListener('mouseleave', () => vaultButton.style.transform = 'scale(1)');
+
+  // Click redirects to vault page
+  vaultButton.addEventListener('click', () => window.location.href = 'vault.html');
+
+  // Append the button to the end of main.content
+  const mainContent = document.querySelector('main.content');
+  if (mainContent) mainContent.appendChild(vaultButton);
+});
+
+/* ======================
    REFRESH ALL
 ====================== */
 async function refreshAll() {
