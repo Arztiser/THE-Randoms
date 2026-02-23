@@ -279,7 +279,7 @@ async function fetchMeme() {
     } catch {
 
       // ---------- FINAL LOCAL FALLBACK ----------
-      return "/img/default-meme.jpg"; 
+      return "/img/default-meme.jpg";
     }
   }
 }
@@ -289,12 +289,16 @@ async function fetchMeme() {
 ====================== */
 function archiveTodayToVault() {
   const today = getLocalDayKey();
-  const keys = ["word", "joke", "advice", "fact", "meme"];
+  const keys = ["word", "joke", "advice", "fact", "meme", "password", "letter", "number"];
+
+  const vault = JSON.parse(localStorage.getItem('vault')) || {};
+  vault[today] = {};
   keys.forEach(key => {
     const val = localStorage.getItem(`daily_${key}`);
-    if (val) localStorage.setItem(`vault_${key}`, val);
+    if (val) vault[today][key] = val;
   });
-  localStorage.setItem("vault_date", today);
+
+  localStorage.setItem('vault', JSON.stringify(vault));
 }
 
 /* ======================
@@ -312,6 +316,9 @@ async function refreshAll() {
     renderFact(),
     renderMeme()
   ]);
+
+  // Archive today’s randoms to vault
+  archiveTodayToVault();
 }
 
 /* ======================
@@ -328,7 +335,6 @@ function scheduleMidnightRefresh() {
     );
 
     setTimeout(async () => {
-      archiveTodayToVault();   // <-- archive first
       await refreshAll();
       scheduleNext();
     }, nextMidnight - now);
@@ -343,7 +349,6 @@ let lastDayKey = getLocalDayKey();
 setInterval(async () => {
   const current = getLocalDayKey();
   if (current !== lastDayKey) {
-    archiveTodayToVault();   // <-- archive if page stays open overnight
     lastDayKey = current;
     await refreshAll();
   }
