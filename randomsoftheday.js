@@ -301,38 +301,51 @@ function archiveTodayToVault() {
   localStorage.setItem('vault', JSON.stringify(vault));
 }
 
-/* ======================
-   VAULT BUTTON
-====================== */
-document.addEventListener('DOMContentLoaded', () => {
-  const vaultButton = document.createElement('button');
-  vaultButton.id = "vault-button";
-  vaultButton.textContent = "THE Vault";
-  vaultButton.style.cssText = `
-    margin-top: 30px;
-    padding: 16px 32px;
-    font-size: 24px;
-    font-weight: bold;
-    background: linear-gradient(45deg,#FFD700,#FFC107);
-    color: #000;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
-    transition: transform 0.2s ease;
-  `;
+// -----------------------
+// GOLDEN VAULT BUTTON
+// -----------------------
+function createVaultButton() {
+  const main = document.querySelector('main.content');
+  if (!main) return;
 
-  // Add hover effect
-  vaultButton.addEventListener('mouseenter', () => vaultButton.style.transform = 'scale(1.05)');
-  vaultButton.addEventListener('mouseleave', () => vaultButton.style.transform = 'scale(1)');
+  const button = document.createElement('button');
+  button.textContent = 'Enter THE Vault';
+  
+  // Styling
+  Object.assign(button.style, {
+    backgroundColor: '#FFD700', // golden
+    color: '#fff',              // white text
+    fontFamily: "'Jersey 10', sans-serif", // match page font
+    fontWeight: '700',
+    fontSize: '24px',
+    border: 'none',
+    borderRadius: '8px',
+    padding: '16px',
+    margin: '16px 0',
+    cursor: 'pointer',
+    width: '100%',             // full width like the boxes
+    boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
+    transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+  });
 
-  // Click redirects to vault page
-  vaultButton.addEventListener('click', () => window.location.href = 'vault.html');
+  button.addEventListener('mouseenter', () => {
+    button.style.transform = 'scale(1.02)';
+    button.style.boxShadow = '0 4px 8px rgba(0,0,0,0.3)';
+  });
+  button.addEventListener('mouseleave', () => {
+    button.style.transform = 'scale(1)';
+    button.style.boxShadow = '0 2px 5px rgba(0,0,0,0.2)';
+  });
 
-  // Append the button to the end of main.content
-  const mainContent = document.querySelector('main.content');
-  if (mainContent) mainContent.appendChild(vaultButton);
-});
+  button.addEventListener('click', () => {
+    window.location.href = 'vault.html';
+  });
+
+  main.appendChild(button);
+}
+
+// Initialize after page load
+document.addEventListener('DOMContentLoaded', createVaultButton);
 
 /* ======================
    REFRESH ALL
