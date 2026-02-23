@@ -280,9 +280,21 @@ async function fetchMeme() {
 
       // ---------- FINAL LOCAL FALLBACK ----------
       return "/img/default-meme.jpg"; 
-      // (Optional: add a local meme image in your project)
     }
   }
+}
+
+/* ======================
+   VAULT ARCHIVE
+====================== */
+function archiveTodayToVault() {
+  const today = getLocalDayKey();
+  const keys = ["word", "joke", "advice", "fact", "meme"];
+  keys.forEach(key => {
+    const val = localStorage.getItem(`daily_${key}`);
+    if (val) localStorage.setItem(`vault_${key}`, val);
+  });
+  localStorage.setItem("vault_date", today);
 }
 
 /* ======================
@@ -316,6 +328,7 @@ function scheduleMidnightRefresh() {
     );
 
     setTimeout(async () => {
+      archiveTodayToVault();   // <-- archive first
       await refreshAll();
       scheduleNext();
     }, nextMidnight - now);
@@ -330,6 +343,7 @@ let lastDayKey = getLocalDayKey();
 setInterval(async () => {
   const current = getLocalDayKey();
   if (current !== lastDayKey) {
+    archiveTodayToVault();   // <-- archive if page stays open overnight
     lastDayKey = current;
     await refreshAll();
   }
