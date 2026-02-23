@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#D4AF37">
+  <meta name="description" content="THE Randoms - Vault of Yesterday's Randoms">
+  <title>THE Vault - THE Randoms</title>
+  <link rel="icon" type="image/png" href="./img/pfp.png">
+  <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      margin: 0;
+      overflow-x: hidden;
+      font-family: 'Jersey 10', sans-serif;
+      font-size: 28px;
+      background-color: #fff;
+      color: #000;
+    }
+
+    body {
+      --theme-bg-color: #333;
+      --theme-topnav-color: #f2f2f2;
+      --theme-accent-color: #D4AF37; /* Vault gold */
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    main.content {
+      flex: 1 0 auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-sizing: border-box;
+      text-align: center;
+    }
+
+    .topnav {
+      overflow: hidden;
+      background-color: var(--theme-bg-color);
+      color: var(--theme-topnav-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      height: 60px;
+    }
+
+    .topnav h1 {
+      margin: 0;
+      font-size: 24px;
+      color: var(--theme-topnav-color);
+    }
+
+    .topnav .logo {
+      color: var(--theme-topnav-color);
+      text-decoration: none;
+    }
+
+    .menu-icon {
+      font-size: 30px;
+      color: var(--theme-topnav-color);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .topnav-right {
+      display: none;
+      position: fixed;
+      top: 60px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--theme-bg-color);
+      flex-direction: column;
+      z-index: 999;
+      transition: opacity 0.3s ease;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .topnav-right.active {
+      display: flex;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    body.menu-open {
+      overflow: hidden;
+    }
+
+    .accordion-section {
+      display: flex;
+      flex-direction: column;
+      border-top: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .accordion-toggle {
+      background: none;
+      color: var(--theme-topnav-color);
+      padding: 14px;
+      text-align: left;
+      font-size: 24px;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      width: 100%;
+      font-family: 'Jersey 10', sans-serif;
+    }
+
+    .accordion-content {
+      display: none;
+      flex-direction: column;
+      background-color: var(--theme-bg-color);
+    }
+
+    .accordion-content a {
+      padding-left: 28px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      border-top: 1px solid rgba(255,255,255,0.2);
+      font-size: 20px;
+      color: var(--theme-topnav-color);
+      text-decoration: none;
+    }
+
+    .accordion-content a:hover,
+    .accordion-content a:focus {
+      background-color: rgba(255,255,255,0.15);
+      outline: none;
+    }
+
+    .accordion-section.open .accordion-content {
+      display: flex;
+    }
+
+    .clickable-section {
+      background-color: var(--theme-accent-color);
+      color: white;
+      font-weight: 700;
+      font-size: 24px;
+      padding: 14px;
+      cursor: pointer;
+      user-select: none;
+      border-bottom: 1px solid #bfa134;
+      text-align: center;
+    }
+
+    .vault-section {
+      margin: 24px 0;
+      padding: 16px;
+      background: #FFF8DC; /* light gold */
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+      text-align: left;
+      width: 100%;
+      max-width: 800px;
+    }
+
+    .vault-section h2 {
+      margin-top: 0;
+      font-size: 22px;
+      color: var(--theme-accent-color);
+      font-weight: 700;
+      border-bottom: 2px solid var(--theme-accent-color);
+      padding-bottom: 6px;
+    }
+
+    .vault-content {
+      margin-top: 10px;
+      font-size: 18px;
+      color: #000;
+      min-height: 48px;
+    }
+
+    .site-footer {
+      position: relative;
+      margin-top: auto;
+      width: 100%;
+      height: 60px;
+      background-color: var(--theme-bg-color, #333);
+      color: var(--theme-topnav-color, #f2f2f2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+      font-size: 20px;
+      box-sizing: border-box;
+      z-index: 1000;
+    }
+
+    .site-footer p {
+      margin: 0;
+    }
+
+    #footer-mascot {
+      height: 50px;
+      width: auto;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    #footer-mascot:hover {
+      transform: scale(1.1) rotate(-5deg);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="topnav">
+      <h1><a class="logo" href="index.html">THE Randoms</a></h1>
+      <span class="menu-icon" tabindex="0">&#9776;</span>
+    </div>
+
+    <nav class="topnav-right">
+      <div class="accordion-section">
+        <button class="accordion-toggle">Jokes & Fun</button>
+        <div class="accordion-content">
+          <a href="jokes.html">Jokes</a>
+          <a href="memes.html">Memes</a>
+          <a href="quizzes.html">Quizzes</a>
+          <a href="wouldyourather.html">Would You Rather</a>
+        </div>
+      </div>
+
+      <div class="accordion-section">
+        <button class="accordion-toggle">Knowledge & Facts</button>
+        <div class="accordion-content">
+          <a href="advice.html">Advice</a>
+          <a href="facts.html">Facts</a>
+          <a href="pages.html">Pages</a>
+          <a href="people.html">People</a>
+          <a href="quotes.html">Quotes</a>
+        </div>
+      </div>
+
+      <div class="accordion-section">
+        <button class="accordion-toggle">Music & Videos</button>
+        <div class="accordion-content">
+          <a href="songs.html">Songs</a>
+          <a href="videos.html">Videos</a>
+        </div>
+      </div>
+
+      <div class="accordion-section">
+        <button class="accordion-toggle">Words, Letters & Numbers</button>
+        <div class="accordion-content">
+          <a href="letters.html">Letters</a>
+          <a href="numbers.html">Numbers</a>
+          <a href="passwords.html">Passwords</a>
+          <a href="words.html">Words</a>
+        </div>
+      </div>
+
+      <div class="clickable-section">
+        THE Vault
+      </div>
+    </nav>
+  </header>
+
+  <main class="content">
+    <h1>THE Vault</h1>
+    <p>Yesterday’s Randoms for <span id="vault-date"></span></p>
+
+    <section class="vault-section" id="vault-joke">
+      <h2>Joke</h2>
+      <div class="vault-content">Loading...</div>
+    </section>
+    <section class="vault-section" id="vault-advice">
+      <h2>Advice</h2>
+      <div class="vault-content">Loading...</div>
+    </section>
+    <section class="vault-section" id="vault-fact">
+      <h2>Fact</h2>
+      <div class="vault-content">Loading...</div>
+    </section>
+    <section class="vault-section" id="vault-meme">
+      <h2>Meme</h2>
+      <div class="vault-content">Loading...</div>
+    </section>
+    <section class="vault-section" id="vault-word">
+      <h2>Word</h2>
+      <div class="vault-content">Loading...</div>
+    </section>
+    <section class="vault-section" id="vault-password">
+      <h2>Password</h2>
+      <div class="vault-content">Loading...</div>
+    </section>
+    <section class="vault-section" id="vault-letter">
+      <h2>Letter</h2>
+      <div class="vault-content">Loading...</div>
+    </section>
+    <section class="vault-section" id="vault-number">
+      <h2>Number</h2>
+      <div class="vault-content">Loading...</div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-left">
+      <p>&copy; <span id="year"></span> THE Randoms</p>
+    </div>
+    <div class="footer-right">
+      <a href="randuino.html" title="Randuino">
+        <img id="footer-mascot" src="img/Mascot.png" alt="Randuino">
+      </a>
+    </div>
+  </footer>
+
+  <script>
+    // Set current year
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Display yesterday's date
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    document.getElementById("vault-date").textContent = yesterday.toLocaleDateString('en-US', {
+      month: 'long',
+      day: 'numeric'
+    });
+
+    // Load yesterday's items from localStorage
+    const vaultKeys = ['joke','advice','fact','meme','word','password','letter','number'];
+    vaultKeys.forEach(key => {
+      const val = localStorage.getItem(`daily_${key}`);
+      if(val) {
+        const el = document.getElementById(`vault-${key}`);
+        if(el) el.querySelector('.vault-content').textContent = val;
+      }
+    });
+  </script>
+
+  <script src="accordion.js" defer></script>
+  <script src="holiday-theme.js" defer></script>
+</body>
+      </html>
