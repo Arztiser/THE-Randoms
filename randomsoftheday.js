@@ -309,7 +309,7 @@ function createVaultButton() {
   if (!main) return;
 
   const button = document.createElement('button');
-  button.textContent = 'Enter THE Vault';
+  button.textContent = 'THE Vault';
   
   // Styling
   Object.assign(button.style, {
