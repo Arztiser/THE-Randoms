@@ -290,7 +290,6 @@ function archiveTodayToVault() {
 function loadVaultPage() {
   if (!document.body.classList.contains('vault-page')) return;
 
-  // Restore Randoms Of The Day button
   const button = document.querySelector('.clickable-section');
   if (button) {
     button.textContent = 'Randoms Of The Day';
@@ -322,49 +321,6 @@ function loadVaultPage() {
       content.textContent = "Not available";
     }
   });
-}
-
-/* ======================
-   GOLDEN VAULT BUTTON
-====================== */
-function createVaultButton() {
-  if (document.body.classList.contains('vault-page')) return; // never show button on vault.html
-
-  const main = document.querySelector('main.content');
-  if (!main) return;
-
-  const button = document.createElement('button');
-  button.textContent = 'THE Vault';
-  Object.assign(button.style, {
-    backgroundColor: '#FFD700',
-    color: '#fff',
-    fontFamily: "'Jersey 10', sans-serif",
-    fontWeight: '700',
-    fontSize: '24px',
-    border: 'none',
-    borderRadius: '8px',
-    padding: '16px',
-    margin: '16px 0',
-    cursor: 'pointer',
-    width: '100%',
-    boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
-    transition: 'transform 0.2s ease, box-shadow 0.2s ease'
-  });
-
-  button.addEventListener('mouseenter', () => {
-    button.style.transform = 'scale(1.02)';
-    button.style.boxShadow = '0 4px 8px rgba(0,0,0,0.3)';
-  });
-  button.addEventListener('mouseleave', () => {
-    button.style.transform = 'scale(1)';
-    button.style.boxShadow = '0 2px 5px rgba(0,0,0,0.2)';
-  });
-
-  button.addEventListener('click', () => {
-    window.location.href = 'vault.html';
-  });
-
-  main.appendChild(button);
 }
 
 /* ======================
@@ -417,7 +373,6 @@ setInterval(async () => {
 ====================== */
 document.addEventListener('DOMContentLoaded', async () => {
   await refreshAll();
-  createVaultButton();
   loadVaultPage();
   scheduleMidnightRefresh();
 });
