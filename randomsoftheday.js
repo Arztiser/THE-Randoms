@@ -277,6 +277,50 @@ function archiveTodayToVault() {
 }
 
 /* ======================
+   VAULT PAGE LOADER
+====================== */
+function loadVaultPage() {
+  if (!document.body.classList.contains('vault-page')) return;
+
+  const button = document.querySelector('.clickable-section');
+  if (button) {
+    button.textContent = 'Randoms Of The Day';
+    button.addEventListener('click', () => {
+      window.location.href = 'index.html';
+    });
+  }
+
+  const vaultDateEl = document.getElementById("vault-date");
+  if (vaultDateEl) {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    vaultDateEl.textContent = yesterday.toLocaleDateString('en-US', {
+      month: 'long',
+      day: 'numeric'
+    });
+  }
+
+  const vaultKeys = ['joke','advice','fact','meme','word','password','letter','number'];
+  vaultKeys.forEach(key => {
+    const val = localStorage.getItem(`vault_${key}`);
+    const section = document.getElementById(`vault-${key}`);
+    if (!section) return;
+    const content = section.querySelector('.vault-content');
+    if (!content) return;
+
+    if (val) {
+      if (key === 'meme') {
+        content.innerHTML = `<img src="${val}" style="max-width:100%; border-radius:8px;">`;
+      } else {
+        content.textContent = val;
+      }
+    } else {
+      content.textContent = 'Not available';
+    }
+  });
+}
+
+/* ======================
    GOLDEN VAULT BUTTON
 ====================== */
 function createVaultButton() {
@@ -375,5 +419,6 @@ setInterval(async () => {
 document.addEventListener('DOMContentLoaded', async () => {
   await refreshAll();
   createVaultButton();
+  loadVaultPage();
   scheduleMidnightRefresh();
 });
