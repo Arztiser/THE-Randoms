@@ -57,7 +57,8 @@ function isBirthday() {
    LETTER / NUMBER / PASSWORD
 ====================== */
 function renderLetter() {
-  const c = document.querySelector('#random-letter .random-content');
+  let c = document.querySelector('#random-letter .random-content') ||
+          document.querySelector('#vault-letter .vault-content');
   if (!c) return;
 
   if (isBirthday()) {
@@ -71,7 +72,8 @@ function renderLetter() {
 }
 
 function renderNumber() {
-  const c = document.querySelector('#random-number .random-content');
+  let c = document.querySelector('#random-number .random-content') ||
+          document.querySelector('#vault-number .vault-content');
   if (!c) return;
 
   if (isBirthday()) {
@@ -85,7 +87,8 @@ function renderNumber() {
 }
 
 function renderPassword() {
-  const c = document.querySelector('#random-password .random-content');
+  let c = document.querySelector('#random-password .random-content') ||
+          document.querySelector('#vault-password .vault-content');
   if (!c) return;
 
   if (isBirthday()) {
@@ -118,7 +121,8 @@ function renderPassword() {
    WORD
 ====================== */
 async function renderWord() {
-  const c = document.querySelector('#random-word .random-content');
+  const c = document.querySelector('#random-word .random-content') ||
+            document.querySelector('#vault-word .vault-content');
   if (!c) return;
 
   const today = getLocalDayKey();
@@ -193,7 +197,8 @@ async function fetchJoke() {
 }
 
 async function renderJoke() {
-  const c = document.querySelector('#random-joke .random-content');
+  const c = document.querySelector('#random-joke .random-content') ||
+            document.querySelector('#vault-joke .vault-content');
   if (!c) return;
   c.textContent = await fetchCached('joke', fetchJoke);
 }
@@ -206,7 +211,8 @@ async function fetchAdvice() {
 }
 
 async function renderAdvice() {
-  const c = document.querySelector('#random-advice .random-content');
+  const c = document.querySelector('#random-advice .random-content') ||
+            document.querySelector('#vault-advice .vault-content');
   if (!c) return;
   c.textContent = await fetchCached('advice', fetchAdvice);
 }
@@ -219,13 +225,14 @@ async function fetchFact() {
 }
 
 async function renderFact() {
-  const c = document.querySelector('#random-fact .random-content');
+  const c = document.querySelector('#random-fact .random-content') ||
+            document.querySelector('#vault-fact .vault-content');
   if (!c) return;
   c.textContent = await fetchCached('fact', fetchFact);
 }
 
 async function fetchMeme() {
-  if (isBirthday()) return "Today's meme took the day off.";
+  if (isBirthday()) return "/img/default-meme.jpg"; // show image
 
   const seed = getUserDaySeed();
 
@@ -239,7 +246,7 @@ async function fetchMeme() {
     const json = await res.json();
     const imgs = json.data.children
       .map(p => p.data.url)
-      .filter(url => url.match(/\.(jpg|png|jpeg)$/));
+      .filter(url => url.match(/\.(jpg|png)$/));
 
     if (!imgs.length) throw new Error("No images found");
 
@@ -258,39 +265,21 @@ async function fetchMeme() {
 }
 
 async function renderMeme() {
-  const c = document.querySelector('#random-meme .random-content');
+  const c = document.querySelector('#random-meme .random-content') ||
+            document.querySelector('#vault-meme .vault-content');
   if (!c) return;
   const url = await fetchCached('meme', fetchMeme);
   c.innerHTML = `<img src="${url}" style="max-width:100%; border-radius:8px;">`;
 }
 
 /* ======================
-   HELPER: SAFE SET VAULT CONTENT
-====================== */
-function safeSetVault(key, value) {
-  const section = document.getElementById(`vault-${key}`);
-  if (!section) return;
-  const content = section.querySelector('.vault-content');
-  if (!content) return;
-
-  if (key === 'meme') {
-    content.innerHTML = `<img src="${value}" style="max-width:100%; border-radius:8px;">`;
-  } else {
-    content.textContent = value;
-  }
-}
-
-/* ======================
    VAULT ARCHIVE
 ====================== */
 function archiveTodayToVault() {
-  const keys = ["word", "joke", "advice", "fact", "meme", "letter", "number", "password"];
+  const keys = ["word","joke","advice","fact","meme","letter","number","password"];
   keys.forEach(key => {
     const val = localStorage.getItem(`daily_${key}`);
-    if (val) {
-      localStorage.setItem(`vault_${key}`, val);
-      safeSetVault(key, val);
-    }
+    if (val) localStorage.setItem(`vault_${key}`, val);
   });
   localStorage.setItem("vault_date", getLocalDayKey());
 }
@@ -301,16 +290,13 @@ function archiveTodayToVault() {
 function loadVaultPage() {
   if (!document.body.classList.contains('vault-page')) return;
 
-  // Change button text
+  // Restore Randoms Of The Day button
   const button = document.querySelector('.clickable-section');
   if (button) {
     button.textContent = 'Randoms Of The Day';
-    button.addEventListener('click', () => {
-      window.location.href = 'index.html';
-    });
+    button.onclick = () => { window.location.href = 'index.html'; };
   }
 
-  // Show yesterday's date
   const vaultDateEl = document.getElementById("vault-date");
   if (vaultDateEl) {
     const yesterday = new Date();
@@ -321,11 +307,20 @@ function loadVaultPage() {
     });
   }
 
-  // Load all vault content immediately
-  const vaultKeys = ['joke','advice','fact','meme','word','password','letter','number'];
+  const vaultKeys = ["joke","advice","fact","meme","word","password","letter","number"];
   vaultKeys.forEach(key => {
     const val = localStorage.getItem(`vault_${key}`);
-    if (val) safeSetVault(key, val);
+    const section = document.getElementById(`vault-${key}`);
+    if (!section) return;
+    const content = section.querySelector(".vault-content");
+    if (!content) return;
+
+    if (val) {
+      if (key === "meme") content.innerHTML = `<img src="${val}" style="max-width:100%; border-radius:8px;">`;
+      else content.textContent = val;
+    } else {
+      content.textContent = "Not available";
+    }
   });
 }
 
@@ -333,12 +328,13 @@ function loadVaultPage() {
    GOLDEN VAULT BUTTON
 ====================== */
 function createVaultButton() {
+  if (document.body.classList.contains('vault-page')) return;
+
   const main = document.querySelector('main.content');
   if (!main) return;
 
   const button = document.createElement('button');
   button.textContent = 'THE Vault';
-  
   Object.assign(button.style, {
     backgroundColor: '#FFD700',
     color: '#fff',
@@ -380,13 +376,7 @@ async function refreshAll() {
   renderNumber();
   renderPassword();
   await renderWord();
-  await Promise.all([
-    renderJoke(),
-    renderAdvice(),
-    renderFact(),
-    renderMeme()
-  ]);
-
+  await Promise.all([renderJoke(), renderAdvice(), renderFact(), renderMeme()]);
   archiveTodayToVault();
 }
 
