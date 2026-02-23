@@ -289,16 +289,25 @@ async function fetchMeme() {
 ====================== */
 function archiveTodayToVault() {
   const today = getLocalDayKey();
-  const keys = ["word", "joke", "advice", "fact", "meme", "password", "letter", "number"];
 
-  const vault = JSON.parse(localStorage.getItem('vault')) || {};
-  vault[today] = {};
+  // Existing daily cache items
+  const keys = ["word", "joke", "advice", "fact", "meme"];
   keys.forEach(key => {
     const val = localStorage.getItem(`daily_${key}`);
-    if (val) vault[today][key] = val;
+    if (val) localStorage.setItem(`vault_${key}`, val);
   });
 
-  localStorage.setItem('vault', JSON.stringify(vault));
+  // Dynamically generated items that need to be saved
+  const letterEl = document.querySelector('#random-letter .random-content');
+  const numberEl = document.querySelector('#random-number .random-content');
+  const passwordEl = document.querySelector('#random-password .random-content');
+
+  if (letterEl) localStorage.setItem('vault_letter', letterEl.textContent);
+  if (numberEl) localStorage.setItem('vault_number', numberEl.textContent);
+  if (passwordEl) localStorage.setItem('vault_password', passwordEl.textContent);
+
+  // Save the date of this archive
+  localStorage.setItem("vault_date", today);
 }
 
 // -----------------------
