@@ -232,7 +232,7 @@ async function renderFact() {
 }
 
 async function fetchMeme() {
-  if (isBirthday()) return "/img/default-meme.jpg"; // show image
+  if (isBirthday()) return "/img/default-meme.jpg";
 
   const seed = getUserDaySeed();
 
@@ -328,7 +328,7 @@ function loadVaultPage() {
    GOLDEN VAULT BUTTON
 ====================== */
 function createVaultButton() {
-  if (document.body.classList.contains('vault-page')) return;
+  if (document.body.classList.contains('vault-page')) return; // never show button on vault.html
 
   const main = document.querySelector('main.content');
   if (!main) return;
@@ -417,6 +417,7 @@ setInterval(async () => {
 ====================== */
 document.addEventListener('DOMContentLoaded', async () => {
   await refreshAll();
+  createVaultButton();
   loadVaultPage();
   scheduleMidnightRefresh();
 });
