@@ -417,7 +417,6 @@ setInterval(async () => {
 ====================== */
 document.addEventListener('DOMContentLoaded', async () => {
   await refreshAll();
-  createVaultButton();
   loadVaultPage();
   scheduleMidnightRefresh();
 });
