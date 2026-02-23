@@ -54,7 +54,7 @@ function isBirthday() {
 }
 
 /* ======================
-   LETTER
+   LETTER / NUMBER / PASSWORD
 ====================== */
 function renderLetter() {
   const c = document.querySelector('#random-letter .random-content');
@@ -70,9 +70,6 @@ function renderLetter() {
   c.textContent = letters[seed % letters.length];
 }
 
-/* ======================
-   NUMBER
-====================== */
 function renderNumber() {
   const c = document.querySelector('#random-number .random-content');
   if (!c) return;
@@ -87,9 +84,6 @@ function renderNumber() {
   c.textContent = num.toLocaleString();
 }
 
-/* ======================
-   PASSWORD
-====================== */
 function renderPassword() {
   const c = document.querySelector('#random-password .random-content');
   if (!c) return;
@@ -133,12 +127,12 @@ async function renderWord() {
 
   if (cachedWord && cachedDate === today) {
     c.textContent = cachedWord;
-    return;
+    return cachedWord;
   }
 
   if (isBirthday()) {
     c.textContent = 'Celebration';
-    return;
+    return 'Celebration';
   }
 
   async function tryFetch(url) {
@@ -149,38 +143,31 @@ async function renderWord() {
   }
 
   try {
-    // API 1 (Primary)
-    const word = await tryFetch(
-      'https://random-word-api.vercel.app/api?words=1'
-    );
-
+    const word = await tryFetch('https://random-word-api.vercel.app/api?words=1');
     localStorage.setItem('daily_word', word);
     localStorage.setItem('daily_word_date', today);
     c.textContent = word;
+    return word;
   } catch {
     try {
-      // API 2 (Backup)
-      const word = await tryFetch(
-        'https://random-word-api.herokuapp.com/word'
-      );
-
+      const word = await tryFetch('https://random-word-api.herokuapp.com/word');
       localStorage.setItem('daily_word', word);
       localStorage.setItem('daily_word_date', today);
       c.textContent = word;
+      return word;
     } catch {
-      // Final Local Fallback (Seeded)
       const fallback = ["random","fun","code","site","day"];
       const word = fallback[getUserDaySeed() % fallback.length];
-
       localStorage.setItem('daily_word', word);
       localStorage.setItem('daily_word_date', today);
       c.textContent = word;
+      return word;
     }
   }
 }
 
 /* ======================
-   DAILY CACHE FETCH
+   CACHED FETCH UTILITY
 ====================== */
 async function fetchCached(key, fetchFn) {
   const today = getLocalDayKey();
@@ -242,11 +229,9 @@ async function fetchMeme() {
 
   const seed = getUserDaySeed();
 
-  // ---------- PRIMARY: Reddit ----------
   try {
     const subs = ['memes','dankmemes','funny'];
     const sub = subs[seed % subs.length];
-
     const url = `https://www.reddit.com/r/${sub}/hot.json?limit=50`;
     const res = await fetch(`https://corsproxy.io/?${encodeURIComponent(url)}`);
     if (!res.ok) throw new Error("Reddit failed");
@@ -259,29 +244,24 @@ async function fetchMeme() {
     if (!imgs.length) throw new Error("No images found");
 
     return imgs[seed % imgs.length];
-
   } catch {
-
-    // ---------- BACKUP: meme-api ----------
     try {
       const res = await fetch('https://meme-api.com/gimme');
       if (!res.ok) throw new Error("Meme API failed");
-
       const data = await res.json();
-
-      // Only return image
-      if (data.url && data.url.match(/\.(jpg|png|jpeg)$/)) {
-        return data.url;
-      }
-
+      if (data.url && data.url.match(/\.(jpg|png|jpeg)$/)) return data.url;
       throw new Error("Invalid image");
-
     } catch {
-
-      // ---------- FINAL LOCAL FALLBACK ----------
       return "/img/default-meme.jpg";
     }
   }
+}
+
+async function renderMeme() {
+  const c = document.querySelector('#random-meme .random-content');
+  if (!c) return;
+  const url = await fetchCached('meme', fetchMeme);
+  c.innerHTML = `<img src="${url}" style="max-width:100%; border-radius:8px;">`;
 }
 
 /* ======================
@@ -296,9 +276,9 @@ function archiveTodayToVault() {
   localStorage.setItem("vault_date", getLocalDayKey());
 }
 
-// -----------------------
-// GOLDEN VAULT BUTTON
-// -----------------------
+/* ======================
+   GOLDEN VAULT BUTTON
+====================== */
 function createVaultButton() {
   const main = document.querySelector('main.content');
   if (!main) return;
@@ -306,11 +286,10 @@ function createVaultButton() {
   const button = document.createElement('button');
   button.textContent = 'THE Vault';
   
-  // Styling
   Object.assign(button.style, {
-    backgroundColor: '#FFD700', // golden
-    color: '#fff',              // white text
-    fontFamily: "'Jersey 10', sans-serif", // match page font
+    backgroundColor: '#FFD700',
+    color: '#fff',
+    fontFamily: "'Jersey 10', sans-serif",
     fontWeight: '700',
     fontSize: '24px',
     border: 'none',
@@ -318,9 +297,9 @@ function createVaultButton() {
     padding: '16px',
     margin: '16px 0',
     cursor: 'pointer',
-    width: '100%',             // full width like the boxes
+    width: '100%',
     boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
-    transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+    transition: 'transform 0.2s ease, box-shadow 0.2s ease'
   });
 
   button.addEventListener('mouseenter', () => {
@@ -339,9 +318,6 @@ function createVaultButton() {
   main.appendChild(button);
 }
 
-// Initialize after page load
-document.addEventListener('DOMContentLoaded', createVaultButton);
-
 /* ======================
    REFRESH ALL
 ====================== */
@@ -358,7 +334,6 @@ async function refreshAll() {
     renderMeme()
   ]);
 
-  // Archive today’s randoms to vault
   archiveTodayToVault();
 }
 
@@ -372,9 +347,8 @@ function scheduleMidnightRefresh() {
       now.getFullYear(),
       now.getMonth(),
       now.getDate() + 1,
-      0, 0, 0, 0
+      0,0,0,0
     );
-
     setTimeout(async () => {
       await refreshAll();
       scheduleNext();
@@ -400,5 +374,6 @@ setInterval(async () => {
 ====================== */
 document.addEventListener('DOMContentLoaded', async () => {
   await refreshAll();
+  createVaultButton();
   scheduleMidnightRefresh();
 });
