@@ -3,9 +3,14 @@ const testingMode = false;
 /* ======================
    DATE + DAY HELPERS
 ====================== */
-function getLocalDayKey() {
+function getLocalDayKey(date = new Date()) {
+  return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+}
+
+function getYesterdayKey() {
   const d = new Date();
-  return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+  d.setDate(d.getDate() - 1);
+  return getLocalDayKey(d);
 }
 
 /* ======================
@@ -20,9 +25,8 @@ function getUserId() {
   return id;
 }
 
-function getUserDaySeed() {
+function getUserDaySeed(dayKey = getLocalDayKey()) {
   const userId = getUserId();
-  const dayKey = getLocalDayKey();
   const str = userId + dayKey;
 
   let hash = 0;
@@ -50,15 +54,14 @@ function renderCurrentDate() {
 ====================== */
 function isBirthday() {
   const d = new Date();
-  return d.getMonth() === 2 && d.getDate() === 10; // March 10
+  return d.getMonth() === 2 && d.getDate() === 10;
 }
 
 /* ======================
    LETTER / NUMBER / PASSWORD
 ====================== */
 function renderLetter() {
-  let c = document.querySelector('#random-letter .random-content') ||
-          document.querySelector('#vault-letter .vault-content');
+  const c = document.querySelector('#random-letter .random-content');
   if (!c) return;
 
   if (isBirthday()) {
@@ -68,12 +71,15 @@ function renderLetter() {
 
   const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const seed = getUserDaySeed();
-  c.textContent = letters[seed % letters.length];
+  const letter = letters[seed % letters.length];
+
+  c.textContent = letter;
+  localStorage.setItem("daily_letter", letter);
+  localStorage.setItem("daily_letter_date", getLocalDayKey());
 }
 
 function renderNumber() {
-  let c = document.querySelector('#random-number .random-content') ||
-          document.querySelector('#vault-number .vault-content');
+  const c = document.querySelector('#random-number .random-content');
   if (!c) return;
 
   if (isBirthday()) {
@@ -83,12 +89,14 @@ function renderNumber() {
 
   const seed = getUserDaySeed();
   const num = (seed * 9301 + 49297) % 1000000 + 1;
+
   c.textContent = num.toLocaleString();
+  localStorage.setItem("daily_number", num.toLocaleString());
+  localStorage.setItem("daily_number_date", getLocalDayKey());
 }
 
 function renderPassword() {
-  let c = document.querySelector('#random-password .random-content') ||
-          document.querySelector('#vault-password .vault-content');
+  const c = document.querySelector('#random-password .random-content');
   if (!c) return;
 
   if (isBirthday()) {
@@ -114,15 +122,17 @@ function renderPassword() {
   }
 
   pw = pw.split('').sort(() => (seed % 3) - 1).join('');
+
   c.textContent = pw;
+  localStorage.setItem("daily_password", pw);
+  localStorage.setItem("daily_password_date", getLocalDayKey());
 }
 
 /* ======================
    WORD
 ====================== */
 async function renderWord() {
-  const c = document.querySelector('#random-word .random-content') ||
-            document.querySelector('#vault-word .vault-content');
+  const c = document.querySelector('#random-word .random-content');
   if (!c) return;
 
   const today = getLocalDayKey();
@@ -131,17 +141,19 @@ async function renderWord() {
 
   if (cachedWord && cachedDate === today) {
     c.textContent = cachedWord;
-    return cachedWord;
+    return;
   }
 
   if (isBirthday()) {
     c.textContent = 'Celebration';
-    return 'Celebration';
+    localStorage.setItem('daily_word', 'Celebration');
+    localStorage.setItem('daily_word_date', today);
+    return;
   }
 
   async function tryFetch(url) {
     const res = await fetch(url);
-    if (!res.ok) throw new Error("API failed");
+    if (!res.ok) throw new Error();
     const data = await res.json();
     return Array.isArray(data) ? data[0] : data.word || data;
   }
@@ -151,27 +163,17 @@ async function renderWord() {
     localStorage.setItem('daily_word', word);
     localStorage.setItem('daily_word_date', today);
     c.textContent = word;
-    return word;
   } catch {
-    try {
-      const word = await tryFetch('https://random-word-api.herokuapp.com/word');
-      localStorage.setItem('daily_word', word);
-      localStorage.setItem('daily_word_date', today);
-      c.textContent = word;
-      return word;
-    } catch {
-      const fallback = ["random","fun","code","site","day"];
-      const word = fallback[getUserDaySeed() % fallback.length];
-      localStorage.setItem('daily_word', word);
-      localStorage.setItem('daily_word_date', today);
-      c.textContent = word;
-      return word;
-    }
+    const fallback = ["random","fun","code","site","day"];
+    const word = fallback[getUserDaySeed() % fallback.length];
+    localStorage.setItem('daily_word', word);
+    localStorage.setItem('daily_word_date', today);
+    c.textContent = word;
   }
 }
 
 /* ======================
-   CACHED FETCH UTILITY
+   CACHED FETCH
 ====================== */
 async function fetchCached(key, fetchFn) {
   const today = getLocalDayKey();
@@ -197,8 +199,7 @@ async function fetchJoke() {
 }
 
 async function renderJoke() {
-  const c = document.querySelector('#random-joke .random-content') ||
-            document.querySelector('#vault-joke .vault-content');
+  const c = document.querySelector('#random-joke .random-content');
   if (!c) return;
   c.textContent = await fetchCached('joke', fetchJoke);
 }
@@ -211,8 +212,7 @@ async function fetchAdvice() {
 }
 
 async function renderAdvice() {
-  const c = document.querySelector('#random-advice .random-content') ||
-            document.querySelector('#vault-advice .vault-content');
+  const c = document.querySelector('#random-advice .random-content');
   if (!c) return;
   c.textContent = await fetchCached('advice', fetchAdvice);
 }
@@ -225,8 +225,7 @@ async function fetchFact() {
 }
 
 async function renderFact() {
-  const c = document.querySelector('#random-fact .random-content') ||
-            document.querySelector('#vault-fact .vault-content');
+  const c = document.querySelector('#random-fact .random-content');
   if (!c) return;
   c.textContent = await fetchCached('fact', fetchFact);
 }
@@ -241,84 +240,53 @@ async function fetchMeme() {
     const sub = subs[seed % subs.length];
     const url = `https://www.reddit.com/r/${sub}/hot.json?limit=50`;
     const res = await fetch(`https://corsproxy.io/?${encodeURIComponent(url)}`);
-    if (!res.ok) throw new Error("Reddit failed");
+    if (!res.ok) throw new Error();
 
     const json = await res.json();
     const imgs = json.data.children
       .map(p => p.data.url)
       .filter(url => url.match(/\.(jpg|png)$/));
 
-    if (!imgs.length) throw new Error("No images found");
+    if (!imgs.length) throw new Error();
 
     return imgs[seed % imgs.length];
   } catch {
-    try {
-      const res = await fetch('https://meme-api.com/gimme');
-      if (!res.ok) throw new Error("Meme API failed");
-      const data = await res.json();
-      if (data.url && data.url.match(/\.(jpg|png|jpeg)$/)) return data.url;
-      throw new Error("Invalid image");
-    } catch {
-      return "/img/default-meme.jpg";
-    }
+    return "/img/default-meme.jpg";
   }
 }
 
 async function renderMeme() {
-  const c = document.querySelector('#random-meme .random-content') ||
-            document.querySelector('#vault-meme .vault-content');
+  const c = document.querySelector('#random-meme .random-content');
   if (!c) return;
+
   const url = await fetchCached('meme', fetchMeme);
   c.innerHTML = `<img src="${url}" style="max-width:100%; border-radius:8px;">`;
 }
 
 /* ======================
-   VAULT ARCHIVE
-====================== */
-function archiveTodayToVault() {
-  const keys = ["word","joke","advice","fact","meme","letter","number","password"];
-  keys.forEach(key => {
-    const val = localStorage.getItem(`daily_${key}`);
-    if (val) localStorage.setItem(`vault_${key}`, val);
-  });
-  localStorage.setItem("vault_date", getLocalDayKey());
-}
-
-/* ======================
-   VAULT PAGE LOADER
+   VAULT LOADER
 ====================== */
 function loadVaultPage() {
-  if (!document.body.classList.contains('vault-page')) return;
+  const yesterday = getYesterdayKey();
+  const lastVisit = localStorage.getItem("last_visit_date");
 
-  const button = document.querySelector('.clickable-section');
-  if (button) {
-    button.textContent = 'Randoms Of The Day';
-    button.onclick = () => { window.location.href = 'index.html'; };
-  }
+  const keys = ["word","joke","advice","fact","meme","letter","number","password"];
 
-  const vaultDateEl = document.getElementById("vault-date");
-  if (vaultDateEl) {
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    vaultDateEl.textContent = yesterday.toLocaleDateString('en-US', {
-      month: 'long',
-      day: 'numeric'
-    });
-  }
+  keys.forEach(key => {
+    const el = document.querySelector(`#vault-${key} .vault-content`);
+    if (!el) return;
 
-  const vaultKeys = ["joke","advice","fact","meme","word","password","letter","number"];
-  vaultKeys.forEach(key => {
-    const val = localStorage.getItem(`vault_${key}`);
-    const section = document.getElementById(`vault-${key}`);
-    if (!section) return;
-    const content = section.querySelector(".vault-content");
-    if (!content) return;
+    if (lastVisit === yesterday) {
+      const val = localStorage.getItem(`daily_${key}`);
+      if (!val) return;
 
-    if (val) {
-      if (key === "meme") content.innerHTML = `<img src="${val}" style="max-width:100%; border-radius:8px;">`;
-      else content.textContent = val;
+      if (key === "meme") {
+        el.innerHTML = `<img src="${val}" style="max-width:100%; border-radius:8px;">`;
+      } else {
+        el.textContent = val;
+      }
     } else {
-      content.textContent = "Not available";
+      el.textContent = "Missed yesterday.";
     }
   });
 }
@@ -333,7 +301,8 @@ async function refreshAll() {
   renderPassword();
   await renderWord();
   await Promise.all([renderJoke(), renderAdvice(), renderFact(), renderMeme()]);
-  archiveTodayToVault();
+
+  localStorage.setItem("last_visit_date", getLocalDayKey());
 }
 
 /* ======================
