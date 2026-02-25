@@ -305,6 +305,15 @@ async function loadVaultPage() {
   }
 }
 
+// ---------- SIMULATE TOMORROW FOR TESTING ----------
+const originalGetLocalDayKey = getLocalDayKey;
+getLocalDayKey = function(date = new Date()) {
+  // Add 1 day to the current date
+  const d = new Date(date);
+  d.setDate(d.getDate() + 1);
+  return originalGetLocalDayKey(d);
+};
+
 /* ======================
    REFRESH ALL
 ====================== */
