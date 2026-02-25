@@ -187,13 +187,6 @@ async function fetchJoke() {
   return `${d.setup} ${d.punchline}`;
 }
 
-async function renderJoke() {
-  const c = document.querySelector('#random-joke .random-content');
-  if (!c) return;
-  const val = await fetchCached('joke', fetchJoke);
-  c.textContent = val;
-}
-
 async function fetchAdvice() {
   if (isBirthday()) return "Celebrate today. You earned it.";
   const r = await fetch('https://api.adviceslip.com/advice');
@@ -201,25 +194,11 @@ async function fetchAdvice() {
   return d.slip.advice;
 }
 
-async function renderAdvice() {
-  const c = document.querySelector('#random-advice .random-content');
-  if (!c) return;
-  const val = await fetchCached('advice', fetchAdvice);
-  c.textContent = val;
-}
-
 async function fetchFact() {
   if (isBirthday()) return "Today is Arztiser’s birthday.";
   const r = await fetch('https://uselessfacts.jsph.pl/random.json?language=en');
   const d = await r.json();
   return d.text;
-}
-
-async function renderFact() {
-  const c = document.querySelector('#random-fact .random-content');
-  if (!c) return;
-  const val = await fetchCached('fact', fetchFact);
-  c.textContent = val;
 }
 
 async function fetchMeme() {
@@ -247,6 +226,27 @@ async function fetchMeme() {
   }
 }
 
+async function renderJoke() {
+  const c = document.querySelector('#random-joke .random-content');
+  if (!c) return;
+  const val = await fetchCached('joke', fetchJoke);
+  c.textContent = val;
+}
+
+async function renderAdvice() {
+  const c = document.querySelector('#random-advice .random-content');
+  if (!c) return;
+  const val = await fetchCached('advice', fetchAdvice);
+  c.textContent = val;
+}
+
+async function renderFact() {
+  const c = document.querySelector('#random-fact .random-content');
+  if (!c) return;
+  const val = await fetchCached('fact', fetchFact);
+  c.textContent = val;
+}
+
 async function renderMeme() {
   const c = document.querySelector('#random-meme .random-content');
   if (!c) return;
@@ -271,59 +271,38 @@ function archiveToday() {
 }
 
 /* ======================
-   VAULT PAGE LOADER (YESTERDAY FIX)
+   VAULT PAGE LOADER (YESTERDAY RANDOM FETCH)
 ====================== */
-function loadVaultPage() {
+async function loadVaultPage() {
   const yesterdayKey = getYesterdayKey();
   const keys = ["word","joke","advice","fact","meme","letter","number","password"];
 
-  keys.forEach(key => {
+  for (let key of keys) {
     const el = document.querySelector(`#vault-${key} .vault-content`);
-    if (!el) return;
+    if (!el) continue;
 
-    // Load yesterday's vault if exists
     let stored = localStorage.getItem(`vault_${yesterdayKey}_${key}`);
 
     if (!stored) {
-      // Generate random fallback for yesterday once
-      switch(key) {
-        case "letter":
-          const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-          stored = letters[Math.floor(Math.random() * letters.length)];
-          break;
-        case "number":
-          stored = Math.floor(Math.random() * 1000000).toLocaleString();
-          break;
-        case "password":
-          stored = Math.random().toString(36).slice(2, 12);
-          break;
-        case "word":
-          const fallback = ["random","fun","code","site","day"];
-          stored = fallback[Math.floor(Math.random() * fallback.length)];
-          break;
-        case "joke":
-          stored = "Yesterday was mysteriously quiet.";
-          break;
-        case "advice":
-          stored = "Sometimes missing a day makes the next one better.";
-          break;
-        case "fact":
-          stored = "You missed yesterday, but today still exists.";
-          break;
-        case "meme":
-          stored = "/img/default-meme.jpg";
-          break;
+      // Generate real random for joke/advice/fact/meme
+      if (key === "joke") stored = await fetchJoke();
+      else if (key === "advice") stored = await fetchAdvice();
+      else if (key === "fact") stored = await fetchFact();
+      else if (key === "meme") stored = await fetchMeme();
+      else if (key === "letter") stored = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[Math.floor(Math.random() * 26)];
+      else if (key === "number") stored = Math.floor(Math.random() * 1000000).toLocaleString();
+      else if (key === "password") stored = Math.random().toString(36).slice(2, 12);
+      else if (key === "word") {
+        const fallback = ["random","fun","code","site","day"];
+        stored = fallback[Math.floor(Math.random() * fallback.length)];
       }
+
       localStorage.setItem(`vault_${yesterdayKey}_${key}`, stored);
     }
 
-    // Render to vault
-    if (key === "meme") {
-      el.innerHTML = `<img src="${stored}" style="max-width:100%; border-radius:8px;">`;
-    } else {
-      el.textContent = stored;
-    }
-  });
+    if (key === "meme") el.innerHTML = `<img src="${stored}" style="max-width:100%; border-radius:8px;">`;
+    else el.textContent = stored;
+  }
 }
 
 /* ======================
@@ -376,6 +355,6 @@ setInterval(async () => {
 ====================== */
 document.addEventListener('DOMContentLoaded', async () => {
   await refreshAll();
-  loadVaultPage();
+  await loadVaultPage(); // <- now async to fetch randoms if needed
   scheduleMidnightRefresh();
 });
