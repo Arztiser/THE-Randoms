@@ -278,18 +278,52 @@ function loadVaultPage() {
     const el = document.querySelector(`#vault-${key} .vault-content`);
     if (!el) return;
 
-    const stored = localStorage.getItem(`vault_${yesterday}_${key}`);
+    let stored = localStorage.getItem(`vault_${yesterday}_${key}`);
 
-    if (stored) {
-      if (key === "meme") {
-        el.innerHTML = `<img src="${stored}" style="max-width:100%; border-radius:8px;">`;
-      } else {
-        el.textContent = stored;
+    if (!stored) {
+      // Generate fallback content ONCE and store it
+
+      if (key === "letter") {
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        stored = letters[Math.floor(Math.random() * letters.length)];
       }
+
+      else if (key === "number") {
+        stored = Math.floor(Math.random() * 1000000).toLocaleString();
+      }
+
+      else if (key === "password") {
+        stored = Math.random().toString(36).slice(2, 12);
+      }
+
+      else if (key === "meme") {
+        stored = "/img/default-meme.jpg";
+      }
+
+      else if (key === "word") {
+        const fallback = ["random","fun","code","site","day"];
+        stored = fallback[Math.floor(Math.random() * fallback.length)];
+      }
+
+      else if (key === "joke") {
+        stored = "Yesterday was mysteriously quiet.";
+      }
+
+      else if (key === "advice") {
+        stored = "Sometimes missing a day makes the next one better.";
+      }
+
+      else if (key === "fact") {
+        stored = "You missed yesterday, but today still exists.";
+      }
+
+      localStorage.setItem(`vault_${yesterday}_${key}`, stored);
+    }
+
+    if (key === "meme") {
+      el.innerHTML = `<img src="${stored}" style="max-width:100%; border-radius:8px;">`;
     } else {
-      const fallback = "Missed yesterday.";
-      el.textContent = fallback;
-      localStorage.setItem(`vault_${yesterday}_${key}`, fallback);
+      el.textContent = stored;
     }
   });
 }
