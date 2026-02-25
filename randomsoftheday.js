@@ -1,4 +1,4 @@
-const testingMode = true;
+const testingMode = false;
 
 /* ======================
    DATE HELPERS
