@@ -7,15 +7,17 @@
   <meta name="description" content="THE Randoms Is A Website That Lets You View And Do Random Things Such As Random Quizzes, Facts, Quotes, Numbers, And Letters." />
   <meta property="og:image" content="https://therandoms.pages.dev/img/pofp.png" />
   <title>Would You Rather - THE Randoms</title>
+
   <link rel="icon" type="image/png" href="./img/pfp.png" />
   <link rel="manifest" href="/manifest.json" />
   <link rel="apple-touch-icon" sizes="192x192" href="/img/prfp.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@400;700;900&display=swap" rel="stylesheet" />
 
   <style>
     html, body {
-      height: 100%;
       margin: 0;
+      padding: 0;
       overflow-x: hidden;
     }
 
@@ -24,15 +26,11 @@
       --theme-topnav-color: #f2f2f2;
       --theme-accent-color: #E82B38;
       font-family: 'Jersey 10', sans-serif;
-      font-size: 28px;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
       background-color: #fff;
       color: #000;
     }
 
-    /* ---------- TOP NAV ---------- */
+    /* ================= TOP NAV ================= */
 
     .topnav {
       background-color: var(--theme-bg-color);
@@ -56,77 +54,11 @@
 
     .menu-icon {
       font-size: 30px;
-      color: var(--theme-topnav-color);
       cursor: pointer;
       user-select: none;
     }
 
-    /* ---------- CONTENT AREA ---------- */
-
-    .container {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      min-height: calc(100vh - 60px);
-      padding: 20px;
-      text-align: center;
-      box-sizing: border-box;
-    }
-
-    .container h1 {
-      margin: 0 0 40px 0;
-    }
-
-    .button-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .option-button {
-      font-family: 'Jersey 10', sans-serif;
-      margin: 10px;
-      padding: 12px 24px;
-      font-size: 20px;
-      font-weight: 600;
-      background-color: #E82B38;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      transition: all 0.2s ease-in-out;
-    }
-
-    .option-button:hover {
-      background-color: #c7232c;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    .or-text {
-      font-size: 24px;
-      font-weight: 700;
-      margin: 0 16px;
-      color: #E82B38;
-      user-select: none;
-    }
-
-    /* ---------- MOBILE STACK ---------- */
-
-    @media (max-width: 600px) {
-      .button-container {
-        flex-direction: column;
-      }
-
-      .or-text {
-        margin: 15px 0;
-      }
-    }
-
-    /* ---------- NAV MENU ---------- */
+    /* ================= NAV MENU ================= */
 
     .topnav-right {
       display: none;
@@ -139,27 +71,17 @@
       overflow-y: auto;
       flex-direction: column;
       z-index: 999;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
       padding-bottom: 60px;
-      box-sizing: border-box;
     }
 
     .topnav-right.active {
       display: flex;
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    body.menu-open {
-      overflow: hidden;
     }
 
     .accordion-section {
       display: flex;
       flex-direction: column;
-      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      border-top: 1px solid rgba(255,255,255,0.15);
     }
 
     .accordion-toggle {
@@ -177,7 +99,6 @@
     .accordion-content {
       display: none;
       flex-direction: column;
-      background-color: var(--theme-bg-color);
     }
 
     .accordion-section.open .accordion-content {
@@ -186,7 +107,7 @@
 
     .accordion-content a {
       padding: 10px 28px;
-      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      border-top: 1px solid rgba(255,255,255,0.2);
       font-size: 20px;
       color: var(--theme-topnav-color);
       text-decoration: none;
@@ -198,82 +119,151 @@
       font-weight: 700;
       font-size: 24px;
       padding: 14px;
-      cursor: pointer;
       text-align: center;
+      cursor: pointer;
       margin-bottom: 4px;
     }
+
+    /* ================= MAIN CONTENT ================= */
+
+    .container {
+      padding: 40px 20px 60px 20px;
+      text-align: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .container h1 {
+      font-size: clamp(52px, 8vw, 80px);
+      margin: 10px 0 60px 0;
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .option-button {
+      font-family: 'Jersey 10', sans-serif;
+      flex: 1 1 340px;
+      max-width: 480px;
+      padding: 32px 24px;
+      font-size: clamp(22px, 3vw, 30px);
+      font-weight: 700;
+      background-color: var(--theme-accent-color);
+      color: white;
+      border: none;
+      border-radius: 16px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      transition: all 0.2s ease-in-out;
+    }
+
+    .option-button:hover {
+      background-color: #c7232c;
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.2);
+    }
+
+    .or-text {
+      font-size: 36px;
+      font-weight: 900;
+      color: var(--theme-accent-color);
+      align-self: center;
+    }
+
+    /* ================= MOBILE ================= */
+
+    @media (max-width: 700px) {
+      .button-container {
+        flex-direction: column;
+        gap: 25px;
+      }
+
+      .or-text {
+        font-size: 28px;
+      }
+
+      .container h1 {
+        margin-bottom: 40px;
+      }
+    }
+
   </style>
 </head>
 
 <body>
 
-  <header>
-    <div class="topnav">
-      <h1>
-        <a class="logo" href="#" id="homepage-logo">THE Randoms</a>
-      </h1>
-      <span class="menu-icon" tabindex="0" role="button">&#9776;</span>
-    </div>
-
-    <nav class="topnav-right">
-      <div class="accordion-section">
-        <button class="accordion-toggle">Jokes & Fun</button>
-        <div class="accordion-content">
-          <a href="jokes.html">Jokes</a>
-          <a href="memes.html">Memes</a>
-          <a href="quizzes.html">Quizzes</a>
-          <a href="wouldyourather.html">Would You Rather</a>
-        </div>
-      </div>
-
-      <div class="accordion-section">
-        <button class="accordion-toggle">Knowledge & Facts</button>
-        <div class="accordion-content">
-          <a href="advice.html">Advice</a>
-          <a href="facts.html">Facts</a>
-          <a href="pages.html">Pages</a>
-          <a href="people.html">People</a>
-          <a href="quotes.html">Quotes</a>
-        </div>
-      </div>
-
-      <div class="accordion-section">
-        <button class="accordion-toggle">Music & Videos</button>
-        <div class="accordion-content">
-          <a href="songs.html">Songs</a>
-          <a href="videos.html">Videos</a>
-        </div>
-      </div>
-
-      <div class="accordion-section">
-        <button class="accordion-toggle">Words, Letters & Numbers</button>
-        <div class="accordion-content">
-          <a href="letters.html">Letters</a>
-          <a href="numbers.html">Numbers</a>
-          <a href="passwords.html">Passwords</a>
-          <a href="words.html">Words</a>
-        </div>
-      </div>
-
-      <div class="clickable-section">
-        Randoms Of The Day
-      </div>
-    </nav>
-  </header>
-
-  <div class="container">
-    <h1>Would You Rather</h1>
-
-    <div class="button-container">
-      <button class="option-button" id="option1">Loading Option...</button>
-      <span class="or-text">Or</span>
-      <button class="option-button" id="option2">Loading Option...</button>
-    </div>
+<header>
+  <div class="topnav">
+    <h1>
+      <a class="logo" href="#" id="homepage-logo">THE Randoms</a>
+    </h1>
+    <span class="menu-icon" tabindex="0">&#9776;</span>
   </div>
 
-  <script src="wouldyourather.js" defer></script>
-  <script src="holiday-theme.js"></script>
-  <script src="accordion.js" defer></script>
+  <nav class="topnav-right">
+    <div class="accordion-section">
+      <button class="accordion-toggle">Jokes & Fun</button>
+      <div class="accordion-content">
+        <a href="jokes.html">Jokes</a>
+        <a href="memes.html">Memes</a>
+        <a href="quizzes.html">Quizzes</a>
+        <a href="wouldyourather.html">Would You Rather</a>
+      </div>
+    </div>
+
+    <div class="accordion-section">
+      <button class="accordion-toggle">Knowledge & Facts</button>
+      <div class="accordion-content">
+        <a href="advice.html">Advice</a>
+        <a href="facts.html">Facts</a>
+        <a href="pages.html">Pages</a>
+        <a href="people.html">People</a>
+        <a href="quotes.html">Quotes</a>
+      </div>
+    </div>
+
+    <div class="accordion-section">
+      <button class="accordion-toggle">Music & Videos</button>
+      <div class="accordion-content">
+        <a href="songs.html">Songs</a>
+        <a href="videos.html">Videos</a>
+      </div>
+    </div>
+
+    <div class="accordion-section">
+      <button class="accordion-toggle">Words, Letters & Numbers</button>
+      <div class="accordion-content">
+        <a href="letters.html">Letters</a>
+        <a href="numbers.html">Numbers</a>
+        <a href="passwords.html">Passwords</a>
+        <a href="words.html">Words</a>
+      </div>
+    </div>
+
+    <div class="clickable-section">
+      Randoms Of The Day
+    </div>
+  </nav>
+</header>
+
+<div class="container">
+  <h1>Would You Rather</h1>
+
+  <div class="button-container">
+    <button class="option-button" id="option1">Loading Option...</button>
+    <div class="or-text">OR</div>
+    <button class="option-button" id="option2">Loading Option...</button>
+  </div>
+</div>
+
+<script src="wouldyourather.js" defer></script>
+<script src="holiday-theme.js"></script>
+<script src="accordion.js" defer></script>
 
 </body>
 </html>
