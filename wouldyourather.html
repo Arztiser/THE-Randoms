@@ -11,7 +11,6 @@
   <link rel="icon" type="image/png" href="./img/pfp.png" />
   <link rel="manifest" href="/manifest.json" />
   <link rel="apple-touch-icon" sizes="192x192" href="/img/prfp.png" />
-
   <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@400;700;900&display=swap" rel="stylesheet" />
 
   <style>
@@ -26,11 +25,11 @@
       --theme-topnav-color: #f2f2f2;
       --theme-accent-color: #E82B38;
       font-family: 'Jersey 10', sans-serif;
-      background-color: #fff;
+      background: #fff;
       color: #000;
     }
 
-    /* ================= TOP NAV ================= */
+    /* ================= NAV ================= */
 
     .topnav {
       background-color: var(--theme-bg-color);
@@ -58,8 +57,6 @@
       user-select: none;
     }
 
-    /* ================= NAV MENU ================= */
-
     .topnav-right {
       display: none;
       position: fixed;
@@ -68,10 +65,10 @@
       right: 0;
       bottom: 0;
       background-color: var(--theme-bg-color);
-      overflow-y: auto;
       flex-direction: column;
       z-index: 999;
-      padding-bottom: 60px;
+      overflow-y: auto;
+      padding-bottom: 40px;
     }
 
     .topnav-right.active {
@@ -88,11 +85,10 @@
       background: none;
       color: var(--theme-topnav-color);
       padding: 14px;
-      text-align: left;
       font-size: 24px;
       border: none;
+      text-align: left;
       cursor: pointer;
-      width: 100%;
       font-family: 'Jersey 10', sans-serif;
     }
 
@@ -107,10 +103,10 @@
 
     .accordion-content a {
       padding: 10px 28px;
-      border-top: 1px solid rgba(255,255,255,0.2);
       font-size: 20px;
-      color: var(--theme-topnav-color);
       text-decoration: none;
+      color: var(--theme-topnav-color);
+      border-top: 1px solid rgba(255,255,255,0.2);
     }
 
     .clickable-section {
@@ -124,71 +120,74 @@
       margin-bottom: 4px;
     }
 
-    /* ================= MAIN CONTENT ================= */
+    /* ================= MAIN ================= */
 
     .container {
-      padding: 40px 20px 60px 20px;
+      padding: 20px 20px 30px 20px;
       text-align: center;
-      max-width: 1200px;
+      max-width: 1100px;
       margin: 0 auto;
     }
 
     .container h1 {
-      font-size: clamp(52px, 8vw, 80px);
-      margin: 10px 0 60px 0;
+      font-size: clamp(50px, 8vw, 72px);
+      margin: 15px 0 30px 0;
     }
 
     .button-container {
       display: flex;
       justify-content: center;
-      align-items: stretch;
-      gap: 40px;
-      flex-wrap: wrap;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: nowrap;
     }
 
     .option-button {
       font-family: 'Jersey 10', sans-serif;
-      flex: 1 1 340px;
-      max-width: 480px;
-      padding: 32px 24px;
-      font-size: clamp(22px, 3vw, 30px);
+      width: 44%;
+      max-width: 420px;
+      padding: 20px 18px;
+      font-size: clamp(18px, 2.5vw, 24px);
       font-weight: 700;
       background-color: var(--theme-accent-color);
       color: white;
       border: none;
-      border-radius: 16px;
+      border-radius: 14px;
       cursor: pointer;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
       transition: all 0.2s ease-in-out;
     }
 
     .option-button:hover {
       background-color: #c7232c;
-      transform: translateY(-4px);
-      box-shadow: 0 12px 28px rgba(0,0,0,0.2);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.2);
     }
 
     .or-text {
-      font-size: 36px;
+      font-size: 28px;
       font-weight: 900;
       color: var(--theme-accent-color);
-      align-self: center;
+      white-space: nowrap;
     }
 
-    /* ================= MOBILE ================= */
-
-    @media (max-width: 700px) {
-      .button-container {
-        flex-direction: column;
-        gap: 25px;
-      }
-
-      .or-text {
-        font-size: 28px;
+    /* Slight mobile tightening */
+    @media (max-width: 600px) {
+      .container {
+        padding-top: 15px;
       }
 
       .container h1 {
-        margin-bottom: 40px;
+        margin-bottom: 20px;
+      }
+
+      .option-button {
+        padding: 16px 10px;
+        font-size: 18px;
+      }
+
+      .or-text {
+        font-size: 22px;
       }
     }
 
