@@ -48,30 +48,9 @@ function ensureFooter() {
     style.id = "randoms-footer-style";
 
     style.textContent = `
-      html, body {
-        margin: 0;
-        height: 100%;
-        font-family: 'Jersey 10', sans-serif;
-      }
-
-      body {
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-      }
-
-      /* Only actual content grows */
-      main,
-      .container,
-      .content,
-      .page-content {
-        flex: 1;
-      }
-
       .site-footer {
-        margin-top: auto;
+        width: 100%;
         min-height: 60px;
-
         background: var(--theme-footer-bg, #333);
         color: var(--theme-footer-text, #f2f2f2);
 
