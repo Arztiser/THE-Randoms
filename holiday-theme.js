@@ -312,7 +312,7 @@ function applyHolidayTheme() {
     theme.footerBg = "#E82B38";
     theme.footerText = "#fff";
 
-  } else if (m === 3 && d === 10) { // Birthday
+  } else if (m === 3 && d === 7) { // Birthday
     theme.class = "holiday-birthday";
     theme.mascot = "birthdaymascot.png";
     theme.mainBg = "#F3E5AB";
