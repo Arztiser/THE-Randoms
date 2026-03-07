@@ -277,7 +277,7 @@ function applyHolidayTheme(){
 
 
   // Christmas
-  if(m === 3){
+  if(m === 12){
 
     theme = {
       ...theme,
@@ -431,7 +431,7 @@ function applyHolidayTheme(){
 
 
   // Birthday
-  else if(m === 3 && d === 10){
+  else if(m === 3 && d === 7){
 
     theme = {
       ...theme,
