@@ -230,7 +230,7 @@ function applyHolidayTheme() {
   // =======================
   // All Holiday Overrides
   // =======================
-  if ((m === 12 && d >= 25) || (m === 12 && d <= 31)) { // Christmas
+  if ((m === 3 && d >= 7) || (m === 12 && d <= 31)) { // Christmas
     theme.class = "holiday-christmas";
     theme.mascot = "christmasmascot.png";
     theme.bgColor = "#00A53C";
@@ -312,7 +312,7 @@ function applyHolidayTheme() {
     theme.footerBg = "#E82B38";
     theme.footerText = "#fff";
 
-  } else if (m === 3 && d === 7) { // Birthday
+  } else if (m === 3 && d === 10) { // Birthday
     theme.class = "holiday-birthday";
     theme.mascot = "birthdaymascot.png";
     theme.mainBg = "#F3E5AB";
