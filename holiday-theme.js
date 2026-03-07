@@ -42,7 +42,6 @@ function ensureFooter() {
     document.getElementById("year").textContent = new Date().getFullYear();
   }
 
-  // Inject styles once
   if (!document.getElementById("randoms-footer-style")) {
 
     const style = document.createElement("style");
@@ -61,13 +60,16 @@ function ensureFooter() {
         flex-direction: column;
       }
 
-      /* Everything except footer grows */
-      body > :not(.site-footer) {
-        flex: 1 0 auto;
+      /* Only actual content grows */
+      main,
+      .container,
+      .content,
+      .page-content {
+        flex: 1;
       }
 
       .site-footer {
-        flex-shrink: 0;
+        margin-top: auto;
         min-height: 60px;
 
         background: var(--theme-footer-bg, #333);
