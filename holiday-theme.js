@@ -133,6 +133,72 @@ function ensureFooter() {
 }
 
 // =======================
+// Confetti & Snow Engines
+// =======================
+function triggerBirthdayConfetti() {
+  // Check if we are on the homepage
+  const isHomepage = location.pathname === "/" || location.pathname.endsWith("index.html");
+  
+  if (isHomepage) {
+    const script = document.createElement("script");
+    script.src = "https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js";
+    script.onload = () => {
+      let duration = 3 * 1000;
+      let animationEnd = Date.now() + duration;
+      let defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9999 };
+
+      let interval = setInterval(function() {
+        let timeLeft = animationEnd - Date.now();
+        if (timeLeft <= 0) { return clearInterval(interval); }
+        let particleCount = 50 * (timeLeft / duration);
+        confetti(Object.assign({}, defaults, { 
+          particleCount, 
+          origin: { x: Math.random(), y: Math.random() - 0.2 } 
+        }));
+      }, 250);
+    };
+    document.head.appendChild(script);
+  }
+}
+
+function startSnow() {
+  const snowContainer = document.createElement('div');
+  snowContainer.id = 'snow-container';
+  // pointer-events: none ensures users can still click buttons/links under the snow!
+  snowContainer.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:9998;overflow:hidden;';
+  document.body.appendChild(snowContainer);
+
+  const style = document.createElement('style');
+  style.textContent = `
+    .snowflake {
+      position: absolute; 
+      top: -10px; 
+      background: white; 
+      border-radius: 50%;
+      opacity: 0.8; 
+      animation: fall linear infinite;
+    }
+    @keyframes fall {
+      0% { transform: translateY(0) translateX(0); }
+      100% { transform: translateY(100vh) translateX(20px); }
+    }
+  `;
+  document.head.appendChild(style);
+
+  for (let i = 0; i < 50; i++) {
+    let flake = document.createElement('div');
+    flake.className = 'snowflake';
+    let size = Math.random() * 5 + 2 + 'px';
+    flake.style.width = size;
+    flake.style.height = size;
+    flake.style.left = Math.random() * 100 + 'vw';
+    flake.style.animationDuration = Math.random() * 3 + 2 + 's';
+    flake.style.animationDelay = Math.random() * 5 + 's';
+    snowContainer.appendChild(flake);
+  }
+}
+
+// =======================
 // Holiday Theme Engine
 // =======================
 function applyHolidayTheme() {
@@ -179,6 +245,8 @@ function applyHolidayTheme() {
     theme.mainText = "#ffffff";
     theme.footerBg = "#E82B38";
     theme.footerText = "#ffffff";
+    
+    startSnow(); // Trigger snow on all pages
 
   } else if (m === 10 && d >= 25 && d <= 31) { // Halloween
     theme.class = "holiday-halloween";
@@ -257,6 +325,8 @@ function applyHolidayTheme() {
     theme.menuText = "#fff";
     theme.hoverBg = "#8CC4E0";
     theme.linkColor = "#E54551";
+
+    triggerBirthdayConfetti(); // Trigger confetti ONLY on the homepage
 
   } else if (m === 4 && d >= 1 && d <= 7) { // Easter
     theme.class = "holiday-easter";
