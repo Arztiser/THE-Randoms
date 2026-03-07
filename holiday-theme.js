@@ -17,8 +17,7 @@
 // =======================
 // Footer Creation + Sticky Footer
 // =======================
-function ensureStickyFooter() {
-  // Create footer if missing
+function ensureFooter() {
   let footer = document.querySelector(".site-footer");
   if (!footer) {
     footer = document.createElement("footer");
@@ -39,7 +38,7 @@ function ensureStickyFooter() {
     document.getElementById("year").textContent = new Date().getFullYear();
   }
 
-  // Wrap all page content (except footer) in a wrapper
+  // Wrap content except footer
   let wrapper = document.querySelector(".randoms-wrapper");
   if (!wrapper) {
     wrapper = document.createElement("div");
@@ -55,7 +54,7 @@ function ensureStickyFooter() {
     document.body.insertBefore(wrapper, footer);
   }
 
-  // Add CSS only once
+  // Base styles (only once)
   if (!document.getElementById("randoms-footer-style")) {
     const style = document.createElement("style");
     style.id = "randoms-footer-style";
@@ -74,21 +73,24 @@ function ensureStickyFooter() {
       }
 
       .randoms-wrapper {
-        flex: 1;              /* Grow to fill space */
+        flex: 1;
         display: flex;
         flex-direction: column;
+        min-height: 0; /* Prevent extra scroll */
+      }
+
+      main, .container, .page-content {
+        flex: 1 0 auto;
       }
 
       .site-footer {
-        flex-shrink: 0;       /* Never shrink */
+        flex-shrink: 0;
         min-height: 60px;
         background: var(--theme-footer-bg, #333);
         color: var(--theme-footer-text, #f2f2f2);
-
         display: flex;
         justify-content: space-between;
         align-items: center;
-
         padding: 8px 20px;
         font-size: 20px;
         box-sizing: border-box;
@@ -111,9 +113,9 @@ function ensureStickyFooter() {
 
     document.head.appendChild(style);
   }
-}
 
-document.addEventListener("DOMContentLoaded", ensureStickyFooter);
+  return footer;
+}
 
 // =======================
 // Holiday Theme Engine
@@ -145,7 +147,7 @@ function applyHolidayTheme() {
   };
 
   // =======================
-  // Holiday Overrides
+  // All Holiday Overrides
   // =======================
   if ((m === 12 && d >= 25) || (m === 12 && d <= 31)) { // Christmas
     theme.class = "holiday-christmas";
@@ -299,79 +301,22 @@ function initDarkMode() {
   }
 
   style.textContent = `
-    /* =======================
-       Core Dark Mode
-    ======================= */
     html.dark-mode body {
       background: #121212 !important;
       color: #e5e5e5 !important;
     }
-    html.dark-mode a {
-      color: #ffffff !important;
-    }
-
-    /* =======================
-       Navbar & Footer
-    ======================= */
+    html.dark-mode a { color: #ffffff !important; }
     html.dark-mode .topnav,
-    html.dark-mode .site-footer {
-      background: #e82b38 !important;
-      color: #fff !important;
-    }
+    html.dark-mode .site-footer { background: #e82b38 !important; color: #fff !important; }
     html.dark-mode .topnav a,
-    html.dark-mode .site-footer a {
-      color: #fff !important;
-    }
-
-    /* =======================
-   Accordion Dark Mode Full Fix
-======================= */
-
-/* Accordion toggle button */
-html.dark-mode .accordion-toggle {
-  background-color: #121212 !important;
-  color: #fff !important;
-}
-html.dark-mode .accordion-toggle:hover {
-  background-color: #333333 !important;
-}
-
-/* Accordion content container */
-html.dark-mode .accordion-content {
-  background-color: #121212 !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  border: none !important;
-  width: 100% !important;
-  box-sizing: border-box;
-}
-
-/* All children inside accordion content */
-html.dark-mode .accordion-content * {
-  background-color: #121212 !important;
-  color: #ffffff !important;
-}
-
-/* Accordion links */
-html.dark-mode .accordion-content a {
-  display: block;
-  width: 100%;
-  padding: 10px 20px;
-  text-decoration: none;
-  background-color: #121212 !important; /* Matches container */
-  color: #ffffff !important;
-}
-
-/* Hover state for links */
-html.dark-mode .accordion-content a:hover {
-  background-color: #333333 !important;
-  color: #fff !important;
-}
-
-/* Force container height to fit content, no leftover space */
-html.dark-mode .topnav-right {
-  background-color: #121212 !important;
-}
+    html.dark-mode .site-footer a { color: #fff !important; }
+    html.dark-mode .accordion-toggle { background-color: #121212 !important; color: #fff !important; }
+    html.dark-mode .accordion-toggle:hover { background-color: #333333 !important; }
+    html.dark-mode .accordion-content { background-color: #121212 !important; padding:0 !important; margin:0 !important; border:none !important; width:100% !important; box-sizing:border-box; }
+    html.dark-mode .accordion-content * { background-color: #121212 !important; color: #ffffff !important; }
+    html.dark-mode .accordion-content a { display:block; width:100%; padding:10px 20px; text-decoration:none; background-color: #121212 !important; color:#fff !important; }
+    html.dark-mode .accordion-content a:hover { background-color: #333333 !important; color: #fff !important; }
+    html.dark-mode .topnav-right { background-color: #121212 !important; }
   `;
 
   function apply(e) {
@@ -381,6 +326,7 @@ html.dark-mode .topnav-right {
   apply(query);
   query.addEventListener("change", apply);
 }
+
 // =======================
 // Daily Home Splash
 // =======================
