@@ -17,56 +17,70 @@
 // =======================
 // Footer Creation
 // =======================
+
 function ensureFooter() {
+
   let footer = document.querySelector(".site-footer");
 
   if (!footer) {
     footer = document.createElement("footer");
     footer.className = "site-footer";
+
     footer.innerHTML = `
       <div class="footer-left">
         <p>&copy; <span id="year"></span> THE Randoms</p>
       </div>
+
       <div class="footer-right">
         <a href="randuino.html" title="Randuino">
           <img id="footer-mascot" src="img/Mascot.png" alt="Randuino">
         </a>
       </div>
     `;
+
     document.body.appendChild(footer);
     document.getElementById("year").textContent = new Date().getFullYear();
   }
 
-  // Base footer styles (only once)
-  if (!document.getElementById("base-footer-style")) {
+  if (!document.getElementById("randoms-footer-style")) {
+
     const style = document.createElement("style");
-    style.id = "base-footer-style";
+    style.id = "randoms-footer-style";
+
     style.textContent = `
       html, body {
         margin: 0;
         min-height: 100%;
-      }
-
-      body {
-        display: flex;
-        flex-direction: column;
         font-family: 'Jersey 10', sans-serif;
       }
 
-      main, .container, .page-content {
-        flex: 1 0 auto;
+      body {
+        padding-bottom: 60px;
       }
 
       .site-footer {
-        margin-top: auto;
-        min-height: 60px;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 60px;
+
         background: var(--theme-footer-bg, #333);
         color: var(--theme-footer-text, #f2f2f2);
+
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 8px 20px;
+
+        padding: 5px 20px;
         font-size: 20px;
+        box-sizing: border-box;
+
+        z-index: 1000;
+      }
+
+      .footer-left p {
+        margin: 0;
       }
 
       #footer-mascot {
@@ -79,11 +93,14 @@ function ensureFooter() {
         transform: scale(1.1) rotate(-5deg);
       }
     `;
+
     document.head.appendChild(style);
   }
 
   return footer;
 }
+
+document.addEventListener("DOMContentLoaded", ensureFooter);
 
 // =======================
 // Holiday Theme Engine
