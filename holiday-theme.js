@@ -42,15 +42,54 @@ function ensureFooter() {
     document.getElementById("year").textContent = new Date().getFullYear();
   }
 
+  // Create wrapper if not present
+  let wrapper = document.querySelector(".randoms-page-wrapper");
+
+  if (!wrapper) {
+
+    wrapper = document.createElement("div");
+    wrapper.className = "randoms-page-wrapper";
+
+    const children = [...document.body.children];
+
+    children.forEach(el => {
+      if (!el.classList.contains("site-footer")) {
+        wrapper.appendChild(el);
+      }
+    });
+
+    document.body.insertBefore(wrapper, footer);
+  }
+
+  // Inject CSS once
   if (!document.getElementById("randoms-footer-style")) {
 
     const style = document.createElement("style");
     style.id = "randoms-footer-style";
 
     style.textContent = `
+      html, body {
+        margin: 0;
+        height: 100%;
+        font-family: 'Jersey 10', sans-serif;
+      }
+
+      body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .randoms-page-wrapper {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
       .site-footer {
-        width: 100%;
+        flex-shrink: 0;
         min-height: 60px;
+
         background: var(--theme-footer-bg, #333);
         color: var(--theme-footer-text, #f2f2f2);
 
@@ -81,7 +120,6 @@ function ensureFooter() {
     document.head.appendChild(style);
   }
 
-  return footer;
 }
 
 document.addEventListener("DOMContentLoaded", ensureFooter);
