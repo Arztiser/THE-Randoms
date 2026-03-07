@@ -128,7 +128,7 @@ function applyHolidayTheme() {
   };
 
   // Christmas
-  if ((m === 12 && d >= 25) || (m === 12 && d <= 31)) {
+  if ((m === 3 && d >= 7) || (m === 12 && d <= 31)) {
     theme = {...theme, class: "holiday-christmas", mascot: "christmasmascot.png", bgColor: "#00A53C", textColor: "#ffffff", linkColor: "#ffffff", navBg: "#E82B38", navText: "#ffffff", menuBg: "#00A53C", menuText: "#ffffff", hoverBg: "rgba(255,255,255,0.2)", mainBg: "#E82B38", footerBg: "#E82B38", footerText: "#ffffff" };
     startSnow();
   } 
