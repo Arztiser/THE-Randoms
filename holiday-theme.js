@@ -15,13 +15,11 @@
 })();
 
 // =======================
-// Footer Creation
+// Footer Creation + Sticky Footer
 // =======================
-
-function ensureFooter() {
-
+function ensureStickyFooter() {
+  // Create footer if missing
   let footer = document.querySelector(".site-footer");
-
   if (!footer) {
     footer = document.createElement("footer");
     footer.className = "site-footer";
@@ -30,7 +28,6 @@ function ensureFooter() {
       <div class="footer-left">
         <p>&copy; <span id="year"></span> THE Randoms</p>
       </div>
-
       <div class="footer-right">
         <a href="randuino.html" title="Randuino">
           <img id="footer-mascot" src="img/Mascot.png" alt="Randuino">
@@ -42,16 +39,13 @@ function ensureFooter() {
     document.getElementById("year").textContent = new Date().getFullYear();
   }
 
-  // Create wrapper if not present
-  let wrapper = document.querySelector(".randoms-page-wrapper");
-
+  // Wrap all page content (except footer) in a wrapper
+  let wrapper = document.querySelector(".randoms-wrapper");
   if (!wrapper) {
-
     wrapper = document.createElement("div");
-    wrapper.className = "randoms-page-wrapper";
+    wrapper.className = "randoms-wrapper";
 
     const children = [...document.body.children];
-
     children.forEach(el => {
       if (!el.classList.contains("site-footer")) {
         wrapper.appendChild(el);
@@ -61,9 +55,8 @@ function ensureFooter() {
     document.body.insertBefore(wrapper, footer);
   }
 
-  // Inject CSS once
+  // Add CSS only once
   if (!document.getElementById("randoms-footer-style")) {
-
     const style = document.createElement("style");
     style.id = "randoms-footer-style";
 
@@ -80,16 +73,15 @@ function ensureFooter() {
         flex-direction: column;
       }
 
-      .randoms-page-wrapper {
-        flex: 1;
+      .randoms-wrapper {
+        flex: 1;              /* Grow to fill space */
         display: flex;
         flex-direction: column;
       }
 
       .site-footer {
-        flex-shrink: 0;
+        flex-shrink: 0;       /* Never shrink */
         min-height: 60px;
-
         background: var(--theme-footer-bg, #333);
         color: var(--theme-footer-text, #f2f2f2);
 
@@ -119,10 +111,9 @@ function ensureFooter() {
 
     document.head.appendChild(style);
   }
-
 }
 
-document.addEventListener("DOMContentLoaded", ensureFooter);
+document.addEventListener("DOMContentLoaded", ensureStickyFooter);
 
 // =======================
 // Holiday Theme Engine
