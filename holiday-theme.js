@@ -230,7 +230,7 @@ function applyHolidayTheme() {
   // =======================
   // All Holiday Overrides
   // =======================
-  if ((m === 3 && d >= 7) || (m === 12 && d <= 31)) { // Christmas
+  if ((m === 12 && d >= 25) || (m === 12 && d <= 31)) { // Christmas
     theme.class = "holiday-christmas";
     theme.mascot = "christmasmascot.png";
     theme.bgColor = "#00A53C";
