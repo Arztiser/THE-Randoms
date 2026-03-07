@@ -1,246 +1,261 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#E82B38" />
-  <meta name="description" content="THE Randoms Is A Website That Lets You View And Do Random Things Such As Random Quizzes, Facts, Quotes, Numbers, And Letters." />
-  <meta property="og:image" content="https://therandoms.pages.dev/img/pofp.png" />
-  <title>Would You Rather - THE Randoms</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#E82B38">
+<meta name="description" content="THE Randoms Is A Website That Lets You View And Do Random Things Such As Random Quizzes, Facts, Quotes, Numbers, And Letters.">
 
-  <link rel="icon" type="image/png" href="./img/pfp.png" />
-  <link rel="manifest" href="/manifest.json" />
-  <link rel="apple-touch-icon" sizes="192x192" href="/img/prfp.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@400;700;900&display=swap" rel="stylesheet" />
+<title>Would You Rather - THE Randoms</title>
 
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      overflow-x: hidden;
-    }
+<link rel="icon" type="image/png" href="./img/pfp.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" sizes="192x192" href="/img/prfp.png">
 
-    body {
-      --theme-bg-color: #333;
-      --theme-topnav-color: #f2f2f2;
-      --theme-accent-color: #E82B38;
+<link href="https://fonts.googleapis.com/css2?family=Jersey+10:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 
-      font-family: 'Jersey 10', sans-serif;
-      background: #fff;
-      color: #000;
+<style>
 
-      /* ✅ FULL HEIGHT FIX */
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
+html, body {
+height: 100%;
+margin: 0;
+overflow-x: hidden;
+font-family: 'Jersey 10', sans-serif;
+font-size: 28px;
+background-color: #fff;
+color: #000;
+}
 
-    /* ================= NAV ================= */
+body{
+--theme-bg-color:#333;
+--theme-topnav-color:#f2f2f2;
+--theme-accent-color:#E82B38;
 
-    header {
-      flex-shrink: 0;
-    }
+display:flex;
+flex-direction:column;
+min-height:100vh;
+}
 
-    .topnav {
-      background-color: var(--theme-bg-color);
-      color: var(--theme-topnav-color);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 16px;
-      height: 60px;
-    }
+/* ================= NAV ================= */
 
-    .topnav h1 {
-      margin: 0;
-      font-size: 24px;
-    }
+.topnav{
+background-color:var(--theme-bg-color);
+color:var(--theme-topnav-color);
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 16px;
+height:60px;
+}
 
-    .topnav .logo {
-      color: var(--theme-topnav-color);
-      text-decoration: none;
-    }
+.topnav h1{
+margin:0;
+font-size:24px;
+}
 
-    .menu-icon {
-      font-size: 30px;
-      cursor: pointer;
-      user-select: none;
-    }
+.topnav .logo{
+color:var(--theme-topnav-color);
+text-decoration:none;
+}
 
-    .topnav-right {
-      display: none;
-      position: fixed;
-      top: 60px;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: var(--theme-bg-color);
-      flex-direction: column;
-      z-index: 999;
-      overflow-y: auto;
-      padding-bottom: 40px;
-    }
+.menu-icon{
+font-size:30px;
+cursor:pointer;
+user-select:none;
+color:var(--theme-topnav-color);
+}
 
-    .topnav-right.active {
-      display: flex;
-    }
+/* Accordion Menu */
 
-    .accordion-section {
-      display: flex;
-      flex-direction: column;
-      border-top: 1px solid rgba(255,255,255,0.15);
-    }
+.topnav-right{
+display:none;
+position:fixed;
+top:60px;
+left:0;
+right:0;
+bottom:0;
+background-color:var(--theme-bg-color);
+overflow-y:auto;
+flex-direction:column;
+z-index:999;
+opacity:0;
+pointer-events:none;
+padding-bottom:60px;
+}
 
-    .accordion-toggle {
-      background: none;
-      color: var(--theme-topnav-color);
-      padding: 14px;
-      font-size: 24px;
-      border: none;
-      text-align: left;
-      cursor: pointer;
-      font-family: 'Jersey 10', sans-serif;
-    }
+.topnav-right.active{
+display:flex;
+opacity:1;
+pointer-events:auto;
+}
 
-    .accordion-content {
-      display: none;
-      flex-direction: column;
-    }
+body.menu-open{
+overflow:hidden;
+}
 
-    .accordion-section.open .accordion-content {
-      display: flex;
-    }
+.accordion-section{
+display:flex;
+flex-direction:column;
+border-top:1px solid rgba(255,255,255,0.15);
+}
 
-    .accordion-content a {
-      padding: 10px 28px;
-      font-size: 20px;
-      text-decoration: none;
-      color: var(--theme-topnav-color);
-      border-top: 1px solid rgba(255,255,255,0.2);
-    }
+.accordion-toggle{
+background:none;
+color:var(--theme-topnav-color);
+padding:14px;
+font-size:24px;
+border:none;
+text-align:left;
+cursor:pointer;
+font-family:'Jersey 10',sans-serif;
+}
 
-    .clickable-section {
-      background-color: var(--theme-accent-color);
-      color: white;
-      font-weight: 700;
-      font-size: 24px;
-      padding: 14px;
-      text-align: center;
-      cursor: pointer;
-      margin-bottom: 4px;
-    }
+.accordion-content{
+display:none;
+flex-direction:column;
+}
 
-    /* ================= MAIN ================= */
+.accordion-section.open .accordion-content{
+display:flex;
+}
 
-    main {
-      flex: 1; /* ✅ THIS makes page stretch */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+.accordion-content a{
+padding:10px 28px;
+font-size:20px;
+text-decoration:none;
+color:var(--theme-topnav-color);
+border-top:1px solid rgba(255,255,255,0.2);
+}
 
-    .container {
-      padding: 20px 20px 30px 20px;
-      text-align: center;
-      max-width: 1100px;
-      width: 100%;
-      margin: 0 auto;
-    }
+.clickable-section{
+background-color:var(--theme-accent-color);
+color:white;
+font-weight:700;
+font-size:24px;
+padding:14px;
+text-align:center;
+cursor:pointer;
+margin-bottom:4px;
+}
 
-    .container h1 {
-      font-size: clamp(50px, 8vw, 72px);
-      margin: 15px 0 30px 0;
-    }
+/* ================= PAGE ================= */
 
-    .button-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 18px;
-      flex-wrap: nowrap;
-    }
+.container{
+flex:1;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+text-align:center;
+padding:20px;
+}
 
-    .option-button {
-      font-family: 'Jersey 10', sans-serif;
-      width: 44%;
-      max-width: 420px;
-      padding: 20px 18px;
-      font-size: clamp(18px, 2.5vw, 24px);
-      font-weight: 700;
-      background-color: var(--theme-accent-color);
-      color: white;
-      border: none;
-      border-radius: 14px;
-      cursor: pointer;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
-      transition: all 0.2s ease-in-out;
-    }
+/* Title */
 
-    .option-button:hover {
-      background-color: #c7232c;
-      transform: translateY(-3px);
-      box-shadow: 0 10px 22px rgba(0,0,0,0.2);
-    }
+.container h1{
+font-size:clamp(48px,7vw,70px);
+margin-bottom:25px;
+}
 
-    .or-text {
-      font-size: 28px;
-      font-weight: 900;
-      color: var(--theme-accent-color);
-      white-space: nowrap;
-    }
+/* Buttons */
 
-    @media (max-width: 600px) {
-      .container {
-        padding-top: 15px;
-      }
+.button-container{
+display:flex;
+align-items:center;
+justify-content:center;
+gap:18px;
+flex-wrap:nowrap;
+}
 
-      .container h1 {
-        margin-bottom: 20px;
-      }
+.option-button{
+font-family:'Jersey 10',sans-serif;
+width:44%;
+max-width:420px;
+padding:20px 18px;
+font-size:clamp(18px,2.5vw,24px);
+font-weight:700;
+background-color:var(--theme-accent-color);
+color:white;
+border:none;
+border-radius:14px;
+cursor:pointer;
+box-shadow:0 6px 16px rgba(0,0,0,0.15);
+transition:all .2s ease;
+}
 
-      .option-button {
-        padding: 16px 10px;
-        font-size: 18px;
-      }
+.option-button:hover{
+background-color:#c7232c;
+transform:translateY(-3px);
+box-shadow:0 10px 22px rgba(0,0,0,0.2);
+}
 
-      .or-text {
-        font-size: 22px;
-      }
-    }
+.or-text{
+font-size:28px;
+font-weight:900;
+color:var(--theme-accent-color);
+}
 
-  </style>
+/* Mobile */
+
+@media(max-width:600px){
+
+.button-container{
+gap:12px;
+}
+
+.option-button{
+padding:16px 10px;
+font-size:18px;
+}
+
+.or-text{
+font-size:22px;
+}
+
+}
+
+</style>
 </head>
 
 <body>
 
 <header>
-  <div class="topnav">
-    <h1>
-      <a class="logo" href="#" id="homepage-logo">THE Randoms</a>
-    </h1>
-    <span class="menu-icon" tabindex="0">&#9776;</span>
-  </div>
 
-  <nav class="topnav-right">
-    <!-- (UNCHANGED NAV CONTENT) -->
-  </nav>
+<div class="topnav">
+<h1><a class="logo" href="index.html">THE Randoms</a></h1>
+<span class="menu-icon" tabindex="0">&#9776;</span>
+</div>
+
+<nav class="topnav-right">
+
+<!-- SAME NAV CONTENT AS OTHER PAGES -->
+
+</nav>
+
 </header>
 
-<main>
-  <div class="container">
-    <h1>Would You Rather</h1>
+<div class="container">
 
-    <div class="button-container">
-      <button class="option-button" id="option1">Loading Option...</button>
-      <div class="or-text">OR</div>
-      <button class="option-button" id="option2">Loading Option...</button>
-    </div>
-  </div>
-</main>
+<h1>Would You Rather</h1>
+
+<div class="button-container">
+
+<button class="option-button" id="option1">
+Loading Option...
+</button>
+
+<div class="or-text">OR</div>
+
+<button class="option-button" id="option2">
+Loading Option...
+</button>
+
+</div>
+
+</div>
 
 <script src="wouldyourather.js" defer></script>
-<script src="holiday-theme.js"></script>
+<script src="holiday-theme.js" defer></script>
 <script src="accordion.js" defer></script>
 
 </body>
