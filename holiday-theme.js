@@ -487,7 +487,7 @@ function applyHolidayTheme(){
       mainBg:"#FFF49B",
       mainText:"#6A0DAD",
 
-      footerBg:"FFF49B",
+      footerBg:"#FFF49B",
       footerText:"#6A0DAD"
     };
   }
