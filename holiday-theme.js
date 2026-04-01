@@ -469,7 +469,7 @@ function applyHolidayTheme(){
     theme = {
       ...theme,
       class:"holiday-easter",
-      mascot:"eastermascot.png",
+      mascot:"Mascot.png",
 
       bgColor:"#FFF0F5",
       textColor:"#6A0DAD",
