@@ -476,7 +476,7 @@ function applyHolidayTheme(){
 
       linkColor:"#6A0DAD",
 
-      navBg:"#FFD700",
+      navBg:"#FFFACD",
       navText:"#6A0DAD",
 
       menuBg:"#FFF0F5",
@@ -484,10 +484,10 @@ function applyHolidayTheme(){
 
       hoverBg:"#FFC0CB",
 
-      mainBg:"#FFD700",
+      mainBg:"#FFFACD",
       mainText:"#6A0DAD",
 
-      footerBg:"#FFD700",
+      footerBg:"#FFFACD",
       footerText:"#6A0DAD"
     };
   }
