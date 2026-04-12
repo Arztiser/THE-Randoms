@@ -50,7 +50,7 @@ function renderCurrentDate() {
 }
 
 /* ======================
-   BIRTHDAY CHECK
+   BIRTHDAY CHECK (March 10)
 ====================== */
 function isBirthday() {
   const d = new Date();
@@ -142,15 +142,11 @@ async function renderWord() {
     return;
   }
 
-  async function tryFetch(url) {
-    const res = await fetch(url);
+  try {
+    const res = await fetch('https://random-word-api.vercel.app/api?words=1');
     if (!res.ok) throw new Error();
     const data = await res.json();
-    return Array.isArray(data) ? data[0] : data.word || data;
-  }
-
-  try {
-    const word = await tryFetch('https://random-word-api.vercel.app/api?words=1');
+    const word = data[0];
     c.textContent = word;
     localStorage.setItem("daily_word", word);
   } catch {
@@ -204,23 +200,12 @@ async function fetchFact() {
 async function fetchMeme() {
   if (isBirthday()) return "/img/default-meme.jpg";
 
-  const seed = getUserDaySeed();
-
   try {
-    const subs = ['memes','dankmemes','funny'];
-    const sub = subs[seed % subs.length];
-    const url = `https://www.reddit.com/r/${sub}/hot.json?limit=50`;
-    const res = await fetch(`https://corsproxy.io/?${encodeURIComponent(url)}`);
-    if (!res.ok) throw new Error();
-
-    const json = await res.json();
-    const imgs = json.data.children
-      .map(p => p.data.url)
-      .filter(url => url.match(/\.(jpg|png|jpeg)$/));
-
-    if (!imgs.length) throw new Error();
-
-    return imgs[seed % imgs.length];
+    // FIXED: Use Meme-API to avoid Reddit CORS blocks and get clean randoms
+    const r = await fetch('https://meme-api.com/gimme/memes+dankmemes+funny');
+    if (!r.ok) throw new Error();
+    const d = await r.json();
+    return d.url;
   } catch {
     return "/img/default-meme.jpg";
   }
@@ -252,7 +237,8 @@ async function renderMeme() {
   if (!c) return;
 
   const url = await fetchCached('meme', fetchMeme);
-  c.innerHTML = `<img src="${url}" style="max-width:100%; border-radius:8px;">`;
+  // FIXED: Inline styles added to prevent layout shift and footer pushing
+  c.innerHTML = `<img src="${url}" style="max-width:100%; max-height:50vh; object-fit:contain; border-radius:8px; display:block; margin: 0 auto;">`;
 }
 
 /* ======================
@@ -271,7 +257,7 @@ function archiveToday() {
 }
 
 /* ======================
-   VAULT PAGE LOADER (YESTERDAY RANDOM FETCH)
+   VAULT PAGE LOADER
 ====================== */
 async function loadVaultPage() {
   const yesterdayKey = getYesterdayKey();
@@ -284,7 +270,6 @@ async function loadVaultPage() {
     let stored = localStorage.getItem(`vault_${yesterdayKey}_${key}`);
 
     if (!stored) {
-      // Generate real random for joke/advice/fact/meme
       if (key === "joke") stored = await fetchJoke();
       else if (key === "advice") stored = await fetchAdvice();
       else if (key === "fact") stored = await fetchFact();
@@ -296,12 +281,14 @@ async function loadVaultPage() {
         const fallback = ["random","fun","code","site","day"];
         stored = fallback[Math.floor(Math.random() * fallback.length)];
       }
-
       localStorage.setItem(`vault_${yesterdayKey}_${key}`, stored);
     }
 
-    if (key === "meme") el.innerHTML = `<img src="${stored}" style="max-width:100%; border-radius:8px;">`;
-    else el.textContent = stored;
+    if (key === "meme") {
+      el.innerHTML = `<img src="${stored}" style="max-width:100%; max-height:45vh; object-fit:contain; border-radius:8px; display:block; margin: 0 auto;">`;
+    } else {
+      el.textContent = stored;
+    }
   }
 }
 
@@ -355,6 +342,6 @@ setInterval(async () => {
 ====================== */
 document.addEventListener('DOMContentLoaded', async () => {
   await refreshAll();
-  await loadVaultPage(); // <- now async to fetch randoms if needed
+  await loadVaultPage(); 
   scheduleMidnightRefresh();
 });
