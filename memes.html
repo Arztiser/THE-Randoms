@@ -29,10 +29,10 @@
       --theme-accent-color: #E82B38;
       display: flex;
       flex-direction: column;
-      min-height: 100vh;
+      min-height: 100vh; /* Keeps the body at least full screen */
     }
 
-    /* ===== HEADER (MATCHES ALL PAGES) ===== */
+    /* ===== HEADER ===== */
     header {
       margin-bottom: 20px;
     }
@@ -137,53 +137,58 @@
 
     /* ===== MAIN CONTENT ===== */
     main.content {
-      flex: 1;
+      flex: 1; /* This is the key: it grows to fill space and keeps footer at the bottom */
       padding: 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center; /* Centers the container in the gap */
       text-align: center;
       box-sizing: border-box;
     }
 
     main.content h1 {
-      margin: 0 0 20px 0;
+      margin: 0 0 10px 0;
     }
 
-    /* ===== MEME CONTAINER (FINAL, STABLE) ===== */
+    /* ===== MEME CONTAINER (STABLE) ===== */
     .meme-container {
       border: 4px solid var(--theme-accent-color);
       border-radius: 12px;
       padding: 0;
-      display: inline-block;
+      display: inline-flex;
+      flex-direction: column;
       background-color: #fff;
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      text-align: center;
-      max-width: 100%;
+      max-width: 95vw;
+      overflow: hidden; /* Clips image corners to the border-radius */
     }
 
     .meme-container img {
       display: block;
-      max-width: 90vw;
-      max-height: 70vh;
       width: auto;
       height: auto;
+      max-width: 100%;
+      /* Constrain height to ensure footer isn't pushed out of view */
+      max-height: 50vh; 
+      object-fit: contain;
+      margin: 0 auto;
+      background-color: #f9f9f9;
     }
 
     .generate-btn {
       width: 100%;
       border: none;
       font-family: 'Jersey 10', sans-serif;
-      font-size: 20px;
-      padding: 10px 0;
+      font-size: 22px;
+      padding: 12px 0;
       background-color: var(--theme-accent-color);
       color: white;
       cursor: pointer;
-      border-radius: 0 0 8px 8px;
       box-sizing: border-box;
     }
 
-    /* ===== FOOTER (MATCHES ALL PAGES) ===== */
+    /* ===== FOOTER ===== */
     footer.site-footer {
       background-color: var(--theme-bg-color);
       color: var(--theme-topnav-color);
@@ -203,18 +208,10 @@
 
     /* ===== MOBILE REFINEMENT ===== */
     @media (max-width: 768px) {
-  .meme-container {
-    max-width: calc(100vw - 16px); /* viewport minus breathing room */
-    box-sizing: border-box;
-  }
-
-  .meme-container img {
-    width: 100%;
-    max-width: 100%;
-    height: auto;
-    display: block;
-  }
-}
+      .meme-container img {
+        max-height: 45vh; /* Less height on mobile for room */
+      }
+    }
   </style>
 </head>
 
@@ -255,9 +252,9 @@
         </div>
       </div>
 
-       <div class="accordion-section">
-        <button class="accordion-toggle" aria-expanded="false">Words, Letters & Numbers</button>
-        <div class="accordion-content" hidden>
+      <div class="accordion-section">
+        <button class="accordion-toggle">Words, Letters & Numbers</button>
+        <div class="accordion-content">
           <a href="letters.html">Letters</a>
           <a href="numbers.html">Numbers</a>
           <a href="passwords.html">Passwords</a>
@@ -272,7 +269,7 @@
   <main class="content">
     <h1>Random Memes</h1>
     <div class="meme-container">
-      <img id="meme-img" alt="Random Meme" />
+      <img id="meme-img" alt="Loading meme..." />
       <button id="generate-meme" class="generate-btn">Generate Meme</button>
     </div>
   </main>
