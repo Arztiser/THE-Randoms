@@ -4,34 +4,32 @@ const generateBtn = document.getElementById("generate-meme");
 
 async function getRandomMeme() {
   try {
-    const subreddits = ["memes", "dankmemes", "funny"];
-    const randomSub = subreddits[Math.floor(Math.random() * subreddits.length)];
-    const url = `https://www.reddit.com/r/${randomSub}/hot.json?limit=100`;
+    // Optional: Add a brief loading message to the alt text
+    memeImg.alt = "Loading meme...";
+    
+    // The Meme API handles the Reddit scraping for you, bypassing CORS issues.
+    // You can string multiple subreddits together with a '+'
+    const url = "https://meme-api.com/gimme/memes+dankmemes+funny";
 
-    // Use CORS proxy
-    const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(url)}`;
-    const response = await fetch(proxyUrl);
+    const response = await fetch(url);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
     const data = await response.json();
 
-    const memes = data.data.children.filter(post =>
-      post.data.url &&
-      (post.data.url.endsWith(".jpg") ||
-       post.data.url.endsWith(".png") ||
-       post.data.url.endsWith(".jpeg"))
-    );
-
-    if (!memes.length) throw new Error("No memes found");
-
-    const randomMeme = memes[Math.floor(Math.random() * memes.length)].data;
-    const imgURL = randomMeme.url;
+    // The API returns the direct image URL and title at the top level of the JSON
+    const imgURL = data.url;
 
     // Just set the image source; let CSS handle size
     memeImg.src = imgURL;
-    memeImg.alt = randomMeme.title;
+    memeImg.alt = data.title;
 
   } catch (err) {
     console.error("Error fetching meme:", err);
-    memeImg.src = "";
+    // You can set a placeholder image here if you want
+    memeImg.src = ""; 
     memeImg.alt = "Failed to load meme. Try again!";
   }
 }
