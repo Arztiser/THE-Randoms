@@ -50,7 +50,7 @@ function renderCurrentDate() {
 }
 
 /* ======================
-   BIRTHDAY CHECK (March 10)
+   BIRTHDAY CHECK
 ====================== */
 function isBirthday() {
   const d = new Date();
@@ -130,7 +130,7 @@ function renderPassword() {
 }
 
 /* ======================
-   WORD
+   WORD (UPDATED API)
 ====================== */
 async function renderWord() {
   const c = document.querySelector('#random-word .random-content');
@@ -143,14 +143,15 @@ async function renderWord() {
   }
 
   try {
-    const res = await fetch('https://random-word-api.vercel.app/api?words=1');
+    // Switched to Heroku-hosted API for better reliability
+    const res = await fetch('https://random-word-api.herokuapp.com/word?number=1');
     if (!res.ok) throw new Error();
     const data = await res.json();
     const word = data[0];
     c.textContent = word;
     localStorage.setItem("daily_word", word);
   } catch {
-    const fallback = ["random","fun","code","site","day"];
+    const fallback = ["random","fun","code","site","day","pixel","logic"];
     const word = fallback[getUserDaySeed() % fallback.length];
     c.textContent = word;
     localStorage.setItem("daily_word", word);
@@ -201,7 +202,7 @@ async function fetchMeme() {
   if (isBirthday()) return "/img/default-meme.jpg";
 
   try {
-    // FIXED: Use Meme-API to avoid Reddit CORS blocks and get clean randoms
+    // Using Meme-API to avoid Reddit scraper blocks
     const r = await fetch('https://meme-api.com/gimme/memes+dankmemes+funny');
     if (!r.ok) throw new Error();
     const d = await r.json();
@@ -237,7 +238,7 @@ async function renderMeme() {
   if (!c) return;
 
   const url = await fetchCached('meme', fetchMeme);
-  // FIXED: Inline styles added to prevent layout shift and footer pushing
+  // CSS Fix: max-height and object-fit prevent footer displacement
   c.innerHTML = `<img src="${url}" style="max-width:100%; max-height:50vh; object-fit:contain; border-radius:8px; display:block; margin: 0 auto;">`;
 }
 
@@ -281,6 +282,7 @@ async function loadVaultPage() {
         const fallback = ["random","fun","code","site","day"];
         stored = fallback[Math.floor(Math.random() * fallback.length)];
       }
+
       localStorage.setItem(`vault_${yesterdayKey}_${key}`, stored);
     }
 
